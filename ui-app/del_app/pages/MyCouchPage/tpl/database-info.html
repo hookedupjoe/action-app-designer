@@ -1,0 +1,31 @@
+<div class="ui segment basic">
+  <h2 class="ui header">
+    <i class="database icon"></i>
+    <div class="content">
+      {{name}}
+    </div>
+  </h2>
+
+  <table class="ui definition table">
+    <tbody>
+      <tr>
+        <td>Size</td>
+        <td><b>{{info.doc_count}}</b> Documents</td>
+        <td><b>{{info.disk_size}}</b> Size on disk</td>
+      </tr>
+    </tbody>
+  </table>
+
+  {{#if design}}
+  <h3>Design Elements ({{design.length}})</h3>
+  {{#each design}}
+  <div class="ui message" style="margin:0;margin-top:2px;">
+    {{_id}}
+  </div>
+  {{/each}}
+  {{^}}
+  <br />* No design elements
+  {{/if}}
+
+
+</div>

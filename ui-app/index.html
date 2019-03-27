@@ -42,26 +42,32 @@
 
 <body appuse="appbody">
     
-<div appuse="side-menu" class="ui sidebar right inverted labeled icon inline vertical menu"></div>
+  <div appuse="side-menu" class="ui sidebar right inverted labeled icon left inline vertical menu">
+  </div>
   <div class="site-layout-north" style="background-color:#2b3443;">
     <div style="padding:0px;" class="">
-      <a style="display:none;float:right;margin-left:4px;margin-top:8px;" appuse="app-sidebar-trigger" semaction="showsidebar" class="toc item">
-        <i class="sidebar icon large inverted"></i>
+
+      <a style="float:right;margin-left:4px;margin-top:5px;" semaction="showsidebar" class="toc item">
+        <i class="sidebar icon big inverted"></i>
       </a>
-      <div style="float:left;margin-left:5px;padding:5px;margin-top:3px;line-height:25px;" class="site-header">
-        Application Designer
-      </div>
-      <div style="float:right;padding:0;margin:0;margin-right:10px;margin-left:10px;" appuse="nav-menu" class="ui pointing inverted menu nomobile"></div>
+      <!-- <img action="aboutThisApp" style="float:right;padding:5px;" src="./app/img/action-app-icon-trans.png" height="32" /> -->
+      <div style="float:left;margin-left:5px;padding:5px;margin-top:3px;line-height:25px;" class="site-header">Action
+        Application Library CDN</div>
+      <div style="float:right;padding:0;margin:0;margin-right:10px;margin-left:10px;" appuse="nav-menu"
+        class="ui pointing inverted menu nomobile"></div>
     </div>
   </div>
   <div appuse="app-loader">
-      <i class="huge icons">
-        <i class="big loading circle notch icon"></i>
-      </i>
+    <i class="huge icons">
+      <i class="big loading circle notch icon"></i>
+    </i>
   </div>
-  <div appuse="main-page-container" class="site-layout-center pusher"></div>
-  <div appuse="site:global-context-menu" ></div>
-</div>
+  <div appuse="main-page-container" class="site-layout-center pusher">
+
+  </div>
+  <div appuse="site:global-context-menu">
+
+  </div>
 
 
 
@@ -121,7 +127,8 @@
   <script src="./app/pages/LogsPage/index.js"></script>
   <script src="./app/pages/CatalogPage/index.js"></script>
   <script src="./app/pages/MyCouchPage/index.js"></script>
-  <script src="./app/pages/SetupPage/index.js"></script>
+  <script src="./app/pages/NoSQLSetupPage/index.js"></script>
+  <script src="./app/pages/UsingControlsPage/index.js"></script>
   
 
   <!-- Application Launch Script -->

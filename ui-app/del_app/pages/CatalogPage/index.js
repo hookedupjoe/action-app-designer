@@ -13,6 +13,7 @@ License: MIT
         pageTitle: "Catalog",
         pageNamespace: 'catalog',
         navOptions: {
+            icon: 'table',
             topLink: true,
             sideLink: true
         },

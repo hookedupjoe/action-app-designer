@@ -13,7 +13,8 @@ License: MIT
         pageTitle: "My Couch",
         pageNamespace: 'mycouch',
         navOptions: {
-            topLink: false,
+            icon: 'table',
+            topLink: true,
             sideLink: true
         },
         //linkDisplayOption:'both',
@@ -98,6 +99,7 @@ License: MIT
 
     
     function refreshUI() {
+        console.log( 'refreshUI', ThisPage.databaseList);
           ThisPage.loadSpot('center', {items:ThisPage.databaseList}, ThisPage.ns('database-list'))
     }
     ThisPage.showLoading = showLoading;

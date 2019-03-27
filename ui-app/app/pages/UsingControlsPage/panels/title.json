@@ -1,0 +1,10 @@
+{
+	"content": [
+		{
+			"ctl": "field",
+			"size": "huge",
+			"name": "title",
+			"text": "Hello World"
+		}
+	]
+}

@@ -72,7 +72,7 @@
       //     [blank] = blank or missing value will make it show on the left only
       */
       var tmpPluginComponents = ['DataTables'];
-      var tmpAppCompsToInit = ['UsingControlsPage', 'NoSQLSetupPage', 'MyCouchPage', 'CatalogPage', 'LogsPage'];
+      var tmpAppCompsToInit = ['SetupPage', 'MyCouchPage', 'CatalogPage', 'LogsPage'];
       var tmpAppComponents = [];
 
       ThisApp.useModuleComponents('plugin', tmpPluginComponents)
@@ -85,12 +85,10 @@
 
       }
 
-      //      var tmpHidePages = (tmpAppCompsToInit.length < 2)
-      //, hidePagesMenu: tmpHidePages
+      var tmpHidePages = (tmpAppCompsToInit.length < 2)
 
-      
       //--- Use tmpRequiredSpecs to preload more using that example
-      ThisApp.init({ required: tmpRequired, alibrarySpecs: tmpLibrarySpecs }).then(function (theReply) {
+      ThisApp.init({ required: tmpRequired, alibrarySpecs: tmpLibrarySpecs, hidePagesMenu: tmpHidePages }).then(function (theReply) {
         ThisApp.getByAttr$({ appuse: "app-loader" }).remove();
 
         ThisApp.aboutThisApp = function () {
