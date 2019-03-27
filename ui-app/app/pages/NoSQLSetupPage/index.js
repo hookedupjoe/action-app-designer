@@ -13,7 +13,7 @@ License: MIT
         pageTitle: "NoSQL Setup",
         pageNamespace: 'NoSQLSetupPage',
         navOptions: {
-            topLink: false,
+            topLink: true,
             sideLink: true
         },
         //linkDisplayOption:'both',
@@ -25,7 +25,7 @@ License: MIT
 
     //--- Define page templates that should load when the page is activated
     thisPageSpecs.required = {
-       "templates": {
+        templates: {
             baseURL: pageBaseURL + 'tpl',
             map: {
                 "setup-info": thisPageSpecs.pageNamespace + ":setup-info",

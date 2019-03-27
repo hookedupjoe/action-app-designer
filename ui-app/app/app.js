@@ -72,7 +72,7 @@
       //     [blank] = blank or missing value will make it show on the left only
       */
       var tmpPluginComponents = ['DataTables'];
-      var tmpAppCompsToInit = ['UsingControlsPage', 'NoSQLSetupPage', 'MyCouchPage', 'CatalogPage', 'LogsPage'];
+      var tmpAppCompsToInit = ['NoSQLSetupPage', 'UsingControlsPage', 'MyCouchPage', 'CatalogPage', 'LogsPage'];
       var tmpAppComponents = [];
 
       ThisApp.useModuleComponents('plugin', tmpPluginComponents)
