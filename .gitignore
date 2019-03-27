@@ -1,8 +1,7 @@
 data/
 node_modules/
-/local_security/
 logs/
-joblogs/
 npm-debug.log
-config/emails.json
 package-lock.json
+/local_security/
+/local_data/

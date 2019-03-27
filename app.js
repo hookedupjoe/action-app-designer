@@ -18,9 +18,10 @@ scope.locals = {
         root: path.resolve(__dirname)
     }
 };
-scope.locals.path.modules = scope.locals.path.root + "/modules";
-scope.locals.path.libraries = scope.locals.path.root + "/modules";
+scope.locals.path.modules = scope.locals.path.root + "/server-app";
+scope.locals.path.libraries = scope.locals.path.root + "/server-app";
 scope.locals.path.localSecurity = scope.locals.path.root + "/local_security";
+scope.locals.path.localData = scope.locals.path.root + "/local_data";
 
 var app = require('express')(),
     cookieParser = require('cookie-parser'),
@@ -32,7 +33,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 
 //--- Plug in application routes
-require('./modules/start').setup(app, scope);
+require('./server-app/start').setup(app, scope);
 
 // error handlers
 app.use(function (req, res, next) {
