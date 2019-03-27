@@ -1,0 +1,4 @@
+.ui.definition.table.medium-label tr td:first-child:not(.ignored) {
+   width: 200px;
+}
+ 

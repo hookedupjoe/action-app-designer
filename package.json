@@ -1,0 +1,25 @@
+{
+  "name": "node-nosql-admin",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "start": "node app.js"
+  },
+  "devDependencies": {},
+  "dependencies": {
+    "asyncawait": "^1.0.6",
+    "body-parser": "^1.15.2",
+    "config": "^1.21.0",
+    "cookie-parser": "^1.4.3",
+    "express": "^4.16.3",
+    "gulp-replace": "^0.6.1",
+    "json-query": "^2.2.2",
+    "lodash": "^4.17.4",
+    "merge": "^1.2.0",
+    "papaparse": "^4.6.3",
+    "q": "^1.4.1",
+    "request": "^2.83.0",
+    "router": "^1.1.4"
+  },
+  "repository": {}
+}
