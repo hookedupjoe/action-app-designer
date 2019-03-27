@@ -164,7 +164,7 @@ License: MIT
         var tmpURL = '/app/action?name=recycle&keys=' + tmpKeys;
 
         ThisPage.processingDialogShow();
-        ThisApp.apiCall({
+        ThisApp.common.apiCall({
             url: tmpURL
         }).then(
             function (theResponse) {
@@ -252,7 +252,7 @@ License: MIT
     function runPreviewDocument(theID) {
         var tmpURL = "/app/view?name=" + ThisPage.currentViewName + "&key=" + theID;
         ThisPage.showPreviewLoading();
-        ThisApp.apiCall({
+        ThisApp.common.apiCall({
             url: tmpURL
         }).then(
             function (theResponse) {
@@ -389,7 +389,7 @@ License: MIT
         var tmpURL = "/app/view?name=" + ThisPage.currentViewName;
         ThisPage.currentDataTable.clear();
         ThisPage.currentDataTable.draw();
-        ThisApp.apiCall({
+        ThisApp.common.apiCall({
             url: tmpURL
         }).then(
             function (theResponse) {
@@ -424,7 +424,7 @@ License: MIT
 
       
 
-        ThisApp.apiCall({
+        ThisApp.common.apiCall({
             url: tmpURL
         }).then(
             function (theResponse) {
@@ -461,7 +461,7 @@ License: MIT
             contentType: "application/json; charset=utf-8",
             dataType: "json"
         };
-        ThisApp.apiCall(tmpOptions).then(
+        ThisApp.common.apiCall(tmpOptions).then(
             function (theResults) {
                 ThisApp.appMessage("Document Saved", true, {show:true, data:theResults});
                 ThisPage.refreshReport();

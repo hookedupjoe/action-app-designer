@@ -1,7 +1,7 @@
 (function () {
 
   ThisApp = null;
-  
+
   var tmpPluginNames = ['DataTables'];
   var tmpPageNames = ['NoSQLSetupPage', 'UsingControlsPage', 'MyCouchPage', 'CatalogPage', 'LogsPage'];
 
@@ -10,41 +10,6 @@
   //---- ACTUAL CODE ==    
   ActionAppCore = ActionAppCore || window.ActionAppCore;
 
-  ThisApp.apiCall = apiCall;
-  function apiCall(theOptions) {
-    var dfd = $.Deferred();
-
-    if (!theOptions) {
-      dfd.reject("No api call details provided");
-      return;
-    }
-
-    var tmpOptions = theOptions || '';
-    if (typeof (tmpOptions) == 'string') {
-      tmpOptions = { url: tmpOptions };
-    }
-
-    var tmpURL = theOptions.url;
-    if (!tmpURL) {
-      throw "No URL provided"
-    }
-
-    var tmpRequest = {
-      method: 'GET',
-      success: function (theResponse) {
-        dfd.resolve(theResponse);
-      },
-      error: function (theError) {
-        dfd.reject(theError)
-      }
-    };
-
-    $.extend(tmpRequest, theOptions);
-
-    $.ajax(tmpRequest);
-
-    return dfd.promise();
-  }
 
   function setup(thePages, thePlugins) {
     try {
@@ -92,7 +57,7 @@
       //      var tmpHidePages = (tmpAppCompsToInit.length < 2)
       //, hidePagesMenu: tmpHidePages
 
-      
+
       //--- Use tmpRequiredSpecs to preload more using that example
       ThisApp.init({ pages: thePages, plugins: thePlugins, required: tmpRequired, alibrarySpecs: tmpLibrarySpecs }).then(function (theReply) {
         ThisApp.getByAttr$({ appuse: "app-loader" }).remove();
@@ -104,13 +69,47 @@
         //--- Turn off messages by default
         ThisApp.setMessagesOptions({ show: false })
 
+
         //--- Extend common with your app specific stuff
         $.extend(ThisApp.common, {
           samplesBaseURL: 'catalog/panels/samples',
-          yourStuff: function () {
-
-          }
+          apiCall: apiCall
         })
+
+        function apiCall(theOptions) {
+          var dfd = $.Deferred();
+
+          if (!theOptions) {
+            dfd.reject("No api call details provided");
+            return;
+          }
+
+          var tmpOptions = theOptions || '';
+          if (typeof (tmpOptions) == 'string') {
+            tmpOptions = { url: tmpOptions };
+          }
+
+          var tmpURL = theOptions.url;
+          if (!tmpURL) {
+            throw "No URL provided"
+          }
+
+          var tmpRequest = {
+            method: 'GET',
+            success: function (theResponse) {
+              dfd.resolve(theResponse);
+            },
+            error: function (theError) {
+              dfd.reject(theError)
+            }
+          };
+
+          $.extend(tmpRequest, theOptions);
+
+          $.ajax(tmpRequest);
+
+          return dfd.promise();
+        }
 
 
       });

@@ -110,7 +110,7 @@ License: MIT
     function refreshDatabaseList() {
         ThisPage.showLoading();
         var tmpURL = "/app/action?name=get-databases";
-        ThisApp.apiCall({
+        ThisApp.common.apiCall({
             timeout: 3000,
             url: tmpURL
         }).then(
@@ -164,7 +164,7 @@ License: MIT
     function openThisDatabase(theAction,theTarget) {
         var tmpName = $(theTarget).attr('name');
         var tmpURL = "/app/action?name=get-info-for-db&database=" + tmpName;
-        ThisApp.apiCall({
+        ThisApp.common.apiCall({
             timeout: 3000,
             url: tmpURL
         }).then(
