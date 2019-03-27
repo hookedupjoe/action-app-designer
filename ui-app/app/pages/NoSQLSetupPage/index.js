@@ -35,7 +35,6 @@ License: MIT
         }
 
     }
-    //"page-east.html": thisPageSpecs.pageNamespace + ":page-east",
 
     //--- Define this applications layouts
     thisPageSpecs.layoutOptions = {

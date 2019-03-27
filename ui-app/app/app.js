@@ -1,7 +1,11 @@
 (function () {
 
   ThisApp = null;
-  setup();
+  
+  var tmpPluginNames = ['DataTables'];
+  var tmpPageNames = ['NoSQLSetupPage', 'UsingControlsPage', 'MyCouchPage', 'CatalogPage', 'LogsPage'];
+
+  setup(tmpPageNames, tmpPluginNames);
 
   //---- ACTUAL CODE ==    
   ActionAppCore = ActionAppCore || window.ActionAppCore;
@@ -42,7 +46,7 @@
     return dfd.promise();
   }
 
-  function setup() {
+  function setup(thePages, thePlugins) {
     try {
       var siteMod = ActionAppCore.module('site');
       ThisApp = new siteMod.CoreApp();
@@ -71,14 +75,14 @@
       //     primary = show on top but not in sidebar, then add to sidebar for small screens only
       //     [blank] = blank or missing value will make it show on the left only
       */
-      var tmpPluginComponents = ['DataTables'];
-      var tmpAppCompsToInit = ['NoSQLSetupPage', 'UsingControlsPage', 'MyCouchPage', 'CatalogPage', 'LogsPage'];
-      var tmpAppComponents = [];
+      // var tmpPluginComponents = ['DataTables'];
+      // var tmpAppCompsToInit = ['NoSQLSetupPage', 'UsingControlsPage', 'MyCouchPage', 'CatalogPage', 'LogsPage'];
+      // var tmpAppComponents = [];
 
-      ThisApp.useModuleComponents('plugin', tmpPluginComponents)
+      // ThisApp.useModuleComponents('plugin', tmpPluginComponents)
 
-      ThisApp.initModuleComponents(ThisApp, 'app', tmpAppCompsToInit)
-      ThisApp.useModuleComponents('app', tmpAppComponents)
+      // ThisApp.initModuleComponents(ThisApp, 'app', tmpAppCompsToInit)
+      // ThisApp.useModuleComponents('app', tmpAppComponents)
 
       ThisApp._onResizeLayouts = function (name, $pane, paneState) {
         //-- Do stuff here when application refreshes
@@ -90,7 +94,7 @@
 
       
       //--- Use tmpRequiredSpecs to preload more using that example
-      ThisApp.init({ required: tmpRequired, alibrarySpecs: tmpLibrarySpecs }).then(function (theReply) {
+      ThisApp.init({ pages: thePages, plugins: thePlugins, required: tmpRequired, alibrarySpecs: tmpLibrarySpecs }).then(function (theReply) {
         ThisApp.getByAttr$({ appuse: "app-loader" }).remove();
 
         ThisApp.aboutThisApp = function () {
