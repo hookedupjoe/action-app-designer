@@ -85,6 +85,10 @@
           apiCall: apiCall
         })
 
+        //--- Common apiCall interface allows for stuff like
+        //     adding headers, etc as needed to all calls
+        //    Also allows for error handing, such as log in routing
+        //     then recall the same API.
         function apiCall(theOptions) {
           var dfd = $.Deferred();
 
