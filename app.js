@@ -18,7 +18,7 @@ scope.locals = {
         root: path.resolve(__dirname)
     }
 };
-scope.locals.path.modules = scope.locals.path.root + "/server-app";
+scope.locals.path.start = scope.locals.path.root + "/server-app";
 scope.locals.path.libraries = scope.locals.path.root + "/server-app";
 scope.locals.path.localSecurity = scope.locals.path.root + "/local_security";
 scope.locals.path.localData = scope.locals.path.root + "/local_data";

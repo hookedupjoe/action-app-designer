@@ -8,8 +8,8 @@ module.exports.setup = function setup(scope) {
     let $ = scope.locals.$;
     //--- Setup app data access entry point using application data scope
     var tmpAppDataConfig = require(scope.locals.path.localSecurity + "/couch-config.js");
-    scope.locals.$.AppData = require(scope.locals.path.modules + "/lib_AppData.js").setup(scope, tmpAppDataConfig);
-    scope.locals.$.AppUtils = require(scope.locals.path.modules + "/app/_common/AppUtils.js").setup(scope);
+    scope.locals.$.AppData = require(scope.locals.path.start + "/lib_AppData.js").setup(scope, tmpAppDataConfig);
+    scope.locals.$.AppUtils = require(scope.locals.path.start + "/app/_common/AppUtils.js").setup(scope);
 
     return $.async(function processReq(req, res, next) {
         var tmpAppAreaName = req.path || '';
@@ -20,7 +20,7 @@ module.exports.setup = function setup(scope) {
         try {
             //--- Assure application setup object is laoded one time
             var tmpAppSetup = $.await(scope.locals.$.AppUtils.getAppSetup());
-            var tmpAppAreaName = scope.locals.path.modules + '/app/' + tmpAppAreaName + '.js';
+            var tmpAppAreaName = scope.locals.path.start + '/app/' + tmpAppAreaName + '.js';
             var tmpAppReq = require(tmpAppAreaName);
 
             if (typeof(tmpAppReq.setup) == 'function') {
