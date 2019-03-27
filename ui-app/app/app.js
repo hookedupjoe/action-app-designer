@@ -2,8 +2,17 @@
 
   ThisApp = null;
 
-  var tmpPluginNames = ['DataTables'];
-  var tmpPageNames = ['NoSQLSetupPage', 'UsingControlsPage', 'MyCouchPage', 'CatalogPage', 'LogsPage'];
+  var tmpPageNames = [
+    'NoSQLSetupPage',
+    'UsingControlsPage',
+    'MyCouchPage',
+    'CatalogPage',
+    'LogsPage'
+  ];
+
+  var tmpPluginNames = [
+    'DataTables'
+  ];
 
   setup(tmpPageNames, tmpPluginNames);
 
