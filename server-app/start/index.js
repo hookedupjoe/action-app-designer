@@ -14,7 +14,6 @@ module.exports.setup = function (app, scope) {
     var appRouter = express.Router(),
         appEntryPoint = require('./app/index').setup(scope);
 
-    app.use(express.static(__dirname + '/../../ui-app'));
     app.use(express.static(__dirname + '/../../data'));
 
     appRouter.all('/*', appEntryPoint);

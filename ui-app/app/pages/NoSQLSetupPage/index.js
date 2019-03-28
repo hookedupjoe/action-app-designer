@@ -32,6 +32,10 @@ License: MIT
                 "account-info": thisPageSpecs.pageNamespace + ":account-info",
                 "account-list": thisPageSpecs.pageNamespace + ":account-list"
             }
+        },
+        panels: {
+            baseURL: pageBaseURL + 'panels',
+            list: "accountForm"
         }
 
     }

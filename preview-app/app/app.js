@@ -3,10 +3,6 @@
   ThisApp = null;
 
   var tmpPageNames = [
-    'NoSQLSetupPage',
-    'UsingControlsPage',
-    'MyCouchPage',
-    'CatalogPage',
     'LogsPage'
   ];
 
@@ -56,53 +52,8 @@
 
         //--- Extend common with your app specific stuff
         $.extend(ThisApp.common, {
-          samplesBaseURL: 'catalog/panels/samples',
-          apiCall: apiCall,
-          aboutThisApp: aboutThisApp
+          samplesBaseURL: 'catalog/panels/samples'
         })
-
-        function aboutThisApp() {
-          ThisApp.showCommonDialog({ header: "About this application", content: { data: '', template: 'app:about-this-app' } });
-        }
-
-        //--- Common apiCall interface allows for stuff like
-        //     adding headers, etc as needed to all calls
-        //    Also allows for error handing, such as log in routing
-        //     then recall the same API.
-        function apiCall(theOptions) {
-          var dfd = $.Deferred();
-
-          if (!theOptions) {
-            dfd.reject("No api call details provided");
-            return;
-          }
-
-          var tmpOptions = theOptions || '';
-          if (typeof (tmpOptions) == 'string') {
-            tmpOptions = { url: tmpOptions };
-          }
-
-          var tmpURL = theOptions.url;
-          if (!tmpURL) {
-            throw "No URL provided"
-          }
-
-          var tmpRequest = {
-            method: 'GET',
-            success: function (theResponse) {
-              dfd.resolve(theResponse);
-            },
-            error: function (theError) {
-              dfd.reject(theError)
-            }
-          };
-
-          $.extend(tmpRequest, theOptions);
-
-          $.ajax(tmpRequest);
-
-          return dfd.promise();
-        }
 
 
       });
