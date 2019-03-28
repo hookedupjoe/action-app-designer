@@ -5,7 +5,8 @@
 
 module.exports.setup = function setup(scope) {
     return function processReq(req, res, next) {
-        var tmpName = req.query.name || '';
+        var tmpName = req.query.action || req.query.name || '';
+        
         if (!tmpName) {
             throw "No build action name provided";
         }        

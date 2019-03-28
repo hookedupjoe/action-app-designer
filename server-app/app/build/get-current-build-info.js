@@ -27,8 +27,17 @@ module.exports.setup = function setup(scope) {
             try {
                 var tmpRet = {
                     app: 'demo app', 
+                    designerPath: scope.locals.path.designer,
                     build: {}
                 }
+
+                var tmpSource = scope.locals.path.designer + '/res/build/tpl-apps/preview-app';
+                var tmpTarget = scope.locals.path.preview;
+                tmpRet.locations = {
+                    source: tmpSource,
+                    target: tmpTarget
+                }
+              //  $.await(scope.locals.$.BuildUtils.copyDirectory(tmpSource, tmpTarget));
 
                 resolve(tmpRet);
             }

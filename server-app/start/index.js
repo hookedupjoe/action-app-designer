@@ -9,6 +9,10 @@ module.exports.setup = function (app, scope) {
     scope.locals.$ = require(scope.locals.path.libraries + "/globalUtilities").$;
     scope.locals.$.NoSQL = require(scope.locals.path.libraries + "/lib_NoSQL.js");
 
+    scope.locals.$.BuildUtils = require(scope.locals.path.libraries + "/lib_BuildUtils.js");
+    scope.locals.path.designer = scope.locals.path.root + "/.designer"
+    scope.locals.path.preview = scope.locals.path.root + "/preview-app"
+
     var express = require('express');
     
     var appRouter = express.Router(),
