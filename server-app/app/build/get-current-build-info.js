@@ -31,15 +31,21 @@ module.exports.setup = function setup(scope) {
                     build: {}
                 }
 
-                var tmpSource = scope.locals.path.designer + '/res/build/tpl-apps/preview-app';
+                var tmpSource = scope.locals.path.designer + '/build/tpl-apps/preview-app';
                 var tmpTarget = scope.locals.path.preview;
                 tmpRet.locations = {
                     source: tmpSource,
                     target: tmpTarget
                 }
-              //  $.await(scope.locals.$.BuildUtils.copyDirectory(tmpSource, tmpTarget));
+                $.fs.emptyDir(tmpTarget).then(function(){
+                    $.fs.copy(tmpSource, tmpTarget).then(function(){
+                        resolve(tmpRet);
+                    })
+                })
 
-                resolve(tmpRet);
+                //$.await(scope.locals.$.BuildUtils.copyDirectory(tmpSource, tmpTarget));
+
+               
             }
             catch (error) {
                 console.log('Err : ' + error);

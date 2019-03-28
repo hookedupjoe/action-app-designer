@@ -7,10 +7,12 @@ let $ = require("./globalUtilities").$;
 
 //==== NoSqlAccount === === === === === === === === === === 
 function BuildUtils() {
-    copyDirectory: copyDirectory
+    
 }
 module.exports.BuildUtils = BuildUtils;
 
+var me = BuildUtils.prototype;
+me.copyDirectory = copyDirectory;
 function copyDirectory(theSource, theDestination){
     return new Promise(function (resolve, reject) {
 
