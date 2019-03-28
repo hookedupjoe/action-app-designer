@@ -1,31 +1,24 @@
 /*
-  Standard NoSQL Access Library
+  Action Application Build Assistance
+
+  Author: Joseph Francis
+  License: MIT  
 */
 'use strict';
 
 let $ = require("./globalUtilities").$;
 
-//==== NoSqlAccount === === === === === === === === === === 
-function BuildUtils() {
-    
+let utils = {}; // local gulpMoney
+module.exports.utils = utils;
+
+utils.copyDirAsNew = copyDirAsNew;
+
+function copyDirAsNew(theSource,theTarget) {
+
+    try {
+        
+    }
+    catch (err) {
+        return {};
+    }
 }
-module.exports.BuildUtils = BuildUtils;
-
-var me = BuildUtils.prototype;
-me.copyDirectory = copyDirectory;
-function copyDirectory(theSource, theDestination){
-    return new Promise(function (resolve, reject) {
-
-        try {
-            $.fs.emptyDir(theDestination).then(function(){
-                $.fs.copy(theSource, theDestination).then(function(){
-                    resolve(true);
-                })
-            })
-
-        } catch (error) {
-            resolve(error);
-        }
-    });
-}
-

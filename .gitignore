@@ -4,3 +4,4 @@ logs/
 npm-debug.log
 package-lock.json
 /local_*/
+preview-app/
