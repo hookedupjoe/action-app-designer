@@ -11,7 +11,7 @@ module.exports.setup = function (app, scope) {
 
     scope.locals.$.BuildUtils = require(scope.locals.path.libraries + "/lib_BuildUtils.js");
     scope.locals.path.designer = scope.locals.path.root + "/.designer"
-    scope.locals.path.preview = scope.locals.path.root + "/preview-app"
+    scope.locals.path.preview = scope.locals.path.root + "/local_preview"
 
     var express = require('express');
     
