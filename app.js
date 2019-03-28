@@ -62,9 +62,10 @@ function onListening(server) {
         var address = server.address();
         var bind = (typeof address === 'string') ? 'pipe ' + address : address.address + ':' + address.port;
         console.log(chalk.green('Open designer on port:' + address.port + "."));
-        console.log(chalk.blue("http://localhost:" + address.port));
+        console.log(chalk.blue('Launch it here'));
+        console.log("http://localhost:" + address.port);
         console.log("");
-
+    
     };
 }
 
@@ -107,9 +108,10 @@ function onListeningPreview(serverPreview) {
         
         var bind = (typeof address === 'string') ? 'pipe ' + address : address.address + ':' + address.port;
         console.log(chalk.green('Preview sites on port:' + address.port + "."));
-        console.log(chalk.blue("http://localhost:" + address.port));
+        console.log(chalk.blue('Launch it here'));
+        console.log("http://localhost:" + address.port);
         console.log("");
-    };
+        };
 }
 
 
