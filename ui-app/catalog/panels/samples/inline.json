@@ -1,0 +1,95 @@
+{
+	"content": [
+		{
+			"ctl": "title",
+			"size": "large",
+			"name":"title",
+			"text": "My Profile"
+		},
+		{
+			"ctl": "fieldrow",
+			"inline": true,
+			"name":"name-row",
+			"items": [
+				{
+					"name": "first",
+					"label": "First Name",
+					"req": true
+				},
+				{
+					"name": "last",
+					"label": "Last Name",
+					"req": true
+				}
+			]
+		},
+		{
+			"ctl": "fieldrow",
+			"label": "Badge",
+			"name":"badge-row",
+			"req": true,
+			"items": [
+				{
+					"placeholder": "First Name",
+					"name": "badgefirst",
+					"req": true
+				},
+				{
+					"placeholder": "Last Name",
+					"name": "badgelast",
+					"req": true
+				}
+			]
+		},
+		{
+			"ctl": "fieldrow",
+			"label": "More Options",
+			"name":"options-row",
+			"items": [
+				{
+					"ctl": "radiolist",
+					"name": "one",
+					"label": "Select one option",
+					"list": "This Option|this,That Option|that,The Other Option|other",
+					"req": true
+				},
+				{
+					"ctl": "checkboxlist",
+					"name": "many",
+					"label": "Select any of these",
+					"list": "One,Two,Three,Four,Five",
+					"req": true
+				}
+			]
+		},
+		{
+			"ctl": "fieldrow",
+			"name":"selections-row",
+			"items": [
+				{
+					"ctl": "dropdown",
+					"name": "track",
+					"label": "Track",
+					"list": "Business,Technical",
+					"req": true
+				},
+				{
+					"ctl": "dropdown",
+					"multi": true,
+					"name": "topic",
+					"label": "Select Topic(s)",
+					"list": "Work,Play,Meetup,Other",
+					"req": true
+				}
+			]
+		},
+		{
+			"name": "comments",
+			"label": "Comments",
+			"placeholder": "Enter a bunch of details",
+			"ctl": "textarea",
+			"rows": 2,
+			"req": true
+		}
+	]
+}

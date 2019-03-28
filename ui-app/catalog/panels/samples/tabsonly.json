@@ -1,0 +1,35 @@
+{
+	"options": {
+		"padding": false
+	},
+	"content": [
+		{
+			"ctl": "tabs",
+			"name": "pagetabs",
+			"tabs": [
+				{
+					"label": "Tab One",
+					"name": "pagetabs-one",
+					"ctl":"tab",
+					"content": [
+						{
+							"ctl": "pagespot",
+							"spotname": "tab-area-1"
+						}
+					]
+				},
+				{
+					"label": "Tab Two",
+					"name": "pagetabs-two",
+					"ctl":"tab",
+					"content": [
+						{
+							"ctl": "pagespot",
+							"spotname": "tab-area-2"
+						}
+					]
+				}
+			]
+		}
+	]
+}

@@ -1,0 +1,38 @@
+{
+  "title": "Controls List",
+  "index": {
+    "default": {
+      "title": "Default Loaded"
+    },    
+    "controlsdemo": {
+      "title": "Nested Controls"
+    },
+    "showfor": {
+      "title": "Show For Demo"
+    },
+    "tabsonly": {
+      "title": "Just the Tabs"
+    },
+    "tabsnestedonly": {
+      "title": "Just nested tabs"
+    },
+    "cardsdemo": {
+      "title": "Cards Demo"
+    },    
+    "validation": {
+      "title": "Validation Function"
+    },
+    "inline": {
+      "title": "Inline Demo"
+    },
+    "nested": {
+      "title": "Nested Demo"
+    },
+    "nestedtabs": {
+      "title": "Nested Tabs"
+    },
+    "tabbed": {
+      "title": "Tabbed"
+    }
+  }
+}

@@ -1,0 +1,30 @@
+{
+	"content": [
+		{
+			"ctl": "spot",
+			"name": "body"
+		},
+		{
+			"ctl": "control",
+			"controlname": "library/controls/TesterControl",
+			"name": "control1"
+		},
+		{
+			"ctl": "panel",
+			"controlname": "library/panels/common/east",
+			"name": "panel1"
+		},		
+		{
+			"ctl": "cardfull",
+			"classes": "orange raised tall",
+			"name": "card-full-matt",
+			"header": "Matt Giampietro",
+			"imageSrc": "./images/avatar2/large/matthew.png",
+			"meta": "<a>Friends</a>",
+			"description": "Matthew is an interior designer living in New York.",
+			"extraText": "<i class=\"user icon\"></i> 75 Friends",
+			"extraTextRight": "Joined in 2013"
+		}
+
+	]
+}

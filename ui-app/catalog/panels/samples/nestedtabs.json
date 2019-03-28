@@ -1,0 +1,177 @@
+{
+	"content": [
+		{
+			"ctl": "title",
+			"size": "large",
+			"icon": "home",
+			"name": "title",
+			"text": "Tabbed Form Example"
+		},
+		{
+			"ctl": "tabs",
+			"name": "main-tab",
+			"tabs": [
+				{
+					"label": "About You",
+					"name": "you",
+					"ctl": "tab",
+					"content": [
+						{
+							"ctl": "tabs",
+							"color": "green",
+							"name": "secondary-tab",
+							"tabs": [
+								{
+									"label": "Your Info",
+									"name": "yourinfo",
+									"ctl": "tab",
+									"content": [
+										{
+											"ctl": "fieldrow",
+											"name": "name-row",
+											"items": [
+												{
+													"name": "first",
+													"label": "First Name",
+													"req": true
+												},
+												{
+													"name": "last",
+													"label": "Last Name",
+													"req": true
+												},
+												{
+													"ctl": "fieldrow",
+													"items": [
+														{
+															"name": "prefix",
+															"label": "Prefix",
+															"req": true
+														},
+														{
+															"name": "suffix",
+															"label": "Suffix",
+															"req": true
+														}
+													]
+												}
+											]
+										},
+										{
+											"name": "more-comments",
+											"label": "More Comments",
+											"placeholder": "Enter a bunch of details",
+											"ctl": "textarea",
+											"rows": 2,
+											"req": true
+										}
+									]
+								},
+								{
+									"label": "Even More",
+									"name": "even-more",
+									"ctl": "tab",
+									"content": [
+										{
+											"ctl": "fieldrow",
+											"name": "options-row",
+											"items": [
+												{
+													"ctl": "dropdown",
+													"name": "topic",
+													"label": "Main Topic",
+													"list": "Work,Play,Both",
+													"req": true
+												},
+												{
+													"ctl": "dropdown",
+													"name": "track",
+													"label": "Track",
+													"list": "Business,Technical",
+													"req": true
+												}
+											]
+										},
+										{
+											"name": "even-more-comments",
+											"label": "Even More Comments",
+											"placeholder": "Enter a bunch of details",
+											"ctl": "textarea",
+											"rows": 2,
+											"req": true
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "more",
+					"label": "More about you",
+					"ctl": "tab",
+					"content": [
+						{
+							"ctl": "sep",
+							"size": "medium",
+							"name": "interests-sep",
+							"text": "Tell us more"
+						},
+						{
+							"ctl": "fieldrow",
+							"name": "interests-row",
+							"label": "Your Interests",
+							"req": true,
+							"items": [
+								{
+									"placeholder": "Hobbies",
+									"name": "hobbies",
+									"req": true
+								},
+								{
+									"placeholder": "Other",
+									"name": "other",
+									"req": true
+								}
+							]
+						},
+						{
+							"ctl": "fieldrow",
+							"label": "More Options",
+							"name": "more-options-row",
+							"items": [
+								{
+									"ctl": "radiolist",
+									"name": "one",
+									"label": "Select one option",
+									"onChange": {
+										"run": "showif",
+										"field": "one-other",
+										"value": "other"
+									},
+									"list": "This Option|this,That Option|that,The Other Option|other",
+									"req": true
+								},
+								{
+									"ctl": "checkboxlist",
+									"name": "one-other",
+									"label": "Other options",
+									"list": "One,Two,Three,Four,Five",
+									"req": true
+								}
+							]
+						},
+						{
+							"name": "comments",
+							"label": "Comments",
+							"placeholder": "Enter a bunch of details",
+							"ctl": "textarea",
+							"rows": 2,
+							"req": true
+						}
+					]
+				}
+			]
+		}
+	]
+}

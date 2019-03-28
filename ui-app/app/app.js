@@ -2,7 +2,9 @@
 
   ThisApp = null;
 
-  var tmpPageNames = [
+  var tmpPageNames = [    
+    'ProjectDashboardPage',
+    'ControlsPage',
     'NoSQLSetupPage',
     'UsingControlsPage',
     'MyCouchPage',

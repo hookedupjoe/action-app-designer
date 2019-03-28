@@ -1,0 +1,81 @@
+{
+	"content": [
+		{
+			"ctl": "title",
+			"size": "large",
+			"icon": "home",
+			"name":"title",
+			"text": "Nested Form Example"
+		},
+		{
+			"ctl": "sep",
+			"size": "small",
+			"icon": "user",
+			"name":"about-you-sep",
+			"text": "About You"
+		},
+		{
+			"ctl": "fieldrow",
+			"name":"name-row",
+			"items": [
+				{
+					"name": "first",
+					"label": "First Name",
+					"req": true
+				},
+				{
+					"name": "last",
+					"label": "Last Name",
+					"req": true
+				},
+				{
+					"ctl": "fieldrow",
+					"items": [
+						{
+							"name": "prefix",
+							"label": "Prefix",
+							"req": true
+						},
+						{
+							"name": "suffix",
+							"label": "Suffix",
+							"req": true
+						}
+					]
+				}
+			]
+		},
+		{
+			"ctl": "sep",
+			"size": "small",
+			"name":"interests-sep",
+			"text": "Tell us more"
+		},
+		{
+			"ctl": "fieldrow",
+			"name":"interests-row",
+			"label": "Your Interests",
+			"req": true,
+			"items": [
+				{
+					"placeholder": "Hobbies",
+					"name": "hobbies",
+					"req": true
+				},
+				{
+					"placeholder": "Other",
+					"name": "other",
+					"req": true
+				}
+			]
+		},
+		{
+			"name": "comments",
+			"label": "Comments",
+			"placeholder": "Enter a bunch of details",
+			"ctl": "textarea",
+			"rows": 2,
+			"req": true
+		}
+	]
+}

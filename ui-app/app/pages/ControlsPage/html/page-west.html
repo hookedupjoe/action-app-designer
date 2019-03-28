@@ -1,0 +1,90 @@
+<div class="ui segment basic form">
+  <h2 controls="" item="" name="title" class="ui header" style=""><i class="home icon"></i>
+    <div class="content">Control Center</div>
+  </h2>
+  <div class="ui top attached tabular menu" style="">
+    <a appuse="tablinks" group="_page_:control-panel-tabs" item="control-list" action="_app:showSubPage"
+      class="item blue active ">
+      Controls
+    </a>
+    <a appuse="tablinks" group="_page_:control-panel-tabs" item="control-loaded" action="_app:showSubPage"
+      class="item blue ">
+      Loaded
+    </a>
+    <a appuse="tablinks" group="_page_:control-panel-tabs" item="testing" action="_app:showSubPage" class="item blue">
+      Testing
+    </a></div>
+
+  <div appuse="cards" group="_page_:control-panel-tabs" item="control-list"
+    class=" ui bottom attached slim blue segment">
+    <div class="ui button blue basic" pageaction="loadControlsIndex">
+      Refresh
+    </div>
+    <div pagespot="control-list"></div>
+
+  </div>
+  <div appuse="cards" group="_page_:control-panel-tabs" item="control-loaded"
+    class=" ui bottom attached slim blue segment hidden">
+
+    <div class="ui segment slim basic">
+      <div class="ui buttons vertical fluid">
+        <div class="ui button blue stacked" pageaction="showControlDetails">Control Data</div>
+        <div class="ui button blue stacked" pageaction="showControlSpecConfig">Control Config</div>
+        <div class="ui button purple stacked" pageaction="validateActiveControl">Validate</div>
+        <div class="ui button orange" pageaction="promptActiveControl">Prompt Using Form</div>
+      </div>
+
+
+      <div class="ui form">
+        <label class="ui label basic green">Fields:</label>
+
+
+        <div appuse="field-selection" name="field-selection" class="ui fluid selection dropdown">
+          <input type="hidden" name="user">
+          <i class="dropdown icon"></i>
+          <div class="default text">Select Field</div>
+          <div class="menu">
+          </div>
+        </div>
+
+
+
+        <div class="ui buttons vertical fluid">
+          <div class="ui button green stacked " pageaction="fieldShowSpecs">Field Specs</div>
+          <div class="ui button green stacked" pageaction="fieldGoto">Go To Field</div>
+          <div class="ui button green stacked" pageaction="fieldToggleDisplay">Toggle Display</div>
+          <div class="ui button green stacked " pageaction="fieldSetValue">Set Value</div>
+        </div>
+
+
+        <!-- 
+          <div class="ui dropdown" >
+              <input type="hidden" name="gender">
+              <i class="dropdown icon"></i>
+              <div pagespot="field-selection-label" class="default text">Gender</div>
+              <div class="menu">
+                <div class="item" data-value="male">Male</div>
+                <div class="item" data-value="female">Female</div>
+              </div>
+            </div>
+             -->
+      </div>
+
+
+
+      <div pagespot="body-area"></div>
+
+    </div>
+
+  </div>
+  <div appuse="cards" group="_page_:control-panel-tabs" item="testing">
+    <h4 class="ui horizontal divider header">Testing Out Controls</h4>
+    <div class="ui buttons vertical fluid">
+      <div class="ui button orange stacked " pageaction="toggleTitle">Toggle Title / Options</div>
+      <div class="ui button orange stacked " fieldname="first" pageaction="toggleThisField">Toggle First Name</div>
+      <div class="ui button orange stacked " fieldname="last" pageaction="toggleThisField">Toggle Last Name</div>
+      <div class="ui button blue stacked " controlname="message" pageaction="showControlInfo">Message Control Info</div>
+
+    </div>
+  </div>
+</div>

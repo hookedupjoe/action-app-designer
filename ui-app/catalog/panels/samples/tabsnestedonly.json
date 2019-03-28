@@ -1,0 +1,67 @@
+{
+	"options": {
+		"padding": false
+	},
+	"content": [
+		{
+			"ctl": "tabs",
+			"name": "controls-tabs",
+			"tabs": [
+				{
+					"label": "Catalog",
+					"name": "catalog-tab",
+					"ctl": "tab",
+					"content": [
+						{
+							"ctl": "tabs",
+							"name": "catalog-tabs",
+							"tabs": [
+								{
+									"label": "Available",
+									"name": "catalog-tab-list-tab",
+									"ctl": "tab",
+									"content": [
+										{
+											"ctl": "button",
+											"color": "purple",
+											"size": "large",
+											"name": "btn-runtest",
+											"pageaction": "runTest",
+											"text": "Run Test"
+										},
+										{
+											"ctl": "pagespot",
+											"name": "catalog-tab-list"
+										}
+									]
+								},
+								{
+									"label": "Loaded",
+									"name": "catalog-tab-loaded-tab",
+									"ctl": "tab",
+									"content": [
+										{
+											"ctl": "pagespot",
+											"name": "catalog-tab-loaded"
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"label": "Clipboard",
+					"name": "controls-clipboard-tab",
+					"ctl": "tab",
+					"content": [
+						{
+							"ctl": "pagespot",
+							"name": "controls-clipboard"
+						}
+					]
+				}
+			]
+		}
+	]
+}
