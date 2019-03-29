@@ -309,6 +309,9 @@ License: MIT
 
         activeControl.loadToElement(ThisPage.spot$('preview-area'))
 
+//--- allow console access for testing
+window.activeControl = activeControl;
+
         loadFieldList()
 
         delete (theControlObj.controlConfig._key)
