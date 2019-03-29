@@ -4,6 +4,9 @@
     "default": {
       "title": "Default Loaded"
     },    
+    "searchbar": {
+      "title": "Search Bar"
+    },
     "controlsdemo": {
       "title": "Nested Controls"
     },

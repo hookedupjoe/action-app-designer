@@ -1,0 +1,44 @@
+{
+	"options": {
+		"padding": false,
+		"formClass": false
+	},
+	"content": [
+		{
+			"ctl": "segment",
+			"basic": true,
+			"slim": true,
+			"name": "demo-item",
+			"content": [
+				{
+					"ctl": "field",
+					"name": "search-value",
+					"fit": true,
+					"fluid": true,
+					"input": true,
+					"placeholder": "Search for ...",
+					"content": [
+						{
+							"ctl": "button",
+							"color": "green",
+							"icon": "search",
+							"pageaction": "controlSearch"
+						},
+						{
+							"ctl": "button",
+							"icon": "close",
+							"pageaction": "controlSearchClear"
+						},
+						{
+							"ctl": "button",
+							"icon": "plus",
+							"text": "Add",
+							"right": "true",
+							"pageaction": "controlSearchAdd"
+						}
+					]
+				}
+			]
+		}
+	]
+}
