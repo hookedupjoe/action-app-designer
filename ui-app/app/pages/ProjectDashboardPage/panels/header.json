@@ -1,18 +1,12 @@
 {
 	"options": {
-		"padding": false
+		"padding": true
 	},
 	"content": [
 		{
-			"ctl":"segment",
-			"basic": true,
-			"content": [
-				{
-					"ctl": "sep",
-					"size": "small",
-					"text": "Action Controls Designer"
-				}
-			]
+			"ctl": "title",
+			"size": "small",
+			"text": "My Projects"
 		}
 	]
 }

@@ -9,14 +9,14 @@ License: MIT
 
     var thisPageSpecs = {
         pageName: "ProjectDashboardPage",
-        pageTitle: "Designer",
+        pageTitle: "Projects",
         navOptions: {
             topLink: true,
             sideLink: true
         },
         appModule: AppModule
     };
-    
+
     thisPageSpecs.pageNamespace = thisPageSpecs.pageName;
     var pageBaseURL = 'app/pages/' + thisPageSpecs.pageName + '/';
 
@@ -33,8 +33,11 @@ License: MIT
 
     thisPageSpecs.layoutOptions = {
         baseURL: pageBaseURL,
+        "html": {
+            "center": "body",
+        },
         panels: {
-            "center": { partname: "body", control: "center" },
+            // "center": { partname: "body", control: "center" },
             "north": { partname: "north", control: "header" },
             "east": { partname: "east", control: "east" },
             "west": { partname: "west", control: "west" }

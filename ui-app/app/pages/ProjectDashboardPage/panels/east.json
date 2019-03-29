@@ -4,45 +4,42 @@
 	},
 	"content": [
 		{
-			"ctl": "tabs",
-			"name": "pagetabs",
-			"tabs": [
+			"ctl": "segment",
+			"basic": true,
+			"slim": true,
+			"name": "demo-item",
+			"content":[
 				{
-					"label": "Preview",
-					"name": "preview-control-tab",
-					"ctl": "tab",
+					"ctl": "ui",
+					"classes": "vertical menu fluid",
 					"content": [
 						{
-							"ctl": "pagespot",
-							"name": "preview-control"
+							"ctl": "a",
+							"classes": "active blue item",
+							"text": "Designer",
+							"content": [
+								{
+									"ctl": "ui",
+									"classes": "label  blue",
+									"text": "3"
+								}
+							]
 						},
 						{
-							"ctl": "spot",
-							"name": "body"
+							"ctl": "a",
+							"classes": "item",
+							"text": "Test Apps",
+							"content": [
+								{
+									"ctl": "ui",
+									"classes": "label",
+									"text": "7"
+								}
+							]
 						}
 					]
-				},
-				{
-					"label": "Properties",
-					"name": "preview-props-tab",
-					"ctl": "tab",
-					"content": [
-						{
-							"ctl": "pagespot",
-							"name": "preview-props"
-						}
-					]
-				},
-				{
-					"label": "Details",
-					"name": "preview-details-tab",
-					"ctl": "tab",
-					"content": [
-						{
-							"ctl": "pagespot",
-							"name": "preview-details"
-						}
-					]
+
+
 				}
 			]
 		}

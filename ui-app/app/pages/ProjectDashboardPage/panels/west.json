@@ -5,11 +5,11 @@
 	"content": [
 		{
 			"ctl": "tabs",
-			"name": "controls-tabs",
+			"name": "main-tabs",
 			"tabs": [
 				{
-					"label": "Catalog",
-					"name": "catalog-tab",
+					"label": "Projects",
+					"name": "main-tab-1",
 					"ctl": "tab",
 					"content": [
 						{
@@ -19,91 +19,71 @@
 							"tabs": [
 								{
 									"label": "Available",
-									"name": "catalog-tab-list-tab",
+									"name": "apps-tab-list-tab",
 									"ctl": "tab",
 									"content": [
 										{
-											"ctl": "button",
-											"color": "purple",											
-											"attr": {
-												"pageaction": "runTest",
-												"testname":"hello"
-											},
-											"text": "Say Hello"
-										},
-										{
-											"ctl": "button",
-											"color": "purple",											
-											"attr": {
-												"pageaction": "runTest",
-												"testname":"spots"
-											},
-											"text": "Fun with spots"
-										},
-										{
-											"ctl": "button",
-											"color": "blue",											
-											"attr": {
-												"pageaction": "runTest",
-												"testname":"test2"
-											},
-											"text": "Test 2"
-										},	{
-											"ctl": "button",
-											"color": "green",											
-											"attr": {
-												"pageaction": "runTest",
-												"testname":"test3"
-											},
-											"text": "Test 3"
-										},	{
-											"ctl": "button",
-											"color": "green",											
-											"attr": {
-												"pageaction": "runTest",
-												"testname":"test4"
-											},
-											"text": "Test 4"
-										},
-										{
-											"ctl": "button",
-											"color": "red",											
-											"attr": {
-												"pageaction": "runTest",
-												"testname":"test5"
-											},
-											"text": "Test 5"
-										},
-										{
-											"ctl": "divider",
-											"label": "About You",
-											"color": "blue"
-										},
-										{
-											"ctl": "field",
-											"name": "yourname",
-											"label": "Your Name"
-										},
-										{
-											"ctl": "button",
-											"pageaction": "helloFromName",
-											"color": "orange",
-											"text": "Say Hello"
-										},
-										{
-											"ctl": "pagespot",
-											"name": "catalog-tab-list"
+											"ctl": "segment",
+											"basic": true,
+											"slim": true,
+											"name": "demo-item",
+											"content":[
+												{
+													"ctl": "ui",
+													"classes": "vertical menu fluid",
+													"content": [
+														{
+															"ctl": "a",
+															"classes": "active blue item",
+															"text": "Designer",
+															"content": [
+																{
+																	"ctl": "ui",
+																	"classes": "label  blue",
+																	"text": "3"
+																}
+															]
+														},
+														{
+															"ctl": "a",
+															"classes": "item",
+															"text": "Test Apps",
+															"content": [
+																{
+																	"ctl": "ui",
+																	"classes": "label",
+																	"text": "7"
+																}
+															]
+														},
+														{
+															"ctl": "a",
+															"classes": "item",
+															"text": "More Apps",
+															"content": [
+																{
+																	"ctl": "ui",
+																	"classes": "label",
+																	"text": "2"
+																}
+															]
+														}
+													]
+								
+								
+												}
+											]
 										}
 									]
 								},
 								{
-									"label": "Loaded",
-									"name": "catalog-tab-loaded-tab",
+									"label": "Recent",
+									"name": "apps-tab-recent-tab",
 									"ctl": "tab",
 									"content": [
 										{
 											"ctl": "pagespot",
-											"name": "catalog-tab-loaded"
+											"name": "apps-tab-recent"
 										}
 									]
 								}
@@ -112,17 +92,13 @@
 					]
 				},
 				{
-					"label": "Clipboard",
-					"name": "controls-clipboard-tab",
+					"label": "Catalog",
+					"name": "apps-catalog-tab",
 					"ctl": "tab",
 					"content": [
 						{
 							"ctl": "pagespot",
-							"name": "controls-clipboard"
-						},
-						{
-							"ctl": "pagespot",
-							"name": "hello-area"
+							"name": "apps-catalog"
 						}
 					]
 				}

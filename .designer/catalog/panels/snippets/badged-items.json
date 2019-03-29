@@ -1,0 +1,45 @@
+{
+  "options": {
+    "padding": false
+  },
+  "content": [
+    {
+      "ctl": "segment",
+      "basic": true,
+      "slim": true,
+      "name": "demo-item",
+      "content": [
+        {
+          "ctl": "ui",
+          "classes": "vertical menu fluid",
+          "content": [
+            {
+              "ctl": "a",
+              "classes": "active blue item",
+              "text": "Designer",
+              "content": [
+                {
+                  "ctl": "ui",
+                  "classes": "label  blue",
+                  "text": "3"
+                }
+              ]
+            },
+            {
+              "ctl": "a",
+              "classes": "item",
+              "text": "Test Apps",
+              "content": [
+                {
+                  "ctl": "ui",
+                  "classes": "label",
+                  "text": "7"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
