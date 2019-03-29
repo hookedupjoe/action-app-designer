@@ -1,33 +1,20 @@
 <div class="ui segment basic slim">
-
-  <div class="ui input fluid">
-    <input type="text" placeholder="Search..."></input>
-    <button pageaction="quickSearch" class="ui icon button">
-      <i class="search icon green"></i>
-    </button>
-    <button pageaction="clearSearch" class="ui icon button">
-      <i class="cancel icon"></i>
-    </button>
-    <button pageaction="addNew" class="ui icon button">
-        Add <i class="plus icon"></i>
-    </button>
-  </div>
-
-
-
-
-  <div controls="" item="" class=" ui vertical menu fluid">
-    <a controls="" item="" class=" active blue item">
-      Designer
-      <div controls="" item="" class=" ui label  blue">
-        3
+    <div class="ui compact icon menu">
+        <a pageaction="tableSelectAll" class="item">
+          <i class="circle check icon blue"></i> 
+          <span pagespot="total-count">4</span>
+        </a>
+        <a pageaction="tableSelectNone" class="item">
+          <i class="circle check outline icon blue"></i>
+         
+        </a>
+        <a pageaction="tableSelectSearchResults" class="item">
+          <i appuse="catalog:select-search" class="disabled circle check icon green"></i> 
+          <span pagespot="search-count"></span>
+        </a>
+        
+        <div class="item"><div class="ui label blue"><b pagespot="selection-details">0</b></div>&nbsp;&nbsp;Selected</div>
+    
       </div>
-    </a>
-    <a controls="" item="" class=" item" style="">
-      Test Apps
-      <div controls="" item="" class=" ui label">7</div></a>
-  </div>
-
-
 
 </div>

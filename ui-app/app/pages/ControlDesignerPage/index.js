@@ -193,7 +193,7 @@ License: MIT
         var tmpFN = 'test.js';
         var tmpDocsList = [tmpFN];
         var tmpLocation = '/app/controls';
-        tmpLocation = ThisApp.common.samplesBaseURL
+        tmpLocation = ThisApp.common.index.res.panels
 
         ThisApp.om.getObjects('[html]:' + tmpLocation, tmpDocsList).then(function (theDocs) {
             var tmpDoc = theDocs[tmpFN];

@@ -11,7 +11,7 @@
 			"content": [
 				{
 					"ctl": "field",
-					"name": "search-value",
+					"name": "search",
 					"fluid": true,
 					"placeholder": "Search for ...",
 					"content": [
@@ -19,11 +19,13 @@
 							"ctl": "button",
 							"color": "green",
 							"icon": "search",
+							"name": "btn-search",
 							"pageaction": "controlSearch"
 						},
 						{
 							"ctl": "button",
 							"icon": "close",
+							"name": "btn-clear",
 							"pageaction": "controlSearchClear"
 						},
 						{
@@ -31,6 +33,8 @@
 							"icon": "plus",
 							"text": "Add",
 							"right": "true",
+							"color": "blue",
+							"name": "btn-add",
 							"pageaction": "controlSearchAdd"
 						}
 					]

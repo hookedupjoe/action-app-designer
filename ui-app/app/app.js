@@ -35,7 +35,7 @@
 
         //--- Extend common with your app specific stuff
         $.extend(ThisApp.common, {
-          samplesBaseURL: 'catalog/panels/samples',
+          index: appIndex,
           apiCall: apiCall
         })
         
@@ -47,7 +47,15 @@
 
 
 
+
+
   //---- Application Level Code
+
+  var appIndex = {
+    res: {
+      panels: 'catalog/panels/common'
+    }
+  }
 
   //--- Common apiCall interface allows for stuff like
   //     adding headers, etc as needed to all calls
