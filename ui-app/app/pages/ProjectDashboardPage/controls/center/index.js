@@ -1,5 +1,10 @@
-{
-	"content": [
+/*
+Author: Joseph Francis
+License: MIT
+*/
+(function (ActionAppCore, $) {
+
+	var ControlSpecs = { "content": [
 		{
 			"ctl": "spot",
 			"name": "body"
@@ -29,3 +34,11 @@
 
 	]
 }
+
+	var ThisControl = ThisApp.controls.newControl(ControlSpecs, {parent: ThisApp} )
+
+	return ThisControl;
+
+})(ActionAppCore, $);
+
+

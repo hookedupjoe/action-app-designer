@@ -32,10 +32,10 @@ License: MIT
 
     thisPageSpecs.layoutOptions = {
         baseURL: pageBaseURL,
-        panels: {
-            "north": { partname: "pageTitle", control: "title" },
-            "east": { partname: "previewPanel", control: "nestedtabs" },
-            "west": { partname: "buttonPanel", control: "buttonPanel" }
+        controls: {
+            "west": { partname: "buttonPanel", control: "buttonPanel" },
+            "east": { partname: "previewPanel", control: "east" },
+            "north": { partname: "north", control: "north" }
         },
         html: {
             "center": "page-body"
@@ -138,11 +138,7 @@ License: MIT
                     }
                 }
                 //--- Extend the page header with new exciting funtionality
-                ThisPage.parts.pageTitle.extend(myStuff);
-
-                // ThisPage.part.pageTitle.addAction("refreshList", ThisPage.sayHelloTitle)
-                // ThisPage.part.pageTitle.runAction("refreshList", {})
-
+                ThisPage.parts.north.extend(myStuff);
 
                 //--- Do special stuff on page load here
                 //--- Then optionally call the stuff that will happen every time 
@@ -186,7 +182,7 @@ License: MIT
         if (tmpTestName == "Test 1") {
             ThisPage.loadPageSpot('hello-area', 'We are having fun now.')
         } else if (tmpTestName == "Test 2") {
-            ThisPage.part.pageTitle.sayHello();
+            ThisPage.part.north.sayHello();
         } else if (tmpTestName == "Test 3") {
             ThisPage.getControl('demoFormCtl').prompt().then(function (theReply, theData) {
                 if (theReply == false) {
@@ -215,7 +211,7 @@ License: MIT
         //--- Use the variables
         var tmpName = tmpParams.myname || tmpParams.default || '';
 
-        ThisPage.part.pageTitle.sayHello(tmpName);
+        ThisPage.part.north.sayHello(tmpName);
     };
     ThisPage.jumpToHobbies = jumpToHobbies;
     function jumpToHobbies() {

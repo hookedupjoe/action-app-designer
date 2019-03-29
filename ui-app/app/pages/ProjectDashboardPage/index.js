@@ -36,16 +36,10 @@ License: MIT
         "html": {
             "center": "body",
         },
-        panels: {
-            // "center": { partname: "body", control: "center" },
-            "north": { partname: "north", control: "header" },
+        controls: {
+            "north": { partname: "north", control: "north" },
             "east": { partname: "east", control: "east" },
             "west": { partname: "west", control: "west" }
-        },
-        // controls: {
-        //   "south": { partname: "south", control: "TesterControl" }
-        // },
-        templates: {
         },
         facetPrefix: thisPageSpecs.pageNamespace,
         north: true,
