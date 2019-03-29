@@ -11,7 +11,7 @@
 			"content": [
 				{
 					"ctl": "field",
-					"name": "search-value",
+					"name": "search",
 					"fluid": true,
 					"placeholder": "Search for ...",
 					"content": [
@@ -19,19 +19,36 @@
 							"ctl": "button",
 							"color": "green",
 							"icon": "search",
-							"pageaction": "controlSearch"
+							"name": "btn-search",
+							"onClick": {
+								"run": "publish",
+								"event": "ctl-event",
+								"params": "search"
+							}
 						},
 						{
 							"ctl": "button",
 							"icon": "close",
-							"pageaction": "controlSearchClear"
+							"name": "btn-clear",
+							"onClick": {
+								"run": "publish",
+								"event": "ctl-event",
+								"params": "clear"
+							}
 						},
 						{
 							"ctl": "button",
 							"icon": "plus",
 							"text": "Add",
 							"right": "true",
-							"pageaction": "controlSearchAdd"
+							"color": "orange",
+							"name": "btn-add",
+							"onClick": {
+								"run": "publish",
+								"event": "ctl-event",
+								"params": "add",
+								"validate": true
+							}
 						}
 					]
 				}

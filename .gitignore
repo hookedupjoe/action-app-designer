@@ -3,5 +3,5 @@ node_modules/
 logs/
 npm-debug.log
 package-lock.json
-/local_*/
+local_*/
 preview-app/

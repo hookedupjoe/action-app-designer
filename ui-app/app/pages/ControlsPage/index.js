@@ -298,14 +298,21 @@ License: MIT
         }
         //-- ToDo: If active control, destroy it
         activeControl = ThisPage.loadedControlSpec.create(activeControlName);
-        activeControl.subscribe('submit', function (theEvent, theControl, theOriginalEvent, theTarget) {
-            console.log("'submit' received in app.  Control is", theControl);
+        activeControl.subscribe('ctl-event', onControlEvent)
+
+        function onControlEvent(theEvent, theControl, theParams, theTarget, theOriginalEvent){
+            console.log("'ctl-event' received in app.  Control is", theControl);
+            console.log( 'arguments', arguments);
             showDetailsJson(theControl.getData())
-        })
-        activeControl.subscribe('cancel', function (theEvent, theControl, theOriginalEvent, theTarget) {
-            console.log("'cancel' received in app.  Control is", theControl);
-            activeControl.clear();
-        })
+        }
+        // activeControl.subscribe('submit', function (theEvent, theControl, theOriginalEvent, theTarget) {
+        //     console.log("'submit' received in app.  Control is", theControl);
+        //     showDetailsJson(theControl.getData())
+        // })
+        // activeControl.subscribe('cancel', function (theEvent, theControl, theOriginalEvent, theTarget) {
+        //     console.log("'cancel' received in app.  Control is", theControl);
+        //     activeControl.clear();
+        // })
 
         activeControl.loadToElement(ThisPage.spot$('preview-area'))
 
