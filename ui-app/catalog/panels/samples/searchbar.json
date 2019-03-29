@@ -1,7 +1,6 @@
 {
 	"options": {
-		"padding": false,
-		"formClass": false
+		"padding": false
 	},
 	"content": [
 		{
@@ -13,9 +12,7 @@
 				{
 					"ctl": "field",
 					"name": "search-value",
-					"fit": true,
 					"fluid": true,
-					"input": true,
 					"placeholder": "Search for ...",
 					"content": [
 						{
