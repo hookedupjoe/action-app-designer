@@ -6,13 +6,13 @@
 		},
 		{
 			"ctl": "control",
-			"controlname": "catalog/controls/TesterControl",
-			"name": "control1"
+			"controlname": "catalog/controls/tests/TesterControl",
+			"name": "tester"
 		},
 		{
-			"ctl": "panel",
-			"controlname": "catalog/panels/common/searchbar",
-			"name": "panel1"
+			"ctl": "control",
+			"controlname": "catalog/controls/common/SearchBar",
+			"name": "searchbar"
 		},		
 		{
 			"ctl": "cardfull",

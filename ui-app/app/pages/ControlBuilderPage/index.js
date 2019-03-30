@@ -8,9 +8,8 @@ License: MIT
     var AppModule = ActionAppCore.module("app");
 
     var thisPageSpecs = {
-        pageName: "ControlsPage",
-        pageTitle: "Control",
-        pageNamespace: 'ctlpage',
+        pageName: "ControlBuilderPage",
+        pageTitle: "Control Builder",
         navOptions: {
             topLink: true,
             sideLink: true
@@ -18,16 +17,27 @@ License: MIT
         appModule: AppModule
     };
 
+    thisPageSpecs.pageNamespace = thisPageSpecs.pageName;
     var pageBaseURL = 'app/pages/' + thisPageSpecs.pageName + '/';
 
-    //--- Define this applications layouts
+
+    thisPageSpecs.required = {
+        controls: {
+            baseURL: pageBaseURL,
+            map: {
+                "controls/TesterControl": "TesterControl",
+                "controls/FormShowFor": "FormShowFor"
+            }
+        }
+    }
+
     thisPageSpecs.layoutOptions = {
-         baseURL: pageBaseURL,
-        html: {
-            "east": "page-east",
-            "north": "page-header",
-            "center": "page-body",
-            "west": "page-west"
+        baseURL: pageBaseURL,
+        controls: {
+            "north": { partname: "north", control: "north" },
+            "center": { partname: "center", control: "center" },
+            "east": { partname: "east", control: "east" },
+            "west": { partname: "west", control: "west" }
         },
         facetPrefix: thisPageSpecs.pageNamespace,
         north: true,
@@ -39,9 +49,10 @@ License: MIT
     //--- Customize default layout configuration
     //--- See http://layout.jquery-dev.com/documentation.cfm for details
     thisPageSpecs.layoutConfig = {
-        west__size: "300"
-        , east__size: "500"
+        west__size: "20%"
+        , east__size: "40%"
     }
+
 
     //--- Start with a ase SitePage component
     var ThisPage = new SiteMod.SitePage(thisPageSpecs);
@@ -53,8 +64,10 @@ License: MIT
     * This happens when the page is loaded, try to push activity back to when the tab is used
     *    If your component need to do stuff to be availale in the background, do it here
     */
+    var actions = ThisPage.pageActions;
     ThisPage._onPreInit = function (theApp) {
         ThisPage._om = theApp.om;
+
     }
     ThisPage._onInit = function () {
 
@@ -68,8 +81,11 @@ License: MIT
     *     that are needed even if the page was not activated yet
     */
     ThisPage._onFirstActivate = function (theApp) {
+        //--- This tells the page to layout the page, load templates and controls, et
         ThisPage.initOnFirstLoad().then(
             function () {
+                //--- Now your done - READY to do stuff the first time on your page
+
                 loadControlsIndex();
 
                 ThisPage.selectedFieldName = '';
@@ -79,27 +95,30 @@ License: MIT
                 ThisPage.frmPreview$.on('change', frmPreviewChange)
                 ThisPage.frmPreview$.get(0).addEventListener('focus', frmPreviewFocusChange, true)
 
-                ThisPage.fieldSelectEl = ThisPage.getByAttr$({ appuse: "field-selection" });
-                ThisPage.fieldSelect = ThisPage.fieldSelectEl.dropdown({
-                    showOnFocus: false,
-                    placeholder: "Select a field",
-                    onChange: function (theValue, theText) {
-                        if (theValue) {
-                            ThisPage.selectedFieldName = theValue || '';
-                        }
-                    },
-                    values: []
-                })
-                    ;
+                //--- ToDo: Use normal field - dropdown - add setFieldList option
+
+                // ThisPage.fieldSelectEl = ThisPage.getByAttr$({ appuse: "field-selection" });
+                // ThisPage.fieldSelect = ThisPage.fieldSelectEl.dropdown({
+                //     showOnFocus: false,
+                //     placeholder: "Select a field",
+                //     onChange: function (theValue, theText) {
+                //         if (theValue) {
+                //             ThisPage.selectedFieldName = theValue || '';
+                //         }
+                //     },
+                //     values: []
+                // })
+                //     ;
 
                 ThisPage.detailsEditorEl = ThisPage.getSpot$('details-editor')
+                console.log('ThisPage.detailsEditorEl', ThisPage.detailsEditorEl);
 
                 ThisPage.detailsEditor = ace.edit(ThisPage.detailsEditorEl.get(0));
                 ThisPage.detailsEditor.setTheme("ace/theme/vibrant_ink");
                 ThisPage.detailsEditor.setFontSize(16);
                 ThisPage.detailsEditor.session.setMode("ace/mode/json");
                 ThisPage.detailsEditor.session.setTabSize(2);
-                
+
                 ThisPage.detailsEditor.session.selection.on('changeSelection', detailsEditorSelectionChange);
 
                 ThisPage.detailsEditor.setValue(ThisApp.json({
@@ -115,14 +134,16 @@ License: MIT
                 //--- Then optionally call the stuff that will happen every time 
                 //      the page is activated if not already called by above code
                 ThisPage._onActivate();
+
             }
         );
     }
 
     ThisPage._onActivate = function () {
         //-- Do refresh / checks here to update when page is activated
+
     }
-    
+
     //--- Layout related lifecycle hooks
     ThisPage._onResizeLayout = function (thePane, theElement, theState, theOptions, theName) {
 
@@ -150,8 +171,16 @@ License: MIT
         }
     }
 
-
     //--- End lifecycle hooks
+
+
+
+
+    //=== Page Setup
+    var index = {}
+        , layoutResponsive = true
+        , activeControlName = ''
+        , activeControl = false;
 
     //=== Page Setup
     var index = {}
@@ -161,27 +190,27 @@ License: MIT
 
     //=== Page 
 
-    
-    function detailsEditorSelectionChange(theEvent){
+
+    function detailsEditorSelectionChange(theEvent) {
         //console.log( 'detailsEditorSelectionChange', theEvent);
         var tmpSelected = ThisPage.detailsEditor.getSelectedText();
-        if( tmpSelected ){
+        if (tmpSelected) {
             var tmpLen = tmpSelected.length;
-            
-            if( tmpLen > 3 && tmpLen < 200){
+
+            if (tmpLen > 3 && tmpLen < 200) {
                 // console.log( 'tmpLen', tmpLen);
                 var tmpItems = tmpSelected.split(':');
-                if (tmpItems.length == 2 ){
+                if (tmpItems.length == 2) {
                     tmpSelected = tmpSelected.replace(',', '');
                     try {
                         tmpSelected = ThisApp.json('{' + tmpSelected + '}');
                         // console.log( 'tmpSelected', tmpSelected);
-                        if( tmpSelected.ctl ){
+                        if (tmpSelected.ctl) {
                             var tmpCtl = ThisApp.controls.catalog.get(tmpSelected.ctl);
                             // console.log( 'tmpCtl', tmpCtl);
-                            if( tmpCtl && tmpCtl.getInfo ){
+                            if (tmpCtl && tmpCtl.getInfo) {
                                 var tmpControlInfo = tmpCtl.getInfo(tmpSelected.ctl);
-                                console.log( 'tmpControlInfo', tmpControlInfo);
+                                console.log('tmpControlInfo', tmpControlInfo);
                             }
                         }
                     } catch (ex) {
@@ -303,9 +332,9 @@ License: MIT
         activeControl = ThisPage.loadedControlSpec.create(activeControlName);
         activeControl.subscribe('ctl-event', onControlEvent)
 
-        function onControlEvent(theEvent, theControl, theParams, theTarget, theOriginalEvent){
+        function onControlEvent(theEvent, theControl, theParams, theTarget, theOriginalEvent) {
             console.log("'ctl-event' received in app.  Control is", theControl);
-            console.log( 'arguments', arguments);
+            console.log('arguments', arguments);
             showDetailsJson(theControl.getData())
         }
         activeControl.loadToElement(ThisPage.spot$('preview-area'))
@@ -398,16 +427,16 @@ License: MIT
         var tmpCtlName = tmpSpecs.ctl || 'field';
 
         var tmpCtl = ThisApp.controls.webControls.get(tmpCtlName);
-        console.log( 'tmpCtl', tmpCtl);
-        if( tmpCtl && tmpCtl.getInfo ){
+        console.log('tmpCtl', tmpCtl);
+        if (tmpCtl && tmpCtl.getInfo) {
             var tmpInfo = tmpCtl.getInfo(tmpCtlName);
-            console.log( 'tmpInfo', tmpInfo);
+            console.log('tmpInfo', tmpInfo);
         } else {
-            alert( "Not found " + tmpCtlName)
+            alert("Not found " + tmpCtlName)
         }
-        
+
         tmpSpecs.controlDetails = tmpInfo;
-        
+
         showDetailsJson(tmpSpecs);
     };
 
@@ -419,11 +448,14 @@ License: MIT
     };
 
     function setSelectedField(theFieldName) {
-        ThisPage.fieldSelectEl.dropdown('set exactly', [theFieldName]);
+        //--- ToDo: Field List        
+        // ThisPage.fieldSelectEl.dropdown('set exactly', [theFieldName]);
     }
     function getSelectedField() {
-        var tmpVal = ThisPage.fieldSelectEl.dropdown('get value');
-        return tmpVal
+        return '';
+        //--- ToDo: Field List        
+        // var tmpVal = ThisPage.fieldSelectEl.dropdown('get value');
+        // return tmpVal
     }
 
     ThisPage.loadFieldList = loadFieldList;
@@ -442,7 +474,8 @@ License: MIT
             });
         }
 
-        ThisPage.fieldSelect.dropdown('change values', tmpFieldList)
+        //--- ToDo: Make this normal option        
+        //ThisPage.fieldSelect.dropdown('change values', tmpFieldList)
         ThisPage.selectedFieldName = '';
     };
 
@@ -576,21 +609,20 @@ License: MIT
     };
 
     ThisPage.showControlInfo = showControlInfo;
-    function showControlInfo(theParams, theTarget){
+    function showControlInfo(theParams, theTarget) {
         var tmpParams = ThisApp.getActionParams(theParams, theTarget, ['controlname'])
         var tmpName = tmpParams.controlname || 'title';
-        console.log( 'tmpName', tmpName);
+        console.log('tmpName', tmpName);
         var tmpCtl = ThisApp.controls.webControls.get(tmpName);
-        console.log( 'tmpCtl', tmpCtl);
-        if( tmpCtl && tmpCtl.getInfo ){
+        console.log('tmpCtl', tmpCtl);
+        if (tmpCtl && tmpCtl.getInfo) {
             var tmpInfo = tmpCtl.getInfo(tmpName);
-            console.log( 'tmpInfo', tmpInfo);
+            console.log('tmpInfo', tmpInfo);
         } else {
-            alert( "Not found " + tmpName)
+            alert("Not found " + tmpName)
         }
-        
+
 
     };
-    
 
 })(ActionAppCore, $);
