@@ -252,15 +252,17 @@ License: MIT
 
 
             var tmpIndex = theDoc.index;
+            tmpHTML.push('<div controls item class=" ui vertical menu slim fluid">')
             for (var aName in tmpIndex) {
                 var tmpEntry = tmpIndex[aName];
-
                 if (aName && tmpEntry) {
-                    var tmpTempl = '<div class="ui fluid button" name="THENAME" action="' + ThisPage.ns('loadThisControl') + '">THELABEL</div>';
+                    //var tmpTempl = '<div class="ui fluid button" name="THENAME" action="' + ThisPage.ns('loadThisControl') + '">THELABEL</div>';
+                    var tmpTempl = '<a name="THENAME" action="' + ThisPage.ns('loadThisControl') + '" controls item class="blue item">THELABEL <i controls item class=" ui icon arrow right blue"></i></a>'
                     tmpTempl = tmpTempl.replace('THENAME', aName).replace('THELABEL', tmpEntry.title || aName)
                     tmpHTML.push(tmpTempl);
                 }
             }
+            tmpHTML.push('</div>')
 
             ThisPage.loadPageSpot('control-list', tmpHTML.join(''));
 
