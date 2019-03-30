@@ -29,14 +29,12 @@ License: MIT
 										"ctl": "tab",
 										"content": [
 											{
-												"ctl": "segment",
-												"basic": true,
-												"slim": true,
+												"ctl": "ui",
 												"name": "demo-item",
 												"content": [
 													{
 														"ctl": "ui",
-														"classes": "vertical menu fluid",
+														"classes": "vertical menu slim fluid",
 														"content": [
 															{
 																"ctl": "a",
@@ -103,8 +101,51 @@ License: MIT
 						"ctl": "tab",
 						"content": [
 							{
-								"ctl": "pagespot",
-								"name": "apps-catalog"
+								"ctl": "ui",
+								"name": "demo-cat-items",
+								"content": [
+									{
+										"ctl": "ui",
+										"classes": "vertical menu slim fluid",
+										"content": [
+											{
+												"ctl": "a",
+												"classes": "active blue item",
+												"text": "Item 1",
+												"content": [
+													{
+														"ctl": "i",
+														"classes": "ui icon arrow right blue"
+													}
+												]
+											},
+											{
+												"ctl": "a",
+												"classes": "item",
+												"text": "Item 2",
+												"content": [
+													{
+														"ctl": "i",
+														"classes": "ui icon arrow right blue"
+													}
+												]
+											},
+											{
+												"ctl": "a",
+												"classes": "item",
+												"text": "Another Item",
+												"content": [
+													{
+														"ctl": "i",
+														"classes": "ui icon arrow right blue"
+													}
+												]
+											}
+										]
+
+
+									}
+								]
 							}
 						]
 					}
