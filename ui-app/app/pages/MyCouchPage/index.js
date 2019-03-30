@@ -15,9 +15,7 @@ License: MIT
         navOptions: {
             topLink: false,
             sideLink: true
-        },
-        //linkDisplayOption:'both',
-        appModule: AppModule
+        }
     };
 
     //--- Define page templates that should load when the page is activated

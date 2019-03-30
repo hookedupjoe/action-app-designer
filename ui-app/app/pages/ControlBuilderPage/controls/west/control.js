@@ -14,18 +14,18 @@ License: MIT
 				"name": "main-tabs",
 				"tabs": [
 					{
-						"label": "Projects",
+						"label": "Controls",
 						"name": "main-tab-1",
 						"ctl": "tab",
 						"content": [
 							{
 								"ctl": "tabs",
-								"name": "catalog-tabs",
+								"name": "control-tabs",
 								"color": "purple",
 								"tabs": [
 									{
 										"label": "Available",
-										"name": "apps-tab-list-tab",
+										"name": "control-tab-list-tab",
 										"ctl": "tab",
 										"content": [
 											{
@@ -35,13 +35,23 @@ License: MIT
 										]
 									},
 									{
-										"label": "Recent",
-										"name": "apps-tab-recent-tab",
+										"label": "Loaded",
+										"name": "control-tab-loaded-tab",
 										"ctl": "tab",
 										"content": [
 											{
 												"ctl": "pagespot",
-												"name": "apps-tab-recent"
+												"name": "control-tab-loaded"
+											},
+											{
+												"ctl":"button",
+												"text": "Show Debug Page",
+												"color": "purple",
+												"attr": {
+													"action": "openPage", 
+													"pagename": "DebugPage"
+												}
+
 											}
 										]
 									}
