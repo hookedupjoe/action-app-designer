@@ -551,10 +551,9 @@ License: MIT
 
     ThisPage.promptActiveControl = promptActiveControl;
     function promptActiveControl() {
-        ThisPage.loadedControlSpec.prompt().then(function (theReply, theControl) {
-            if (theControl) {
-                var tmpData = theControl.getData();
-                showDetailsJson(tmpData);
+        ThisPage.loadedControlSpec.prompt().then(function (theReply, theData) {
+            if (theReply) {
+                showDetailsJson(theData);
                 ThisApp.delay(5000).then(function () {
                     showControlSpecConfig();
                 })
