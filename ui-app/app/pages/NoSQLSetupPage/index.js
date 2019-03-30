@@ -11,7 +11,6 @@ License: MIT
     var thisPageSpecs = {
         pageName: "NoSQLSetupPage",
         pageTitle: "NoSQL Setup",
-        pageNamespace: 'NoSQLSetupPage',
         navOptions: {
             topLink: true,
             sideLink: true
@@ -26,9 +25,9 @@ License: MIT
         templates: {
             baseURL: pageBaseURL + 'tpl',
             map: {
-                "setup-info": thisPageSpecs.pageNamespace + ":setup-info",
-                "account-info": thisPageSpecs.pageNamespace + ":account-info",
-                "account-list": thisPageSpecs.pageNamespace + ":account-list"
+                "setup-info": thisPageSpecs.pageName + ":setup-info",
+                "account-info": thisPageSpecs.pageName + ":account-info",
+                "account-list": thisPageSpecs.pageName + ":account-list"
             }
         }
     }
@@ -43,7 +42,7 @@ License: MIT
             "center": "page-body",
             "south": "page-footer"
         },
-        spotPrefix: thisPageSpecs.pageNamespace,
+        spotPrefix: thisPageSpecs.pageName,
         north: true,
         west: true,
         east: true
@@ -81,7 +80,7 @@ License: MIT
 
                 //---- Setup forms used on this page, only one time when page first open
                 var tmpAccountFormSpecs = {
-                    "formname": thisPageSpecs.pageNamespace + ":account",
+                    "formname": thisPageSpecs.pageName + ":account",
                     "requiredFieldList": ["name", "access", "account|url", "key", "password"],
                     "defaultCaption": "Save Account Changes",
                     "defaultTitle": "Edit Account",

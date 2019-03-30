@@ -5,7 +5,6 @@ License: MIT
 (function (ActionAppCore, $) {
 
     var SiteMod = ActionAppCore.module("site");
-    var AppModule = ActionAppCore.module("app");
 
     var thisPageSpecs = {
         pageName: "ControlBuilderPage",
@@ -16,7 +15,6 @@ License: MIT
         }
     };
 
-    thisPageSpecs.pageNamespace = thisPageSpecs.pageName;
     var pageBaseURL = 'app/pages/' + thisPageSpecs.pageName + '/';
 
 
@@ -38,7 +36,7 @@ License: MIT
             "east": { partname: "east", control: "east" },
             "west": { partname: "west", control: "west" }
         },
-        facetPrefix: thisPageSpecs.pageNamespace,
+        facetPrefix: thisPageSpecs.pageName,
         north: true,
         south: false,
         west: true,

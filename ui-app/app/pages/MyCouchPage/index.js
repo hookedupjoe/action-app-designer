@@ -6,25 +6,25 @@ License: MIT
 (function (ActionAppCore, $) {
 
     var SiteMod = ActionAppCore.module("site");
-    var AppModule = ActionAppCore.module("app");
 
     var thisPageSpecs = {
         pageName: "MyCouchPage",
         pageTitle: "My Couch",
-        pageNamespace: 'mycouch',
         navOptions: {
             topLink: false,
             sideLink: true
         }
     };
 
+    var pageBaseURL = 'app/pages/' + thisPageSpecs.pageName + '/';
+
     //--- Define page templates that should load when the page is activated
     thisPageSpecs.required = {
         templates: {
             baseURL: 'app/pages/MyCouchPage/tpl',
             map: {
-                "database-info": thisPageSpecs.pageNamespace + ":database-info",
-                "database-list": thisPageSpecs.pageNamespace + ":database-list"
+                "database-info": thisPageSpecs.pageName + ":database-info",
+                "database-list": thisPageSpecs.pageName + ":database-list"
             }
         }
     }
@@ -39,7 +39,7 @@ License: MIT
             "center": "page-body",
             "south": "page-footer"
         },
-        spotPrefix: thisPageSpecs.pageNamespace,
+        spotPrefix: thisPageSpecs.pageName,
         north: true,
         west: true,
         east: true

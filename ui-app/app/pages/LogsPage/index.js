@@ -7,25 +7,23 @@ License: MIT
 (function (ActionAppCore, $) {
 
     var SiteMod = ActionAppCore.module("site");
-    var AppModule = ActionAppCore.module("app");
     
     var thisPageSpecs = {
         pageName:"LogsPage", 
         pageTitle: "Logs", 
-        pageNamespace: 'logs',
         navOptions:{
             topLink:false,
             sideLink:true
-        },
-        appModule:AppModule
+        }
     };
+
     var pageBaseURL = 'app/pages/' + thisPageSpecs.pageName + '/';
 
     thisPageSpecs.required = {
         templates: {
             baseURL: pageBaseURL + 'tpl',
             map:{
-                "msg-ctr-item": thisPageSpecs.pageNamespace + ":msg-ctr-item"
+                "msg-ctr-item": thisPageSpecs.pageName + ":msg-ctr-item"
             }
         }
     }
@@ -37,7 +35,7 @@ License: MIT
             "center":"page-body",
             "south":"page-footer"
         },  
-        spotPrefix: thisPageSpecs.pageNamespace,
+        spotPrefix: thisPageSpecs.pageName,
         north: true,
         west:false,
         east: false

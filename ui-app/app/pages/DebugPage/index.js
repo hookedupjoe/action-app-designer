@@ -6,7 +6,6 @@ License: MIT
 (function (ActionAppCore, $) {
 
     var SiteMod = ActionAppCore.module("site");
-    var AppModule = ActionAppCore.module("app");
     
     var thisPageSpecs = {
         pageName:"DebugPage",
@@ -14,11 +13,9 @@ License: MIT
         navOptions:{
             topLink:false,
             sideLink:true
-        },
-        appModule:AppModule
+        }
     };
 
-    thisPageSpecs.pageNamespace = thisPageSpecs.pageName;
     var pageBaseURL = 'app/pages/' + thisPageSpecs.pageName + '/';
 
 
@@ -29,7 +26,7 @@ License: MIT
             "center":"page-body",
             "south":"page-footer"
         },  
-        spotPrefix: thisPageSpecs.pageNamespace,
+        spotPrefix: thisPageSpecs.pageName,
         north: true,
         west:false,
         east: false

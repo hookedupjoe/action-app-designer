@@ -10,7 +10,6 @@ License: MIT
     var thisPageSpecs = {
         pageName: "ControlsPage",
         pageTitle: "Control",
-        pageNamespace: 'ctlpage',
         navOptions: {
             topLink: true,
             sideLink: true
@@ -28,7 +27,7 @@ License: MIT
             "center": "page-body",
             "west": "page-west"
         },
-        facetPrefix: thisPageSpecs.pageNamespace,
+        facetPrefix: thisPageSpecs.pageName,
         north: true,
         south: false,
         west: true,

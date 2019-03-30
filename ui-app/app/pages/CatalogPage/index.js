@@ -11,7 +11,6 @@ License: MIT
     var thisPageSpecs = {
         pageName: "CatalogPage",
         pageTitle: "Catalog",
-        pageNamespace: 'catalog',
         navOptions: {
             topLink: true,
             sideLink: true
@@ -24,13 +23,13 @@ License: MIT
     //     //-- Page to lookup : name to call it when pulling
     //     //---  Good to "namespace" your templates with the page prefix to avoid name conflicts
     //     templateMap: {
-    //         "page-west.html": thisPageSpecs.pageNamespace + ":page-west",
-    //         "page-header.html": thisPageSpecs.pageNamespace + ":page-header",
-    //         "page-body.html": thisPageSpecs.pageNamespace + ":page-body",
-    //         "page-footer.html": thisPageSpecs.pageNamespace + ":page-footer"
+    //         "page-west.html": thisPageSpecs.pageName + ":page-west",
+    //         "page-header.html": thisPageSpecs.pageName + ":page-header",
+    //         "page-body.html": thisPageSpecs.pageName + ":page-body",
+    //         "page-footer.html": thisPageSpecs.pageName + ":page-footer"
     //     }
     // }
-    //         //"page-east.html": thisPageSpecs.pageNamespace + ":page-east",
+    //         //"page-east.html": thisPageSpecs.pageName + ":page-east",
 
     //--- Define this applications layouts
     thisPageSpecs.layoutOptions = {
@@ -42,7 +41,7 @@ License: MIT
             "east": "page-east",
             "south": "page-footer"
         },
-        spotPrefix: thisPageSpecs.pageNamespace,
+        spotPrefix: thisPageSpecs.pageName,
         north: true,
         west: true,
         east: true
