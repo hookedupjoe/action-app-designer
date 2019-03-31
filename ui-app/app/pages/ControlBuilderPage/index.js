@@ -30,17 +30,13 @@ License: MIT
 
     thisPageSpecs.layoutOptions = {
         baseURL: pageBaseURL,
-        controls: {
-            "north": { partname: "north", control: "north" },
-            "center": { partname: "center", control: "center" },
-            "east": { partname: "east", control: "east" },
-            "west": { partname: "west", control: "west" }
-        },
-        facetPrefix: thisPageSpecs.pageName,
-        north: true,
+        useControls: true,
+        center: true,
+        east: { partname: "previewPanel", panel: "east" },
+        west: "west",
+        north: { html: "north" },
         south: false,
-        west: true,
-        east: true
+        facetPrefix: thisPageSpecs.pageName
     }
 
     //--- Customize default layout configuration
@@ -79,6 +75,8 @@ License: MIT
     */
     ThisPage._onFirstActivate = function (theApp) {
         //--- This tells the page to layout the page, load templates and controls, et
+        window.designerPage = ThisPage;
+
         ThisPage.initOnFirstLoad().then(
             function () {
                 //--- Now your done - READY to do stuff the first time on your page
