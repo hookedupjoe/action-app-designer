@@ -56,6 +56,7 @@ License: MIT
         onValidate : function (theControl) {
             var tmpURL = theControl.getFieldValue('url');
             var tmpAccount = theControl.getFieldValue('account');
+            theControl.gotoField('account');
             if (tmpURL && tmpAccount) {
                 return ("You can not have both a URL and an account, one or the other only");
             }
