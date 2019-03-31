@@ -6,7 +6,6 @@ License: MIT
 (function (ActionAppCore, $) {
 
     var SiteMod = ActionAppCore.module("site");
-    var AppModule = ActionAppCore.module("app");
 
     var thisPageSpecs = {
         pageName: "NoSQLSetupPage",
@@ -19,9 +18,14 @@ License: MIT
 
     var pageBaseURL = 'app/pages/' + thisPageSpecs.pageName + '/';
 
-
     //--- Define page templates that should load when the page is activated
     thisPageSpecs.required = {
+        controls: {
+            baseURL: pageBaseURL + 'controls',
+            map: {
+                "AccountForm": "AccountForm"
+            }
+        },
         templates: {
             baseURL: pageBaseURL + 'tpl',
             map: {
@@ -168,18 +172,8 @@ License: MIT
         ThisPage.loadSpot('east', ThisPage.pageDetails, ThisPage.ns('setup-info'))
     }
     ThisPage.submitAccountForm = submitAccountForm;
-    function submitAccountForm(thePromptStatus) {
-        if (thePromptStatus === false) {
-            return true;
-        }
-
-        var tmpFormObj = ThisPage.accountForm.getFormDetails();
-        var tmpIsValid = ThisPage.accountForm.isValid(tmpFormObj);
-
-        if (tmpIsValid) {
-            sendSetupUpdate({ process: 'accountPut', data: tmpFormObj.data })
-        }
-        return tmpIsValid;
+    function submitAccountForm(theData) {
+        return sendSetupUpdate({ process: 'accountPut', data: theData })
     };
 
     function sendSetupUpdate(theDetails) {
@@ -240,13 +234,28 @@ License: MIT
             }
         }
 
-        ThisPage.accountForm.prompt({
-            isNew: tmpIsNew,
-            doc: tmpAccount,
-            promptOptions: {
-                callback: ThisPage.submitAccountForm.bind(ThisPage)
+        var tmpForm = ThisPage.getControl('AccountForm');
+        var tmpPromptOptions = {
+            "doc": tmpAccount,
+            "isNew": tmpIsNew
+        };
+
+        tmpForm.prompt(tmpPromptOptions).then(function (theSubmitted, theData) {
+            if (!theSubmitted){
+                return;
             }
+
+            submitAccountForm(theData);
+            //console.log('theData', theData);
         })
+
+        // ThisPage.accountForm.prompt({
+        //     isNew: tmpIsNew,
+        //     doc: tmpAccount,
+        //     promptOptions: {
+        //         callback: ThisPage.submitAccountForm.bind(ThisPage)
+        //     }
+        // })
         /*
         
                 var tmpHTML = ThisApp.renderTemplate(ThisPage.accountForm.getFormName(), tmpAccount);
@@ -402,11 +411,11 @@ License: MIT
     };
 
     ThisPage.editDatabaseMap = editDatabaseMap;
-    function editDatabaseMap(theAction, theTarget){
+    function editDatabaseMap(theAction, theTarget) {
         var tmpEl = false;
         var tmpName = '';
         var tmpDBName = '';
-        if( theTarget ){
+        if (theTarget) {
             tmpEl = $(theTarget);
             tmpName = tmpEl.attr('name');
             tmpDBName = tmpEl.attr('dbname');
@@ -418,11 +427,11 @@ License: MIT
         var tmpButtonCaption = "Save Database Mapping";
         var tmpDefault = tmpDBName;
 
-        ThisApp.input("Update actual database name of " + tmpName + " to  ...", tmpTitle, tmpButtonCaption, tmpDefault).then(function(theValue){
-            if(!(theValue)){return};
+        ThisApp.input("Update actual database name of " + tmpName + " to  ...", tmpTitle, tmpButtonCaption, tmpDefault).then(function (theValue) {
+            if (!(theValue)) { return };
             if (theValue) {
                 var tmpDetails = {
-                    process:'dbMapPut',
+                    process: 'dbMapPut',
                     data: {
                         dbname: theValue,
                         name: tmpName
@@ -431,36 +440,37 @@ License: MIT
                 sendSetupUpdate(tmpDetails);
             }
         })
-       
+
 
     };
-    
-    
+
+
     ThisPage.removeDatabaseMap = removeDatabaseMap;
-    function removeDatabaseMap(theAction, theTarget){
+    function removeDatabaseMap(theAction, theTarget) {
         var tmpEl = false;
         var tmpName = '';
-        if( theTarget ){
+        if (theTarget) {
             tmpEl = $(theTarget);
             tmpName = tmpEl.attr('name');
 
         }
 
-        ThisApp.confirm('Remove <b style="font-size:bolder">' + tmpName + '</b> from db mapping?','Remove DB Mapping').then(function(theIsYes){;
-            if( !(theIsYes) ){return};
+        ThisApp.confirm('Remove <b style="font-size:bolder">' + tmpName + '</b> from db mapping?', 'Remove DB Mapping').then(function (theIsYes) {
+            ;
+            if (!(theIsYes)) { return };
             var tmpDetails = {
-                process:'dbMapRemove',
+                process: 'dbMapRemove',
                 data: {
                     name: tmpName
                 }
             }
             sendSetupUpdate(tmpDetails);
         });
-        
-        
+
+
     };
-    
-    
+
+
     ThisPage.createDatabaseMap = createDatabaseMap;
     function createDatabaseMap(theAction, theTarget) {
         var tmpEl = false;
@@ -473,7 +483,7 @@ License: MIT
 
         var tmpFormName = ThisPage.ns("new-db-map")
         var tmpValidation = {
-            requiredFieldList: ['name','dbname'],
+            requiredFieldList: ['name', 'dbname'],
             requiredMessage: "Fill in the virtual and actual database name fields before adding a mapping"
         }
 
@@ -481,20 +491,20 @@ License: MIT
         //** if form has <div class="field"> around it, it will show red on error, else not */
         var tmpFormDetails = ThisApp.forms.getFormDetails(tmpFormName);
         var tmpIsValid = ThisApp.forms.validateForm(tmpFormDetails, tmpValidation)
-        
-        
-        if( tmpIsValid ){
-            
-            
+
+
+        if (tmpIsValid) {
+
+
             var tmpDetails = { process: 'dbMapPut', data: tmpFormDetails.data }
-            if (!(tmpDetails)){
-                throw("No document to add")
+            if (!(tmpDetails)) {
+                throw ("No document to add")
             }
-            
-            
+
+
             sendSetupUpdate(tmpDetails);
         }
-       
+
 
     };
 
