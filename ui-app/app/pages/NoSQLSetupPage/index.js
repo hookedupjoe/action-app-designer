@@ -23,7 +23,8 @@ License: MIT
         controls: {
             baseURL: pageBaseURL + 'controls',
             map: {
-                "AccountForm": "AccountForm"
+                "AccountForm": "AccountForm",
+                "DatabaseMapForm": "DatabaseMapForm"
             }
         },
         templates: {
@@ -81,73 +82,6 @@ License: MIT
 
         ThisPage.initOnFirstLoad().then(
             function () {
-
-                //---- Setup forms used on this page, only one time when page first open
-                var tmpAccountFormSpecs = {
-                    "formname": thisPageSpecs.pageName + ":account",
-                    "requiredFieldList": ["name", "access", "account|url", "key", "password"],
-                    "defaultCaption": "Save Account Changes",
-                    "defaultTitle": "Edit Account",
-                    "newCaption": "Save New Account",
-                    "newTitle": "New Account",
-                    "items": [{
-                        "name": "name",
-                        "label": "Unique Account Name",
-                        "type": "text"
-                    },
-                    {
-                        "name": "access",
-                        "label": "Access Level",
-                        "type": "dropdown",
-                        "list": ["API Key|api", "Full Admin Access|admin"]
-                    },
-                    {
-                        "name": "account",
-                        "label": "Account",
-                        "type": "text",
-                        "note": "Need either an Account or a URL but not both"
-                    },
-                    {
-                        "name": "url",
-                        "label": "URL",
-                        "type": "text"
-                    },
-                    {
-                        "name": "key",
-                        "label": "API Key",
-                        "type": "text"
-                    },
-                    {
-                        "name": "password",
-                        "label": "Password",
-                        "type": "text"
-                    }]
-                    ,
-                    validation: function (theFormObject) {
-                        //--- Do form level validation here
-                        var tmpFormDetails = theFormObject || false;
-                        if (!tmpFormDetails) {
-                            console.warn("No form details passed, can not run form validation")
-                            return true;
-                        }
-                        if (theFormObject.data.url && theFormObject.data.account) {
-                            var tmpFF = theFormObject.fields.account;
-                            tmpFF.focus();
-                            var tmpFieldWrap = tmpFF.closest('.field');
-                            if (tmpFieldWrap) {
-                                tmpFieldWrap.addClass('error')
-                            }
-                            alert("You can not have both a URL and an account, one or the other only");
-                            //--- Return false to not close the dialog
-                            return false;
-                        }
-                        return true;
-                    }
-                }
-
-                ThisPage.accountForm = ThisPage.forms.newForm(tmpAccountFormSpecs);
-                ThisPage.accountForm.loadTemplate();
-
                 setTimeout(function () {
                     ThisPage.loadPageDetails();
                 }, 100);
@@ -212,6 +146,7 @@ License: MIT
         ThisPage.loadSpot('center', { items: ThisPage.accountList }, ThisPage.ns('account-list'))
         showSetupInfo();
     }
+
     ThisPage.showLoading = showLoading;
     function showLoading() {
         ThisPage.loadSpot('center', '', 'app:page-loading-spinner');
@@ -244,50 +179,9 @@ License: MIT
             if (!theSubmitted){
                 return;
             }
-
             submitAccountForm(theData);
-            //console.log('theData', theData);
         })
 
-        // ThisPage.accountForm.prompt({
-        //     isNew: tmpIsNew,
-        //     doc: tmpAccount,
-        //     promptOptions: {
-        //         callback: ThisPage.submitAccountForm.bind(ThisPage)
-        //     }
-        // })
-        /*
-        
-                var tmpHTML = ThisApp.renderTemplate(ThisPage.accountForm.getFormName(), tmpAccount);
-        
-                var tmpCaption = "Save Account Changes";
-                var tmpTitle = "Edit Account";
-                if (tmpIsNew) {
-                    tmpCaption = "Save New Account";
-                    tmpTitle = "New Account";
-                }
-        
-                ThisApp.prompt({
-                    title: tmpTitle,
-                    text: tmpHTML,
-                    callback: ThisPage.submitAccountForm.bind(ThisPage),
-                    //process: ThisPage.ns('submitAccountForm'),
-                    buttons: {
-                        yes: tmpCaption,
-                        no: "Cancel"
-                    }
-                })
-                // //returns a promise if no action used
-                // //returns even if with callback used and is called when callback does not return false
-                // .then(
-                //     function (theResults) {
-                //         alert("closed " + theResults)
-                //     }
-                // )
-                
-        
-        
-        */
     };
 
     ThisPage.removeAccount = removeAccount;
@@ -472,38 +366,47 @@ License: MIT
 
 
     ThisPage.createDatabaseMap = createDatabaseMap;
-    function createDatabaseMap(theAction, theTarget) {
-        var tmpEl = false;
-        if (theTarget) {
-            tmpEl = $(theTarget)
-        }
-        if (tmpEl) {
+    function createDatabaseMap() {
+        // var tmpEl = false;
+        // if (theTarget) {
+        //     tmpEl = $(theTarget)
+        // }
+        // if (tmpEl) {
 
-        }
+        // }
 
-        var tmpFormName = ThisPage.ns("new-db-map")
-        var tmpValidation = {
-            requiredFieldList: ['name', 'dbname'],
-            requiredMessage: "Fill in the virtual and actual database name fields before adding a mapping"
-        }
+        // var tmpFormName = ThisPage.ns("new-db-map")
+        // var tmpValidation = {
+        //     requiredFieldList: ['name', 'dbname'],
+        //     requiredMessage: "Fill in the virtual and actual database name fields before adding a mapping"
+        // }
 
-        //--- How to validate
-        //** if form has <div class="field"> around it, it will show red on error, else not */
-        var tmpFormDetails = ThisApp.forms.getFormDetails(tmpFormName);
-        var tmpIsValid = ThisApp.forms.validateForm(tmpFormDetails, tmpValidation)
-
-
-        if (tmpIsValid) {
-
-
-            var tmpDetails = { process: 'dbMapPut', data: tmpFormDetails.data }
+        ThisPage.getControl('DatabaseMapForm').prompt({
+            isNew:true
+        }).then(function(tmpSubmitted,tmpData){
+            if (!tmpSubmitted){
+                return;
+            }
+            var tmpDetails = { process: 'dbMapPut', data: tmpData }
             if (!(tmpDetails)) {
                 throw ("No document to add")
             }
-
-
             sendSetupUpdate(tmpDetails);
-        }
+        })
+
+        
+        
+        //--- How to validate
+        //** if form has <div class="field"> around it, it will show red on error, else not */
+        //var tmpFormDetails = ThisApp.forms.getFormDetails(tmpFormName);
+        //var tmpIsValid = ThisApp.forms.validateForm(tmpFormDetails, tmpValidation)
+
+
+        // if (tmpIsValid) {
+
+
+           
+        // }
 
 
     };
