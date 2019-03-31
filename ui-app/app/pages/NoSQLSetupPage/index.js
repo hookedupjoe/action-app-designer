@@ -75,9 +75,7 @@ License: MIT
     }
 
     ThisPage._onFirstActivate = function (theApp) {
-        var tmpThis = this;
         ThisPage.dt = theApp.getComponent("plugin:DataTables");
-        ThisPage.forms = theApp.getComponent("plugin:Forms");
         ThisPage._om = theApp.om;
 
         ThisPage.initOnFirstLoad().then(
@@ -367,20 +365,7 @@ License: MIT
 
     ThisPage.createDatabaseMap = createDatabaseMap;
     function createDatabaseMap() {
-        // var tmpEl = false;
-        // if (theTarget) {
-        //     tmpEl = $(theTarget)
-        // }
-        // if (tmpEl) {
-
-        // }
-
-        // var tmpFormName = ThisPage.ns("new-db-map")
-        // var tmpValidation = {
-        //     requiredFieldList: ['name', 'dbname'],
-        //     requiredMessage: "Fill in the virtual and actual database name fields before adding a mapping"
-        // }
-
+      
         ThisPage.getControl('DatabaseMapForm').prompt({
             isNew:true
         }).then(function(tmpSubmitted,tmpData){
@@ -395,19 +380,6 @@ License: MIT
         })
 
         
-        
-        //--- How to validate
-        //** if form has <div class="field"> around it, it will show red on error, else not */
-        //var tmpFormDetails = ThisApp.forms.getFormDetails(tmpFormName);
-        //var tmpIsValid = ThisApp.forms.validateForm(tmpFormDetails, tmpValidation)
-
-
-        // if (tmpIsValid) {
-
-
-           
-        // }
-
 
     };
 
