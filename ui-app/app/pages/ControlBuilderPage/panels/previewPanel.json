@@ -1,0 +1,19 @@
+{
+  "options": {
+    "padding": false
+  },
+  "content": [
+    {
+      "ctl": "segment",
+      "basic": true,
+      "slim": true,
+      "name": "demo-item",
+      "content": [
+        {
+          "ctl": "pagespot",
+          "name": "preview-area"
+        }
+      ]
+    }
+  ]
+}

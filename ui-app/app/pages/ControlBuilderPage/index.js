@@ -30,12 +30,15 @@ License: MIT
 
     thisPageSpecs.layoutOptions = {
         baseURL: pageBaseURL,
+
         useControls: true,
+
         center: true,
-        east: { partname: "previewPanel", panel: "east" },
-        west: "west",
+        east: { partname: "preview", panel: "previewPanel", source: "catalog/panels/common"},
+        west: {partname: "controls", control: "ControlPanel"},
         north: { html: "north" },
         south: false,
+
         facetPrefix: thisPageSpecs.pageName
     }
 
