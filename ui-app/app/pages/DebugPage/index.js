@@ -18,18 +18,14 @@ License: MIT
 
     var pageBaseURL = 'app/pages/' + thisPageSpecs.pageName + '/';
 
-
     thisPageSpecs.layoutOptions = {
         baseURL: pageBaseURL,
-        html: {
-            "north":"page-header",
-            "center":"page-body",
-            "south":"page-footer"
-        },  
-        spotPrefix: thisPageSpecs.pageName,
-        north: true,
-        west:false,
-        east: false
+    
+        east: false,
+        north: {html: "page-header"},
+        center: {html: "page-body"},
+        west: false,
+        south: {html: "page-footer"}
     }
 
     //--- Start with a ase SitePage component

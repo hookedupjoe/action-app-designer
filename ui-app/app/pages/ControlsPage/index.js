@@ -18,20 +18,14 @@ License: MIT
 
     var pageBaseURL = 'app/pages/' + thisPageSpecs.pageName + '/';
 
-    //--- Define this applications layouts
     thisPageSpecs.layoutOptions = {
-         baseURL: pageBaseURL,
-        html: {
-            "east": "page-east",
-            "north": "page-header",
-            "center": "page-body",
-            "west": "page-west"
-        },
-        facetPrefix: thisPageSpecs.pageName,
-        north: true,
-        south: false,
-        west: true,
-        east: true
+        baseURL: pageBaseURL,
+    
+        east: {html: "page-east"},
+        north: {html: "page-header"},
+        center: {html: "page-body"},
+        west: {html: "page-west"},
+        south: false
     }
 
     //--- Customize default layout configuration

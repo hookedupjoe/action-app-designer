@@ -30,20 +30,33 @@ License: MIT
 
     thisPageSpecs.layoutOptions = {
         baseURL: pageBaseURL,
-        "html": {
-            "center": "body",
-        },
-        controls: {
-            "north": { partname: "north", control: "north" },
-            "east": { partname: "east", control: "east" },
-            "west": { partname: "west", control: "west" }
-        },
-        facetPrefix: thisPageSpecs.pageName,
-        north: true,
-        south: false,
-        west: true,
-        east: true
+
+        useControls: true,
+        north: { partname: "north", control: "north" },
+        east: { partname: "east", control: "east" },
+        west: { partname: "west", control: "west" },
+        center: { html: "body" },
+        south: false
     }
+
+    // OLD VERSION
+
+    // thisPageSpecs.layoutOptions = {
+    //     baseURL: pageBaseURL,
+    //     "html": {
+    //         "center": "body",
+    //     },
+    //     controls: {
+    //         "north": { partname: "north", control: "north" },
+    //         "east": { partname: "east", control: "east" },
+    //         "west": { partname: "west", control: "west" }
+    //     },
+    //     facetPrefix: thisPageSpecs.pageName,
+    //     north: true,
+    //     south: false,
+    //     west: true,
+    //     east: true
+    // }
 
     //--- Customize default layout configuration
     //--- See http://layout.jquery-dev.com/documentation.cfm for details

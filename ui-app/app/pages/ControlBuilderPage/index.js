@@ -35,11 +35,9 @@ License: MIT
 
         center: true,
         east: { partname: "preview", panel: "previewPanel", source: "catalog/panels/common"},
-        west: {partname: "controls", control: "ControlPanel"},
+        west: { partname: "controls", control: "ControlPanel"},
         north: { html: "north" },
-        south: false,
-
-        facetPrefix: thisPageSpecs.pageName
+        south: false
     }
 
     //--- Customize default layout configuration
@@ -220,7 +218,7 @@ License: MIT
 
     }
 
-    ThisPage.loadThisControl = loadThisControl;
+    actions.loadThisControl = loadThisControl;
     function loadThisControl(theAction, theTarget) {
         var tmpEl = false;
         var tmpName = '';
@@ -236,7 +234,7 @@ License: MIT
 
     };
 
-    ThisPage.loadControlsIndex = loadControlsIndex;
+    actions.loadControlsIndex = loadControlsIndex;
     function loadControlsIndex() {
         showLoading('control-list');
         //--- Clear cached pages
@@ -350,7 +348,7 @@ License: MIT
         ThisPage.detailsEditor.clearSelection();
     }
 
-    ThisPage.showControlDetails = showControlDetails;
+    actions.showControlDetails = showControlDetails;
     function showControlDetails() {
         var tmpDetails = activeControl.getControlDetails()
         ThisPage.detailsEditor.setValue(ThisApp.json(tmpDetails.data));
@@ -364,7 +362,7 @@ License: MIT
         ThisPage.detailsEditor.clearSelection();
     }
 
-    ThisPage.showControlSpecConfig = showControlSpecConfig;
+    actions.showControlSpecConfig = showControlSpecConfig;
     function showControlSpecConfig() {
         showDetailsJson(ThisPage.loadedControlSpec.controlConfig);
     };
@@ -393,7 +391,7 @@ License: MIT
         setSelectedField(tmpFN);
     };
 
-    ThisPage.fieldToggleDisplay = fieldToggleDisplay;
+    actions.fieldToggleDisplay = fieldToggleDisplay;
     function fieldToggleDisplay() {
         var tmpFN = getSelectedField();
         if (!tmpFN) {
@@ -403,7 +401,7 @@ License: MIT
         activeControl.setFieldDisplay(tmpFN, !tmpIsVis)
     };
 
-    ThisPage.fieldSetValue = fieldSetValue;
+    actions.fieldSetValue = fieldSetValue;
     function fieldSetValue() {
         var tmpFN = getSelectedField() || '';
         ThisPage.fieldSelect.focus();
@@ -419,7 +417,7 @@ License: MIT
 
     };
 
-    ThisPage.fieldShowSpecs = fieldShowSpecs;
+    actions.fieldShowSpecs = fieldShowSpecs;
     function fieldShowSpecs() {
         var tmpFN = getSelectedField() || '';
         if (!tmpFN) { return alert("Select a Field") }
@@ -440,7 +438,7 @@ License: MIT
         showDetailsJson(tmpSpecs);
     };
 
-    ThisPage.fieldGoto = fieldGoto;
+    actions.fieldGoto = fieldGoto;
     function fieldGoto() {
         var tmpFN = getSelectedField() || '';
         if (!tmpFN) { return alert("Select a Field") }

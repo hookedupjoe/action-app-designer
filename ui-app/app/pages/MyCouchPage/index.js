@@ -29,22 +29,15 @@ License: MIT
         }
     }
 
-    //--- Define this applications layouts
     thisPageSpecs.layoutOptions = {
-        baseURL: 'app/pages/MyCouchPage/',
-        html: {
-            "west": "page-west",
-            "east": "page-east",
-            "north": "page-header",
-            "center": "page-body",
-            "south": "page-footer"
-        },
-        spotPrefix: thisPageSpecs.pageName,
-        north: true,
-        west: true,
-        east: true
+        baseURL: pageBaseURL,
+    
+        east: {html: "page-east"},
+        north: {html: "page-header"},
+        center: {html: "page-body"},
+        west: {html: "page-west"},
+        south: {html: "page-footer"}
     }
-//            "east": "page-east",
 
     //--- Customize default layout configuration
     //--- See http://layout.jquery-dev.com/documentation.cfm for details

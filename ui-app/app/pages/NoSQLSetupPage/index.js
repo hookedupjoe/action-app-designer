@@ -37,22 +37,15 @@ License: MIT
         }
     }
 
-    //--- Define this applications layouts
     thisPageSpecs.layoutOptions = {
         baseURL: pageBaseURL,
-        html: {
-            "west": "page-west",
-            "north": "page-header",
-            "east": "page-east",
-            "center": "page-body",
-            "south": "page-footer"
-        },
-        spotPrefix: thisPageSpecs.pageName,
-        north: true,
-        west: true,
-        east: true
+    
+        east: {html: "page-east"},
+        north: {html: "page-header"},
+        center: {html: "page-body"},
+        west: {html: "page-west"},
+        south: {html: "page-footer"}
     }
-    //            "east": "page-east",
 
     //--- Customize default layout configuration
     //--- See http://layout.jquery-dev.com/documentation.cfm for details
