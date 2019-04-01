@@ -1,0 +1,84 @@
+<html>
+
+<head>
+
+</head>
+
+<body>
+
+  <button appuse="testbutton" class="ui button blue subdemo1">Run Test</button>
+  <div spot="inframe">Demo IFrame</div>
+  <h2>Hello iFrame Page</h2>
+  <script>
+    window.ThisApp = window.top.ThisApp;
+    window.$ = window.top.$;
+
+    var doc$ = $(document);
+
+    //console.log( 'tmpTopStyles', tmpTopStyles);
+    var tmpThisHead = $('head', doc$);
+
+    var tmpTopStyles = $('style', window.top.document);
+    for (var iTopStyle = 0; iTopStyle < tmpTopStyles.length; iTopStyle++) {
+      var tmpTopStyle = tmpTopStyles[iTopStyle];
+      tmpThisHead.append('<style>\n' + $(tmpTopStyle).html() + '\n</style>\n')
+      //  console.log( 'tmpTopStyle', tmpTopStyle);
+    }
+
+    var tmpTopStylesText = ThisApp.getLoadedStyles();
+    console.log( 'tmpTopStylesText', tmpTopStylesText);
+
+    // var tmpTopLinks = $('link', window.top.document);
+    // for (var iTopLink = 0; iTopLink < tmpTopLinks.length; iTopLink++) {
+    //   var tmpTopLink = tmpTopLinks[iTopLink];
+    //   console.log( 'tmpTopLink', tmpTopLink);
+    //   var tmpTop$ = $(tmpTopLink);
+    //   console.log( 'tmpTop$', tmpTop$);
+
+    // }
+
+
+    var tmpThisSS = window.document.styleSheets;
+
+
+    console.log('tmpThisHead', tmpThisHead);
+
+    //console.log("App", window.top.ThisApp);
+    var tmpSpot = ThisApp.getByAttr$({ spot: "inframe" }, doc$)
+    var tmpBtn = ThisApp.getByAttr$({ appuse: "testbutton" }, doc$)
+    tmpBtn.on('click', function () {
+      for (var i = 0; i < 100; i++) {
+        tmpSpot.append('<div name=test"' + i + '">Test ' + i + '</div>')
+      }
+      console.log("I was clicked");
+    })
+    console.log('tmpSpot', tmpSpot);
+
+
+
+    // function getTopStyleSheets() {
+    //   var tmpDoc = window.top.document;
+    //   var tmpSSs = tmpDoc.styleSheets;
+
+    //   var tmpHTML = [];
+    //   tmpHTML.push('<style>')
+    //   for (var iSS = 0; iSS < tmpSSs.length; iSS++) {
+    //     var tmpSS = tmpSSs[iSS];
+    //     var tmpRules = tmpSS.cssRules || tmpSS.rules || false;
+    //     if( tmpRules && tmpRules.length ){
+    //       console.log( 'tmpRules', tmpRules);
+    //     }
+    //     // console.log('tmpSS', tmpSS);
+    //   }
+
+    //   tmpHTML.push('</style>')
+    //   return tmpHTML.join('');;
+    // }
+
+
+
+  </script>
+
+</body>
+
+</html>

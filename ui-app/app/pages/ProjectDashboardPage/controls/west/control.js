@@ -88,6 +88,11 @@ License: MIT
 											{
 												"ctl": "pagespot",
 												"name": "apps-tab-recent"
+											},
+											{
+												"ctl": "button",
+												"label": "Test 1", 
+												"pageaction": "runTest1"
 											}
 										]
 									}

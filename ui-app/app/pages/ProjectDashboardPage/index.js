@@ -271,6 +271,16 @@ License: MIT
         tmpTestFunc(theParams);
 
     };
+
+    
+
+    ThisPage.runTest1 = runTest1;
+    function runTest1(theParams, theTarget){
+        var tmpParams = ThisApp.getActionParams(theParams, theTarget, ['testname']);
+        var tmpFrame = ThisPage.getByAttr$({appuse:'bodyframe'});
+        console.log( 'tmpFrame', tmpFrame);
+        tmpFrame.get(0).src = '/catalog/testing/subdemo.html';
+    };
     
 
 })(ActionAppCore, $);

@@ -1,0 +1,46 @@
+<html>
+
+<head>
+
+  <link rel="stylesheet" href="//localhost:7071/built-lib/support-libs.css">
+
+  <!-- OPTIONAL - Data-tables -->
+  <link rel="stylesheet" href="//localhost:7071/lib/datatables/datatables.min.css">
+  <link rel="stylesheet" href="//localhost:7071/lib/datatables/responsive.custom.css">
+  <link rel="stylesheet" href="//localhost:7071/lib/jsTree/themes/default/style.min.css" />
+
+  <link rel="stylesheet" href="//localhost:7071/lib/semantic/dist/semantic.min.css">
+  <link rel="stylesheet" href="//localhost:7071/lib/css/dataTables.semanticui.min.css">
+
+  <link rel="stylesheet" href="//localhost:7071/lib/css/appframe.css">
+  <link rel="stylesheet" href="//localhost:7071/lib/css/resp-grid.css">
+
+  <!-- Local app css -->
+  <link rel="stylesheet" href="/app/css/app.css">
+</head>
+
+<body>
+
+  <button appuse="testbutton" class="ui button blue">Run Test</button>
+  <div spot="inframe">Demo IFrame</div>
+  <h2>Hello iFrame Page</h2>
+  <script>
+    window.ThisApp = window.top.ThisApp;
+    window.$ = window.top.$;
+    var doc$ = $(document);
+
+    var tmpSpot = ThisApp.getByAttr$({ spot: "inframe" }, doc$)
+    var tmpBtn = ThisApp.getByAttr$({ appuse: "testbutton" }, doc$)
+    tmpBtn.on('click', function () {
+      for (var i = 0; i < 100; i++) {
+        tmpSpot.append('<div name=test"' + i + '">Test ' + i + '</div>')
+      }
+      console.log("I was clicked");
+    })
+    console.log('tmpSpot', tmpSpot);
+
+  </script>
+
+</body>
+
+</html>
