@@ -92,6 +92,7 @@ License: MIT
 											{
 												"ctl": "button",
 												"label": "Test 1", 
+												"name": "btn-runtest1",
 												"pageaction": "runTest1"
 											}
 										]

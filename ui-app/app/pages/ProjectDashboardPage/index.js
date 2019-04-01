@@ -99,6 +99,8 @@ License: MIT
                 //--- Now your done - READY to do stuff the first time on your page
                 ThisPage.loadPageSpot('header-area', 'Welcome');
 
+
+                ThisPage.parts.west.gotoItem("btn-runtest1");
                 
 
                 //--- Do special stuff on page load here
@@ -289,11 +291,16 @@ License: MIT
 
     ThisPage.runTest1 = runTest1;
     function runTest1(theParams, theTarget){
+       ThisPage.loadSpot('body', 'Test');
+
+    };
+    
+
+    function demoLoadIFrame(theParams, theTarget){
         var tmpParams = ThisApp.getActionParams(theParams, theTarget, ['testname']);
         var tmpFrame = ThisPage.getByAttr$({appuse:'bodyframe'});
         console.log( 'tmpFrame', tmpFrame);
         tmpFrame.get(0).src = '/catalog/testing/subdemo.html';
     };
-    
 
 })(ActionAppCore, $);
