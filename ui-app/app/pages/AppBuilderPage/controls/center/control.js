@@ -79,6 +79,82 @@ License: MIT
 												]
 											}
 										]
+									},
+									{
+										ctl: "tr",
+										attr: {
+											type: "app",
+											oluse: "container"
+										},
+										content: [
+											{
+												ctl: "td",
+												attr: {
+													colspan: "4",
+												},
+												content: [
+													{
+														ctl: "table",
+														classes: "ui very compact table selectable outline",
+														content: [
+															{
+																ctl: "tbody",
+																content: [
+																	{
+																		ctl: "tr",
+																		attr: {
+																			oluse: "collapsable",
+																			action: "selectMe",
+																			group: "app-outline",
+																			item: "page1-page",
+																			type: "page"
+																		},
+																		content: [
+																			{
+																				ctl: "td",
+																				classes: "tbl-icon",
+																				content: [
+																					{
+																						ctl: "i",
+																						classes: "columns icon green large"
+																					}
+																				]
+																			},
+																			{
+																				ctl: "td",
+																				classes: "tbl-details",
+																				text: "Home Page"
+																			},
+																			{
+																				ctl: "td",
+																				classes: "tbl-label",
+																				text: "Page"
+																			},
+																			{
+																				ctl: "td",
+																				classes: "tbl-icon",
+																				content: [
+																					{
+																						ctl: "i",
+																						attr: {
+																							pageaction: "toggleMe"
+																						},
+																						classes: "icon square minus large toright"
+																					}
+																				]
+																			}
+																		]
+
+																	}
+																]
+															}
+														]
+													}
+												]
+
+											}
+										]
+
 									}
 								]
 							}
