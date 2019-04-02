@@ -319,7 +319,6 @@ License: MIT
 
     actions.outlineDisplay = outlineDisplay;
     function outlineDisplay(theParams, theTarget){
-        console.log( 'outlineDisplay', theTarget);
         var tmpEl = $(theTarget);
         //var tmpNext = tmpEl.parent().next(['group="' + tmpEl.attr('group') + '"']);
         var tmpSelect = tmpEl.attr('select') || '';
@@ -336,7 +335,7 @@ License: MIT
                     var tmpToggle = $(tmpToggles[iToggle]);
                     console.log( 'tmpToggle', tmpToggle);
                     
-                    var tmpToggleNode = tmpToggle.find('[pageaction="toggleMe"]');
+                    var tmpToggleNode = tmpToggle.find('[action="toggleMe"]');
                     var tmpIcon = tmpToggleNode.find('i');
 
                    tmpToggle = tmpToggle.next();

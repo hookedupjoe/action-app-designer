@@ -1,18 +1,49 @@
 {
 	"content": [
 		{
-			"ctl": "spot",
-			"name": "body"
-		},
-		{
-			"ctl": "cardfull",
-			"classes": "orange raised tall",
-			"name": "card-full-matt",
-			"header": "Matt Giampietro",
-			"meta": "<a>Friends</a>",
-			"description": "Matthew is an interior designer living in New York.",
-			"extraText": "<i class=\"user icon\"></i> 75 Friends",
-			"extraTextRight": "Joined in 2013"
+			"ctl": "table-outline",
+			"name": "tableOutline",
+			"outline": {
+				"name": "Application",
+				"details": "My First Application",
+				"meta": "ThisApp",
+				"type": "app",
+				"color": "blue",
+				"icon": "globe",
+				"level": 3,
+				"children": [
+					{
+						"name": "HomePage",
+						"details": "Home",
+						"meta": "Page",
+						"type": "page",
+						"color": "green",
+						"level": 2,
+						"icon": "columns",
+						"children": [
+							{
+								"name": "HomePage",
+								"icon": "newspaper",
+								"details": "East",
+								"meta": "Panel",
+								"type": "region",
+								"color": "purple",
+								"level": 1
+							}
+						]
+					},
+					{
+						"name": "LogsPage",
+						"details": "Logs",
+						"meta": "Page",
+						"type": "page",
+						"color": "green",
+						"level": 2,
+						"icon": "columns",
+						"children": []
+					}
+				]
+			}
 		}
 	]
 }
