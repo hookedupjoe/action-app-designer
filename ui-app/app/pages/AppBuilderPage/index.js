@@ -30,38 +30,18 @@ License: MIT
 
     thisPageSpecs.layoutOptions = {
         baseURL: pageBaseURL,
-
-        useControls: true,
         north: { partname: "north", control: "north" },
         east: { partname: "east", control: "east" },
         west: {  html: "west"},
-        center: { html: "body" },
+        center: { partname: "center", control: "center"  },
         south: false
     }
 
-    // OLD VERSION
-
-    // thisPageSpecs.layoutOptions = {
-    //     baseURL: pageBaseURL,
-    //     "html": {
-    //         "center": "body",
-    //     },
-    //     controls: {
-    //         "north": { partname: "north", control: "north" },
-    //         "east": { partname: "east", control: "east" },
-    //         "west": { partname: "west", control: "west" }
-    //     },
-    //     facetPrefix: thisPageSpecs.pageName,
-    //     north: true,
-    //     south: false,
-    //     west: true,
-    //     east: true
-    // }
 
     //--- Customize default layout configuration
     //--- See http://layout.jquery-dev.com/documentation.cfm for details
     thisPageSpecs.layoutConfig = {
-        west__size: "350"
+        west__size: "340"
         , east__size: "40%"
     }
 
@@ -77,6 +57,41 @@ License: MIT
     *    If your component need to do stuff to be availale in the background, do it here
     */
     var actions = ThisPage.pageActions;
+    
+
+    var defaultAppSpecs = {
+        name: "firstapp",
+        title: "My First App",
+        pages: [{
+            name: "HomePage",
+            title: "Home",
+            inTop: true,
+            inSide: true,
+            layout: {
+                pageBase: true,
+                useControls: true,
+                north: {
+                    partname: "north",
+                    control: "north"
+                },
+                east: {
+                    partname: "east",
+                    control: "east"
+                },
+                west: {
+                    html: "west"
+                },
+                center: {
+                    html: "body"
+                },
+                south: false
+            }
+        }]
+    }
+    var appIndex = {
+        default: defaultAppSpecs
+    };
+    
     ThisPage._onPreInit = function (theApp) {
         ThisPage._om = theApp.om;
 

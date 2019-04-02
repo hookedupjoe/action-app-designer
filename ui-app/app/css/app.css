@@ -3,7 +3,6 @@ table.outline > tbody > tr.active[type="page"] > td.tbl-label {
   background-color: #21ba45;
 }
 
-
 table.outline > tbody > tr.active[type="app"] > td.tbl-label {
   background-color: #2185d0;
 }
