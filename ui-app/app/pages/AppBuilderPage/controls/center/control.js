@@ -259,7 +259,6 @@ License: MIT
 		]
 	}
 
-	console.log("In control, createint new one")
 	var ControlCode = {};
 	var ThisControl = {specs: ControlSpecs, options: { proto: ControlCode, parent: ThisApp }};
 
