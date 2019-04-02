@@ -1,49 +1,91 @@
 {
 	"content": [
 		{
-			"ctl": "table-outline",
-			"name": "tableOutline",
-			"outline": {
-				"name": "Application",
-				"details": "My First Application",
-				"meta": "ThisApp",
-				"type": "app",
-				"color": "blue",
-				"icon": "globe",
-				"level": 3,
-				"children": [
-					{
-						"name": "HomePage",
-						"details": "Home",
-						"meta": "Page",
-						"type": "page",
-						"color": "green",
-						"level": 2,
-						"icon": "columns",
-						"children": [
-							{
-								"name": "HomePage",
-								"icon": "newspaper",
-								"details": "East",
-								"meta": "Panel",
-								"type": "region",
-								"color": "purple",
-								"level": 1
-							}
-						]
-					},
-					{
-						"name": "LogsPage",
-						"details": "Logs",
-						"meta": "Page",
-						"type": "page",
-						"color": "green",
-						"level": 2,
-						"icon": "columns",
-						"children": []
-					}
-				]
-			}
+			"ctl": "tbl-ol-node",
+			"type": "app",
+			"details": "My First App",
+			"meta": "ThisApp",
+			"content": [
+				{
+					"ctl": "tbl-ol-node",
+					"type": "page",
+					"details": "HomePage",
+					"meta": "Page",
+					"content": [
+						{
+							"ctl": "tbl-ol-node",
+							"type": "region",
+							"details": "East",
+							"meta": "Panel",
+							"content": [],
+							"level": 1,
+							"group": "application-outline",
+							"item": "page-HomePage-east",
+							"icon": "newspaper",
+							"color": "purple"
+						},
+						{
+							"ctl": "tbl-ol-node",
+							"type": "region",
+							"details": "Center",
+							"meta": "Control",
+							"content": [],
+							"level": 1,
+							"group": "application-outline",
+							"item": "page-HomePage-center",
+							"icon": "newspaper outline",
+							"color": "purple"
+						}
+					],
+					"level": 2,
+					"group": "application-outline",
+					"item": "page-HomePage",
+					"icon": "columns",
+					"color": "green"
+				},
+				{
+					"ctl": "tbl-ol-node",
+					"type": "page",
+					"details": "LogsPage",
+					"meta": "Page",
+					"content": [
+						{
+							"ctl": "tbl-ol-node",
+							"type": "region",
+							"details": "East",
+							"meta": "Panel",
+							"content": [],
+							"level": 1,
+							"group": "application-outline",
+							"item": "page-LogsPage-east",
+							"icon": "newspaper",
+							"color": "purple"
+						},
+						{
+							"ctl": "tbl-ol-node",
+							"type": "region",
+							"details": "Center",
+							"meta": "HTML",
+							"content": [],
+							"level": 1,
+							"group": "application-outline",
+							"item": "page-LogsPage-center",
+							"icon": "code",
+							"color": "purple"
+						}
+					],
+					"level": 2,
+					"group": "application-outline",
+					"item": "page-LogsPage",
+					"icon": "columns",
+					"color": "green"
+				}
+			],
+			"level": 3,
+			"group": "application-outline",
+			"item": "application",
+			"icon": "globe",
+			"color": "blue"
 		}
 	]
 }
