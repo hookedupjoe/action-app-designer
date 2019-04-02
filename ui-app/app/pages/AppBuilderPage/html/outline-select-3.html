@@ -12,22 +12,21 @@
 
         <td class="tbl-label">ThisApp</td>
         <td class="tbl-icon2">
-          <i pageaction="outlineDisplay" select="false" scope="children" class="icon square minus large toright"></i>
-          <i pageaction="outlineDisplay" select="true" scope="children" class="icon square plus large toright"></i>
-        </td>
-      </tr>
+            <i pageaction="toggleMe" select="false" scope="children" class="icon square minus large toright"></i>
+            <i pageaction="toggleMe" select="true" scope="children" class="icon square plus large toright"></i>
+          </td>      </tr>
 
-      <tr type="app" oluse="container" class="row-select">
+      <tr type="app" appuse="ol-row-content" class="row-select">
         <td colspan="4">
           <table class="ui very compact table selectable outline">
             <tbody>
-              <tr oluse="collapsable" action="showSubPage" group="app-outline" item="page1-page" type="page" class="row-select">
+              <tr action="showSubPage" group="app-outline" item="page1-page" type="page" class="row-select">
                 <td class="tbl-icon"><i class="columns icon green large"></i></td>
                 <td class="tbl-details">Home Page</td>
                 <td class="tbl-label">Page</td>
                 <td class="tbl-icon" pageaction="toggleMe"><i class="icon square minus large toright"></i></td>
               </tr>
-              <tr action="showSubPage" oluse="container">
+              <tr action="showSubPage" group="app-outline" item="page1-page" type="page" class="row-select">
                 <td colspan="4">
                   <table class="ui very compact table selectable outline">
                     <tbody>
@@ -56,13 +55,13 @@
                   </table>
                 </td>
               </tr>
-              <tr oluse="collapsable" action="showSubPage" group="app-outline" item="page2-page" type="page" class="row-select">
+              <tr action="showSubPage" group="app-outline" item="page2-page" type="page" class="row-select">
                 <td class="tbl-icon"><i class="columns icon green large"></i></td>
                 <td class="tbl-details">Logs Page</td>
                 <td class="tbl-label">Page</td>
                 <td pageaction="toggleMe" class="tbl-icon"><i class="icon square minus large toright"></i></td>
               </tr>
-              <tr action="showSubPage" oluse="container">
+              <tr action="showSubPage" group="app-outline" item="page2-page" type="page" class="row-select">
                 <td colspan="4">
                   <table class="ui very compact table selectable outline">
                     <tbody>

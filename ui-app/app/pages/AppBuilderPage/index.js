@@ -301,12 +301,58 @@ License: MIT
     };
 
 
-    ThisPage.toggleMe = toggleMe;
+    actions.outlineDisplay = outlineDisplay;
+    function outlineDisplay(theParams, theTarget){
+        console.log( 'outlineDisplay', theTarget);
+        var tmpEl = $(theTarget);
+        //var tmpNext = tmpEl.parent().next(['group="' + tmpEl.attr('group') + '"']);
+        var tmpSelect = tmpEl.attr('select') || '';
+        var tmpScope = tmpEl.attr('scope') || '';
+        
+        if( tmpScope == 'children' && tmpSelect ){
+            var tmpShow = tmpSelect == 'true';
+            console.log( 'tmpShow', tmpShow);
+            var tmpContainer = tmpEl.closest('tr').next();
+            if( tmpContainer && tmpContainer.length ){
+                var tmpToggles = $('[oluse="collapsable"]', tmpContainer);
+                
+                for (var iToggle = 0; iToggle < tmpToggles.length; iToggle++) {
+                    var tmpToggle = $(tmpToggles[iToggle]);
+                    console.log( 'tmpToggle', tmpToggle);
+                    
+                    var tmpToggleNode = tmpToggle.find('[pageaction="toggleMe"]');
+                    var tmpIcon = tmpToggleNode.find('i');
+
+                   tmpToggle = tmpToggle.next();
+
+                   console.log( 'tmpToggleNode', tmpToggleNode);
+                    var tmpIsVis = tmpToggle.is(":visible");
+                    if( !(tmpShow) ){
+                        tmpToggle.hide();
+                        tmpIcon.removeClass('minus')
+                            .addClass('plus');
+                    } else {
+                        tmpToggle.show();
+                        tmpIcon.removeClass('plus')
+                            .addClass('minus');
+                    }
+                }
+
+               console.log( 'tmpToggles', tmpToggles);
+            }
+            // console.log( 'tmpContainer', tmpContainer);
+
+        } else {
+           
+        }
+        
+    };
+
+    actions.toggleMe = toggleMe;
     function toggleMe(theParams, theTarget){
         console.log( 'toggleMe', theTarget);
         var tmpEl = $(theTarget);
         var tmpNext = tmpEl.parent().next(['group="' + tmpEl.attr('group') + '"']);
-        console.log( 'tmpNext', tmpNext);
         var tmpIcon = tmpEl.find('i');
         var tmpIsVis = tmpNext.is(":visible");
         if( tmpIsVis ){
@@ -318,6 +364,7 @@ License: MIT
             tmpIcon.removeClass('plus')
                 .addClass('minus');
         }
+        
     };
     
 
