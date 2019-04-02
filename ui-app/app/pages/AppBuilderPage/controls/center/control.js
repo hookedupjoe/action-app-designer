@@ -133,12 +133,12 @@ License: MIT
 																			{
 																				ctl: "td",
 																				classes: "tbl-icon",
+																				attr: {
+																					pageaction: "toggleMe"
+																				},
 																				content: [
 																					{
 																						ctl: "i",
-																						attr: {
-																							pageaction: "toggleMe"
-																						},
 																						classes: "icon square minus large toright"
 																					}
 																				]
