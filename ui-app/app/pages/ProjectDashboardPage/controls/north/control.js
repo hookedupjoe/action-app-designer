@@ -17,7 +17,9 @@ License: MIT
 		]
 	}
 
-	var ThisControl = ThisApp.controls.newControl(ControlSpecs, {parent: ThisApp} )
+		var ControlCode = {};
+	var ThisControl = {specs: ControlSpecs, options: { proto: ControlCode, parent: ThisApp }};
+
 
 	return ThisControl;
 

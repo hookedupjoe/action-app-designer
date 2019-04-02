@@ -18,15 +18,15 @@ License: MIT
     var pageBaseURL = 'app/pages/' + thisPageSpecs.pageName + '/';
 
     
-    thisPageSpecs.required = {
-        controls: {
-            baseURL: pageBaseURL,
-            map: {
-                "controls/TesterControl": "TesterControl",
-                "controls/FormShowFor": "FormShowFor"
-            }
-        }
-    }
+    // thisPageSpecs.required = {
+    //     controls: {
+    //         baseURL: pageBaseURL,
+    //         map: {
+    //             "controls/TesterControl": "TesterControl",
+    //             "controls/FormShowFor": "FormShowFor"
+    //         }
+    //     }
+    // }
 
     thisPageSpecs.layoutOptions = {
         baseURL: pageBaseURL,
@@ -108,6 +108,7 @@ License: MIT
     *     that are needed even if the page was not activated yet
     */
     ThisPage._onFirstActivate = function (theApp) {
+
         //--- This tells the page to layout the page, load templates and controls, et
         ThisPage.initOnFirstLoad().then(
             function () {

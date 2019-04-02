@@ -5,36 +5,6 @@ License: MIT
 (function (ActionAppCore, $) {
 
 	var ControlSpecs = {
-		"options" : {
-			padding: false,
-			css: [
-				"table.outline > tbody > tr[oluse=\"select\"] {",
-				"  cursor: pointer;",
-				"}",
-								"table.outline > tbody > tr > td.tbl-label {",
-				"  width:90px;",
-				"  color:black;",
-				"  background-color: #eeeeee;",
-				"}",
-				"table.outline > tbody > tr.active > td.tbl-label {",
-				"  width:90px;",
-				"  background-color: #777777;",
-				"  color: white;",
-				"}",
-				"table.outline > tbody > tr > td.tbl-icon {",
-				"  width:40px;",
-				"}",
-				"table.outline > tbody > tr > td.tbl-icon2 {",
-				"  width:80px;",
-				"}",
-				"table.outline > tbody > tr > td.tbl-details {",
-				"  white-space: nowrap;",
-				"  font-weight:bolder;",
-				"  overflow:auto;",
-				"  width:auto;",
-				"}"
-			]
-		},
 		"content": [
 			{
 				"ctl": "spot",
@@ -259,9 +229,9 @@ License: MIT
 		]
 	}
 
-	console.log("In control, createint new one")
-	var ControlCode = {};
+		var ControlCode = {};
 	var ThisControl = {specs: ControlSpecs, options: { proto: ControlCode, parent: ThisApp }};
+
 
 	return ThisControl;
 
