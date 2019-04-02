@@ -1,10 +1,50 @@
 {
+	"options": {
+		"padding": false,
+		"css": [
+			".app-table table.outline > tbody > tr[oluse=\"select\"] {",
+			"  cursor: pointer;",
+			"}",
+			".app-table table.outline > tbody > tr > td.tbl-label {",
+			"  width:90px;",
+			"  color:black;",
+			"  background-color: #eeeeee;",
+			"}",
+			".app-table table.outline > tbody > tr.active > td.tbl-label {",
+			"  width:90px;",
+			"  background-color: #777777;",
+			"  color: white;",
+			"}",
+			".app-table table.outline > tbody > tr > td.tbl-icon {",
+			"  width:40px;",
+			"}",
+			".app-table table.outline > tbody > tr > td.tbl-icon2 {",
+			"  width:80px;",
+			"}",
+			".app-table table.outline > tbody > tr > td.tbl-details {",
+			"  white-space: nowrap;",
+			"  font-weight:bolder;",
+			"  overflow:auto;",
+			"  width:auto;",
+			"}",
+			".app-table table.outline > tbody > tr.active[type=\"page\"] > td.tbl-label {",
+				"  background-color: #21ba45;",
+				"}",
+				".app-table table.outline > tbody > tr.active[type=\"app\"] > td.tbl-label {",
+				"  background-color: #2185d0;",
+				"}",
+				".app-table table.outline > tbody > tr.active[type=\"region\"] > td.tbl-label {",
+				"  background-color: #a333c8;",
+				"}"
+		]
+	},
 	"content": [
 		{
 			"ctl": "tbl-ol-node",
 			"type": "app",
 			"details": "My First App",
 			"meta": "ThisApp",
+			"classes": "app-table",
 			"content": [
 				{
 					"ctl": "tbl-ol-node",
