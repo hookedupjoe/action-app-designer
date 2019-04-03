@@ -44,12 +44,12 @@
 	"content": [
 		{
 			"ctl": "control",
-			"controlname": "scat/controls/Tester",
+			"controlname": "design/controls/Tester",
 			"name": "tester"
 		},
 		{
 			"ctl": "panel",
-			"controlname": "scat/panels/validation",
+			"controlname": "design/panels/validation",
 			"name": "validation"
 		},
 		{

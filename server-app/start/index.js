@@ -21,12 +21,19 @@ module.exports.setup = function (app, scope) {
     var scatRouter = express.Router(),
         scatRoute = require('./scat/index').setup(scope);
 
+    var designRouter = express.Router(),
+    designRoute = require('./design/index').setup(scope);
+
     appRouter.all('/*', appEntryPoint);
     app.use('/app/',appRouter);
 
     scatRouter.get('/:type/:name*', scatRoute);
     scatRouter.all('/*', scatRoute);
-    
     app.use('/scat/',scatRouter);
+
+    designRouter.get('/:type/:name*', designRoute);
+    designRouter.all('/*', designRoute);
+    app.use('/design/',designRouter);
+
 
 };
