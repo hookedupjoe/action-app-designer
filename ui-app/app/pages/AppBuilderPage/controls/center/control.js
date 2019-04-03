@@ -6,258 +6,77 @@ License: MIT
 
 	var ControlSpecs = {
 		"options" : {
-			padding: false,
-			css: [
-				"table.outline > tbody > tr[oluse=\"select\"] {",
-				"  cursor: pointer;",
-				"}",
-								"table.outline > tbody > tr > td.tbl-label {",
-				"  width:90px;",
-				"  color:black;",
-				"  background-color: #eeeeee;",
-				"}",
-				"table.outline > tbody > tr.active > td.tbl-label {",
-				"  width:90px;",
-				"  background-color: #777777;",
-				"  color: white;",
-				"}",
-				"table.outline > tbody > tr > td.tbl-icon {",
-				"  width:40px;",
-				"}",
-				"table.outline > tbody > tr > td.tbl-icon2 {",
-				"  width:80px;",
-				"}",
-				"table.outline > tbody > tr > td.tbl-details {",
-				"  white-space: nowrap;",
-				"  font-weight:bolder;",
-				"  overflow:auto;",
-				"  width:auto;",
-				"}"
-			]
+			padding: true
 		},
 		"content": [
 			{
-				"ctl": "spot",
-				"name": "body"
+				"ctl": "title",
+				"size": "large",
+				"icon": "globe",
+				"name": "title",
+				"color": "blue",
+				"text": "Application Setup"
 			},
 			{
-				ctl: "segment",
-				basic: true,
-				slim: true,
-				name: "outline",
-				content: [
+				"ctl": "sep",
+				"size": "small",
+				"icon": "road",
+				"name": "about-your-app-sep",
+				"text": "Application Information"
+			},
+			{
+				"ctl": "fieldrow",
+				"name": "info-row",
+				"items": [
 					{
-						ctl: "table",
-						classes: "ui very compact table selectable outline",
-						content: [
-							{
-								ctl: "tbody",
-								content: [
-									{
-										ctl: "tr",
-										classes: "",
-										attr: {
-											action: "selectMe",
-											group: "app-outline",
-											item: "application",
-											type: "app",
-											oluse: "select"
-										},
-										content: [
-											{
-												ctl: "td",
-												classes: "tbl-icon",
-												content: [
-													{
-														ctl: "i",
-														classes: "large globe blue icon"
-													}
-												]
-											},
-											{
-												ctl: "td",
-												classes: "tbl-details",
-												text: "My First App"
-											},
-											{
-												ctl: "td",
-												classes: "tbl-label",
-												text: "ThisApp"
-											},
-											{
-												ctl: "td",
-												classes: "tbl-icon2",
-												content: [
-													{
-														ctl: "i",
-														attr: {
-															action: "outlineDisplay",
-															select: "false",
-															scope: "children"
-														},
-														classes: "icon square minus large toright"
-													},
-													{
-														ctl: "i",
-														attr: {
-															action: "outlineDisplay",
-															select: "true",
-															scope: "children"
-														},
-														classes: "icon square plus large toright"
-													}
-												]
-											}
-										]
-									},
-									{
-										ctl: "tr",
-										attr: {
-											type: "app",
-											oluse: "container"
-										},
-										content: [
-											{
-												ctl: "td",
-												attr: {
-													colspan: "4",
-												},
-												content: [
-													{
-														ctl: "table",
-														classes: "ui very compact table selectable outline",
-														content: [
-															{
-																ctl: "tbody",
-																content: [
-																	{
-																		ctl: "tr",
-																		attr: {
-																			oluse: "collapsable",
-																			action: "selectMe",
-																			group: "app-outline",
-																			item: "page1-page",
-																			type: "page"
-																		},
-																		content: [
-																			{
-																				ctl: "td",
-																				classes: "tbl-icon",
-																				content: [
-																					{
-																						ctl: "i",
-																						classes: "columns icon green large"
-																					}
-																				]
-																			},
-																			{
-																				ctl: "td",
-																				classes: "tbl-details",
-																				text: "Home Page"
-																			},
-																			{
-																				ctl: "td",
-																				classes: "tbl-label",
-																				text: "Page"
-																			},
-																			{
-																				ctl: "td",
-																				classes: "tbl-icon",
-																				attr: {
-																					action: "toggleMe"
-																				},
-																				content: [
-																					{
-																						ctl: "i",
-																						classes: "icon square minus large toright"
-																					}
-																				]
-																			}
-																		]
-
-																	},
-																	{
-																		ctl: "tr",
-																		attr: {
-																			type: "page",
-																			oluse: "container"
-																		},
-																		content: [
-																			{
-																				ctl: "td",
-																				attr: {
-																					colspan: "4"
-																				},
-																				content: [
-																					{
-																						ctl: "table",
-																						classes: "ui very compact table selectable outline",
-																						content: [
-																							{
-																								ctl: "tbody",
-																								content: [
-																									{
-																										ctl: "tr",
-																										attr: {
-																											type: "region",
-																											type: "region",
-																											action: "selectMe",
-																											group: "app-outline",
-																											item: "page1-east",
-																											oluse: "select"
-																										},
-																										content: [
-																											{
-																												ctl: "td",
-																												classes: "tbl-icon",
-																												content: [
-																													{
-																														ctl: "i",
-																														classes: "newspaper outline icon purple large"
-																													}
-																												]
-																											},
-																											{
-																												ctl: "td",
-																												classes: "tbl-details",
-																												text: "East"
-																											},
-																											{
-																												ctl: "td",
-																												classes: "tbl-label",
-																												text: "Panel"
-																											}
-																										]
-																									}
-
-																								]
-																							}
-																						]
-																					}
-																				]
-																			}
-																		]
-																	}
-																]
-															}
-														]
-													}
-												]
-
-											}
-										]
-
-									}
-								]
-							}
-						]
+						"name": "appname",
+						"label": "Unique Name",
+						"req": true
+					},
+					{
+						"name": "title",
+						"label": "App Title",
+						"req": true
 					}
-
 				]
+			},
+			{
+				"ctl": "sep",
+				"size": "small",
+				"icon": "cog",
+				"name": "app-setup-info",
+				"text": "Application Setup"
+			},
+			{
+				"ctl": "fieldrow",
+				"name": "options-row",
+				"items": [
+					{
+						"ctl": "dropdown",
+						"name": "cdn",
+						"label": "CDN Location",
+						"default": "local",
+						"list": "Local|local,IBM Cloud|cloud,In App|app",
+						"req": true
+					},
+					{
+						"ctl": "dropdown",
+						"name": "template",
+						"label": "Application Template",
+						"list": "Blank|tpl-blank,Testing|tpl-testing,Demos|tpl-demos",
+						"req": true
+					}
+				]
+			},
+			{
+				"name": "description",
+				"label": "Description",
+				"placeholder": "Enter optional details about this application",
+				"ctl": "textarea",
+				"rows": 2,
+				"req": true
 			}
-
-		]
-	}
+		]	}
 
 	var ControlCode = {};
 	var ThisControl = {specs: ControlSpecs, options: { proto: ControlCode, parent: ThisApp }};

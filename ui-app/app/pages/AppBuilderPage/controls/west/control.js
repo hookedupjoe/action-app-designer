@@ -6,159 +6,143 @@ License: MIT
 
 	var ControlSpecs = {
 		"options": {
-			"padding": false
+			"padding": true,
+			"css": [
+				".app-table table.outline > tbody > tr[oluse=\"select\"] {",
+				"  cursor: pointer;",
+				"}",
+				".app-table table.outline > tbody > tr[oluse=\"collapsable\"] {",
+				"  cursor: pointer;",
+				"}",
+				".app-table table.outline > tbody > tr > td.tbl-label {",
+				"  width:90px;",
+				"  color:black;",
+				"  background-color: #eeeeee;",
+				"}",
+				".app-table table.outline > tbody > tr.active > td.tbl-label {",
+				"  width:90px;",
+				"  background-color: #777777;",
+				"  color: white;",
+				"}",
+				".app-table table.outline > tbody > tr > td.tbl-icon {",
+				"  width:40px;",
+				"}",
+				".app-table table.outline > tbody > tr > td.tbl-icon2 {",
+				"  width:80px;",
+				"}",
+				".app-table table.outline > tbody > tr > td.tbl-details {",
+				"  white-space: nowrap;",
+				"  font-weight:bolder;",
+				"  overflow:auto;",
+				"  width:auto;",
+				"}",
+				".app-table table.outline > tbody > tr.active[type=\"page\"] > td.tbl-label {",
+				"  background-color: #21ba45;",
+				"}",
+				".app-table table.outline > tbody > tr.active[type=\"app\"] > td.tbl-label {",
+				"  background-color: #2185d0;",
+				"}",
+				".app-table table.outline > tbody > tr.active[type=\"region\"] > td.tbl-label {",
+				"  background-color: #a333c8;",
+				"}"
+			]
 		},
 		"content": [
 			{
-				"ctl": "tabs",
-				"name": "main-tabs",
-				"tabs": [
+				"ctl": "tbl-ol-node",
+				"name": "application",
+				"type": "project",
+				"details": "(default)",
+				"meta": "Project",
+				"classes": "app-table",
+				"level": 3,
+				"group": "application-outline",
+				"item": "project",
+				"icon": "briefcase",
+				"color": "black",
+				"content": [
 					{
-						"label": "Projects",
-						"name": "main-tab-1",
-						"ctl": "tab",
+						"ctl": "tbl-ol-node",
+						"name": "application",
+						"type": "app",
+						"details": "My First App",
+						"meta": "ThisApp",
+						
+						"level": 2,
+						"group": "application-outline",
+						"item": "application",
+						"icon": "globe",
+						"color": "blue",
 						"content": [
 							{
-								"ctl": "tabs",
-								"name": "catalog-tabs",
-								"color": "purple",
-								"tabs": [
-									{
-										"label": "Available",
-										"name": "apps-tab-list-tab",
-										"ctl": "tab",
-										"content": [
-											{
-												"ctl": "ui",
-												"name": "demo-item",
-												"content": [
-													{
-														"ctl": "ui",
-														"classes": "vertical menu slim fluid",
-														"content": [
-															{
-																"ctl": "a",
-																"classes": "active blue item",
-																"text": "Designer",
-																"content": [
-																	{
-																		"ctl": "ui",
-																		"classes": "label  blue",
-																		"text": "3"
-																	}
-																]
-															},
-															{
-																"ctl": "a",
-																"classes": "item",
-																"text": "Test Apps",
-																"content": [
-																	{
-																		"ctl": "ui",
-																		"classes": "label",
-																		"text": "7"
-																	}
-																]
-															},
-															{
-																"ctl": "a",
-																"classes": "item",
-																"text": "More Apps",
-																"content": [
-																	{
-																		"ctl": "ui",
-																		"classes": "label",
-																		"text": "2"
-																	}
-																]
-															}
-														]
-
-
-													}
-												]
-											}
-										]
-									},
-									{
-										"label": "Recent",
-										"name": "apps-tab-recent-tab",
-										"ctl": "tab",
-										"content": [
-											{
-												"ctl": "pagespot",
-												"name": "apps-tab-recent"
-											},
-											{
-												"ctl": "button",
-												"label": "Test 1", 
-												"name": "btn-runtest1",
-												"pageaction": "runTest1"
-											}
-										]
-									}
-								]
+								"ctl": "tbl-ol-node",
+								"type": "page",
+								"name": "HomePage",
+								"details": "HomePage",
+								"meta": "Page",
+								"level": 1,
+								"group": "application-outline",
+								"item": "page-HomePage",
+								"icon": "columns",
+								"color": "green"
+							},
+							{
+								"ctl": "tbl-ol-node",
+								"name": "LogsPage",
+								"type": "page",
+								"details": "LogsPage",
+								"meta": "Page",
+								"level": 1,
+								"group": "application-outline",
+								"item": "page-LogsPage",
+								"icon": "columns",
+								"color": "green"
 							}
 						]
 					},
 					{
-						"label": "Catalog",
-						"name": "apps-catalog-tab",
-						"ctl": "tab",
+						"ctl": "tbl-ol-node",
+						"name": "appTwo",
+						"type": "app",
+						"details": "My Second App",
+						"meta": "ThisApp",
+						"classes": "app-table",
+						"level": 2,
+						"group": "application-outline",
+						"item": "appTwo",
+						"icon": "globe",
+						"color": "blue",
 						"content": [
 							{
-								"ctl": "ui",
-								"name": "demo-cat-items",
-								"content": [
-									{
-										"ctl": "ui",
-										"classes": "vertical menu slim fluid",
-										"content": [
-											{
-												"ctl": "a",
-												"classes": "active blue item",
-												"text": "Item 1",
-												"content": [
-													{
-														"ctl": "i",
-														"classes": "ui icon arrow right blue"
-													}
-												]
-											},
-											{
-												"ctl": "a",
-												"classes": "item",
-												"text": "Item 2",
-												"content": [
-													{
-														"ctl": "i",
-														"classes": "ui icon arrow right blue"
-													}
-												]
-											},
-											{
-												"ctl": "a",
-												"classes": "item",
-												"text": "Another Item",
-												"content": [
-													{
-														"ctl": "i",
-														"classes": "ui icon arrow right blue"
-													}
-												]
-											}
-										]
-
-
-									}
-								]
+								"ctl": "tbl-ol-node",
+								"type": "page",
+								"name": "appTwo-HomePage",
+								"details": "HomePage",
+								"meta": "Page",
+								"level": 1,
+								"group": "application-outline",
+								"item": "appTwo-page-HomePage",
+								"icon": "columns",
+								"color": "green"
+							},
+							{
+								"ctl": "tbl-ol-node",
+								"name": "LogsPage",
+								"type": "page",
+								"details": "LogsPage",
+								"meta": "Page",
+								"level": 1,
+								"group": "application-outline",
+								"item": "appTwo-page-LogsPage",
+								"icon": "columns",
+								"color": "green"
 							}
 						]
 					}
 				]
 			}
-		]
-	}
+			
+		],	}
 
 		var ControlCode = {};
 	var ThisControl = {specs: ControlSpecs, options: { proto: ControlCode, parent: ThisApp }};
