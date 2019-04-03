@@ -6,7 +6,7 @@ License: MIT
 
 	var ControlSpecs = {
 		"options" : {
-			padding: true
+			padding: false
 		},
 		"content": [
 			{
