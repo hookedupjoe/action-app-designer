@@ -43,6 +43,16 @@
 	},
 	"content": [
 		{
+			"ctl": "control",
+			"controlname": "scat/controls/Tester",
+			"name": "tester"
+		},
+		{
+			"ctl": "panel",
+			"controlname": "scat/panels/validation",
+			"name": "validation"
+		},
+		{
 			"ctl": "tbl-ol-node",
 			"name": "application",
 			"type": "app",
