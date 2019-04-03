@@ -16,12 +16,17 @@ module.exports.setup = function (app, scope) {
     var express = require('express');
     
     var appRouter = express.Router(),
-        appEntryPoint = require('./app/index').setup(scope);
+        appEntryPoint = require('./app/index').setup(scope),
+        contentRouter = express.Router(),
+        appContentProvider = require('./content/index').setup(scope);
 
-    app.use(express.static(__dirname + '/../../data'));
+//    app.use(express.static(__dirname + '/../../data'));
 
     appRouter.all('/*', appEntryPoint);
     app.use('/app/',appRouter);
+
+    contentRouter.all('/*', appContentProvider);
+    app.use('/content/',contentRouter);
 
 
 };
