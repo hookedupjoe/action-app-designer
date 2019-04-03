@@ -18,8 +18,6 @@ module.exports.setup = function setup(scope) {
         if (tmpAppAreaName.charAt(0) == '/') {
             tmpAppAreaName = tmpAppAreaName.substr(1);
         }
-        console.log( 'req.params', req.params);
-        console.log( 'req', req);
         var tmpType = req.params.type || ''
         var tmpName = req.params.name || ''
         var tmpRet = {}
