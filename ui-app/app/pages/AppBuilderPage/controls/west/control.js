@@ -5,6 +5,11 @@ License: MIT
 (function (ActionAppCore, $) {
 
 	var ControlSpecs = {
+		"related": {
+			"workspace": {
+				 content: []
+			}
+		},
 		"options": {
 			"padding": true,
 			"css": [
@@ -50,15 +55,15 @@ License: MIT
 		"content": [
 			{
 				"ctl": "tbl-ol-node",
-				"name": "application",
-				"type": "project",
+				"name": "workspace",
+				"type": "workspace",
+				"item": "workspace",
+				"group": "workspace-outline",
 				"details": "(default)",
-				"meta": "Project",
+				"meta": "Workspace",
 				"classes": "app-table",
 				"level": 3,
-				"group": "application-outline",
-				"item": "project",
-				"icon": "briefcase",
+				"icon": "database",
 				"color": "black",
 				"content": [
 					{
@@ -67,9 +72,8 @@ License: MIT
 						"type": "app",
 						"details": "My First App",
 						"meta": "ThisApp",
-						
 						"level": 2,
-						"group": "application-outline",
+						"group": "workspace-outline",
 						"item": "application",
 						"icon": "globe",
 						"color": "blue",
@@ -81,7 +85,7 @@ License: MIT
 								"details": "HomePage",
 								"meta": "Page",
 								"level": 1,
-								"group": "application-outline",
+								"group": "workspace-outline",
 								"item": "page-HomePage",
 								"icon": "columns",
 								"color": "green"
@@ -93,7 +97,7 @@ License: MIT
 								"details": "LogsPage",
 								"meta": "Page",
 								"level": 1,
-								"group": "application-outline",
+								"group": "workspace-outline",
 								"item": "page-LogsPage",
 								"icon": "columns",
 								"color": "green"
@@ -108,7 +112,7 @@ License: MIT
 						"meta": "ThisApp",
 						"classes": "app-table",
 						"level": 2,
-						"group": "application-outline",
+						"group": "workspace-outline",
 						"item": "appTwo",
 						"icon": "globe",
 						"color": "blue",
@@ -120,7 +124,7 @@ License: MIT
 								"details": "HomePage",
 								"meta": "Page",
 								"level": 1,
-								"group": "application-outline",
+								"group": "workspace-outline",
 								"item": "appTwo-page-HomePage",
 								"icon": "columns",
 								"color": "green"
@@ -132,7 +136,7 @@ License: MIT
 								"details": "LogsPage",
 								"meta": "Page",
 								"level": 1,
-								"group": "application-outline",
+								"group": "workspace-outline",
 								"item": "appTwo-page-LogsPage",
 								"icon": "columns",
 								"color": "green"
@@ -141,8 +145,8 @@ License: MIT
 					}
 				]
 			}
-			
-		],	}
+		]
+		}
 
 		var ControlCode = {};
 	var ThisControl = {specs: ControlSpecs, options: { proto: ControlCode, parent: ThisApp }};
