@@ -3,7 +3,7 @@
  */
 'use strict';
 
-const THIS_MODULE_NAME = 'get-button';
+const THIS_MODULE_NAME = 'test-button';
 const THIS_MODULE_TITLE = 'Demo - get button from JSON Template';
 
 module.exports.setup = function setup(scope) {
