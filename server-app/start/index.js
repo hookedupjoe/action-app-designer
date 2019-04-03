@@ -16,20 +16,13 @@ module.exports.setup = function (app, scope) {
     var express = require('express');
     
     var appRouter = express.Router(),
-        appEntryPoint = require('./app/index').setup(scope),
-        scatRouter = express.Router(),
-        scatRoute = require('./scat/index').setup(scope),
-        contentRouter = express.Router(),
-        appContentProvider = require('./content/index').setup(scope);
+        appEntryPoint = require('./app/index').setup(scope);
 
-        //--- Content Provider = HTML type content
-        //--- Server Catalog (scat) = seemless server side location notation format
+    var scatRouter = express.Router(),
+        scatRoute = require('./scat/index').setup(scope);
 
     appRouter.all('/*', appEntryPoint);
     app.use('/app/',appRouter);
-
-    contentRouter.all('/*', appContentProvider);
-    app.use('/content/',contentRouter);
 
     scatRouter.get('/:type/:name', scatRoute);
     scatRouter.all('/*', scatRoute);
