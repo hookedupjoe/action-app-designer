@@ -1,0 +1,143 @@
+{
+	"options": {
+		"padding": false,
+		"css": [
+			".app-table table.outline > tbody > tr[oluse=\"select\"] {",
+			"  cursor: pointer;",
+			"}",
+			".app-table table.outline > tbody > tr[oluse=\"collapsable\"] {",
+			"  cursor: pointer;",
+			"}",
+			".app-table table.outline > tbody > tr > td.tbl-label {",
+			"  width:90px;",
+			"  color:black;",
+			"  background-color: #eeeeee;",
+			"}",
+			".app-table table.outline > tbody > tr.active > td.tbl-label {",
+			"  width:90px;",
+			"  background-color: #777777;",
+			"  color: white;",
+			"}",
+			".app-table table.outline > tbody > tr > td.tbl-icon {",
+			"  width:40px;",
+			"}",
+			".app-table table.outline > tbody > tr > td.tbl-icon2 {",
+			"  width:80px;",
+			"}",
+			".app-table table.outline > tbody > tr > td.tbl-details {",
+			"  white-space: nowrap;",
+			"  font-weight:bolder;",
+			"  overflow:auto;",
+			"  width:auto;",
+			"}",
+			".app-table table.outline > tbody > tr.active[type=\"page\"] > td.tbl-label {",
+			"  background-color: #21ba45;",
+			"}",
+			".app-table table.outline > tbody > tr.active[type=\"app\"] > td.tbl-label {",
+			"  background-color: #2185d0;",
+			"}",
+			".app-table table.outline > tbody > tr.active[type=\"region\"] > td.tbl-label {",
+			"  background-color: #a333c8;",
+			"}"
+		]
+	},
+	"content": [
+		{
+			"ctl": "control",
+			"controlname": "design/controls/Tester",
+			"name": "tester"
+		},
+		{
+			"ctl": "panel",
+			"controlname": "design/panels/validation",
+			"name": "validation"
+		},
+		{
+			"ctl": "tbl-ol-node",
+			"name": "application",
+			"type": "app",
+			"details": "My First App",
+			"meta": "ThisApp",
+			"classes": "app-table",
+			"level": 3,
+			"group": "application-outline",
+			"item": "application",
+			"icon": "globe",
+			"color": "blue",
+			"content": [
+				{
+					"ctl": "tbl-ol-node",
+					"type": "page",
+					"name": "HomePage",
+					"details": "HomePage",
+					"meta": "Page",
+					"level": 2,
+					"group": "application-outline",
+					"item": "page-HomePage",
+					"icon": "columns",
+					"color": "green",
+					"content": [
+						{
+							"ctl": "tbl-ol-node",
+							"name": "HomePage-east",
+							"type": "region",
+							"details": "East",
+							"meta": "Panel",
+							"group": "application-outline",
+							"item": "page-HomePage-east",
+							"icon": "newspaper outline",
+							"color": "purple"
+						},
+						{
+							"ctl": "tbl-ol-node",
+							"name": "HomePage-center",
+							"type": "region",
+							"details": "Center",
+							"meta": "Control",
+							"group": "application-outline",
+							"item": "page-HomePage-center",
+							"icon": "newspaper",
+							"color": "purple"
+						}
+					]
+				},
+				{
+					"ctl": "tbl-ol-node",
+					"name": "LogsPage",
+					"type": "page",
+					"details": "LogsPage",
+					"meta": "Page",
+					"level": 2,
+					"group": "application-outline",
+					"item": "page-LogsPage",
+					"icon": "columns",
+					"color": "green",
+					"content": [
+						{
+							"ctl": "tbl-ol-node",
+							"name": "LogsPage-east",
+							"type": "region",
+							"details": "East",
+							"meta": "Panel",
+							"group": "application-outline",
+							"item": "page-LogsPage-east",
+							"icon": "newspaper outline",
+							"color": "purple"
+						},
+						{
+							"ctl": "tbl-ol-node",
+							"name": "LogsPage-center",
+							"type": "region",
+							"details": "Center",
+							"meta": "HTML",
+							"group": "application-outline",
+							"item": "page-LogsPage-center",
+							"icon": "code",
+							"color": "purple"
+						}
+					]
+				}
+			]
+		}
+	]
+}
