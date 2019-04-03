@@ -32,7 +32,7 @@ License: MIT
         baseURL: pageBaseURL,
         north: { partname: "north", control: "north" },
         east: { partname: "east", control: "east" },
-        west: {  html: "west"},
+        west: { partname: "west", control: "west" },
         center: { partname: "center", control: "center"  },
         south: false
     }
