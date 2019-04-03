@@ -3,8 +3,8 @@
  */
 'use strict';
 
-const THIS_MODULE_NAME = 'cardsdemo';
-const THIS_MODULE_TITLE = 'Return JSON for content';
+const THIS_MODULE_NAME = 'Tester';
+const THIS_MODULE_TITLE = 'Return code that is evaulated into a control in the UI';
 
 module.exports.setup = function setup(scope) {
     var config = scope;

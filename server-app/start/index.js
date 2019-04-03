@@ -24,7 +24,7 @@ module.exports.setup = function (app, scope) {
     appRouter.all('/*', appEntryPoint);
     app.use('/app/',appRouter);
 
-    scatRouter.get('/:type/:name', scatRoute);
+    scatRouter.get('/:type/:name*', scatRoute);
     scatRouter.all('/*', scatRoute);
     
     app.use('/scat/',scatRouter);
