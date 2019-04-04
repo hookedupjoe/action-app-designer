@@ -9,7 +9,7 @@
 let $ = require("./globalUtilities").$;
 
 let utils = {
-  readDir: readDir,
+  getDirFiles: getDirFiles,
   getJsonFile: getJsonFile
 };
 
@@ -34,21 +34,21 @@ function getJsonFile(theFilename){
   
   }));
 }
-function readDir(theDirectory){
+
+//--- Like readJson but returns [] if not there
+function getDirFiles(theDirectory){
   return new Promise($.async(function (resolve, reject) {
     try {
         $.fs.readdir(theDirectory, function (err, files) {
             if (err) {
-                throw err;
+                resolve([])
             }
             resolve(files);
         });
     }
     catch (error) {
-        console.log('readDir error: ' + error);
-        reject(error);
+      resolve([])
     }
-  
   }));
 
   

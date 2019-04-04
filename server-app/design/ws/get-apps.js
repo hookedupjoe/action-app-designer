@@ -1,6 +1,6 @@
 'use strict';
-const THIS_MODULE_NAME = 'apps';
-const THIS_MODULE_TITLE = 'Get Applications in Workspace Panel';
+const THIS_MODULE_NAME = 'get-apps';
+const THIS_MODULE_TITLE = 'Panel: Applications in Workspace';
 
 module.exports.setup = function setup(scope) {
     var config = scope;
@@ -35,17 +35,18 @@ module.exports.setup = function setup(scope) {
                     "content": []
                 }
                 var tmpWSDir = scope.locals.path.start + '/../local_ws/apps/';
-                var tmpFiles = $.await($.bld.readDir(tmpWSDir))
-                // var tmpFiles = $.await($.fs.readdir(tmpWSDir));
-
+                var tmpFiles = $.await($.bld.getDirFiles(tmpWSDir))
 
                 for (var index in tmpFiles) {
                     var tmpAppName = tmpFiles[index];
                     var tmpAppBase = tmpWSDir + tmpAppName + '/';
-                    var tmpAppDetails = $.await($.bld.getJsonFile(tmpAppBase + 'app.json'))
-                    //console.log( 'tmpAppDetails', tmpAppDetails);
+                    var tmpAppDetails = $.await($.bld.getJsonFile(tmpAppBase + 'app-info.json'))
                     var tmpAppTitle = tmpAppDetails.title || "(untitled)";
 
+                    var tmpPagesBase = tmpAppBase + '/app/pages/';
+                    var tmpPages = $.await($.bld.getDirFiles(tmpPagesBase))
+                    
+                    
                     var tmpApp = {
                         "ctl": "tbl-ol-node",
                         "name": "app-" + tmpAppName + "",
@@ -57,36 +58,27 @@ module.exports.setup = function setup(scope) {
                         "item": "application",
                         "icon": "globe",
                         "color": "blue",
-                        "content": [
-                            {
-                                "ctl": "tbl-ol-node",
-                                "type": "page",
-                                "name": "HomePage",
-                                "details": "HomePage",
-                                "meta": "Page",
-                                "level": 1,
-                                "group": "workspace-outline",
-                                "item": "" + tmpAppName + "-page-HomePage",
-                                "icon": "columns",
-                                "color": "green"
-                            },
-                            {
-                                "ctl": "tbl-ol-node",
-                                "name": "LogsPage",
-                                "type": "page",
-                                "details": "LogsPage",
-                                "meta": "Page",
-                                "level": 1,
-                                "group": "workspace-outline",
-                                "item": "" + tmpAppName + "-page-LogsPage",
-                                "icon": "columns",
-                                "color": "green"
-                            }
-                        ]
+                        "content": []
                     }
-                    //    console.log('tmpApp', tmpApp);
-                    tmpBase.content.push(tmpApp);
 
+                    for( var aIndex in tmpPages){
+                        var tmpPage = tmpPages[aIndex];
+                        var tmpPageInfo = {
+                            "ctl": "tbl-ol-node",
+                            "type": "page",
+                            "name": tmpPage,
+                            "details": tmpPage,
+                            "meta": "Page",
+                            "level": 1,
+                            "group": "workspace-outline",
+                            "item": "" + tmpAppName + "-page-" + tmpPage,
+                            "icon": "columns",
+                            "color": "green"
+                        }
+                        tmpApp.content.push(tmpPageInfo);
+                    }
+                    
+                    tmpBase.content.push(tmpApp);
 
                 }
 

@@ -16,7 +16,7 @@ License: MIT
 		"content": [
 			{
 				"ctl": "panel",
-				"controlname": "design/ws/apps",
+				"controlname": "design/ws/get-apps",
 				"name": "workspace"
 			}
 		]
