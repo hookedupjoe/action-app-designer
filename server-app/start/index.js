@@ -14,7 +14,6 @@ module.exports.setup = function (app, scope) {
     scope.locals.path.preview = scope.locals.path.root + "/local_preview"
     
     console.log( 'scope.locals.$.BuildUtils', scope.locals.$.BuildUtils);
-
     var express = require('express');
     
     var appRouter = express.Router(),
