@@ -4,9 +4,9 @@
 	},
 	"content": [
 		{
-			"ctl": "control",
+			"ctl": "panel",
 			"controlname": "design/ws/apps",
-			"name": "tester"
+			"name": "ws"
 		}
 	]
 }

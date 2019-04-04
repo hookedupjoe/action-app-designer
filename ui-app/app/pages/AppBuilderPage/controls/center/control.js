@@ -10,7 +10,7 @@ License: MIT
 		},
 		"content": [
 			{
-				"ctl": "control",
+				"ctl": "panel",
 				"controlname": "design/ws/apps",
 				"name": "workspace"
 			}
