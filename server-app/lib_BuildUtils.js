@@ -8,17 +8,49 @@
 
 let $ = require("./globalUtilities").$;
 
-let utils = {}; // local gulpMoney
-module.exports.utils = utils;
+let utils = {
+  readDir: readDir,
+  getJsonFile: getJsonFile
+};
 
-utils.copyDirAsNew = copyDirAsNew;
+module.exports = utils;
 
-function copyDirAsNew(theSource,theTarget) {
 
+//--- Like readJson but returns {} if not there
+function getJsonFile(theFilename){
+  return new Promise($.async(function (resolve, reject) {
     try {
-        
+        $.fs.readJson(theFilename, function (err, theObj) {
+            if (err) {
+              resolve({})
+            } else {
+              resolve(theObj);
+            }
+        });
     }
-    catch (err) {
-        return {};
+    catch (error) {
+        resolve({})
     }
+  
+  }));
 }
+function readDir(theDirectory){
+  return new Promise($.async(function (resolve, reject) {
+    try {
+        $.fs.readdir(theDirectory, function (err, files) {
+            if (err) {
+                throw err;
+            }
+            resolve(files);
+        });
+    }
+    catch (error) {
+        console.log('readDir error: ' + error);
+        reject(error);
+    }
+  
+  }));
+
+  
+}
+

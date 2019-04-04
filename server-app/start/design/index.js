@@ -6,13 +6,8 @@ Entry point for Designer
 module.exports.setup = function setup(scope) {
 
     let $ = scope.locals.$;
-    //--- Setup app data access entry point using application data scope
-    var tmpAppDataConfig = require(scope.locals.path.localSecurity + "/couch-config.js");
-    scope.locals.$.AppData = require(scope.locals.path.start + "/lib_AppData.js").setup(scope, tmpAppDataConfig);
-    scope.locals.$.AppUtils = require(scope.locals.path.start + "/app/_common/AppUtils.js").setup(scope);
-
     scope.locals.path.design = scope.locals.path.start + "/design"
-
+    
     return $.async(function processReq(req, res, next) {
         
         var tmpType = req.params.type || ''
