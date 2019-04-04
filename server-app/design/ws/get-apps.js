@@ -22,16 +22,16 @@ module.exports.setup = function setup(scope) {
 
                 var tmpBase = {
                     "ctl": "tbl-ol-node",
-                    "name": "workspace",
                     "type": "workspace",
+                    "name": "workspace",
                     "item": "workspace",
-                    "group": "workspace-outline",
                     "details": "Workspace",
                     "meta": "&#160;",
                     "classes": "ws-outline",
                     "level": 3,
                     "icon": "database",
                     "color": "black",
+                    "group": "workspace-outline",
                     "content": []
                 }
                 var tmpWSDir = scope.locals.path.start + '/../local_ws/apps/';
@@ -49,15 +49,15 @@ module.exports.setup = function setup(scope) {
                     
                     var tmpApp = {
                         "ctl": "tbl-ol-node",
+                        "type": "app",
                         "name": "app-" + tmpAppName + "",
                         "item": "app-" + tmpAppName + "",
-                        "group": "workspace-outline",
-                        "type": "app",
                         "details": tmpAppTitle,
                         "meta": "&#160;",
                         "level": 2,
                         "icon": "globe",
                         "color": "blue",
+                        "group": "workspace-outline",
                         "content": []
                     }
 
@@ -66,12 +66,12 @@ module.exports.setup = function setup(scope) {
                         var tmpPageInfo = {
                             "ctl": "tbl-ol-node",
                             "type": "page",
-                            "name": tmpPage,
+                            "name": "" + tmpAppName + "-page-" + tmpPage,
+                            "item": "" + tmpAppName + "-page-" + tmpPage,
                             "details": tmpPage,
                             "meta": "&#160;",
                             "level": 1,
                             "group": "workspace-outline",
-                            "item": "" + tmpAppName + "-page-" + tmpPage,
                             "icon": "columns",
                             "color": "green"
                         }
