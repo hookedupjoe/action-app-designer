@@ -81,7 +81,7 @@ function onListening(server) {
 preview.use(bodyParser.json());
 preview.use(bodyParser.urlencoded({ extended: false }));
 preview.use(cookieParser());
-preview.use(express.static(scope.locals.path.root + '/local_preview'));
+preview.use(express.static(scope.locals.path.root + '/local_ws'));
 
 // error handlers
 preview.use(function (req, res, next) {
