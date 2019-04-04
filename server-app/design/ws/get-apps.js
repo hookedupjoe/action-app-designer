@@ -29,7 +29,7 @@ module.exports.setup = function setup(scope) {
                     "meta": "&#160;",
                     "classes": "ws-outline",
                     "level": 3,
-                    "icon": "database",
+                    "icon": "hdd outline",
                     "color": "black",
                     "group": "workspace-outline",
                     "content": []

@@ -3,6 +3,7 @@
   ThisApp = null;
 
   var tmpPageNames = [   
+    'NewTestPage',
     'AppBuilderPage',
     'ControlsPage',
     'ProjectDashboardPage',
