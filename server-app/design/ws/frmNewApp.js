@@ -21,6 +21,22 @@ module.exports.setup = function setup(scope) {
         var self = this;
         return new Promise($.async(function (resolve, reject) {
             try {
+
+              var tmpAppConfig = $.await($.bld.getJsonFile(scope.locals.path.designer + '/build/app-build-config.json'));
+//console.log( 'tmpAppConfig', tmpAppConfig);
+
+var tmpLibLocations = '';
+var tmpLocs = tmpAppConfig.libraryLocations || [];
+
+for (var aIndex in tmpLocs){
+  var tmpLoc = tmpLocs[aIndex];
+  var tmpThisLoc = tmpLoc.label + "|" + tmpLoc.name;
+  if( tmpLibLocations ){
+    tmpLibLocations += ',';
+  }
+  tmpLibLocations += tmpThisLoc;
+}
+
                 var tmpRet = {
                   "options": {
                     "prompt": {
@@ -56,14 +72,15 @@ module.exports.setup = function setup(scope) {
                           "name": "cdn",
                           "label": "CDN Location",
                           "default": "local",
-                          "list": "Local|local,IBM Cloud|cloud,In App|app",
+                          "list": tmpLibLocations,
                           "req": true
                         },
                         {
                           "ctl": "dropdown",
-                          "name": "template",
-                          "label": "Application Template",
-                          "list": "Blank|tpl-blank,Testing|tpl-testing,Demos|tpl-demos",
+                          "multi": true,
+                          "name": "pages",
+                          "label": "Pages to start with",
+                          "list": "HomePage,LogsPage,TesterPage,TemplateForHTML,TemplateForPanels,TemplateForControls",
                           "req": true
                         }
                       ]

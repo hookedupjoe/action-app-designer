@@ -2,18 +2,29 @@
 	"baseURL": "/local_ws/apps",
 	"libraryLocations": [
 		{
-			"name": "local CDN",
+			"name": "local",
 			"label": "Local 7071",
 			"prefix": "//localhost:7071"
 		},
 		{
 			"name": "cloud",
-			"label": "IBM Cloud CDN",
+			"label": "Production Cloud CDN",
+			"prefix": "//action-app-home.mybluemix.net"
+		},
+		{
+			"name": "cloud-preprop",
+			"label": "Preprod Cloud Development CDN",
+			"prefix": "//action-app-home.mybluemix.net"
+		},
+		{
+			"name": "cloud-dev",
+			"label": "Dev Cloud Development CDN",
 			"prefix": "//action-app-home.mybluemix.net"
 		},
 		{
 			"name": "app",
-			"label": "."
+			"label": "In Application",
+			"prefix": "."
 		}
 	],
 	"libraries": [
@@ -37,6 +48,13 @@
 			],
 			"js": [
 				"<script src=\"//localhost:7071/lib/jsTree/jstree.min.js\"></script>"
+			]
+		},
+		{
+			"name": "Ace",
+			"label": "Ace Editor",
+			"js": [
+				"<script src=\"//localhost:7071/lib/ace/ace.js\"></script>"
 			]
 		}
 	],

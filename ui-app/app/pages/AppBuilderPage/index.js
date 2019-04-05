@@ -55,40 +55,7 @@ License: MIT
     *    If your component need to do stuff to be availale in the background, do it here
     */
     var actions = ThisPage.pageActions;
-
-
-    var defaultAppSpecs = {
-        name: "firstapp",
-        title: "My First App",
-        pages: [{
-            name: "HomePage",
-            title: "Home",
-            inTop: true,
-            inSide: true,
-            layout: {
-                pageBase: true,
-                useControls: true,
-                north: {
-                    partname: "north",
-                    control: "north"
-                },
-                east: {
-                    partname: "east",
-                    control: "east"
-                },
-                west: {
-                    html: "west"
-                },
-                center: {
-                    html: "body"
-                },
-                south: false
-            }
-        }]
-    }
-    var appIndex = {
-        default: defaultAppSpecs
-    };
+    var appSetupConfig = false;
 
     ThisPage._onPreInit = function (theApp) {
         ThisPage._om = theApp.om;
@@ -111,7 +78,7 @@ License: MIT
         ThisPage.initOnFirstLoad().then(
             function () {
                 //--- Now your done - READY to do stuff the first time on your page
-                ThisPage.loadPageSpot('header-area', 'Welcome');
+                //ThisPage.loadPageSpot('header-area', 'Welcome');
 
 
                 //--- Do special stuff on page load here
@@ -144,43 +111,6 @@ License: MIT
     }
 
     //=== Page Stuff
-
-
-    var tests = {
-        "hello": function (theParams) {
-            alert("Hello World Again")
-        }
-        , "test2": test2
-        , "test3": test3
-        , "test4": test4
-        , "test5": test5
-        , "helloFromName": helloFromName
-        , "spots": playWithSpots
-    }
-
-
-    actions.helloFromName = helloFromName;
-    function helloFromName() {
-        var tmpName = ThisPage.parts.west.getFieldValue('yourname');
-        ThisPage.parts.body.parts.control1.sayHello(tmpName)
-    };
-
-    function test5(theParams) {
-        demoPullingNewResources()
-    }
-
-    function getControlAndCreateInstanceInASpot(theParams) {
-        var tmpTargetItem = ThisPage.parts.body.getItem('control1');
-        var tmpEl = tmpTargetItem.el;
-
-        var tmp = ThisPage.res.controls['tester'];
-
-        var tmpPart = tmpCtl.create('body-control1');
-
-        tmpPart.loadToElement(tmpEl);
-        tmpPart.sayHello('Dynamic Dan')
-
-    }
 
     //---- DEMOs
     function demoPullingNewResources(theParams) {
@@ -230,71 +160,34 @@ License: MIT
 
     };
 
+    function loadJsonFileDemo(theControlName) {
+        var dfd = jQuery.Deferred();
+        if (appSetupConfig) {
+            dfd.resolve(true)
 
-    function test4(theParams) {
-        var tester = ThisPage.getControl('TesterControl');
-        tester.prompt()
-
-    }
-    function test3(theParams) {
-        alert("This space intentionally left blank")
-    }
-
-    var tmpTest2Counter = 0;
-    function test2(theName) {
-        tmpTest2Counter++;
-        var tmpArea = ThisPage.parts.body;
-        var tmpArea2 = ThisPage.parts.east;
-        var tmpArea3 = ThisPage.parts.body.parts.panel1;
-
-        tmpArea.getSpot("body").css('color', 'blue');
-        tmpArea.loadSpot("body", "Hello Center Spot " + tmpTest2Counter);
-        tmpArea.gotoItem('body');
-
-        var tmpNewText = '';
-        if ((tmpTest2Counter % 2) == 1) {
-            tmpNewText = 'New Top Header';
+            return dfd.promise();
         }
-        tmpArea.runItemAction('card-full-matt', 'setTopHeader', { text: tmpNewText })
-        // tmpArea2.getSpot("body").append("Hello East Spot");
-        tmpArea2.loadSpot("body", "Hello East Spot " + tmpTest2Counter);
-        tmpArea2.gotoItem('body');
 
-        tmpArea3.loadSpot("body", "Hello Panel 1 in body spot " + tmpTest2Counter);
-        tmpArea3.gotoItem('body');
+        var tmpFN = 'somefile.json';
+        var tmpDocsList = [tmpFN];
+        var tmpLocation = 'SOMELOCATION';
+        ThisApp.om.getObjects('[get]:' + tmpLocation, tmpDocsList).then(function (theDocs) {
+            var tmpDoc = theDocs[tmpFN];
+            if (!(tmpDoc)) {
+                dfd.resolve(false);
+            } else {
+                dfd.resolve(tmpDoc);
+            }
+        });
 
-        //ThisPage.part.east.addToSpot("body", "Hello East Spot");
-    }
+        return dfd.promise();
+    };
 
-    function playWithSpots(theName) {
-        var tmpPreviewArea = ThisPage.parts.east;
-
-        ThisPage.loadSpot("hello-area", "Hello Area");
-        ThisPage.loadSpot("preview-details", "Hello World Again");
-        tmpPreviewArea.gotoItem('preview-details');
-
-        var tmpIsVis = tmpPreviewArea.getItemDisplay('preview-details');
-        tmpPreviewArea.setItemDisplay('preview-details', !tmpIsVis, ['slow']);
-
-        ThisPage.parts.body.parts.panel1.loadSpot('body', "Hello Panel One Spot");
-        ThisPage.parts.body.parts.panel1.gotoItem('body')
-
-    }
 
     actions.runTest = runTest;
     function runTest(theParams, theTarget) {
         var tmpParams = ThisApp.getActionParams(theParams, theTarget, ['testname', 'param1', 'param2'])
-        var tmpName = tmpParams.testname || '';
-        if (!(tmpName)) {
-            alert('Test ran, add testname param to run a specific test');
-            return;
-        }
-        var tmpTestFunc = tests[tmpName];
-        if (!(tmpTestFunc)) {
-            alert('Test ' + tmpName + ', add testname param to run a specific test');
-            return;
-        }
-        tmpTestFunc(theParams);
+
 
     };
 
@@ -383,7 +276,10 @@ License: MIT
     ThisPage.addApp = addApp;
     function addApp(theParams, theTarget) {
         ThisPage.getPanel('frmNewApp').prompt(
-            { isNew: true, doc: { cdn: 'local', template: 'tpl-blank' } }
+            {
+                isNew: true,
+                doc: { cdn: 'local', pages: 'HomePage' }
+            }
         ).then(function (theSubmitted, theData) {
             if (!theSubmitted) {
                 return;
@@ -391,6 +287,7 @@ License: MIT
             console.log('theData', theData);
         })
     };
+
 
 
 
