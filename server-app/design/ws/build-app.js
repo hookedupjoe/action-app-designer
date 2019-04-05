@@ -118,7 +118,55 @@ module.exports.setup = function setup(scope) {
                 }
 
                 var tmpTitle = tmpAppDetails.title || 'Action App';
+
+                var tmpPagesText = '[]';
+                if( tmpAppDetails.pages ){
+                    if( typeof(tmpAppDetails.pages) == 'string'){
+                        tmpPagesText = tmpAppDetails.pages;
+                    } else {
+                        tmpPagesText = JSON.stringify(tmpAppDetails.pages);
+                    }
+                }
+               
+
+                var tmpPagesText = '[]';
+                if( tmpAppDetails.pages ){
+                    if( typeof(tmpAppDetails.pages) == 'string'){
+                        tmpPagesText = tmpAppDetails.pages;
+                    } else {
+                        tmpPagesText = JSON.stringify(tmpAppDetails.pages);
+                    }
+                }
+               
+                var tmpPluginsAppText = '[]';
+                if( tmpAppDetails.plugins ){
+                    if( typeof(tmpAppDetails.plugins) == 'string'){
+                        tmpPluginsAppText = tmpAppDetails.plugins;
+                    } else {
+                        tmpPluginsAppText = JSON.stringify(tmpAppDetails.plugins);
+                    }
+                }
+
                 
+                var tmpReqAppText = '{}';
+                if( tmpAppDetails.required ){
+                    if( typeof(tmpAppDetails.required) == 'string'){
+                        tmpReqAppText = tmpAppDetails.required;
+                    } else {
+                        tmpReqAppText = JSON.stringify(tmpAppDetails.required);
+                    }
+                }
+
+                var tmpExtendAppText = '{}';
+                if( tmpAppDetails.extend ){
+                    if( typeof(tmpAppDetails.extend) == 'string'){
+                        tmpExtendAppText = tmpAppDetails.extend;
+                    } else {
+                        tmpExtendAppText = JSON.stringify(tmpAppDetails.extend);
+                    }
+                }
+
+                console.log( 'tmpExtendAppText', tmpExtendAppText);
                 var tmpIndexMap = {
                     "{{LIBRARY-LOCATION}}": tmpLibLoc.prefix || '.',
                     "{{OPTIONAL-LIB-CSS}}": tmpOptLibCSS,
@@ -130,10 +178,10 @@ module.exports.setup = function setup(scope) {
                 }
 
                 var tmpAppMap = {
-                    "{{PAGES-ARRAY}}": "[\"HomePage\",\"LogsPage\"]",
-                    "{{PLUGINS-ARRAY}}": "[\"DataTables\"]",
-                    "{{REQUIRED-OBJECT}}": "{}",
-                    "{{EXTEND-OBJECT}}": "{}",
+                    "{{PAGES-ARRAY}}": tmpPagesText,
+                    "{{PLUGINS-ARRAY}}": tmpPluginsAppText,
+                    "{{REQUIRED-OBJECT}}": tmpReqAppText,
+                    "{{EXTEND-OBJECT}}": tmpExtendAppText,
                     "{{OPTIONAL-APP-CODE}}": ""
                 }
 
@@ -145,9 +193,6 @@ module.exports.setup = function setup(scope) {
 
                 var tmpRet = {
                     status: true,
-                    // app: tmpApp,
-                    index: tmpIndex,
-                    info: tmpAppDetails,
                     refresh: true
                 }
 
