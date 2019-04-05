@@ -1,29 +1,48 @@
-
-<div pagespot="body"></div>
 <div class="ui segment basic slim">
-
-    <h2 class="ui header">
-        <i class="hdd black icon"></i>
-        <div class="content">
-          Workspace
-        </div>
-      </h2>
-
-      <div class="ui segment basic slim">
-          <button pageaction="addApp" class="ui button basic blue"><i class="icon plus"></i>&#160;Add Application</button>
-    </div>
-
-      <table class="ui definition table medium-label">
-          <tbody>
-            <tr>
-              <td>Location</td>
-              <td>./local_ws</td>
-            </tr>
-            <tr>
-              <td>Applications</td>
-              <td>3</td>
-            </tr>
-          </tbody>
-        </table>
-
+    <table class="ui compact celled definition table">
+        <thead>
+          <tr>
+            <th></th>
+            <th>Library</th>
+            <th>Details</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="collapsing">
+              <div class="ui fitted slider checkbox">
+                <input type="checkbox"> <label></label>
+              </div>
+            </td>
+            <td>Datatables</td>
+            <td>Advanced Tables</td>
+          </tr>
+          <tr>
+            <td class="collapsing">
+              <div class="ui fitted slider checkbox">
+                <input type="checkbox"> <label></label>
+              </div>
+            </td>
+            <td>Ace</td>
+            <td>JSON, JS, HTML Editor</td>
+          </tr>
+        
+        </tbody>
+        <tfoot class="full-width">
+          <tr>
+            <th></th>
+            <th colspan="4">
+              <div class="ui right floated small primary labeled icon button">
+                <i class="archive icon"></i>Add Custom
+              </div>
+              <div class="ui small button">
+                All
+              </div>
+              <div class="ui small button">
+                None
+              </div>
+            </th>
+          </tr>
+        </tfoot>
+      </table>
 </div>
