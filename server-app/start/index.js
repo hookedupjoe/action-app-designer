@@ -16,7 +16,7 @@ module.exports.setup = function (app, scope) {
     var express = require('express');
     
     var appRouter = express.Router(),
-        appEntryPoint = require('./app/index').setup(scope);
+        appEntryPoint = require('./api/index').setup(scope);
 
     var scatRouter = express.Router(),
         scatRoute = require('./scat/index').setup(scope);
@@ -25,7 +25,7 @@ module.exports.setup = function (app, scope) {
     designRoute = require('./design/index').setup(scope);
 
     appRouter.all('/*', appEntryPoint);
-    app.use('/app/',appRouter);
+    app.use('/api/',appRouter);
 
     scatRouter.get('/:type/:name*', scatRoute);
     scatRouter.all('/*', scatRoute);

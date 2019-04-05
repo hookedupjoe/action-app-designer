@@ -154,7 +154,7 @@ License: MIT
     ThisPage.runRecycleSelected = function () {
         ThisPage.promptDialog.modal("hide");
         var tmpKeys = getSelectedKeys();
-        var tmpURL = '/app/action?name=recycle&keys=' + tmpKeys;
+        var tmpURL = '/api/action?name=recycle&keys=' + tmpKeys;
 
         ThisPage.processingDialogShow();
         ThisApp.common.apiCall({
@@ -243,7 +243,7 @@ License: MIT
     }
 
     function runPreviewDocument(theID) {
-        var tmpURL = "/app/view?name=" + ThisPage.currentViewName + "&key=" + theID;
+        var tmpURL = "/api/view?name=" + ThisPage.currentViewName + "&key=" + theID;
         ThisPage.showPreviewLoading();
         ThisApp.common.apiCall({
             url: tmpURL
@@ -379,7 +379,7 @@ License: MIT
     }
     ThisPage.refreshReport = function () {
         ThisPage.showPreviewLoading();
-        var tmpURL = "/app/view?name=" + ThisPage.currentViewName;
+        var tmpURL = "/api/view?name=" + ThisPage.currentViewName;
         ThisPage.currentDataTable.clear();
         ThisPage.currentDataTable.draw();
         ThisApp.common.apiCall({
@@ -413,7 +413,7 @@ License: MIT
     ThisPage.loadReport = function () {
         ThisPage.showLoading();
         
-        var tmpURL = "/app/view?name=" + ThisPage.currentViewName;
+        var tmpURL = "/api/view?name=" + ThisPage.currentViewName;
 
       
 
@@ -448,7 +448,7 @@ License: MIT
     ThisPage.savePreviewDoc = function(){
         var tmpContent = ThisPage.jsEditor.getValue();
         var tmpOptions = {
-            url: '/app/action?name=update-docs',
+            url: '/api/action?name=update-docs',
             method: 'POST',
             data: tmpContent,
             contentType: "application/json; charset=utf-8",

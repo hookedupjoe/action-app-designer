@@ -103,7 +103,7 @@ License: MIT
 
     function sendSetupUpdate(theDetails) {
         ThisApp.common.apiCall({
-            url: '/app/action?name=db-setup-update',
+            url: '/api/action?name=db-setup-update',
             method: 'POST',
             data: JSON.stringify(theDetails),
             contentType: "application/json; charset=utf-8",
@@ -253,7 +253,7 @@ License: MIT
 
         //if theOptionalSetupDoc use it, else look it up
         ThisPage.showLoading();
-        var tmpURL = "/app/action?name=directory-setup-doc";
+        var tmpURL = "/api/action?name=directory-setup-doc";
 
         ThisApp.common.apiCall({
             timeout: 3000,

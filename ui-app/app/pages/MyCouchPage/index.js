@@ -100,7 +100,7 @@ License: MIT
     ThisPage.refreshDatabaseList = refreshDatabaseList;
     function refreshDatabaseList() {
         ThisPage.showLoading();
-        var tmpURL = "/app/action?name=get-databases";
+        var tmpURL = "/api/action?name=get-databases";
         ThisApp.common.apiCall({
             timeout: 3000,
             url: tmpURL
@@ -154,7 +154,7 @@ License: MIT
     ThisPage.openThisDatabase = openThisDatabase;
     function openThisDatabase(theAction,theTarget) {
         var tmpName = $(theTarget).attr('name');
-        var tmpURL = "/app/action?name=get-info-for-db&database=" + tmpName;
+        var tmpURL = "/api/action?name=get-info-for-db&database=" + tmpName;
         ThisApp.common.apiCall({
             timeout: 3000,
             url: tmpURL
