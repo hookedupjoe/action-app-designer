@@ -28,8 +28,6 @@ module.exports.setup = function setup(scope) {
                 var tmpAppDetails = $.await($.bld.getJsonFile(tmpAppBase + 'app-info.json'))
 
                 var tmpBuildCfg = $.await($.bld.getJsonFile(scope.locals.path.designer + '/build/app-build-config.json'));
-// console.log( 'tmpBuildCfg', tmpBuildCfg);
-// console.log( 'tmpAppDetails', tmpAppDetails);
 
                 var tmpPartsLoc = scope.locals.path.designer + '/build/tpl-parts/';
                 var tmpIndex = $.await($.bld.getTextFile(tmpPartsLoc + 'tpl-index.html'))
@@ -39,16 +37,56 @@ module.exports.setup = function setup(scope) {
                 var tmpLibLoc = tmpLibLocs[tmpAppDetails.cdn] || 'local';
                 var tmpOptLibCSS = '';
                 var tmpOptLibJS = '';
+                var tmpPluginsText = '';
+
+                var tmpPIConfig = tmpAppDetails.plugins || false;
+                if( tmpPIConfig && tmpPIConfig.length ){
+                    var tmpPIs = $.bld.getIndexFromArray(tmpBuildCfg.plugins, 'name');
+                    for( var aIndex in tmpPIConfig){
+                        var tmpPIDetails = tmpPIConfig[aIndex];
+                        tmpPIDetails = tmpPIs[tmpPIDetails];
+                        if( tmpPIDetails && tmpPIDetails.css){
+                            var tmpCSSs = tmpPIDetails.css;
+                            if( typeof(tmpCSSs) == 'string' ){
+                                tmpCSSs = [tmpCSSs];
+                            }
+                            for( var iCSS in tmpCSSs ){
+                                var tmpCSS = tmpCSSs[iCSS];
+                                if (tmpPICSS){
+                                    tmpPICSS += '\n\t'
+                                }
+                                tmpPICSS += tmpCSS;
+                            }
+                            
+                        }
+                        if( tmpPIDetails && tmpPIDetails.js){
+                            var tmpJSs = tmpPIDetails.js;
+                            if( typeof(tmpJSs) == 'string' ){
+                                tmpJSs = [tmpJSs];
+                            }
+                            for( var iJS in tmpJSs ){
+                                var tmpJS = tmpJSs[iJS];
+                                if (tmpPluginsText){
+                                    tmpPluginsText += '\n\t'
+                                }
+                                tmpPluginsText += tmpJS;
+                            }
+                            
+                        }
+                    }
+                }
+
+                var tmpOptCSS = '';
+                if (tmpAppDetails && tmpAppDetails.hasAppCSS){
+                    tmpOptCSS = "<link rel=\"stylesheet\" href=\"/app/css/app.css\">"
+                }
                 var tmpLibsConfig = tmpAppDetails.libraries || false;
                 if( tmpLibsConfig && tmpLibsConfig.length ){
                     var tmpLibs = $.bld.getIndexFromArray(tmpBuildCfg.libraries, 'name');
-                    // console.log( 'tmpLibsConfig', tmpLibsConfig);
-                    // console.log( 'tmpLibs', tmpLibs);
                     for( var aIndex in tmpLibsConfig){
                         var tmpLibDetails = tmpLibsConfig[aIndex];
                         tmpLibDetails = tmpLibs[tmpLibDetails];
                         if( tmpLibDetails && tmpLibDetails.css){
-                            // console.log( 'tmpLibDetails', tmpLibDetails);
                             var tmpCSSs = tmpLibDetails.css;
                             if( typeof(tmpCSSs) == 'string' ){
                                 tmpCSSs = [tmpCSSs];
@@ -59,12 +97,10 @@ module.exports.setup = function setup(scope) {
                                     tmpOptLibCSS += '\n\t'
                                 }
                                 tmpOptLibCSS += tmpCSS;
-                                // console.log( 'tmpCSS', tmpCSS);
                             }
                             
                         }
                         if( tmpLibDetails && tmpLibDetails.js){
-                            // console.log( 'tmpLibDetails', tmpLibDetails);
                             var tmpJSs = tmpLibDetails.js;
                             if( typeof(tmpJSs) == 'string' ){
                                 tmpJSs = [tmpJSs];
@@ -75,35 +111,21 @@ module.exports.setup = function setup(scope) {
                                     tmpOptLibJS += '\n\t'
                                 }
                                 tmpOptLibJS += tmpJS;
-                                // console.log( 'tmpJS', tmpJS);
                             }
                             
                         }
-console.log( 'tmpOptLibCSS', tmpOptLibCSS);
-                        console.log( 'tmpOptLibJS', tmpOptLibJS);
-                        // if (tmpLibName){
-                        //     var tmpLibText = tmpLibs[tmpLibName];
-                        //     if (tmpLibText){
-                        //         if( tmpLibsText ){
-                        //             tmpLibsText += '\n\t';
-                        //         }
-                        //         tmpLibsText += tmpLibText
-                        //     }
-                        // }
                     }
                 }
-                //var tmpLibLoc = tmpLibLocs[tmpAppDetails.cdn] || 'local';
 
                 var tmpTitle = tmpAppDetails.title || 'Action App';
-
-                // console.log( 'tmpLibLoc', tmpLibLoc);
+                
                 var tmpIndexMap = {
                     "{{LIBRARY-LOCATION}}": tmpLibLoc.prefix || '.',
                     "{{OPTIONAL-LIB-CSS}}": tmpOptLibCSS,
-                    "{{OPTIONAL-CSS}}": "<link rel=\"stylesheet\" href=\"/app/css/app.css\">",
+                    "{{OPTIONAL-CSS}}": tmpOptCSS,
                     "{{PAGE-TITLE}}": tmpTitle,
                     "{{APP-TITLE}}": tmpTitle,
-                    "{{OPTIONAL-PLUGINS}}": "<script src=\"//localhost:7071/plugins/jquery-datatables-helper.js\"></script>\n<script src=\"//localhost:7071/plugins/datatables-plugin.js\"></script>",
+                    "{{OPTIONAL-PLUGINS}}": tmpPluginsText,
                     "{{OPTIONAL-LIB-JS}}": tmpOptLibJS
                 }
 
