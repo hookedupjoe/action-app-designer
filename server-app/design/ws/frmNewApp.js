@@ -22,45 +22,30 @@ module.exports.setup = function setup(scope) {
         return new Promise($.async(function (resolve, reject) {
             try {
                 var tmpRet = {
+                  "options": {
+                    "prompt": {
+                      "submitLabel": "Save Application Changes",
+                      "title": "Application Details",
+                      "submitLabelNew": "Create New Application",
+                      "titleNew": "New Application"
+                    }
+                  },
                   "content": [
-                    
-                    {
-                      "ctl": "title",
-                      "size": "large",
-                      "icon": "globe",
-                      "name": "title",
-                      "color": "blue",
-                      "text": "Application Setup"
-                    },
-                    {
-                      "ctl": "sep",
-                      "size": "small",
-                      "icon": "road",
-                      "name": "about-your-app-sep",
-                      "text": "Application Information"
-                    },
                     {
                       "ctl": "fieldrow",
                       "name": "info-row",
                       "items": [
                         {
                           "name": "appname",
-                          "label": "Unique Name",
+                          "label": "Application Filename",
                           "req": true
                         },
                         {
                           "name": "title",
-                          "label": "App Title",
+                          "label": "Application Title",
                           "req": true
                         }
                       ]
-                    },
-                    {
-                      "ctl": "sep",
-                      "size": "small",
-                      "icon": "cog",
-                      "name": "app-setup-info",
-                      "text": "Application Setup"
                     },
                     {
                       "ctl": "fieldrow",
@@ -87,11 +72,103 @@ module.exports.setup = function setup(scope) {
                       "name": "description",
                       "label": "Description",
                       "placeholder": "Enter optional details about this application",
-                      "ctl": "textarea",
-                      "rows": 2,
+                      "ctl": "field",
                       "req": true
                     }
-                  ]
+                  ],
+                  "index": {
+                    "fieldsList": [
+                      "appname",
+                      "title",
+                      "cdn",
+                      "template",
+                      "description"
+                    ],
+                    "itemsList": [
+                      "info-row",
+                      "options-row"
+                    ],
+                    "fields": {
+                      "appname": {
+                        "name": "appname",
+                        "label": "Application Filename",
+                        "req": true
+                      },
+                      "title": {
+                        "name": "title",
+                        "label": "Application Title",
+                        "req": true
+                      },
+                      "cdn": {
+                        "ctl": "dropdown",
+                        "name": "cdn",
+                        "label": "CDN Location",
+                        "default": "local",
+                        "list": "Local|local,IBM Cloud|cloud,In App|app",
+                        "req": true
+                      },
+                      "template": {
+                        "ctl": "dropdown",
+                        "name": "template",
+                        "label": "Application Template",
+                        "list": "Blank|tpl-blank,Testing|tpl-testing,Demos|tpl-demos",
+                        "req": true
+                      },
+                      "description": {
+                        "name": "description",
+                        "label": "Description",
+                        "placeholder": "Enter optional details about this application",
+                        "ctl": "field",
+                        "req": true
+                      }
+                    },
+                    "items": {
+                      "info-row": {
+                        "ctl": "fieldrow",
+                        "detail": ""
+                      },
+                      "options-row": {
+                        "ctl": "fieldrow",
+                        "detail": ""
+                      }
+                    },
+                    "controls": {},
+                    "required": {},
+                    "outline": [
+                      {
+                        "ctl": "fieldrow",
+                        "name": "info-row",
+                        "children": [
+                          {
+                            "ctl": "field",
+                            "name": "appname"
+                          },
+                          {
+                            "ctl": "field",
+                            "name": "title"
+                          }
+                        ]
+                      },
+                      {
+                        "ctl": "fieldrow",
+                        "name": "options-row",
+                        "children": [
+                          {
+                            "ctl": "dropdown",
+                            "name": "cdn"
+                          },
+                          {
+                            "ctl": "dropdown",
+                            "name": "template"
+                          }
+                        ]
+                      },
+                      {
+                        "ctl": "field",
+                        "name": "description"
+                      }
+                    ]
+                  }
                 }
 
                 resolve(tmpRet);

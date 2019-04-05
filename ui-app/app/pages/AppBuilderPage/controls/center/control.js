@@ -9,7 +9,6 @@ License: MIT
 			padding: false
 		},
 		"content": [
-		
 			
 		]	
 	
