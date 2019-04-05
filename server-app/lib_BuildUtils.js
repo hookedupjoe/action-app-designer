@@ -14,7 +14,8 @@ let utils = {
   getJsonFile: getJsonFile,
   replaceAll: replaceAll,
   replaceFromMap: replaceFromMap,
-  replaceFile: replaceFile
+  replaceFile: replaceFile,
+  getIndexFromArray: getIndexFromArray
 };
 
 module.exports = utils;
@@ -25,6 +26,15 @@ function replaceAll(str,replaceWhat,replaceTo){
   return str.replace(re,replaceTo);
 }
 
+function getIndexFromArray(theArray,theKeyField){
+  var tmpRet = {};
+  for( var aIndex in theArray){
+    var tmpEntry = theArray[aIndex];
+    var tmpKey = tmpEntry[(theKeyField || 'id')];
+    tmpRet[tmpKey] = tmpEntry;
+  }
+  return tmpRet;
+}
 function replaceFromMap(theString, theMap){
   var tmpRet = '' + theString;
   for( var aName in theMap ){

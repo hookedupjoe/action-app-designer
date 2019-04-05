@@ -27,12 +27,19 @@ module.exports.setup = function setup(scope) {
                 var tmpAppBase = tmpWSDir + tmpAppName + '/';
                 var tmpAppDetails = $.await($.bld.getJsonFile(tmpAppBase + 'app-info.json'))
 
+                var tmpBuildCfg = $.await($.bld.getJsonFile(scope.locals.path.designer + '/build/app-build-config.json'));
+console.log( 'tmpBuildCfg', tmpBuildCfg);
+console.log( 'tmpAppDetails', tmpAppDetails);
+
                 var tmpPartsLoc = scope.locals.path.designer + '/build/tpl-parts/';
                 var tmpIndex = $.await($.bld.getTextFile(tmpPartsLoc + 'tpl-index.html'))
                 var tmpApp = $.await($.bld.getTextFile(tmpPartsLoc + 'tpl-app-js.txt'))
 
+                var tmpLibLocs = $.bld.getIndexFromArray(tmpBuildCfg.libraryLocations, 'name');
+                var tmpLibLoc = tmpLibLocs[tmpAppDetails.cdn] || 'local';
+                console.log( 'tmpLibLoc', tmpLibLoc);
                 var tmpIndexMap = {
-                    "{{LIBRARY-LOCATION}}": "//localhost:7071",
+                    "{{LIBRARY-LOCATION}}": tmpLibLoc.prefix || '.',
                     "{{OPTIONAL-LIB-CSS}}": "<link rel=\"stylesheet\" href=\"//localhost:7071/lib/datatables/datatables.min.css\">\n<link rel=\"stylesheet\" href=\"//localhost:7071/lib/datatables/responsive.custom.css\">\n<link rel=\"stylesheet\" href=\"//localhost:7071/lib/css/dataTables.semanticui.min.css\">",
                     "{{OPTIONAL-CSS}}": "<link rel=\"stylesheet\" href=\"/app/css/app.css\">",
                     "{{PAGE-TITLE}}": "My First App",
