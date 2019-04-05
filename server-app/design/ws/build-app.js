@@ -19,112 +19,48 @@ module.exports.setup = function setup(scope) {
         var self = this;
         return new Promise($.async(function (resolve, reject) {
             try {
+                console.log( 'req.query', req.query);
+                console.log( 'req.params', req.params);
 
-                var tmpBase = {
-                    "ctl": "tbl-ol-node",
-                    "type": "workspace",
-                    "name": "workspace",
-                    "item": "workspace",
-                    "details": "Workspace",
-                    "meta": "&#160;",
-                    "classes": "ws-outline",
-                    "level": 3,
-                    "icon": "hdd outline",
-                    "color": "black",
-                    "group": "workspace-outline",
-                    "content": []
-                }
+                var tmpAppName = req.query.appname || req.query.name || req.query.filename || '';
                 var tmpWSDir = scope.locals.path.start + '/../local_ws/apps/';
-                var tmpFiles = $.await($.bld.getDirFiles(tmpWSDir))
+                var tmpAppBase = tmpWSDir + tmpAppName + '/';
+                var tmpAppDetails = $.await($.bld.getJsonFile(tmpAppBase + 'app-info.json'))
 
-                for (var index in tmpFiles) {
-                    var tmpAppName = tmpFiles[index];
-                    var tmpAppBase = tmpWSDir + tmpAppName + '/';
-                    var tmpAppDetails = $.await($.bld.getJsonFile(tmpAppBase + 'app-info.json'))
-                    var tmpAppTitle = tmpAppDetails.title || "(untitled)";
+                var tmpPartsLoc = scope.locals.path.designer + '/build/tpl-parts/';
+                var tmpIndex = $.await($.bld.getTextFile(tmpPartsLoc + 'tpl-index.html'))
+                var tmpApp = $.await($.bld.getTextFile(tmpPartsLoc + 'tpl-app-js.txt'))
 
-                    var tmpPagesBase = tmpAppBase + '/app/pages/';
-                    var tmpPages = $.await($.bld.getDirFiles(tmpPagesBase))
-                    
-                    
-                    var tmpApp = {
-                        "ctl": "tbl-ol-node",
-                        "type": "app",
-                        "name": "app-" + tmpAppName + "",
-                        "item": "app-" + tmpAppName + "",
-                        "details": tmpAppTitle,
-                        "meta": "&#160;",
-                        "level": 2,
-                        "icon": "globe",
-                        "color": "blue",
-                        "group": "workspace-outline",
-                        "content": []
-                    }
-
-                    for( var aIndex in tmpPages){
-                        var tmpPage = tmpPages[aIndex];
-                        var tmpPageInfo = {
-                            "ctl": "tbl-ol-node",
-                            "type": "page",
-                            "name": "" + tmpAppName + "-page-" + tmpPage,
-                            "item": "" + tmpAppName + "-page-" + tmpPage,
-                            "details": tmpPage,
-                            "meta": "&#160;",
-                            "level": 1,
-                            "group": "workspace-outline",
-                            "icon": "columns",
-                            "color": "green"
-                        }
-                        tmpApp.content.push(tmpPageInfo);
-                    }
-                    
-                    tmpBase.content.push(tmpApp);
-
+                var tmpIndexMap = {
+                    "{{LIBRARY-LOCATION}}": "//localhost:7071",
+                    "{{OPTIONAL-LIB-CSS}}": "<link rel=\"stylesheet\" href=\"//localhost:7071/lib/datatables/datatables.min.css\">\n<link rel=\"stylesheet\" href=\"//localhost:7071/lib/datatables/responsive.custom.css\">\n<link rel=\"stylesheet\" href=\"//localhost:7071/lib/css/dataTables.semanticui.min.css\">",
+                    "{{OPTIONAL-CSS}}": "<link rel=\"stylesheet\" href=\"/app/css/app.css\">",
+                    "{{PAGE-TITLE}}": "My First App",
+                    "{{APP-TITLE}}": "My First App",
+                    "{{OPTIONAL-PLUGINS}}": "<script src=\"//localhost:7071/plugins/jquery-datatables-helper.js\"></script>\n<script src=\"//localhost:7071/plugins/datatables-plugin.js\"></script>",
+                    "{{OPTIONAL-LIB-JS}}": "<script src=\"//localhost:7071/lib/datatables/datatables.min.js\"></script>\n<script src=\"//localhost:7071/lib/ace/ace.js\"></script>"
                 }
+
+                var tmpAppMap = {
+                    "{{PAGES-ARRAY}}": "[\"HomePage\",\"LogsPage\"]",
+                    "{{PLUGINS-ARRAY}}": "[\"DataTables\"]",
+                    "{{REQUIRED-OBJECT}}": "{}",
+                    "{{EXTEND-OBJECT}}": "{}",
+                    "{{OPTIONAL-APP-CODE}}": ""
+                }
+
+               tmpIndex = $.bld.replaceFromMap(tmpIndex,tmpIndexMap);
+               $.await($.bld.replaceFile(tmpAppBase + 'index.html', tmpIndex))
+  
+               tmpApp = $.bld.replaceFromMap(tmpApp,tmpAppMap);
+               $.await($.bld.replaceFile(tmpAppBase + 'app/app.js', tmpApp))
 
                 var tmpRet = {
-                    "options": {
-                        padding: false,
-                        "css": [
-                            ".ws-outline table.outline > tbody > tr[oluse=\"select\"] {",
-                            "  cursor: pointer;",
-                            "}",
-                            ".ws-outline table.outline > tbody > tr[oluse=\"collapsable\"] {",
-                            "  cursor: pointer;",
-                            "}",
-                            ".ws-outline table.outline > tbody > tr > td.tbl-label {",
-                            "  width:20px;",
-                            "  color:black;",
-                            "  background-color: #eeeeee;",
-                            "}",
-                            ".ws-outline table.outline > tbody > tr.active > td.tbl-label {",
-                            "  background-color: #777777;",
-                            "  color: white;",
-                            "}",
-                            ".ws-outline table.outline > tbody > tr > td.tbl-icon {",
-                            "  width:40px;",
-                            "}",
-                            ".ws-outline table.outline > tbody > tr > td.tbl-icon2 {",
-                            "  width:80px;",
-                            "}",
-                            ".ws-outline table.outline > tbody > tr > td.tbl-details {",
-                            "  font-weight:bolder;",
-                            "  overflow:auto;",
-                            "  width:auto;",
-                            "}",
-                            ".ws-outline table.outline > tbody > tr.active[type=\"page\"] > td.tbl-label {",
-                            "  background-color: #21ba45;",
-                            "}",
-                            ".ws-outline table.outline > tbody > tr.active[type=\"app\"] > td.tbl-label {",
-                            "  background-color: #2185d0;",
-                            "}",
-                            ".ws-outline table.outline > tbody > tr.active[type=\"region\"] > td.tbl-label {",
-                            "  background-color: #a333c8;",
-                            "}"
-                        ]
-                    },
-                    "content": [tmpBase]
-
+                    status: true,
+                    // app: tmpApp,
+                    index: tmpIndex,
+                    info: tmpAppDetails,
+                    refresh: true
                 }
 
                 resolve(tmpRet);

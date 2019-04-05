@@ -2,9 +2,9 @@
 
   ThisApp = null;
 
-  var tmpPageNames = "PAGES-ARRAY";
+  var tmpPageNames = {{PAGES-ARRAY}};
 
-  var tmpPluginNames = "PLUGINS-ARRAY";
+  var tmpPluginNames = {{PLUGINS-ARRAY}};
 
   setup(tmpPageNames, tmpPluginNames);
 
@@ -17,14 +17,14 @@
       ThisApp = new siteMod.CoreApp();
 
       //--- Items to load when the application loads
-      var tmpRequired = "REQUIRED-OBJECT"
+      var tmpRequired = {{REQUIRED-OBJECT}}
 
       //--- Use tmpRequiredSpecs to preload more using that example
       ThisApp.init({ pages: thePages, plugins: thePlugins, required: tmpRequired }).then(function (theReply) {
         ThisApp.getByAttr$({ appuse: "app-loader" }).remove();
 
         //--- Extend common with your app specific stuff
-        $.extend(ThisApp.common, "EXTEND-OBJECT")
+        $.extend(ThisApp.common, {{EXTEND-OBJECT}})
         
       });
     } catch (ex) {
@@ -32,7 +32,7 @@
     }
   }
 
-
+{{OPTIONAL-APP-CODE}}
 
 
 })();
