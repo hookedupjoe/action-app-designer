@@ -1,0 +1,60 @@
+{
+	"baseURL": "/local_ws/apps",
+	"libraryLocations": [
+		{
+			"name": "local CDN",
+			"label": "Local 7071",
+			"prefix": "//localhost:7071"
+		},
+		{
+			"name": "cloud",
+			"label": "IBM Cloud CDN",
+			"prefix": "//action-app-home.mybluemix.net"
+		},
+		{
+			"name": "app",
+			"label": "."
+		}
+	],
+	"libraries": [
+		{
+			"name": "DataTables",
+			"label": "DataTables - Advanced Tables",
+			"css": [
+				"<link rel=\"stylesheet\" href=\"//localhost:7071/lib/datatables/datatables.min.css\">",
+				"<link rel=\"stylesheet\" href=\"//localhost:7071/lib/datatables/responsive.custom.css\">",
+				"<link rel=\"stylesheet\" href=\"//localhost:7071/lib/css/dataTables.semanticui.min.css\">"
+			],
+			"js": [
+				"<script src=\"//localhost:7071/lib/datatables/datatables.min.js\"></script>"
+			]
+		},
+		{
+			"name": "jsTree",
+			"label": "jsTree Outline Control",
+			"css": [
+				"<link rel=\"stylesheet\" href=\"//localhost:7071/lib/jsTree/themes/default/style.min.css\" />"
+			],
+			"js": [
+				"<script src=\"//localhost:7071/lib/jsTree/jstree.min.js\"></script>"
+			]
+		}
+	],
+	"plugins": [
+		{
+			"name": "DataTables",
+			"label": "DataTables standard functionality / helpers",
+			"js": [
+				"<script src=\"//localhost:7071/plugins/jquery-datatables-helper.js\"></script>",
+				"<script src=\"//localhost:7071/plugins/datatables-plugin.js\"></script>"
+			]
+		},
+		{
+			"name": "SvgWorkspaces",
+			"label": "Beta - Graphical Workspaces and Controls",
+			"js": [
+				"<script src=\"//localhost:7071/plugins/svg-controls-plugin.js\"></script>"
+			]
+		}
+	]
+}
