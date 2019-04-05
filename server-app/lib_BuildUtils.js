@@ -10,11 +10,31 @@ let $ = require("./globalUtilities").$;
 
 let utils = {
   getDirFiles: getDirFiles,
+  getTextFile: getTextFile,
   getJsonFile: getJsonFile
 };
 
 module.exports = utils;
 
+
+//--- Like readFile but returns "" if not there
+function getTextFile(theFilename){
+  return new Promise($.async(function (resolve, reject) {
+    try {
+        $.fs.readFile(theFilename, 'utf8', function (err, theContent) {
+            if (err) {
+              resolve("")
+            } else {
+              resolve(theContent);
+            }
+        });
+    }
+    catch (error) {
+        resolve("")
+    }
+  
+  }));
+}
 
 //--- Like readJson but returns {} if not there
 function getJsonFile(theFilename){
