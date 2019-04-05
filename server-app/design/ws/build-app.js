@@ -28,8 +28,8 @@ module.exports.setup = function setup(scope) {
                 var tmpAppDetails = $.await($.bld.getJsonFile(tmpAppBase + 'app-info.json'))
 
                 var tmpBuildCfg = $.await($.bld.getJsonFile(scope.locals.path.designer + '/build/app-build-config.json'));
-console.log( 'tmpBuildCfg', tmpBuildCfg);
-console.log( 'tmpAppDetails', tmpAppDetails);
+// console.log( 'tmpBuildCfg', tmpBuildCfg);
+// console.log( 'tmpAppDetails', tmpAppDetails);
 
                 var tmpPartsLoc = scope.locals.path.designer + '/build/tpl-parts/';
                 var tmpIndex = $.await($.bld.getTextFile(tmpPartsLoc + 'tpl-index.html'))
@@ -37,15 +37,74 @@ console.log( 'tmpAppDetails', tmpAppDetails);
 
                 var tmpLibLocs = $.bld.getIndexFromArray(tmpBuildCfg.libraryLocations, 'name');
                 var tmpLibLoc = tmpLibLocs[tmpAppDetails.cdn] || 'local';
-                console.log( 'tmpLibLoc', tmpLibLoc);
+                var tmpOptLibCSS = '';
+                var tmpOptLibJS = '';
+                var tmpLibsConfig = tmpAppDetails.libraries || false;
+                if( tmpLibsConfig && tmpLibsConfig.length ){
+                    var tmpLibs = $.bld.getIndexFromArray(tmpBuildCfg.libraries, 'name');
+                    // console.log( 'tmpLibsConfig', tmpLibsConfig);
+                    // console.log( 'tmpLibs', tmpLibs);
+                    for( var aIndex in tmpLibsConfig){
+                        var tmpLibDetails = tmpLibsConfig[aIndex];
+                        tmpLibDetails = tmpLibs[tmpLibDetails];
+                        if( tmpLibDetails && tmpLibDetails.css){
+                            // console.log( 'tmpLibDetails', tmpLibDetails);
+                            var tmpCSSs = tmpLibDetails.css;
+                            if( typeof(tmpCSSs) == 'string' ){
+                                tmpCSSs = [tmpCSSs];
+                            }
+                            for( var iCSS in tmpCSSs ){
+                                var tmpCSS = tmpCSSs[iCSS];
+                                if (tmpOptLibCSS){
+                                    tmpOptLibCSS += '\n\t'
+                                }
+                                tmpOptLibCSS += tmpCSS;
+                                // console.log( 'tmpCSS', tmpCSS);
+                            }
+                            
+                        }
+                        if( tmpLibDetails && tmpLibDetails.js){
+                            // console.log( 'tmpLibDetails', tmpLibDetails);
+                            var tmpJSs = tmpLibDetails.js;
+                            if( typeof(tmpJSs) == 'string' ){
+                                tmpJSs = [tmpJSs];
+                            }
+                            for( var iJS in tmpJSs ){
+                                var tmpJS = tmpJSs[iJS];
+                                if (tmpOptLibJS){
+                                    tmpOptLibJS += '\n\t'
+                                }
+                                tmpOptLibJS += tmpJS;
+                                // console.log( 'tmpJS', tmpJS);
+                            }
+                            
+                        }
+console.log( 'tmpOptLibCSS', tmpOptLibCSS);
+                        console.log( 'tmpOptLibJS', tmpOptLibJS);
+                        // if (tmpLibName){
+                        //     var tmpLibText = tmpLibs[tmpLibName];
+                        //     if (tmpLibText){
+                        //         if( tmpLibsText ){
+                        //             tmpLibsText += '\n\t';
+                        //         }
+                        //         tmpLibsText += tmpLibText
+                        //     }
+                        // }
+                    }
+                }
+                //var tmpLibLoc = tmpLibLocs[tmpAppDetails.cdn] || 'local';
+
+                var tmpTitle = tmpAppDetails.title || 'Action App';
+
+                // console.log( 'tmpLibLoc', tmpLibLoc);
                 var tmpIndexMap = {
                     "{{LIBRARY-LOCATION}}": tmpLibLoc.prefix || '.',
-                    "{{OPTIONAL-LIB-CSS}}": "<link rel=\"stylesheet\" href=\"//localhost:7071/lib/datatables/datatables.min.css\">\n<link rel=\"stylesheet\" href=\"//localhost:7071/lib/datatables/responsive.custom.css\">\n<link rel=\"stylesheet\" href=\"//localhost:7071/lib/css/dataTables.semanticui.min.css\">",
+                    "{{OPTIONAL-LIB-CSS}}": tmpOptLibCSS,
                     "{{OPTIONAL-CSS}}": "<link rel=\"stylesheet\" href=\"/app/css/app.css\">",
-                    "{{PAGE-TITLE}}": "My First App",
-                    "{{APP-TITLE}}": "My First App",
+                    "{{PAGE-TITLE}}": tmpTitle,
+                    "{{APP-TITLE}}": tmpTitle,
                     "{{OPTIONAL-PLUGINS}}": "<script src=\"//localhost:7071/plugins/jquery-datatables-helper.js\"></script>\n<script src=\"//localhost:7071/plugins/datatables-plugin.js\"></script>",
-                    "{{OPTIONAL-LIB-JS}}": "<script src=\"//localhost:7071/lib/datatables/datatables.min.js\"></script>\n<script src=\"//localhost:7071/lib/ace/ace.js\"></script>"
+                    "{{OPTIONAL-LIB-JS}}": tmpOptLibJS
                 }
 
                 var tmpAppMap = {
