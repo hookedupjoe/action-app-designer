@@ -7,12 +7,6 @@
   <meta name="viewport"
     content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
 
-
-
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet" />
-
-
-
   <link rel="stylesheet" href="//localhost:7071/built-lib/support-libs.css">
 
   <!-- OPTIONAL - Data-tables -->
@@ -26,59 +20,51 @@
   <link rel="stylesheet" href="//localhost:7071/lib/css/appframe.css">
   <link rel="stylesheet" href="//localhost:7071/lib/css/resp-grid.css">
 
-
-
-
-
-
   <!-- Local app css -->
   <link rel="stylesheet" href="/app/css/app.css">
   <style>
-    .subdemo1 {
-      color: red;
+      
+      
+    div#menu {
+      cursor: pointer;
     }
+    .ui-menu {
+      width: 200px;
+    }
+
+
+
+
   </style>
   <title>Action App Designer</title>
 </head>
 
 <body>
 
-  <div appuse="flyover" class="flyover hidden">
-      <div class="ui content form">
-          <div class="ui field">
-          <div class="ui dropdown selection active visible" tabindex="0" appcomp=""><select appcomp="dropdown">
-            <option value="">Gender</option>
-            <option value="1">Male</option>
-            <option value="0">Female</option>
-            </select><i class="dropdown icon"></i>
-            <div class="text">Male</div>
-            <div class="menu transition fluid visible" tabindex="-1" style="display: block !important;">
-            <div class="item active fluid selected" data-value="1">Male</div>
-            <div class="item" data-value="0">Female</div>
-            </div>
-          </div>
-          </div>
-        </div>
-  </div>
-  <div appuse="side-menu" class="ui sidebar right inverted labeled icon left inline vertical menu">
-  </div>
-  <div class="site-layout-north" style="background-color:#2b3443;">
-    <div style="padding:0px;" class="">
+  
 
-      <a style="float:right;margin-left:4px;margin-top:5px;" semaction="showsidebar" class="toc item">
-        <i class="sidebar icon big inverted"></i>
-      </a>
-      <div style="float:left;margin-left:5px;padding:5px;margin-top:3px;line-height:25px;" class="site-header">
-        Action App Designer
-      </div>
-      <div style="float:right;padding:0;margin:0;margin-right:10px;margin-left:10px;" appuse="nav-menu"
-        class="ui pointing inverted menu nomobile"></div>
+
+
+    <div id="menu">
+        Menu
+        <ul class="menu">
+            <li><a href="#">Item 1</a></li>
+            <li><a href="#">Item 2</a></li>
+            <li><a href="#">Item 3</a>
+                <ul>
+                    <li><a href="#">Item 3-1</a></li>
+                    <li><a href="#">Item 3-2</a></li>
+                    <li><a href="#">Item 3-3</a></li>
+                    <li><a href="#">Item 3-4</a></li>
+                    <li><a href="#">Item 3-5</a></li>
+                </ul>
+            </li>
+            <li><a href="#">Item 4</a></li>
+            <li><a href="#">Item 5</a></li>
+        </ul>
     </div>
-  </div>
+    
 
-  <div appuse="app-loader"><i class="huge icons"><i class="big loading circle notch icon"></i></i></div>
-  <div appuse="main-page-container" class="site-layout-center pusher"></div>
-  <div appuse="site:global-context-menu"></div>
 
   <!--   End of page *****************************************  -->
 
@@ -108,17 +94,31 @@
   <script src="//localhost:7071/lib/ace/ace.js"></script>
 
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
 
 
+  
 
+  <script>
+    $(document).ready(function() {
+    var menu = $("div#menu > ul.menu").menu();
+    menu.menu('widget').hide();
+    $('div#menu').hover(function () {
+        menu.menu('widget').show();
+    }, function () {
+        menu.menu('widget').hide();
+    });
+    $(menu).hover(function () {
+        menu.menu('widget').show();
+    }, function () {
+        menu.menu('widget').hide();
+    });
+});
+  </script>
+  
 
-  <!-- Application - Modules, etc -->
-  <script src="//localhost:7071/lib/actionapp/app-module.js"></script>
-
-  <!-- Application Launch Script -->
-  <script src="./app/app.js"></script>
-
+  
+ 
 </body>
 
 </html>
+

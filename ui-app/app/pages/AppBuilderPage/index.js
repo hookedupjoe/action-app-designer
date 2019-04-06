@@ -233,11 +233,42 @@ License: MIT
     ThisPage.runTest1 = runTest1;
     function runTest1(theParams, theTarget) {
        
-        ThisPage.getSpot('layout').layout({ applyDefaultStyles: true });
-       
+        var defaultLayoutOptions = {
+            spacing_closed: 8,
+            spacing_open: 6,
+            resizable: true,
+            togglerLength_open: 100,
+            togglerLength_closed: 100,
+            south__resizable: false,
+            south__closable: false,
+            south__slidable: false,
+            south__togglerLength_open: 0,
+            south__spacing_open: 0,
+            north__resizable: false,
+            north__closable: false,
+            north__slidable: false,
+            north__togglerLength_open: 0,
+            north__spacing_open: 0
+        };
+    
+
         
+        // ThisPage.getSpot('layout').layout(defaultLayoutOptions);
+       
 
-
+        var menu = $("div#menu > ul.menu").menu();
+        menu.menu('widget').hide();
+        $('div#menu').hover(function () {
+            menu.menu('widget').show();
+        }, function () {
+            menu.menu('widget').hide();
+        });
+        $(menu).hover(function () {
+            menu.menu('widget').show();
+        }, function () {
+            menu.menu('widget').hide();
+        });
+        ThisApp.refreshLayouts();
 
     };
 
@@ -330,6 +361,24 @@ License: MIT
         })
     };
 
+    actions.dropdown = dropdown;
+    function dropdown(theParams, theTarget){
+        var tmpParams = ThisApp.getActionParams(theParams, theTarget, ['menuname'])
+        var tmpEl = $(theTarget);
+        var tmpOffset = tmpEl.offset();
+        
+        var tmpPos = tmpEl.position();
+        console.log( 'tmpOffset tmpPos', tmpOffset, tmpPos);
+
+        var tmpFO = ThisApp.getByAttr$({appuse: 'flyover'});
+        tmpFO.removeClass('hidden');
+        tmpFO.css('width',tmpEl.css('width'));
+        tmpFO.css('top',tmpOffset.top + 'px');
+        tmpFO.css('left',tmpOffset.left + 'px');
+        
+        //alert("dd " + (tmpParams.menuname || ''))
+    };
+    
 
 
 

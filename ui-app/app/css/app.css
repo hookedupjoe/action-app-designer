@@ -1,13 +1,24 @@
 
-.ui.table.mobile {
-    padding: 0;
+.select2-container--default .select2-selection--multiple .select2-selection__choice {
+  border: 1px solid #aaa;
+  padding: 5px 5px;
+  height: 32px;
+  font-size: 16px;
+}
+.flyover  {
+    position: absolute;
+    z-index: 1;
+    top: 10px;
+    left: 10px;
+    background-color:white;
 }
 
-.ui.table.mobile {
-    width: 100%;
+      
+div#menu {
+  cursor: pointer;
+}
+.ui-menu {
+  width: 200px;
 }
 
-.ui.table.mobile > tbody > tr > td {
-  display: block;
-  width: 100% !important;
-}
+
