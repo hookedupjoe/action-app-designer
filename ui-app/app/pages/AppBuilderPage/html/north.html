@@ -15,8 +15,19 @@
     <div class="ui two fields">
         <div class="ui field">
             <div pageaction="dropdown" class="ui dropdown selection" tabindex="0">
+                <select>
+                    <option value="">Selection</option>
+                    <option value="1">One</option>
+                    <option value="2">Two</option>
+                    <option value="3">Three</option>
+                </select>
                 <i class="dropdown icon"></i>
-                <div class="text">Male</div>                
+                <div class="text">One</div>
+                <div class="menu transition fluid hidden" tabindex="-1" style="display: block !important;">
+                    <div class="item active selected fluid" data-value="1">One</div>
+                    <div class="item fluid" data-value="2">Two</div>
+                    <div class="item fluid" data-value="3">Three</div>
+                </div>
             </div>
         </div>
     </div>
