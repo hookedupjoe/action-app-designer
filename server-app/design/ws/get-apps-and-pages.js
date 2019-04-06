@@ -28,7 +28,7 @@ module.exports.setup = function setup(scope) {
                     "details": "Workspace",
                     "meta": "&#160;",
                     "classes": "ws-outline",
-                    "level": 2,
+                    "level": 3,
                     "icon": "hdd outline",
                     "color": "black",
                     "group": "workspace-outline",
@@ -42,6 +42,10 @@ module.exports.setup = function setup(scope) {
                     var tmpAppBase = tmpWSDir + tmpAppName + '/';
                     var tmpAppDetails = $.await($.bld.getJsonFile(tmpAppBase + 'app-info.json'))
                     var tmpAppTitle = tmpAppDetails.title || "(untitled)";
+
+                    var tmpPagesBase = tmpAppBase + '/app/pages/';
+                    var tmpPages = $.await($.bld.getDirFiles(tmpPagesBase))
+                    
                     
                     var tmpApp = {
                         "ctl": "tbl-ol-node",
@@ -50,12 +54,30 @@ module.exports.setup = function setup(scope) {
                         "item": "app-" + tmpAppName + "",
                         "details": tmpAppTitle,
                         "meta": "&#160;",
-                        "level": 1,
+                        "level": 2,
                         "icon": "globe",
                         "color": "blue",
-                        "group": "workspace-outline"
+                        "group": "workspace-outline",
+                        "content": []
                     }
 
+                    for( var aIndex in tmpPages){
+                        var tmpPage = tmpPages[aIndex];
+                        var tmpPageInfo = {
+                            "ctl": "tbl-ol-node",
+                            "type": "page",
+                            "name": "" + tmpAppName + "-page-" + tmpPage,
+                            "item": "" + tmpAppName + "-page-" + tmpPage,
+                            "details": tmpPage,
+                            "meta": "&#160;",
+                            "level": 1,
+                            "group": "workspace-outline",
+                            "icon": "columns",
+                            "color": "green"
+                        }
+                        tmpApp.content.push(tmpPageInfo);
+                    }
+                    
                     tmpBase.content.push(tmpApp);
 
                 }

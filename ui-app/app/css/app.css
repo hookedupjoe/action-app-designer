@@ -1,13 +1,13 @@
 
-table.outline > tbody > tr.active[type="page"] > td.tbl-label {
-  background-color: #21ba45;
+.ui.table.mobile {
+    padding: 0;
 }
 
-table.outline > tbody > tr.active[type="app"] > td.tbl-label {
-  background-color: #2185d0;
+.ui.table.mobile {
+    width: 100%;
 }
 
-table.outline > tbody > tr.active[type="region"] > td.tbl-label {
-  background-color: #a333c8;
+.ui.table.mobile > tbody > tr > td {
+  display: block;
+  width: 100% !important;
 }
-
