@@ -370,16 +370,42 @@ License: MIT
         var tmpPos = tmpEl.position();
         console.log( 'tmpOffset tmpPos', tmpOffset, tmpPos);
 
+        var tmpFOMask = ThisApp.getByAttr$({appuse: 'flyovermask'});
+        tmpFOMask.removeClass('hidden');
+        
         var tmpFO = ThisApp.getByAttr$({appuse: 'flyover'});
         tmpFO.removeClass('hidden');
         tmpFO.css('width',tmpEl.css('width'));
         tmpFO.css('top',tmpOffset.top + 'px');
         tmpFO.css('left',tmpOffset.left + 'px');
-        
+
+        var tmpFOBounds = tmpFO[0].getBoundingClientRect();
+console.log( 'tmpFOBounds', tmpFOBounds);
+        var tmpIsInView = isScrolledIntoView(tmpFO.get(0))
+        console.log( 'tmpIsInView', tmpIsInView);
         //alert("dd " + (tmpParams.menuname || ''))
     };
     
-
-
+    function isScrolledIntoView(el) {
+        var rect = el.getBoundingClientRect();
+        var elemTop = rect.top;
+        var elemBottom = rect.bottom;
+    
+        // Only completely visible elements return true:
+        var isVisible = (elemTop >= 0) && (elemBottom <= window.innerHeight);
+        // Partially visible elements return true:
+        //isVisible = elemTop < window.innerHeight && elemBottom >= 0;
+        return isVisible;
+    }
+    function isScrolledIntoView1(elem)
+    {
+        var docViewTop = $(window).scrollTop();
+        var docViewBottom = docViewTop + $(window).height();
+    
+        var elemTop = $(elem).offset().top;
+        var elemBottom = elemTop + $(elem).height();
+    
+        return ((elemBottom <= docViewBottom) && (elemTop >= docViewTop));
+    }
 
 })(ActionAppCore, $);
