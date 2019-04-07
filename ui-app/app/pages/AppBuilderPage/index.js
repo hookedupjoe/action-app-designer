@@ -251,24 +251,10 @@ License: MIT
             north__spacing_open: 0
         };
     
-
+alert("Test One Ran")
         
-        // ThisPage.getSpot('layout').layout(defaultLayoutOptions);
+       // ThisPage.getSpot('layout').layout(defaultLayoutOptions);
        
-
-        var menu = $("div#menu > ul.menu").menu();
-        menu.menu('widget').hide();
-        $('div#menu').hover(function () {
-            menu.menu('widget').show();
-        }, function () {
-            menu.menu('widget').hide();
-        });
-        $(menu).hover(function () {
-            menu.menu('widget').show();
-        }, function () {
-            menu.menu('widget').hide();
-        });
-        ThisApp.refreshLayouts();
 
     };
 
@@ -361,32 +347,5 @@ License: MIT
         })
     };
 
-    actions.dropdown = dropdown;
-    function dropdown(theParams, theTarget){
-        var tmpParams = ThisApp.getActionParams(theParams, theTarget, ['menuname'])
-        var tmpEl = $(theTarget);
-        var tmpOffset = tmpEl.offset();
-
-        var tmpFOMask = ThisApp.getByAttr$({appuse: 'flyovermask'});
-        tmpFOMask.removeClass('hidden');
-        
-        var tmpMenu = tmpEl.find('.menu.transition.hidden');
-        
-
-        var tmpFO = ThisApp.getByAttr$({appuse: 'flyover'});        
-        var tmpMenuHTML = tmpEl.parent().html();
-        tmpMenuHTML = tmpMenuHTML.replace('hidden','');
-        //get(0).outerHTML.replace('hidden','');
-        console.log( 'tmpMenuHTML', tmpMenuHTML);
-
-        ThisApp.loadSpot('flyover-menu', tmpMenuHTML);
-
-        tmpFO.removeClass('hidden');
-        tmpFO.css('width',tmpEl.css('width'));
-        tmpFO.css('top',tmpOffset.top + 'px');
-        tmpFO.css('left',tmpOffset.left + 'px');
-
-    };
-    
 
 })(ActionAppCore, $);
