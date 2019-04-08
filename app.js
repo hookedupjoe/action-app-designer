@@ -63,6 +63,7 @@ function setup() {
             scope.locals.path.workspace = tmpWSDirectory;
             console.log( 'tmpWSDirectory tmpStaticDir', tmpWSDirectory,tmpStaticDir);
 
+            app.use('/cdn', express.static(scope.locals.path.root + '/cdn'));
             app.use(express.static(scope.locals.path.root + tmpStaticDir));
 
             //--- Plug in application routes

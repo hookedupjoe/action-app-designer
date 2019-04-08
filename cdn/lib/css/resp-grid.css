@@ -1,0 +1,42 @@
+/* Layout styles -----------------------------------*/
+/* 
+@media (min-width: 620px) {
+  main {
+    column-count: 2;
+    column-gap: 0px;
+  }
+  
+  section {
+    break-inside: avoid;
+  }
+}
+
+@media (min-width: 960px) {
+  main {
+     column-count: 3;
+  }
+} */
+
+[appuse="mobile-cards"] {
+    overflow:auto;
+    display:block;
+    padding:0;
+    margin:0;
+  }
+  section {
+    display:block;
+    padding:0;
+    margin:0;
+    overflow:hidden;
+    float:left;
+  }
+  
+  .pages section .page-frame {
+    margin:10px;
+    padding: 10px;
+    background-color: #EEE;
+    -webkit-border-radius: 6px;
+    -moz-border-radius: 6px;
+    border-radius: 6px;
+    overflow:hidden;
+  }
