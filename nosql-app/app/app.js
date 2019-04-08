@@ -3,11 +3,9 @@
   ThisApp = null;
 
   var tmpPageNames = [   
-    'AppBuilderPage',
-    'ControlsPage',
-    'ProjectDashboardPage',
-    'ControlBuilderPage',
-    'LogsPage'
+    'NoSQLSetupPage',
+    'MyCouchPage',
+    'CatalogPage'
   ];
 
   var tmpPluginNames = [
