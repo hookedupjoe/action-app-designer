@@ -1,0 +1,51 @@
+{
+	"options": {
+		"padding": false
+	},
+	"content": [
+		{
+			"ctl": "layout",
+			"attr": {
+				"template": "customDemo1"
+			},
+			"name": "lo",
+			"north": [
+				{
+					"ctl": "segment",
+					"basic": true,
+					"slim": true,
+					"content": [
+						
+						{
+							"ctl": "title",
+							"name": "title",
+							"size": "large",
+							"color": "blue",
+							"icon":"globe",
+							"text": "Testing"
+						}
+					]
+				}
+			],
+			"center": [
+				{
+					"ctl": "segment",
+					"basic": true,
+					"slim": true,
+					"content": [
+						{
+							"ctl":"spot",
+							"name":"above-control"
+						},
+						{
+							"ctl": "control",
+							"controlname": "catalog/controls/common/SearchBar",
+							"name": "searchbar"
+						}
+					]
+				}	
+			],
+			"south": true
+		}
+	]
+}

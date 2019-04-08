@@ -28,10 +28,10 @@ License: MIT
 
     thisPageSpecs.layoutOptions = {
         baseURL: pageBaseURL,
-        north: { html: "north" },
+        north: { control: "north" },
         east: false,
         west: { partname: "west", control: "west" },
-        center:  { html: "layout-demo-2" },
+        center:  { html: "mock-workspace-page" },
         south: false
     }
 

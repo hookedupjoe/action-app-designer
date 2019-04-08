@@ -16,6 +16,9 @@
     "showfor": {
       "title": "Show For Demo"
     },
+    "layout-with-control": {
+      "title": "Layout With Controls"
+    },
     "tabsonly": {
       "title": "Just the Tabs"
     },

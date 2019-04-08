@@ -5,24 +5,20 @@
 	"content": [
 		{
 			"ctl": "layout",
-			"attr": {
-				"template": "customDemo1"
-			},
-			"name": "lo",
+			"name": "layout",
 			"north": [
 				{
 					"ctl": "segment",
 					"basic": true,
 					"slim": true,
 					"content": [
-						
 						{
 							"ctl": "title",
 							"name": "title",
 							"size": "large",
 							"color": "blue",
 							"icon":"globe",
-							"text": "Testing"
+							"text": "My First Application"
 						}
 					]
 				}
@@ -34,13 +30,32 @@
 					"slim": true,
 					"content": [
 						{
-							"ctl":"spot",
-							"name":"above-control"
-						},
-						{
-							"ctl": "control",
-							"controlname": "catalog/controls/common/SearchBar",
-							"name": "searchbar"
+							"ctl": "tabs",
+							"name": "apptabs",
+							"tabs": [
+								{
+									"label": "App Info",
+									"name": "apptabs-info",
+									"ctl": "tab",
+									"content": [
+										{
+											"ctl": "pagespot",
+											"spotname": "apptabs-info"
+										}
+									]
+								},
+								{
+									"label": "Pages",
+									"name": "apptabs-pages",
+									"ctl": "tab",
+									"content": [
+										{
+											"ctl": "pagespot",
+											"spotname": "apptabs-pages"
+										}
+									]
+								}
+							]
 						}
 					]
 				}	
