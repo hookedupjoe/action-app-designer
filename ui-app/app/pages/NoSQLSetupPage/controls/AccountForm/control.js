@@ -55,9 +55,6 @@ License: MIT
     var ControlCode = {
         onValidate: onValidate
     }
-
-    var ThisControl = ThisApp.controls.newControl(ControlSpecs, { proto: ControlCode, parent: ThisApp })
-
     function onValidate(theControl) {
         var tmpURL = theControl.getFieldValue('url');
         var tmpAccount = theControl.getFieldValue('account');
@@ -68,6 +65,7 @@ License: MIT
         return true;
     }
 
+    var ThisControl = { specs: ControlSpecs, options: { proto: ControlCode, parent: ThisApp } };
     return ThisControl;
 
 })(ActionAppCore, $);
