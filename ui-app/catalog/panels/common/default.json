@@ -8,7 +8,27 @@
 			"attr": {
 				"template": "customDemo1"
 			},
-			"name": "lo"
+			"name": "lo",
+			"center": [{
+				"ctl": "segment",
+				"basic": true,
+				"slim": true,
+				"content": [
+					{
+						"ctl": "title",
+						"name": "title",
+						"size": "large",
+						"color": "blue",
+						"icon":"globe",
+						"text": "Testing"
+					},
+					{
+						"ctl": "control",
+						"controlname": "catalog/controls/common/SearchBar",
+						"name": "searchbar"
+					}
+				]
+			}]
 		}
 	]
 }
