@@ -18,7 +18,7 @@ module.exports.setup = function (app, scope) {
     var designRouter = express.Router(),
     designRoute = require('./design/index').setup(scope);
 
-    designRouter.get('/:type/:name*', designRoute);
+    designRouter.all('/:type/:name*', designRoute);
     designRouter.all('/*', designRoute);
     app.use('/design/',designRouter);
 

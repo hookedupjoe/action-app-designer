@@ -28,7 +28,7 @@ module.exports.setup = function setup(scope) {
                 var tmpAppBase = tmpWSDir + tmpAppName + '/';
                 var tmpAppDetails = $.await($.bld.getJsonFile(tmpAppBase + 'app-info.json'))
 
-                var tmpBuildCfg = $.await($.bld.getJsonFile(scope.locals.path.designer + '/build/app-build-config.json'));
+                var tmpBuildCfg = $.await($.bld.getBuildConfigJson(scope));
 
                 var tmpPartsLoc = scope.locals.path.designer + '/build/tpl-parts/';
                 var tmpIndex = $.await($.bld.getTextFile(tmpPartsLoc + 'tpl-index.html'))

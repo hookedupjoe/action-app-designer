@@ -313,6 +313,7 @@ License: MIT
             if (!theSubmitted) {
                 return;
             }
+            
             ThisApp.common.apiCall({
                 url: '/design/ws/new-app',
                 data: theData

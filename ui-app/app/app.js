@@ -72,13 +72,14 @@
       tmpOptions = { url: tmpOptions };
     }
 
-    var tmpURL = theOptions.url;
+
+    var tmpURL = tmpOptions.url;
     if (!tmpURL) {
       throw "No URL provided"
     }
 
+
     var tmpRequest = {
-      method: 'GET',
       success: function (theResponse) {
         dfd.resolve(theResponse);
       },
@@ -86,7 +87,18 @@
         dfd.reject(theError)
       }
     };
-    $.extend(tmpRequest, theOptions);
+    $.extend(tmpRequest, tmpOptions);
+    
+    console.log( 'tmpRequest.data', tmpRequest.data);
+    //--- Auto Detect data, convert data and use POST
+    if( tmpRequest.data ){
+      if( typeof(tmpRequest.data) == 'string'){
+        tmpRequest.data = JSON.parse(tmpRequest.data);
+      }
+      tmpRequest.method = 'POST';
+      tmpRequest.dataType = "json";
+    }
+   
     $.ajax(tmpRequest);
     return dfd.promise();
   }

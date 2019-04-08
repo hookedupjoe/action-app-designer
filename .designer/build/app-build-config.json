@@ -1,4 +1,5 @@
 {
+	"applicationTemplateLocation": "/.designer/build/tpl-apps/",
 	"applicationTemplates": [
 		{
 			"name": "default",

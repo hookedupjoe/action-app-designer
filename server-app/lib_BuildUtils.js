@@ -15,6 +15,7 @@ let utils = {
   saveJsonFile: saveJsonFile,
   writeJsonFile: saveJsonFile,
   settingsHome: settingsHome,
+  getBuildConfigJson: getBuildConfigJson,
   replaceAll: replaceAll,
   replaceFromMap: replaceFromMap,
   replaceFile: replaceFile,
@@ -55,6 +56,12 @@ function settingsHome() {
   const tmpHomeDir = $.os.homedir();
   return tmpHomeDir + '/.actapp/';
 }
+
+function getBuildConfigJson(theScope){
+  return utils.getJsonFile(theScope.locals.path.designer + '/build/app-build-config.json');
+}
+
+
 
 
 //--- Replace File
