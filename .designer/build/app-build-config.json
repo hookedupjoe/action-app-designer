@@ -1,4 +1,16 @@
 {
+	"applicationTemplates": [
+		{
+			"name": "default",
+			"title": "Default Template",
+			"details": "General starting point for application"
+		},
+		{
+			"name": "simple",
+			"title": "Simple single page app",
+			"details": "Starting point for single page application"
+		}
+	],
 	"libraryLocations": [
 		{
 			"name": "local",
@@ -13,16 +25,6 @@
 		{
 			"name": "cloud",
 			"label": "Production Cloud CDN",
-			"prefix": "//action-app-home.mybluemix.net"
-		},
-		{
-			"name": "cloud-preprop",
-			"label": "Preprod Cloud Development CDN",
-			"prefix": "//action-app-home.mybluemix.net"
-		},
-		{
-			"name": "cloud-dev",
-			"label": "Dev Cloud Development CDN",
 			"prefix": "//action-app-home.mybluemix.net"
 		},
 		{

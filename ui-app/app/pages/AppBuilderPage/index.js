@@ -307,12 +307,16 @@ License: MIT
         ThisPage.getPanel('frmNewApp').prompt(
             {
                 isNew: true,
-                doc: { cdn: 'local', pages: 'HomePage' }
+                doc: { template: 'default' }
             }
         ).then(function (theSubmitted, theData) {
             if (!theSubmitted) {
                 return;
             }
+            ThisApp.common.apiCall({
+                url: '/design/ws/new-app',
+                data: theData
+            })
             console.log('theData', theData);
         })
     };

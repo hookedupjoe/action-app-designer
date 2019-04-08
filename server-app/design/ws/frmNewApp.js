@@ -26,15 +26,14 @@ module.exports.setup = function setup(scope) {
 //console.log( 'tmpAppConfig', tmpAppConfig);
 
 var tmpLibLocations = '';
-var tmpLocs = tmpAppConfig.libraryLocations || [];
+var tmpAppTpls = tmpAppConfig.applicationTemplates || [];
+var tmpAppsList = [];
 
-for (var aIndex in tmpLocs){
-  var tmpLoc = tmpLocs[aIndex];
-  var tmpThisLoc = tmpLoc.label + "|" + tmpLoc.name;
-  if( tmpLibLocations ){
-    tmpLibLocations += ',';
-  }
-  tmpLibLocations += tmpThisLoc;
+for (var aIndex in tmpAppTpls){
+  var tmpTpl = tmpAppTpls[aIndex];
+  var tmpTplItem = tmpTpl.title + "|" + tmpTpl.name;
+  tmpAppsList.push(tmpTplItem);
+  
 }
 
                 var tmpRet = {
@@ -64,128 +63,20 @@ for (var aIndex in tmpLocs){
                       ]
                     },
                     {
-                      "ctl": "fieldrow",
-                      "name": "options-row",
-                      "items": [
-                        {
-                          "ctl": "dropdown",
-                          "name": "cdn",
-                          "label": "CDN Location",
-                          "default": "local",
-                          "list": tmpLibLocations,
-                          "req": true
-                        },
-                        {
-                          "ctl": "dropdown",
-                          "multi": true,
-                          "name": "pages",
-                          "label": "Pages to start with",
-                          "list": "HomePage,LogsPage,TesterPage,TemplateForHTML,TemplateForPanels,TemplateForControls",
-                          "req": true
-                        }
-                      ]
+                      "ctl": "dropdown",
+                      "name": "template",
+                      "label": "Starting Point",
+                      "default": "local",
+                      "list": tmpAppsList.join(','),
+                      "req": true
                     },
                     {
                       "name": "description",
                       "label": "Description",
                       "placeholder": "Enter optional details about this application",
-                      "ctl": "field",
-                      "req": true
+                      "ctl": "field"
                     }
-                  ],
-                  "index": {
-                    "fieldsList": [
-                      "appname",
-                      "title",
-                      "cdn",
-                      "template",
-                      "description"
-                    ],
-                    "itemsList": [
-                      "info-row",
-                      "options-row"
-                    ],
-                    "fields": {
-                      "appname": {
-                        "name": "appname",
-                        "label": "Application Filename",
-                        "req": true
-                      },
-                      "title": {
-                        "name": "title",
-                        "label": "Application Title",
-                        "req": true
-                      },
-                      "cdn": {
-                        "ctl": "dropdown",
-                        "name": "cdn",
-                        "label": "CDN Location",
-                        "default": "local",
-                        "list": "Local|local,IBM Cloud|cloud,In App|app",
-                        "req": true
-                      },
-                      "template": {
-                        "ctl": "dropdown",
-                        "name": "template",
-                        "label": "Application Template",
-                        "list": "Blank|tpl-blank,Testing|tpl-testing,Demos|tpl-demos",
-                        "req": true
-                      },
-                      "description": {
-                        "name": "description",
-                        "label": "Description",
-                        "placeholder": "Enter optional details about this application",
-                        "ctl": "field",
-                        "req": true
-                      }
-                    },
-                    "items": {
-                      "info-row": {
-                        "ctl": "fieldrow",
-                        "detail": ""
-                      },
-                      "options-row": {
-                        "ctl": "fieldrow",
-                        "detail": ""
-                      }
-                    },
-                    "controls": {},
-                    "required": {},
-                    "outline": [
-                      {
-                        "ctl": "fieldrow",
-                        "name": "info-row",
-                        "children": [
-                          {
-                            "ctl": "field",
-                            "name": "appname"
-                          },
-                          {
-                            "ctl": "field",
-                            "name": "title"
-                          }
-                        ]
-                      },
-                      {
-                        "ctl": "fieldrow",
-                        "name": "options-row",
-                        "children": [
-                          {
-                            "ctl": "dropdown",
-                            "name": "cdn"
-                          },
-                          {
-                            "ctl": "dropdown",
-                            "name": "template"
-                          }
-                        ]
-                      },
-                      {
-                        "ctl": "field",
-                        "name": "description"
-                      }
-                    ]
-                  }
+                  ]
                 }
 
                 resolve(tmpRet);
