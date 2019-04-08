@@ -61,7 +61,6 @@ function setup() {
                 }
             }
             scope.locals.path.workspace = tmpWSDirectory;
-            console.log( 'tmpWSDirectory tmpStaticDir', tmpWSDirectory,tmpStaticDir);
 
             app.use(express.static(scope.locals.path.root + '/cdn'));
             app.use(express.static(scope.locals.path.root + tmpStaticDir));
@@ -114,8 +113,7 @@ function setup() {
             preview.use(bodyParser.json());
             preview.use(bodyParser.urlencoded({ extended: false }));
             preview.use(cookieParser());
-            // preview.use(express.static(scope.locals.path.root + '/local_ws'));
-            // console.log( 'scope.locals.path.root', scope.locals.path.root);
+
             preview.use(express.static(scope.locals.path.root + '/cdn'));
             preview.use(express.static(tmpWSDirectory + '/apps'));
 

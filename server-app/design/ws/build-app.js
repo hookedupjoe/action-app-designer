@@ -13,6 +13,7 @@ module.exports.setup = function setup(scope) {
     var base = Route.prototype;
 
     var $ = config.locals.$;
+    var bld = $.bld;
 
     //--- Load the prototype
     base.run = function (req, res, next) {
@@ -23,7 +24,9 @@ module.exports.setup = function setup(scope) {
                 console.log( 'req.params', req.params);
 
                 var tmpAppName = req.query.appname || req.query.name || req.query.filename || '';
-                var tmpWSDir = scope.locals.path.start + '/../local_ws/apps/';
+
+                var tmpWSDir = scope.locals.path.workspace + 'apps/';
+                
                 var tmpAppBase = tmpWSDir + tmpAppName + '/';
                 var tmpAppDetails = $.await($.bld.getJsonFile(tmpAppBase + 'app-info.json'))
 
@@ -165,10 +168,14 @@ module.exports.setup = function setup(scope) {
                         tmpExtendAppText = JSON.stringify(tmpAppDetails.extend);
                     }
                 }
-
+                tmpOptCSS = bld.replaceAll(tmpOptCSS, "{{LIBRARY-LOCATION}}", (tmpLibLoc.prefix || ''));
+                tmpOptLibJS = bld.replaceAll(tmpOptLibJS, "{{LIBRARY-LOCATION}}", (tmpLibLoc.prefix || ''));
+                tmpOptLibCSS = bld.replaceAll(tmpOptLibCSS, "{{LIBRARY-LOCATION}}", (tmpLibLoc.prefix || ''));
+                tmpPluginsText = bld.replaceAll(tmpPluginsText, "{{LIBRARY-LOCATION}}", (tmpLibLoc.prefix || ''));
+                
                 console.log( 'tmpExtendAppText', tmpExtendAppText);
                 var tmpIndexMap = {
-                    "{{LIBRARY-LOCATION}}": tmpLibLoc.prefix || '.',
+                    "{{LIBRARY-LOCATION}}": tmpLibLoc.prefix || '',
                     "{{OPTIONAL-LIB-CSS}}": tmpOptLibCSS,
                     "{{OPTIONAL-CSS}}": tmpOptCSS,
                     "{{PAGE-TITLE}}": tmpTitle,

@@ -34,7 +34,9 @@ module.exports.setup = function setup(scope) {
                     "group": "workspace-outline",
                     "content": []
                 }
-                var tmpWSDir = scope.locals.path.start + '/../local_ws/apps/';
+                
+                var tmpWSDir = scope.locals.path.workspace + 'apps/';
+
                 var tmpFiles = $.await($.bld.getDirFiles(tmpWSDir))
 
                 for (var index in tmpFiles) {

@@ -1,10 +1,14 @@
 {
-	"baseURL": "/local_ws/apps",
 	"libraryLocations": [
 		{
 			"name": "local",
+			"label": "Local Preview",
+			"prefix": ""
+		},
+		{
+			"name": "localcdn",
 			"label": "Local 7071",
-			"prefix": "//localhost:7071"
+			"prefix": "{{LIBRARY-LOCATION}}"
 		},
 		{
 			"name": "cloud",
@@ -24,7 +28,7 @@
 		{
 			"name": "app",
 			"label": "In Application",
-			"prefix": "."
+			"prefix": ""
 		}
 	],
 	"libraries": [
@@ -32,29 +36,29 @@
 			"name": "DataTables",
 			"label": "DataTables - Advanced Tables",
 			"css": [
-				"<link rel=\"stylesheet\" href=\"//localhost:7071/lib/datatables/datatables.min.css\">",
-				"<link rel=\"stylesheet\" href=\"//localhost:7071/lib/datatables/responsive.custom.css\">",
-				"<link rel=\"stylesheet\" href=\"//localhost:7071/lib/css/dataTables.semanticui.min.css\">"
+				"<link rel=\"stylesheet\" href=\"{{LIBRARY-LOCATION}}/lib/datatables/datatables.min.css\">",
+				"<link rel=\"stylesheet\" href=\"{{LIBRARY-LOCATION}}/lib/datatables/responsive.custom.css\">",
+				"<link rel=\"stylesheet\" href=\"{{LIBRARY-LOCATION}}/lib/css/dataTables.semanticui.min.css\">"
 			],
 			"js": [
-				"<script src=\"//localhost:7071/lib/datatables/datatables.min.js\"></script>"
+				"<script src=\"{{LIBRARY-LOCATION}}/lib/datatables/datatables.min.js\"></script>"
 			]
 		},
 		{
 			"name": "jsTree",
 			"label": "jsTree Outline Control",
 			"css": [
-				"<link rel=\"stylesheet\" href=\"//localhost:7071/lib/jsTree/themes/default/style.min.css\" />"
+				"<link rel=\"stylesheet\" href=\"{{LIBRARY-LOCATION}}/lib/jsTree/themes/default/style.min.css\" />"
 			],
 			"js": [
-				"<script src=\"//localhost:7071/lib/jsTree/jstree.min.js\"></script>"
+				"<script src=\"{{LIBRARY-LOCATION}}/lib/jsTree/jstree.min.js\"></script>"
 			]
 		},
 		{
 			"name": "Ace",
 			"label": "Ace Editor",
 			"js": [
-				"<script src=\"//localhost:7071/lib/ace/ace.js\"></script>"
+				"<script src=\"{{LIBRARY-LOCATION}}/lib/ace/ace.js\"></script>"
 			]
 		}
 	],
@@ -63,15 +67,15 @@
 			"name": "DataTables",
 			"label": "DataTables standard functionality / helpers",
 			"js": [
-				"<script src=\"//localhost:7071/plugins/jquery-datatables-helper.js\"></script>",
-				"<script src=\"//localhost:7071/plugins/datatables-plugin.js\"></script>"
+				"<script src=\"{{LIBRARY-LOCATION}}/plugins/jquery-datatables-helper.js\"></script>",
+				"<script src=\"{{LIBRARY-LOCATION}}/plugins/datatables-plugin.js\"></script>"
 			]
 		},
 		{
 			"name": "SvgWorkspaces",
 			"label": "Beta - Graphical Workspaces and Controls",
 			"js": [
-				"<script src=\"//localhost:7071/plugins/svg-controls-plugin.js\"></script>"
+				"<script src=\"{{LIBRARY-LOCATION}}/plugins/svg-controls-plugin.js\"></script>"
 			]
 		}
 	]
