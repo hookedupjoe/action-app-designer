@@ -5,6 +5,9 @@
 	"content": [
 		{
 			"ctl": "layout",
+			"attr": {
+				"template": "customDemo1"
+			},
 			"name": "lo"
 		}
 	]
