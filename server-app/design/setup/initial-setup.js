@@ -20,28 +20,25 @@ module.exports.setup = function setup(scope) {
         var self = this;
         return new Promise($.async(function (resolve, reject) {
             try {
+
+                var tmpRootDir = req.query.root || req.query.rootdir || ($.os.homedir() + '/actapp/');
+
+                if( !(tmpRootDir.endsWith('/'))){
+                    tmpRootDir += '/';
+                }
                 var tmpSetupDetails = {
-                    rootDir: 'c:/actapp/',
-                    libDir: 'C:/Users/josephfrancis/git/huj/action-app-web/www/'
+                    rootDir: tmpRootDir
                 }
                 const tmpSettingsDir = bld.settingsHome();
-                console.log( 'tmpSettingsDir', tmpSettingsDir);
                 $.await($.fs.ensureDir(tmpSettingsDir));
                 $.await(bld.saveJsonFile(tmpSettingsDir + 'setup.json', tmpSetupDetails));
                 
                 var tmpRet = {status:true}
-                console.log( 'tmpSetupDetails.rootDir', tmpSetupDetails.rootDir);
                 $.await($.fs.ensureDir(tmpSetupDetails.rootDir))
                 $.await($.fs.ensureDir(tmpSetupDetails.rootDir + 'apps/'))
-                
-                // var tmpAppName = req.query.appname || req.query.name || req.query.filename || '';
-                // var tmpWSDir = scope.locals.path.start + '/../local_ws/apps/';
-                // var tmpAppBase = tmpWSDir + tmpAppName + '/';
-                // var tmpAppDetails = $.await($.bld.getJsonFile(tmpAppBase + 'app-info.json'))
-
                 resolve(tmpRet);
-
             }
+            
             catch (error) {
                 console.log('Err : ' + error);
                 reject(error);

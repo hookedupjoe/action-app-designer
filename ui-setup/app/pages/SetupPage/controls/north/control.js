@@ -12,7 +12,7 @@ License: MIT
 			{
 				"ctl": "title",
 				"size": "small",
-				"text": "My Projects"
+				"text": "Action App Designer - First Time Setup"
 			}
 		]
 	}

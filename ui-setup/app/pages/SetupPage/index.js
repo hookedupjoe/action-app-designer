@@ -19,12 +19,12 @@ License: MIT
 
     
     thisPageSpecs.layoutOptions = {
-        baseURL: pageBaseURL,
+        baseURL: pageBaseURL,        
+        east:false,
+        west: false,
+        south: false,
         north: { partname: "north", control: "north" },
-        east: { html: 'east'},
-        west: { partname: "west", control: "west" },
-        center: { partname: "center", control: "center"  },
-        south: false
+        center: { partname: "center", control: "center"}
     }
 
 
@@ -97,27 +97,15 @@ License: MIT
     //===== PAGE-ACTIONS-END-loadASpot
 
     //===== PAGE-ACTIONS-START
-    actions.loadASpot = loadASpot;
-    function loadASpot(){
-        var tmpHTML = [];
-        tmpHTML.push('<div class="ui-layout-center">Center')
-        tmpHTML.push('</div>')
-        tmpHTML.push('<div class="ui-layout-north">North</div>')
-        tmpHTML.push('<div class="ui-layout-south">South</div>')
-        tmpHTML.push('<div class="ui-layout-east">East</div>')
-        tmpHTML.push('<div class="ui-layout-west">West</div>')
-        tmpHTML = tmpHTML.join('');
-
-        ThisPage.loadSpot("body",tmpHTML);
-        var tmpBodySpot =  ThisPage.getSpot("body");
-        var tmpLayout = tmpBodySpot.layout();
-        console.log( 'tmpLayout', tmpLayout);
-        if (typeof (ThisApp.refreshLayouts) == 'function') {
-            ThisApp.refreshLayouts();
-        }
-        console.log( 'tmpBodySpot', tmpBodySpot);
-
-        
+    actions.setupWS = setupWS;
+    function setupWS(){
+        var tmpDir = ThisPage.parts.center.getFieldValue('root');
+        ThisApp.common.apiCall({
+            url: '/design/setup/initial-setup?rootdir=' + tmpDir
+        }).then(function(theReply){
+            console.log( 'initial-setup Reply', theReply);
+            alert("You Did it!  Now restart the node.js server and refresh this page.", "Setup Complete", "c");
+        })
     };
     //===== PAGE-ACTIONS-END
 

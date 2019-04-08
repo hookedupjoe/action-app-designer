@@ -5,21 +5,36 @@ License: MIT
 (function (ActionAppCore, $) {
 
 	var ControlSpecs = {
-		"options" : {
-			padding: false
+		"options": {
+			padding: true
 		},
 		"content": [
 			{
-				"ctl":"pagespot",
-				"name": "funspot"
+				"ctl": "title",
+				"size": "large",
+				"icon": "hdd",
+				"name": "title",
+				"text": "Setup your workspace"
+			},
+			{
+				"ctl": "field",
+				"name": "root",
+				"label": "Workspace Directory",
+				"default": "[home]/actapp",
+				"req": true
+			},
+			{
+				ctl: 'button',
+				label: 'Setup Workspace',
+				pageaction: 'setupWS'
 			}
-			
-		]	
-	
+
+		]
+
 	}
 
 	var ControlCode = {};
-	var ThisControl = {specs: ControlSpecs, options: { proto: ControlCode, parent: ThisApp }};
+	var ThisControl = { specs: ControlSpecs, options: { proto: ControlCode, parent: ThisApp } };
 
 	return ThisControl;
 
