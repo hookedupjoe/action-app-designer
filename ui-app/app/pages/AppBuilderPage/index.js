@@ -31,11 +31,12 @@ License: MIT
         north: { html: "north" },
         east: false,
         west: { partname: "west", control: "west" },
-        center: { control: "center" },
+        center:  { html: "layout-demo-2" },
         south: false
     }
 
     //center:  { html: "layout-demo-1" },
+    //center: { control: "center" },
 
     //--- Customize default layout configuration
     //--- See http://layout.jquery-dev.com/documentation.cfm for details
