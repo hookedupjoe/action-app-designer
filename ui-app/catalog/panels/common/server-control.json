@@ -1,0 +1,12 @@
+{
+	"options": {
+		"padding": false
+	},
+	"content": [
+		{
+			"ctl": "panel",
+			"controlname": "design/ws/get-apps",
+			"name": "ws"
+		}
+	]
+}

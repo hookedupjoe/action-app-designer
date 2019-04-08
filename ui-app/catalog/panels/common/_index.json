@@ -7,6 +7,9 @@
     "searchbar": {
       "title": "Search Bar"
     },
+    "server-control": {
+      "title": "Server Side Control"
+    },
     "controlsdemo": {
       "title": "Nested Controls"
     },

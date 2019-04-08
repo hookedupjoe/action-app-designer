@@ -4,9 +4,8 @@
 	},
 	"content": [
 		{
-			"ctl": "panel",
-			"controlname": "design/ws/get-apps",
-			"name": "ws"
+			"ctl": "layout",
+			"name": "lo"
 		}
 	]
 }
