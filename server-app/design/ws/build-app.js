@@ -20,8 +20,6 @@ module.exports.setup = function setup(scope) {
         var self = this;
         return new Promise($.async(function (resolve, reject) {
             try {
-                console.log( 'req.query', req.query);
-                console.log( 'req.params', req.params);
 
                 var tmpAppName = req.query.appname || req.query.name || req.query.filename || '';
 
@@ -173,7 +171,6 @@ module.exports.setup = function setup(scope) {
                 tmpOptLibCSS = bld.replaceAll(tmpOptLibCSS, "{{LIBRARY-LOCATION}}", (tmpLibLoc.prefix || ''));
                 tmpPluginsText = bld.replaceAll(tmpPluginsText, "{{LIBRARY-LOCATION}}", (tmpLibLoc.prefix || ''));
                 
-                console.log( 'tmpExtendAppText', tmpExtendAppText);
                 var tmpIndexMap = {
                     "{{LIBRARY-LOCATION}}": tmpLibLoc.prefix || '',
                     "{{OPTIONAL-LIB-CSS}}": tmpOptLibCSS,
