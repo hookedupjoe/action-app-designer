@@ -9,26 +9,43 @@
 				"template": "customDemo1"
 			},
 			"name": "lo",
-			"center": [{
-				"ctl": "segment",
-				"basic": true,
-				"slim": true,
-				"content": [
-					{
-						"ctl": "title",
-						"name": "title",
-						"size": "large",
-						"color": "blue",
-						"icon":"globe",
-						"text": "Testing"
-					},
-					{
-						"ctl": "control",
-						"controlname": "catalog/controls/common/SearchBar",
-						"name": "searchbar"
-					}
-				]
-			}]
+			"north": [
+				{
+					"ctl": "segment",
+					"basic": true,
+					"slim": true,
+					"content": [
+						
+						{
+							"ctl": "title",
+							"name": "title",
+							"size": "large",
+							"color": "blue",
+							"icon":"globe",
+							"text": "Testing"
+						}
+					]
+				}
+			],
+			"center": [
+				{
+					"ctl": "segment",
+					"basic": true,
+					"slim": true,
+					"content": [
+						{
+							"ctl":"spot",
+							"name":"above-control"
+						},
+						{
+							"ctl": "control",
+							"controlname": "catalog/controls/common/SearchBar",
+							"name": "searchbar"
+						}
+					]
+				}	
+			],
+			"south": true
 		}
 	]
 }
