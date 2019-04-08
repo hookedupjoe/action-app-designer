@@ -1,6 +1,3 @@
-
-
-
 <div class="ui large basic buttons">
     <button action="selectMe" group="workspace-outline" item="workspace" class="ui icon button">
         <i class="icon hdd black"></i>
@@ -8,21 +5,6 @@
     <button action="selectMe" group="workspace-outline" item="app-appfive" class="ui icon button">
         <i class="icon globe blue"></i>&#160;My First Application
     </button>
-    
-    <!-- <button action="selectMe" group="workspace-outline" item="appfive-page-ControlsPage" class="ui button"><i class="icon columns green"></i>&#160;ControlsPage</button> -->
-
-    <div class="item">
-        <div action="dropmenuopen" class="ui dropdown selection item" tabindex="0">
-            <i class="dropdown icon"></i>
-            <div class="text">Quick Actions</div>
-            <div class="menu transition fluid hidden" tabindex="-1" style="display: block !important;">
-                <div pageaction="runTest1" class="item fluid" data-value="1">One</div>
-                <div pageaction="runTest1" class="item fluid" data-value="2">Two</div>
-                <div pageaction="runTest1" class="item fluid" data-value="3">More</div>
-            </div>
-        </div>
-    </div>
-
 </div>
 
 <div class="ui large basic buttons toright">
@@ -31,14 +13,17 @@
 </div>
 
 
-<div class="ui menu compact horizontal">
+<div style="clear:both;"></div>
+<div>
+    <div class="ui menu compact horizontal">
         <div class="ui sgment basic slim">
-                <div class="ui two fields">
-                    <div class="ui field">
-                        <div action="dropmenuopen" class="ui dropdown selection" tabindex="0">
-                            <i class="dropdown icon"></i>
-                            <div class="text">Quick Actions</div>
-                            <div class="menu transition fluid hidden" tabindex="-1" style="display: block !important;">
+            <div class="ui two fields">
+                <div class="ui field">
+                    <div action="dropmenuopen" class="ui dropdown selection" tabindex="0">
+                        <i class="dropdown icon"></i>
+                        <div class="text">Quick Actions</div>
+                        <div dropmenu="menu" class="hidden">
+                            <div class="menu transition fluid" tabindex="-1" style="display: block !important;">
                                 <div pageaction="runTest1" class="item fluid" data-value="1">One</div>
                                 <div pageaction="runTest1" class="item fluid" data-value="2">Two</div>
                                 <div pageaction="runTest1" class="item fluid" data-value="3">More</div>
@@ -47,4 +32,6 @@
                     </div>
                 </div>
             </div>
+        </div>
+    </div>
 </div>

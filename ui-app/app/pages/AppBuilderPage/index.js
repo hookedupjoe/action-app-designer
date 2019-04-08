@@ -31,10 +31,11 @@ License: MIT
         north: { html: "north" },
         east: false,
         west: { partname: "west", control: "west" },
-        center: { partname: "center", control: "center" },
+        center: { control: "center" },
         south: false
     }
 
+    //center:  { html: "layout-demo-1" },
 
     //--- Customize default layout configuration
     //--- See http://layout.jquery-dev.com/documentation.cfm for details
@@ -219,9 +220,9 @@ License: MIT
             north__spacing_open: 0
         };
     
-alert("Test One Ran")
+// alert("Test One Ran")
         
-       // ThisPage.getSpot('layout').layout(defaultLayoutOptions);
+       ThisPage.getSpot('layout').layout(defaultLayoutOptions);
        
 
     };
