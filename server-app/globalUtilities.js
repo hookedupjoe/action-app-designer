@@ -21,7 +21,7 @@ $.async = require('asyncawait/async');
 $.await = require('asyncawait/await');
 $.jsonQuery = require('json-query');
 $.fs = require('fs-extra');
-
+$.os = require('os');
 $.cloneObject = cloneObject;
 $.getEpoch = getEpoch;
 $.getNowTimestamp = getNowTimestamp;

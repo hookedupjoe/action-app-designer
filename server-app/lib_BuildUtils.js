@@ -12,6 +12,9 @@ let utils = {
   getDirFiles: getDirFiles,
   getTextFile: getTextFile,
   getJsonFile: getJsonFile,
+  saveJsonFile: saveJsonFile,
+  writeJsonFile: saveJsonFile,
+  settingsHome: settingsHome,
   replaceAll: replaceAll,
   replaceFromMap: replaceFromMap,
   replaceFile: replaceFile,
@@ -45,6 +48,12 @@ function replaceFromMap(theString, theMap){
     tmpRet = replaceAll(tmpRet,aName,tmpValue)
   }
   return tmpRet;
+}
+
+
+function settingsHome() {
+  const tmpHomeDir = $.os.homedir();
+  return tmpHomeDir + '/.actapp/';
 }
 
 
@@ -105,6 +114,12 @@ function getJsonFile(theFilename){
   }));
 }
 
+
+//--- Like readJson but returns {} if not there
+function saveJsonFile(theFilename, theObject){
+  return $.fs.writeJson(theFilename, theObject)
+}
+
 //--- Like readJson but returns [] if not there
 function getDirFiles(theDirectory){
   return new Promise($.async(function (resolve, reject) {
@@ -123,4 +138,6 @@ function getDirFiles(theDirectory){
 
   
 }
+
+
 
