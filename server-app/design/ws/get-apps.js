@@ -52,6 +52,10 @@ module.exports.setup = function setup(scope) {
                         "item": "app-" + tmpAppName + "",
                         "details": tmpAppTitle,
                         "meta": "&#160;",
+                        attr: {
+                            pageaction: 'showAppConsole',
+                            appname: tmpAppName
+                        },
                         "level": 1,
                         "icon": "globe",
                         "color": "blue",
