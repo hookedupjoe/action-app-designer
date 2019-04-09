@@ -16,49 +16,38 @@
 		"name": "apptabs",
 		"tabs": [
 			{
-				"label": "Design",
-				"name": "apptabs-design",
+				"label": "Pages",
+				"name": "apptabs-pages",
 				"ctl": "tab",
 				"content": [
 					{
-						"ctl": "tabs",
-						"name": "apptabs-design-tabs",
-						"tabs": [
-							{
-								"label": "Pages",
-								"name": "apptabs-pages",
-								"ctl": "tab",
-								"content": [
-									{
-										"ctl": "pagespot",
-										"spotname": "apptabs-pages",
-										"text": "PAGES GO HERE"
-									}
-								]
-							},
-							{
-								"label": "Catalog",
-								"name": "apptabs-catalog",
-								"ctl": "tab",
-								"content": [
-									{
-										"ctl": "pagespot",
-										"spotname": "apptabs-catalog",
-										"text": "CATALOG GOES HERE"
-									}
-								]
-							}
-						
-						]
+						"ctl": "pagespot",
+						"spotname": "apptabs-pages",
+						"text": "PAGES GO HERE"
 					}
 				]
 			},
-			
+			{
+				"label": "Catalog",
+				"name": "apptabs-catalog",
+				"ctl": "tab",
+				"content": [
+					{
+						"ctl": "pagespot",
+						"spotname": "apptabs-catalog",
+						"text": "CATALOG GOES HERE"
+					}
+				]
+			},
 			{
 				"label": "Setup",
 				"name": "apptabs-setup",
 				"ctl": "tab",
 				"content": [
+					{
+						"ctl": "pagespot",
+						"spotname": "apptabs-setup"
+					},
 				
 					{
 						"ctl": "tabs",
