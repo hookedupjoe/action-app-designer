@@ -16,6 +16,19 @@ html, body {
   overflow: hidden;
 }
 
+.full.ui.disabled.dropdown, .full.ui.dropdown .menu>.disabled.item {
+  opacity: .95;
+}
+
+.full.ui.disabled.dropdown .dropdown.icon {
+  display:none;
+}
+
+
+.full.ui.disabled.dropdown .ui.label>.delete.icon {
+  display:none;
+}
+
 .pad1 {
   padding: 1px !important;
 }

@@ -6776,7 +6776,7 @@ License: MIT
                 tmpReq = ' required ';
             }
 
-            var tmpDispOnly = (tmpObject.readonly === true);
+            
 
             var tmpItems = tmpObject.items || tmpObject.content || [];
 
@@ -6805,7 +6805,7 @@ License: MIT
 
 
             // theControlObj.readonly = true;
-            
+            var tmpDispOnly = (tmpObject.readonly === true);
             var tmpSpecs = theControlObj.controlSpec.controlConfig;
             if (tmpSpecs && tmpSpecs.options && tmpSpecs.options.readonly === true) {
                 tmpDispOnly = true;
@@ -6882,6 +6882,21 @@ License: MIT
             if (tmpObject.multi === true) {
                 tmpMulti = 'multiple';
             }
+
+            var tmpDispOnly = (tmpObject.readonly === true);
+            var tmpSpecs = theControlObj.controlSpec.controlConfig;
+            if (tmpSpecs && tmpSpecs.options && tmpSpecs.options.readonly === true) {
+                tmpDispOnly = true;
+            }
+            if (theControlObj.readonly === true) {
+                tmpDispOnly = true;
+            }
+            
+            var tmpDDAttr = '';
+
+            if( tmpDispOnly ){
+                tmpDDAttr += ' disabled full '
+            }
             var tmpSizeName = '';
             if (tmpObject.size && tmpObject.size > 0 && tmpObject.size < 17) {
                 tmpSizeName = getNumName(tmpObject.size)
@@ -6904,7 +6919,7 @@ License: MIT
             }
             //--- Add field specific content here
 
-            tmpHTML.push('\n            <div ctlcomp="dropdown" class="ui selection ' + tmpMulti + ' dropdown">')
+            tmpHTML.push('\n            <div ctlcomp="dropdown" class="ui selection ' + tmpDDAttr + tmpMulti + ' dropdown">')
             tmpHTML.push('\n                <div class="default text">Select one</div>')
             tmpHTML.push('\n                <i class="dropdown icon"></i>')
             tmpHTML.push('\n                <input controls field type="hidden" name="' + theObject.name + '" >')
