@@ -30,9 +30,9 @@
 								"ctl": "tab",
 								"content": [
 									{
-										"ctl": "pagespot",
-										"spotname": "apptabs-pages",
-										"text": "PAGES GO HERE"
+										"ctl": "panel",
+										"controlname": "design/ws/get-pages?appname=app001",
+										"name": "pages"
 									}
 								]
 							},
@@ -62,7 +62,7 @@
 				
 					{
 						"ctl": "panel",
-						"controlname": "catalog/designer/panels/app-setup-info",
+						"controlname": "app/catalog/designer/panels/app-setup-info",
 						"name": "setupinfo"
 					}
 				]
