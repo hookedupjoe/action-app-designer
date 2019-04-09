@@ -4646,7 +4646,7 @@ License: MIT
             return;
         }
         this.controlConfig.index = me._loadContentIndex(this.controlConfig.content)
-
+        console.log( 'this.controlConfig.index', this.controlConfig.index);
     }
 
 
@@ -5570,6 +5570,7 @@ License: MIT
         tmpThis.parentEl.on('click', tmpThis.onItemClick.bind(this))
 
 
+        tmpThis.controlSpec.controlConfig.options = tmpThis.controlSpec.controlConfig.options || {};
         this.controlSpec.assureRequired().then(function () {
             var tmpInitResults = tmpThis.initControlComponents();
             if (tmpInitResults && tmpInitResults.then) {

@@ -19,6 +19,11 @@ License: MIT
 
 
     thisPageSpecs.required = {
+        controls: {
+            map: {
+                "app/catalog/designer/controls/app-console": "panelAppConsole"
+            }
+        },
         panels: {
             map: {
                 "design/ws/frmNewApp": "frmNewApp"
@@ -29,7 +34,7 @@ License: MIT
     thisPageSpecs.layoutOptions = {
         baseURL: pageBaseURL,
         north: { control: "north" },
-        east: false,
+        east: { html: "east" },
         west: { partname: "west", control: "west" },
         center:  { html: "mock-workspace-page" },
         south: false
@@ -57,6 +62,7 @@ License: MIT
     *    If your component need to do stuff to be availale in the background, do it here
     */
     var actions = ThisPage.pageActions;
+    var loadedApps = {};
     var appSetupConfig = false;
 
     ThisPage._onPreInit = function (theApp) {
@@ -302,6 +308,30 @@ License: MIT
 
     };
 
+  actions.showAppConsole = showAppConsole;
+  function showAppConsole(theParams, theTarget){
+      var tmpParams = ThisApp.getActionParams(theParams, theTarget, ['appname']);
+      var tmpAppName = tmpParams.appname || '';
+      if( !(tmpAppName) ){
+          alert("No app name provided to open");
+          return;
+      }
+      
+      if( loadedApps[tmpAppName] ){
+          console.log(tmpAppName + " already loaded. showing");
+          //ToDo: Refresh using instance data instead of reloading element
+          loadedApps[tmpAppName].loadToElement(ThisPage.getSpot('preview-panel'));
+      } else {
+        var tmpNewApp = ThisPage.getControl('panelAppConsole').create('app-'+tmpAppName);
+        tmpNewApp.setup({appname:tmpAppName});
+        loadedApps[tmpAppName] = tmpNewApp;
+          tmpNewApp.loadToElement(ThisPage.getSpot('preview-panel'));
+          //ToDo: Refresh using instance data after loading one time
+          
+        }
+     
+  };
+    
   actions.showPrompter = showPrompter;
   function showPrompter(theParams, theTarget){
        var tmpEl = $(theTarget);
