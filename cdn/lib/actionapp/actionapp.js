@@ -6895,7 +6895,8 @@ License: MIT
             var tmpDDAttr = '';
 
             if( tmpDispOnly ){
-                tmpDDAttr += ' disabled full '
+                tmpDDAttr += ' disabled full ';
+                tmpReq = '';
             }
             var tmpSizeName = '';
             if (tmpObject.size && tmpObject.size > 0 && tmpObject.size < 17) {
