@@ -383,7 +383,6 @@ var ActionAppCore = {};
                 //--- Loop to create each one, getting details if needed from el
                 for (var iLayout = 0; iLayout < tmpLayouts.length; iLayout++) {
                     var tmpLayoutEntry = $(tmpLayouts.get(iLayout));
-                    console.log( 'tmpLayoutEntry', tmpLayoutEntry);
                     var tmpOptions = {};
                     var tmpLayoutTemplateName = tmpLayoutEntry.attr('template') || '';
                     var tmpLayoutOptions = tmpOptions;
@@ -584,6 +583,9 @@ var ActionAppCore = {};
 
         if (me.resourceInitFlags[theFullPath] !== true) {
             me.resourceInitFlags[theFullPath] = true;
+            if (tmpResourceData.controlConfig) {
+                tmpResourceData.controlConfig.uri = theFullPath;
+            }
             if (tmpResourceData.controlConfig && tmpResourceData.controlConfig.options && tmpResourceData.controlConfig.options.css) {
                 var tmpCSS = tmpResourceData.controlConfig.options.css || '';
                 if (tmpCSS) {
@@ -1865,6 +1867,57 @@ var ActionAppCore = {};
         }
         return commonDialog;
     }
+
+
+
+
+
+
+    me.apiCall = apiCall;
+    function apiCall(theOptions) {
+        var dfd = $.Deferred();
+
+        if (!theOptions) {
+            dfd.reject("No api call details provided");
+            return;
+        }
+
+        var tmpOptions = theOptions || '';
+        if (typeof (tmpOptions) == 'string') {
+            tmpOptions = { url: tmpOptions };
+        }
+
+
+        var tmpURL = tmpOptions.url;
+        if (!tmpURL) {
+            throw "No URL provided"
+        }
+
+
+        var tmpRequest = {
+            cache: false,
+            success: function (theResponse) {
+                dfd.resolve(theResponse);
+            },
+            error: function (theError) {
+                dfd.reject(theError)
+            }
+        };
+        $.extend(tmpRequest, tmpOptions);
+
+        //--- Auto Detect data, convert data and use POST
+        if (tmpRequest.data) {
+            if (typeof (tmpRequest.data) == 'string') {
+                tmpRequest.data = JSON.parse(tmpRequest.data);
+            }
+            tmpRequest.method = 'POST';
+            tmpRequest.dataType = "json";
+        }
+
+        $.ajax(tmpRequest);
+        return dfd.promise();
+    }
+
 
     me.hasSidebar = false;
 
@@ -4671,6 +4724,40 @@ License: MIT
         return this.ControlEl
     }
 
+    meInstance.refreshUI = function () {
+        this.loadToElement(this.parentEl);
+        
+    }
+    meInstance.refreshFromURI = function (theOptionalURI) {
+        var dfd = jQuery.Deferred();
+
+
+        var tmpThisEl = this.getEl();
+        var tmpURI = theOptionalURI || this.controlSpec.baseURI || '';
+        if (!(tmpURI)) {
+            console.warn("Could not refresh - no URL provided or known");
+            dfd.resolve(false)
+            return;
+        }
+
+        var tmpThis = this;
+        ThisApp.apiCall({ url: tmpURI }).then(function (theReply) {
+            if (theReply && Array.isArray(theReply.content)) {
+                //--- Update internal content of this instnce only
+                tmpThis.controlSpec.controlConfig.content = theReply.content;
+                tmpThis.refreshUI();
+                dfd.resolve(true)
+            } else {
+                dfd.resolve(false)
+            }
+
+        })
+
+
+        return dfd.promise();
+    }
+
+
     //--- Spot for spot related stuff
 
 
@@ -6776,7 +6863,7 @@ License: MIT
                 tmpReq = ' required ';
             }
 
-            
+
 
             var tmpItems = tmpObject.items || tmpObject.content || [];
 
@@ -6821,7 +6908,7 @@ License: MIT
                 tmpReq = '';
                 tmpReadOnly = ' readonly '
             }
-            
+
             tmpHTML.push('<div controls fieldwrap name="' + theObject.name + '" class="' + tmpClasses + tmpSizeName + tmpReq + ' ui ' + tmpFieldOrInput + '">')
             if (theObject.label) {
                 tmpHTML.push('<label>')
@@ -6891,10 +6978,10 @@ License: MIT
             if (theControlObj.readonly === true) {
                 tmpDispOnly = true;
             }
-            
+
             var tmpDDAttr = '';
 
-            if( tmpDispOnly ){
+            if (tmpDispOnly) {
                 tmpDDAttr += ' disabled full ';
                 tmpReq = '';
             }
