@@ -23,7 +23,14 @@ module.exports.setup = function setup(scope) {
             try {
 
               var tmpAppConfig = $.await($.bld.getJsonFile(scope.locals.path.designer + '/build/app-build-config.json'));
-//console.log( 'tmpAppConfig', tmpAppConfig);
+              var tmpWSDir = scope.locals.path.workspace + 'apps/';
+
+              var tmpAppName = req.query.appname || req.query.name || req.query.filename || '';
+              tmpAppName = tmpAppName
+                  .replace('.json', '')
+              
+              var tmpAppBase = tmpWSDir + tmpAppName + '/';
+              var tmpAppDetails = $.await($.bld.getJsonFile(tmpAppBase + 'app-info.json'))
 
 var tmpLibLocations = '';
 var tmpAppTpls = tmpAppConfig.applicationTemplates || [];
@@ -36,14 +43,12 @@ for (var aIndex in tmpAppTpls){
   
 }
 
-var tmpDoc = {"name":"app001","title":"My First App","pages":["HomePage","LogsPage"],"plugins":["DataTables"],"cdn":"local","libraries":["DataTables","Ace"],"required":{},"extend":{},"details":"Testing"};
-
 
                 var tmpRet = {
                   "options": {
                     "readonly": true,
                     "padding": false,
-                    "doc": tmpDoc
+                    "doc": tmpAppDetails
                   },
                   "content": [{
                     "ctl": "tabs",
@@ -125,7 +130,7 @@ var tmpDoc = {"name":"app001","title":"My First App","pages":["HomePage","LogsPa
                
             }
             catch (error) {
-                console.log('Err : ' + error);
+                console.error('Err : ' + error);
                 reject(error);
             }
 

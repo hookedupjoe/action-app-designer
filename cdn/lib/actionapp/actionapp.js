@@ -4730,16 +4730,15 @@ License: MIT
         if( typeof(tmpOptions.readonly) === 'boolean'){
             tmpThis.controlSpec.controlConfig.options.readonly = tmpOptions.readonly;
         }
-        if( isObj(tmpOptions.doc) ){
+        if( tmpOptions.doc){
             tmpThis.controlSpec.controlConfig.options.doc = tmpOptions.doc;
         }
-        this.loadToElement(this.parentEl);
+        this.loadToElement(this.parentEl, theOptions);
     }
 
     meInstance.refreshFromURI = function (theOptionalURI, theOptions) {
         var dfd = jQuery.Deferred();
         var tmpOptions = theOptions || {};
-
 
         var tmpThisEl = this.getEl();
         var tmpURI = theOptionalURI || this.controlSpec.baseURI || '';
@@ -4753,8 +4752,9 @@ License: MIT
         ThisApp.apiCall({ url: tmpURI }).then(function (theReply) {
             if (theReply && Array.isArray(theReply.content)) {
                 //--- Update internal content of this instnce only
+                tmpThis.controlSpec.controlConfig.options = (theReply.options || {});
                 tmpThis.controlSpec.controlConfig.content = theReply.content;
-                tmpThis.refreshUI(theOptions);
+                tmpThis.refreshUI(tmpOptions);
                 dfd.resolve(true)
             } else {
                 dfd.resolve(false)
