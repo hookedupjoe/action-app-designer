@@ -1893,7 +1893,6 @@ var ActionAppCore = {};
             throw "No URL provided"
         }
 
-
         var tmpRequest = {
             cache: false,
             success: function (theResponse) {
@@ -4728,8 +4727,9 @@ License: MIT
         this.loadToElement(this.parentEl);
         
     }
-    meInstance.refreshFromURI = function (theOptionalURI) {
+    meInstance.refreshFromURI = function (theOptionalURI, theOptions) {
         var dfd = jQuery.Deferred();
+        var tmpOptions = theOptions || {};
 
 
         var tmpThisEl = this.getEl();
@@ -4745,6 +4745,10 @@ License: MIT
             if (theReply && Array.isArray(theReply.content)) {
                 //--- Update internal content of this instnce only
                 tmpThis.controlSpec.controlConfig.content = theReply.content;
+                if( tmpOptions && typeof(tmpOptions.readonly) === 'boolean'){
+                    tmpThis.controlSpec.controlConfig.options = tmpThis.controlSpec.controlConfig.options || {};
+                    tmpThis.controlSpec.controlConfig.options.readonly = tmpOptions.readonly;
+                }
                 tmpThis.refreshUI();
                 dfd.resolve(true)
             } else {
