@@ -24,7 +24,7 @@ module.exports.setup = function setup(scope) {
                 var tmpAppName = req.query.appname || req.query.name || req.query.filename || '';
                 tmpAppName = tmpAppName
                     .replace('.json', '')
-                console.log( 'tmpAppName', tmpAppName);
+                // console.log( 'tmpAppName', tmpAppName);
                 var tmpAppBase = tmpWSDir + tmpAppName + '/';
                 var tmpAppDetails = $.await($.bld.getJsonFile(tmpAppBase + 'app-info.json'))
                 var tmpAppTitle = tmpAppDetails.title || "(untitled)";
@@ -33,13 +33,14 @@ module.exports.setup = function setup(scope) {
                 var tmpPages = $.await($.bld.getDirFiles(tmpPagesBase))
               
                 var tmpApp = {
-                    "ctl": "segment",                    
+                    "ctl": "tbl-ol-node",                    
                     "type": "app",
                     "name": "app-" + tmpAppName + "",
                     "item": "app-" + tmpAppName + "",
                     "details": tmpAppTitle + " pages",
                     "meta": "&#160;",
                     "level": 1,
+                    "refresh": true,
                     "icon": "globe",
                     "color": "blue",
                     "classes": "ws-outline",
