@@ -361,14 +361,53 @@ var ActionAppCore = {};
                 ;
         }
 
-        var tmpLOs = me.getByAttr$({ appcomp: 'layout' }, theOptionalTarget)
-        if (tmpLOs && tmpLOs.length) {
-            me.getByAttr$({ appcomp: 'layout' }, theOptionalTarget)
-                .addClass('ctl-layout-frame')
-                .attr('appcomporig', 'layout')
-                .attr('appcomp', '')
-                .layout()
-                ;
+        var tmpLayouts = me.getByAttr$({ appcomp: 'layout' }, theOptionalTarget)
+        if (tmpLayouts) {
+
+
+            if (tmpLayouts.length) {
+                tmpLayouts
+                    .addClass('ctl-layout-frame')
+                    // .css('min-height', '200px')
+                    .css('height', '100%')
+                    .attr('appcomporig', 'layout')
+                    .attr('appcomp', '')
+                    // .layout()
+                    ;
+                //--- Assure all the elements to the next pane are 100%
+                ThisApp.util.resizeToParent(tmpLayouts);
+
+                //--- Assure layouts index is in there
+                this.liveIndex = this.liveIndex || {};
+                this.liveIndex.layouts = this.liveIndex.layouts || {};
+                //--- Loop to create each one, getting details if needed from el
+                for (var iLayout = 0; iLayout < tmpLayouts.length; iLayout++) {
+                    var tmpLayoutEntry = $(tmpLayouts.get(iLayout));
+                    console.log( 'tmpLayoutEntry', tmpLayoutEntry);
+                    var tmpOptions = {};
+                    var tmpLayoutTemplateName = tmpLayoutEntry.attr('template') || '';
+                    var tmpLayoutOptions = tmpOptions;
+                    if (tmpLayoutTemplateName && StaticApp.layoutTemplates[tmpLayoutTemplateName]) {
+                        //--- Using custom template
+                        tmpLayoutOptions = StaticApp.layoutTemplates[tmpLayoutTemplateName];
+                    }
+
+                    tmpLayoutEntry.layout(tmpLayoutOptions);
+                }
+
+
+                // //--- Enable layouts and save the handles
+                //this.liveIndex.layouts = tmpLayouts.layout();
+                //--- Tell the app to resize it's layouts
+                ThisApp.resizeLayouts();
+            }
+
+            // me.getByAttr$({ appcomp: 'layout' }, theOptionalTarget)
+            //     .addClass('ctl-layout-frame')
+            //     .attr('appcomporig', 'layout')
+            //     .attr('appcomp', '')
+            //     .layout()
+            //     ;
         }
     }
 
@@ -2370,7 +2409,7 @@ var ActionAppCore = {};
         var tmpAtEl = theEl.parent();
 
         for (var iPos = 0; iPos < tmpMax; iPos++) {
-            if (tmpAtEl.hasClass('ui-layout-pane')) {
+            if (tmpAtEl.hasClass('ui-layout-pane') || tmpAtEl.hasClass('app-layout-pane')) {
                 return true;
             }
             tmpAtEl.css('height', '100%');
@@ -2404,16 +2443,21 @@ var ActionAppCore = {};
         $('body').append(tmpHTML.join(''))
     }
 
-    
+
     function initPromptMarkup() {
         var tmpHTML = [];
-        tmpHTML.push('<div appuse="promptermask" action="clearPrompter" class="pagemask hidden">')
-        tmpHTML.push('	<div appuse="prompter" class="flyover hidden">')
+        // tmpHTML.push('<div appuse="promptermask" action="clearPrompter" class="pagemask hidden">')
+        // tmpHTML.push('	<div appuse="prompter" class="flyover hidden">')
+        // tmpHTML.push('		<div class="prompter-content" spot="prompter-content">')
+        // tmpHTML.push('		</div>')
+        // tmpHTML.push('		<div style="clear:both"></div>')
+        // tmpHTML.push('	</div>')
+        // tmpHTML.push('</div>')
+
+
         tmpHTML.push('		<div class="prompter-content" spot="prompter-content">')
         tmpHTML.push('		</div>')
-        tmpHTML.push('		<div style="clear:both"></div>')
-        tmpHTML.push('	</div>')
-        tmpHTML.push('</div>')
+
         $('body').append(tmpHTML.join(''))
     }
 
@@ -3490,7 +3534,7 @@ License: MIT
 
         tmpHTML.push('<div appuse="_prompter:ask-dialog" class="ui tiny modal">')
         tmpHTML.push('	<div appuse="_prompter:ask-dialog-title" class="header"></div>')
-        tmpHTML.push('	<div class="content" style="font-size:larger;font=weight:bolder;">')
+        tmpHTML.push('	<div class="content" style="font-size:larger;font-weight:bolder;">')
         tmpHTML.push('<div style="float:left;"><div style="margin-bottom:10px;"><i class="icon huge question circle blue" /></div></div>')
         tmpHTML.push('    <div appuse="_prompter:ask-dialog-text" class="description">')
         tmpHTML.push('    </div>')
@@ -3508,7 +3552,7 @@ License: MIT
 
         tmpHTML.push('<div appuse="_prompter:alert-dialog" class="ui tiny modal">')
         tmpHTML.push('	<div appuse="_prompter:alert-dialog-title" class="header"></div>')
-        tmpHTML.push('	<div class="content" style="font-size:larger;font=weight:bolder;">')
+        tmpHTML.push('	<div class="content" style="font-size:larger;font-weight:bolder;">')
         tmpHTML.push('<div style="float:left;"><div style="margin-bottom:10px;"><i appuse="_prompter:alert-dialog-icon" class="" /></div></div>')
         tmpHTML.push('    <div appuse="_prompter:alert-dialog-text" class="description">')
         tmpHTML.push('    </div>')
@@ -5899,21 +5943,21 @@ License: MIT
 
             tmpHTML.push('<div ctlcomp="layout" ' + getItemAttrString(theObject) + ' class="' + tmpClasses + ' " ' + tmpStyle + '>')
 
-            var tmpRegions = ['center','north', 'south', 'east', 'west'];
+            var tmpRegions = ['center', 'north', 'south', 'east', 'west'];
             for (var i = 0; i < tmpRegions.length; i++) {
                 var tmpRegion = tmpRegions[i];
                 var tmpRegionConfig = theObject[tmpRegion] || '';
                 var tmpUseDefault = false;
-                if( tmpRegionConfig === true ){
+                if (tmpRegionConfig === true) {
                     tmpUseDefault = true;
-                } else if( (!(tmpRegionConfig)) && tmpRegion == 'center'){
+                } else if ((!(tmpRegionConfig)) && tmpRegion == 'center') {
                     //--- Always use a center
                     tmpUseDefault = true;
                 }
 
                 if (tmpUseDefault) {
                     tmpHTML.push('<div myspot="' + tmpRegion + '" class="ui-layout-' + tmpRegion + '"></div>')
-                } else if( tmpRegionConfig ) {
+                } else if (tmpRegionConfig) {
                     if (!Array.isArray(tmpRegionConfig)) {
                         tmpRegionConfig = [tmpRegionConfig]
                     }
@@ -6626,7 +6670,16 @@ License: MIT
             if (theControlName == 'pagespot') {
                 tmpSpotAttr = 'pagespot'
             }
-            tmpHTML.push('<div ' + getItemAttrString(theObject) + ' class="' + tmpClasses + '" style="' + tmpStyles + '" ' + tmpSpotAttr + '="' + tmpName + '"></div>')
+            tmpHTML.push('<div ' + getItemAttrString(theObject) + ' class="' + tmpClasses + '" style="' + tmpStyles + '" ' + tmpSpotAttr + '="' + tmpName + '">')
+
+            tmpHTML.push(tmpObject.text || tmpObject.html || '')
+
+            var tmpItems = tmpObject.items || tmpObject.content || [];
+            if (tmpItems) {
+                tmpHTML.push(getContentHTML(theControlName, tmpItems, theControlObj))
+            }
+            
+            tmpHTML.push('</div>')
             tmpHTML = tmpHTML.join('');
             return tmpHTML;
 
@@ -6748,18 +6801,18 @@ License: MIT
             tmpClasses += getValueIfTrue(theObject, ['compact', 'fluid']);
             tmpClasses += getValueIfThere(theObject, ['color', 'size']);
 
-            
+
             // theControlObj.readonly = true;
             var tmpSpecs = theControlObj.controlSpec.controlConfig;
-            if( tmpSpecs && tmpSpecs.options && tmpSpecs.options.readonly === true){
+            if (tmpSpecs && tmpSpecs.options && tmpSpecs.options.readonly === true) {
                 theControlObj.readonly = true;
             }
             var tmpFieldType = 'text';
-            if( theControlObj.readonly === true){
+            if (theControlObj.readonly === true) {
                 tmpFieldType = 'hidden';
                 tmpReq = '';
             }
-            
+
             tmpHTML.push('<div controls fieldwrap name="' + theObject.name + '" class="' + tmpClasses + tmpSizeName + tmpReq + ' ui ' + tmpFieldOrInput + '">')
             if (theObject.label) {
                 tmpHTML.push('<label>')
@@ -6778,9 +6831,9 @@ License: MIT
 
             tmpHTML.push('<input ' + tmpInputClasses + ' type="' + tmpFieldType + '" controls field ' + tmpValue + ' name="' + theObject.name + '" ' + tmpPH + '">')
 
-if( theControlObj.readonly === true){
-    tmpHTML.push('<b>' + tmpDispValue + '</b>')
-}
+            if (theControlObj.readonly === true) {
+                tmpHTML.push('<b>' + tmpDispValue + '</b>')
+            }
 
             tmpHTML.push('</input>')
             tmpHTML.push(getNoteMarkup(theObject));

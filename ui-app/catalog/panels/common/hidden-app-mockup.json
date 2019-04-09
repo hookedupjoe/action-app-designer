@@ -1,0 +1,98 @@
+{
+	"options": {
+	  "readonly": true,
+		"padding": false
+	},
+	"content": [	{
+		"ctl": "segment",
+		"basic": true,
+		"slim": true,
+		"content": [
+			{
+				"ctl": "title",
+				"name": "title",
+				"size": "large",
+				"color": "blue",
+				"icon": "globe",
+				"text": "My First Application"
+			}
+		]
+	},
+	{
+		"ctl": "segment",
+		"basic": true,
+		"slim": true,
+		"content": [
+			{
+				"ctl": "tabs",
+				"name": "apptabs",
+				"tabs": [
+					{
+						"label": "App Info",
+						"name": "apptabs-info",
+						"ctl": "tab",
+						"content": [
+							{
+								"ctl": "pagespot",
+								"spotname": "apptabs-info"
+							},
+							{
+								"ctl": "fieldrow",
+								"name": "info-row",
+								"items": [
+									{
+										"ctl": "field",
+										"name": "appname",
+										"label": "Application Filename",
+										"default": "app014",
+										"req": true
+									},
+									{
+										"ctl": "field",
+										"name": "title",
+										"label": "Application Title",
+										"default": "Fourteen",
+										"req": true
+									}
+								]
+							}
+						]
+					},
+					{
+						"label": "Develop",
+						"name": "apptabs-develop",
+						"ctl": "tab",
+						"content": [
+							{
+								"ctl": "pagespot",
+								"spotname": "apptabs-develop"
+							}
+						]
+					},
+					{
+						"label": "Preview",
+						"name": "apptabs-preview",
+						"ctl": "tab",
+						"content": [
+							{
+								"ctl": "pagespot",
+								"spotname": "apptabs-preview"
+							}
+						]
+					},
+					{
+						"label": "Deploy",
+						"name": "apptabs-deploy",
+						"ctl": "tab",
+						"content": [
+							{
+								"ctl": "pagespot",
+								"spotname": "apptabs-deploy"
+							}
+						]
+					}
+				]
+			}
+		]
+	}]
+}

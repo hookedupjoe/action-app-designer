@@ -304,27 +304,21 @@ License: MIT
 
   actions.showPrompter = showPrompter;
   function showPrompter(theParams, theTarget){
-      var tmpParams = ThisApp.getActionParams(theParams, theTarget, []);
-       // var tmpParams = ThisApp.getActionParams(theParams, theTarget, ['menuname'])
        var tmpEl = $(theTarget);
        var tmpPageEl = tmpEl.closest('[group="app:pages"]');
-       console.log( 'tmpPageEl', tmpPageEl);
+       var tmpPromptEl = ThisApp.getByAttr$({ appuse: 'prompter' });
 
-       var tmpOffset = tmpEl.offset();
-       var tmpPageOffset = tmpPageEl.offset();
-
-       var tmpFO = ThisApp.getByAttr$({ appuse: 'prompter' });
-       var tmpFOMask = ThisApp.getByAttr$({ appuse: 'promptermask' });
-
-       //--- Move the prompter mast and related prompter to the page
-       //    ... so that pageaction works naturally
-       tmpFOMask.detach().appendTo(tmpPageEl);
-       //var tmpMenuHTML = tmpEl.parent().html();
        
-       var tmpHTML = [];
-       tmpHTML.push('<div class="ui-layout-pane" style="height:400px;width:800px;">')
+        //--- Move the flyover mast and related flyover to the page
+        //    ... so that pageaction works naturally
+        tmpPromptEl.detach().appendTo(tmpPageEl);
 
-       tmpHTML.push('<div style="height:100%;width:100%;"layoutname"prompter" appcomp="layout">')
+       var tmpHTML = [];
+tmpHTML.push('<div class="ui dimmer modals page transition visible active" style="display: flex !important;">')
+tmpHTML.push('  <div class="ui modal transition visible active" style="display: block !important;">')
+tmpHTML.push('    <div spot="prompter-dlg-content" >')
+
+tmpHTML.push('<div style="padding:5px;border:solid 5px transparent;" appcomp="layout">')
 tmpHTML.push('    <div class="ui-layout-center">Center</div>')
 tmpHTML.push('    <div class="ui-layout-north">North</div>')
 tmpHTML.push('    <div class="ui-layout-south">South</div>')
@@ -332,21 +326,17 @@ tmpHTML.push('    <div class="ui-layout-east">East</div>')
 tmpHTML.push('    <div class="ui-layout-west">West</div>')
 tmpHTML.push('</div>')
 
+
+tmpHTML.push('    </div>')
+tmpHTML.push('  </div>')
 tmpHTML.push('</div>')
-       
+
        ThisApp.loadSpot('prompter-content', tmpHTML.join(''));
 
-    //    var tmpDropMenu = $('[dropmenu="menu"]', ThisApp.getSpot('flyover-menu'))
-    //    tmpDropMenu.show();
-       tmpFO.css('width', tmpEl.css('width'));       
-       tmpFO.css('top', (tmpOffset.top - tmpPageOffset.top) + 'px');
-       tmpFO.css('left', (tmpOffset.left - tmpPageOffset.left) + 'px');
-
-       tmpFOMask.removeClass('hidden');
-       tmpFO.removeClass('hidden');
+       tmpPromptEl.removeClass('hidden');
        ThisApp.initAppComponents(ThisApp.getSpot('prompter-content'))
 
-       
+
        ThisApp.refreshLayouts();
 
   };

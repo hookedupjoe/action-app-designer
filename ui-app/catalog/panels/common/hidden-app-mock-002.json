@@ -53,48 +53,64 @@
 												"req": true
 											}
 										]
-									},
-									{
-										"ctl": "dropdown",
-										"multi": true,
-										"name": "loadpages",
-										"label": "Pages to load",
-										"default": "local",
-										"list": "HomePage,LogsPage,TestPage",
-										"req": true
 									}
 								]
 							},
 							{
-								"label": "Libraries",
-								"name": "my-tab-2-tab-1",
+								"label": "Setup Options",
+								"name": "my-tab-2",
 								"ctl": "tab",
 								"content": [
 									{
-										"ctl": "dropdown",
-										"name": "cdn",
-										"label": "Library Location",
-										"default": "local",
-										"list": "Preview|local,Cloud|cloud,In App|app",
-										"req": true
-									},
-									{
-										"ctl": "dropdown",
-										"multi": true,
-										"name": "libraries",
-										"label": "Libraries",
-										"default": "local",
-										"list": "DataTables|datatables,Ace|ace",
-										"req": true
-									},
-									{
-										"ctl": "dropdown",
-										"multi": true,
-										"name": "plugins",
-										"label": "Plugins",
-										"default": "local",
-										"list": "DataTables|datatables,Svg Workspaces|svg",
-										"req": true
+										"ctl": "tabs",
+										"name": "my-tab-2-tabs",
+										"tabs": [
+											{
+												"label": "Libraries",
+												"name": "my-tab-2-tab-1",
+												"ctl": "tab",
+												"content": [
+													{
+														"ctl": "dropdown",
+														"name": "cdn",
+														"label": "Library Location",
+														"default": "local",
+														"list": "Preview|local,Cloud|cloud,In App|app",
+														"req": true
+													},
+													{
+														"ctl": "dropdown",
+														"multi": true,
+														"name": "libraries",
+														"label": "Libraries",
+														"default": "local",
+														"list": "DataTables|datatables,Ace|ace",
+														"req": true
+													},
+													{
+														"ctl": "dropdown",
+														"multi": true,
+														"name": "plugins",
+														"label": "Plugins",
+														"default": "local",
+														"list": "DataTables|datatables,Svg Workspaces|svg",
+														"req": true
+													}
+												]
+											},
+											{
+												"label": "Resources",
+												"name": "my-tab-2-tab-2",
+												"ctl": "tab",
+												"content": [
+													{
+														"ctl": "pagespot",
+														"name": "my-tab-2-tab-2-spot",
+														"text": "Application Resources Go Here"
+													}
+												]
+											}
+										]
 									}
 								]
 							}

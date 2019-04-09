@@ -1,0 +1,81 @@
+<div class="ui dimmer modals page transition visible active" style="display: flex !important;">
+
+  <div appuse="_prompter:alert-dialog" class="ui tiny modal">
+    <div appuse="_prompter:alert-dialog-title" class="header"></div>
+    <div class="content" style="font-size:larger;font-weight:bolder;">
+      <div style="float:left;">
+        <div style="margin-bottom:10px;"><i appuse="_prompter:alert-dialog-icon" class=""></i></div>
+      </div>
+      <div appuse="_prompter:alert-dialog-text" class="description"> </div>
+    </div>
+    <div class="actions" style="clear:both;">
+      <div action="_prompter:hideAlert" class="ui right blue button" style="min-width:200px"> OK </div>
+    </div>
+  </div>
+  <div appuse="_prompter:ask-dialog" class="ui tiny modal">
+    <div appuse="_prompter:ask-dialog-title" class="header"></div>
+    <div class="content" style="font-size:larger;font-weight:bolder;">
+      <div style="float:left;">
+        <div style="margin-bottom:10px;"><i class="icon huge question circle blue"></i></div>
+      </div>
+      <div appuse="_prompter:ask-dialog-text" class="description"> </div>
+    </div>
+    <div class="actions" style="clear:both;">
+      <div action="_prompter:hideConfirmNo" class="ui red button"> No </div>
+      <div action="_prompter:hideConfirmYes" class="ui right green labeled icon button"> Yes <i
+          class="checkmark icon"></i> </div>
+    </div>
+  </div>
+  <div appuse="_prompter:prompt-dialog" class="ui modal small transition visible active scrolling"
+    style="display: block !important;">
+    <div appuse="_prompter:prompt-dialog-title" class="header">New Application</div>
+    <div class="scrolling content">
+      <div appuse="_prompter:prompt-dialog-text-top" class="forms-top-content"></div>
+      <div appuse="_prompter:prompt-dialog-text" class="app-layout-pane">
+        <div class="ui  segment basic slim  form" controls="" control="" name="prompt-form">
+          <div controls="" item="" name="info-row" class="field ">
+            <div class="two  fields">
+              <div controls="" fieldwrap="" name="appname" class=" required  ui field"><label>Application
+                  Filename</label><input type="text" controls="" field="" name="appname"
+                  placeholder="Application Filename ">
+                <div controls="" fieldnote="" name="appname" class="ui message fluid " style="display:none;"></div>
+                <div controls="" fieldmsg="" name="appname" class="ui message fluid" style="display:none;"></div>
+              </div>
+              <div controls="" fieldwrap="" name="title" class=" required  ui field"><label>Application
+                  Title</label><input type="text" controls="" field="" name="title" placeholder="Application Title ">
+                <div controls="" fieldnote="" name="title" class="ui message fluid " style="display:none;"></div>
+                <div controls="" fieldmsg="" name="title" class="ui message fluid" style="display:none;"></div>
+              </div>
+            </div>
+          </div>
+          <div controls="" fieldwrap="" name="template" class=" required  field"><label>Starting Point</label>
+            <div ctlcomp="" class="ui selection  dropdown" tabindex="0" appcomp="">
+              <div class="text">Default Template</div>
+              <i class="dropdown icon"></i>
+              <input controls="" field="" type="hidden" name="template" value="default">
+              <div class="menu" tabindex="-1">
+                <div class="item active selected" data-value="default">Default Template</div>
+                <div class="item" data-value="simple">Simple single page app</div>
+              </div>
+            </div>
+            <div controls="" fieldnote="" name="template" class="ui message fluid " style="display:none;"></div>
+            <div controls="" fieldmsg="" name="template" class="ui message fluid" style="display:none;"></div>
+          </div>
+          <div controls="" fieldwrap="" name="description" class=" ui field"><label>Description</label><input
+              type="text" controls="" field="" name="description"
+              placeholder="Enter optional details about this application ">
+            <div controls="" fieldnote="" name="description" class="ui message fluid " style="display:none;"></div>
+            <div controls="" fieldmsg="" name="description" class="ui message fluid" style="display:none;"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="actions">
+      <div appuse="_prompter:prompt-dialog-no" action="_prompter:hidePrompt" class="ui gray button">Cancel</div>
+      <div appuse="_prompter:prompt-dialog-yes" action="_prompter:submitPrompt" class="ui button blue">Create New
+        Application</div>
+      <div appuse="_prompter:prompt-dialog-cancel" action="_prompter:hidePrompt" class="ui button" style="display:none">
+        Cancel </div>
+    </div>
+  </div>
+</div>

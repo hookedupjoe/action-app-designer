@@ -5,44 +5,38 @@
 	"content": [
 		{
 			"ctl": "tabs",
-			"name": "controls-tabs",
+			"name": "my-tabs",
 			"tabs": [
 				{
-					"label": "Catalog",
-					"name": "catalog-tab",
+					"label": "My Tab 1",
+					"name": "my-tab-1",
 					"ctl": "tab",
 					"content": [
 						{
 							"ctl": "tabs",
-							"name": "catalog-tabs",
+							"name": "my-tab-1-tabs",
 							"tabs": [
 								{
-									"label": "Available",
-									"name": "catalog-tab-list-tab",
+									"label": "my-tab-1-tab-1",
+									"name": "my-tab-1-tab-1",
 									"ctl": "tab",
 									"content": [
 										{
-											"ctl": "button",
-											"color": "purple",
-											"size": "large",
-											"name": "btn-runtest",
-											"pageaction": "runTest",
-											"text": "Run Test"
-										},
-										{
 											"ctl": "pagespot",
-											"name": "catalog-tab-list"
+											"name": "my-tab-1-tab-1-spot",
+											"text": "SPOT: my-tab-1-tab-1-spot"
 										}
 									]
 								},
 								{
-									"label": "Loaded",
-									"name": "catalog-tab-loaded-tab",
+									"label": "my-tab-1-tab-2",
+									"name": "my-tab-1-tab-2",
 									"ctl": "tab",
 									"content": [
 										{
 											"ctl": "pagespot",
-											"name": "catalog-tab-loaded"
+											"name": "my-tab-1-tab-2-spot",
+											"text": "SPOT: my-tab-1-tab-2-spot"
 										}
 									]
 								}
@@ -51,13 +45,39 @@
 					]
 				},
 				{
-					"label": "Clipboard",
-					"name": "controls-clipboard-tab",
+					"label": "My Tab 2",
+					"name": "my-tab-2",
 					"ctl": "tab",
 					"content": [
 						{
-							"ctl": "pagespot",
-							"name": "controls-clipboard"
+							"ctl": "tabs",
+							"name": "my-tab-2-tabs",
+							"tabs": [
+								{
+									"label": "my-tab-2-tab-1",
+									"name": "my-tab-2-tab-1",
+									"ctl": "tab",
+									"content": [
+										{
+											"ctl": "pagespot",
+											"name": "my-tab-2-tab-1-spot",
+											"text": "SPOT: my-tab-2-tab-1-spot"
+										}
+									]
+								},
+								{
+									"label": "my-tab-2-tab-2",
+									"name": "my-tab-2-tab-2",
+									"ctl": "tab",
+									"content": [
+										{
+											"ctl": "pagespot",
+											"name": "my-tab-2-tab-2-spot",
+											"text": "SPOT: my-tab-2-tab-2-spot"
+										}
+									]
+								}
+							]
 						}
 					]
 				}
