@@ -124,7 +124,12 @@ function getJsonFile(theFilename){
 
 //--- Like readJson but returns {} if not there
 function saveJsonFile(theFilename, theObject){
-  return $.fs.writeJson(theFilename, theObject)
+  
+  var tmpObject = theObject || {};
+  if( typeof(tmpObject) == 'string'){
+    tmpObject = JSON.parse(tmpObject);
+  }
+  return $.fs.writeJson(theFilename, tmpObject)
 }
 
 //--- Like readJson but returns [] if not there

@@ -21,6 +21,10 @@ module.exports.setup = function setup(scope) {
         return new Promise($.async(function (resolve, reject) {
             try {
 
+                
+               
+
+
                 var tmpBody = req.body || {};
                 if (typeof (tmpBody) == 'string') {
                     try {
@@ -34,15 +38,27 @@ module.exports.setup = function setup(scope) {
                     throw("Missing Application Name")    
                 }
                 var tmpAppTitle = tmpBody.title || tmpAppName;
+                var tmpAppDesc = tmpBody.description || '';
                 var tmpTemplate = tmpBody.template || 'default';
                 console.log( 'tmpAppTitle', tmpAppTitle);
                 console.log( 'tmpTemplate', tmpTemplate);
 
-                var tmpBuildCfg = $.await($.bld.getBuildConfigJson(scope));
-                var tmpFromDir = tmpBuildCfg.applicationTemplateLocation + tmpTemplate + '/';
-                console.log( 'tmpFromDir', tmpFromDir);
+                var tmpWSDir = scope.locals.path.workspace + 'apps/';
+                var tmpAppBase = tmpWSDir + tmpAppName + '/';
 
-                var tmpRet = {request: tmpBody};
+                var tmpBuildCfg = $.await($.bld.getBuildConfigJson(scope));
+                var tmpFromDir = scope.locals.path.root + '/' + tmpBuildCfg.applicationTemplateLocation + tmpTemplate + '/';
+                var tmpToDir = tmpAppBase;
+
+                $.await($.fs.copy(tmpFromDir,tmpToDir));
+
+                var tmpAppDetails = $.await($.bld.getJsonFile(tmpAppBase + 'app-info.json'));
+                tmpAppDetails.title = tmpAppTitle;
+                tmpAppDetails.details = tmpAppDesc || '';
+                
+                $.await($.bld.saveJsonFile(tmpAppBase + 'app-info.json', tmpAppDetails))
+
+                var tmpRet = {status: true};
                 resolve(tmpRet);
 
             }
