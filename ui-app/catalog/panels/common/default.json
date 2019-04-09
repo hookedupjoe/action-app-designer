@@ -1,6 +1,6 @@
 {
 	"options": {
-	  "readonly": true,
+	  "readonly": false,
 		"padding": true
 	},
 	"content": [	{
@@ -61,80 +61,9 @@
 				"content": [
 				
 					{
-						"ctl": "tabs",
-						"name": "my-tabs",
-						"tabs": [
-							
-							{
-								"label": "Basic Info",
-								"name": "my-tab-1",
-								"ctl": "tab",
-								"content": [
-									{
-										"ctl": "fieldrow",
-										"name": "info-row",
-										"items": [
-											{
-												"ctl": "field",
-												"name": "appname",
-												"label": "Application Filename",
-												"default": "app014",
-												"req": true
-											},
-											{
-												"ctl": "field",
-												"name": "title",
-												"label": "Application Title",
-												"default": "Fourteen",
-												"req": true
-											}
-										]
-									},
-									{
-										"ctl": "dropdown",
-										"multi": true,
-										"name": "pages",
-										"label": "Pages to load",
-										"default": "local",
-										"list": "HomePage,LogsPage,TestPage",
-										"req": true
-									}
-								]
-							},
-							{
-								"label": "Libraries",
-								"name": "my-tab-2-tab-1",
-								"ctl": "tab",
-								"content": [
-									{
-										"ctl": "dropdown",
-										"name": "cdn",
-										"label": "Library Location",
-										"default": "local",
-										"list": "Preview|local,Cloud|cloud,In App|app",
-										"req": true
-									},
-									{
-										"ctl": "dropdown",
-										"multi": true,
-										"name": "libraries",
-										"label": "Libraries",
-										"default": "local",
-										"list": "DataTables,Ace",
-										"req": true
-									},
-									{
-										"ctl": "dropdown",
-										"multi": true,
-										"name": "plugins",
-										"label": "Plugins",
-										"default": "local",
-										"list": "DataTables,SvgWorkspaces",
-										"req": true
-									}
-								]
-							}
-						]
+						"ctl": "panel",
+						"controlname": "catalog/designer/panels/app-setup-info",
+						"name": "setupinfo"
 					}
 				]
 			},
