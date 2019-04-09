@@ -6678,7 +6678,7 @@ License: MIT
             if (tmpItems) {
                 tmpHTML.push(getContentHTML(theControlName, tmpItems, theControlObj))
             }
-            
+
             tmpHTML.push('</div>')
             tmpHTML = tmpHTML.join('');
             return tmpHTML;
@@ -6776,6 +6776,8 @@ License: MIT
                 tmpReq = ' required ';
             }
 
+            var tmpDispOnly = (tmpObject.readonly === true);
+
             var tmpItems = tmpObject.items || tmpObject.content || [];
 
             if (tmpValue) {
@@ -6803,16 +6805,23 @@ License: MIT
 
 
             // theControlObj.readonly = true;
+            
             var tmpSpecs = theControlObj.controlSpec.controlConfig;
             if (tmpSpecs && tmpSpecs.options && tmpSpecs.options.readonly === true) {
-                theControlObj.readonly = true;
+                tmpDispOnly = true;
             }
-            var tmpFieldType = 'text';
             if (theControlObj.readonly === true) {
-                tmpFieldType = 'hidden';
-                tmpReq = '';
+                tmpDispOnly = true;
             }
 
+            var tmpReadOnly = '';
+            var tmpFieldType = 'text';
+            if (tmpDispOnly) {
+                //tmpFieldType = 'hidden';
+                tmpReq = '';
+                tmpReadOnly = ' readonly '
+            }
+            
             tmpHTML.push('<div controls fieldwrap name="' + theObject.name + '" class="' + tmpClasses + tmpSizeName + tmpReq + ' ui ' + tmpFieldOrInput + '">')
             if (theObject.label) {
                 tmpHTML.push('<label>')
@@ -6829,12 +6838,7 @@ License: MIT
                 tmpPH = ' placeholder="' + tmpPH + ' ';
             }
 
-            tmpHTML.push('<input ' + tmpInputClasses + ' type="' + tmpFieldType + '" controls field ' + tmpValue + ' name="' + theObject.name + '" ' + tmpPH + '">')
-
-            if (theControlObj.readonly === true) {
-                tmpHTML.push('<b>' + tmpDispValue + '</b>')
-            }
-
+            tmpHTML.push('<input ' + tmpReadOnly + tmpInputClasses + ' type="' + tmpFieldType + '" controls field ' + tmpValue + ' name="' + theObject.name + '" ' + tmpPH + '">')
             tmpHTML.push('</input>')
             tmpHTML.push(getNoteMarkup(theObject));
 
