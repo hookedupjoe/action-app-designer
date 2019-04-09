@@ -4723,10 +4723,19 @@ License: MIT
         return this.ControlEl
     }
 
-    meInstance.refreshUI = function () {
+    meInstance.refreshUI = function (theOptions) {
+        var tmpOptions = theOptions || {};
+        var tmpThis = this;
+        tmpThis.controlSpec.controlConfig.options = tmpThis.controlSpec.controlConfig.options || {};
+        if( typeof(tmpOptions.readonly) === 'boolean'){
+            tmpThis.controlSpec.controlConfig.options.readonly = tmpOptions.readonly;
+        }
+        if( isObj(tmpOptions.doc) ){
+            tmpThis.controlSpec.controlConfig.options.doc = tmpOptions.doc;
+        }
         this.loadToElement(this.parentEl);
-        
     }
+
     meInstance.refreshFromURI = function (theOptionalURI, theOptions) {
         var dfd = jQuery.Deferred();
         var tmpOptions = theOptions || {};
@@ -4745,11 +4754,7 @@ License: MIT
             if (theReply && Array.isArray(theReply.content)) {
                 //--- Update internal content of this instnce only
                 tmpThis.controlSpec.controlConfig.content = theReply.content;
-                if( tmpOptions && typeof(tmpOptions.readonly) === 'boolean'){
-                    tmpThis.controlSpec.controlConfig.options = tmpThis.controlSpec.controlConfig.options || {};
-                    tmpThis.controlSpec.controlConfig.options.readonly = tmpOptions.readonly;
-                }
-                tmpThis.refreshUI();
+                tmpThis.refreshUI(theOptions);
                 dfd.resolve(true)
             } else {
                 dfd.resolve(false)
@@ -5555,7 +5560,8 @@ License: MIT
 
     meInstance.loadToElement = function (theEl, theOptions) {
         var dfd = jQuery.Deferred();
-
+        var tmpOptions = theOptions || {};
+        
         var tmpThis = this;
         tmpThis.parentEl = ThisApp.asSpot(theEl);
         var tmpHTML = tmpThis.getHTML();
@@ -5569,6 +5575,10 @@ License: MIT
             if (tmpInitResults && tmpInitResults.then) {
                 tmpThis.initControlComponents().then(function (theReply) {
                     tmpThis.refreshControl();
+                    var tmpDoc = tmpOptions.doc || tmpThis.controlSpec.controlConfig.options.doc || false;
+                    if( tmpDoc ){
+                        tmpThis.loadData(tmpDoc);
+                    }
                     dfd.resolve(true)
                 });
             } else {

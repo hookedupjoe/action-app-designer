@@ -62,12 +62,11 @@
 				
 					{
 						"ctl": "panel",
-						"controlname": "app/catalog/designer/panels/app-setup-info",
+						"controlname": "design/ws/panel-app-setup?appname=app001",
 						"name": "setupinfo"
 					}
 				]
 			},
-			
 			{
 				"label": "Preview",
 				"name": "apptabs-preview",
