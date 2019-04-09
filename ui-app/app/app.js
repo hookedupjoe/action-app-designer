@@ -3,8 +3,8 @@
   ThisApp = null;
 
   var tmpPageNames = [   
-    'ControlsPage',
     'AppBuilderPage',
+    'ControlsPage',
     'ProjectDashboardPage',
     'ControlBuilderPage',
     'LogsPage'
@@ -89,7 +89,6 @@
     };
     $.extend(tmpRequest, tmpOptions);
     
-    console.log( 'tmpRequest.data', tmpRequest.data);
     //--- Auto Detect data, convert data and use POST
     if( tmpRequest.data ){
       if( typeof(tmpRequest.data) == 'string'){

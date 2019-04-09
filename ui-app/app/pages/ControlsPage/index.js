@@ -294,12 +294,14 @@ License: MIT
         //-- ToDo: If active control, destroy it
         activeControl = ThisPage.loadedControlSpec.create(activeControlName);
         activeControl.subscribe('ctl-event', onControlEvent)
+        
 
         function onControlEvent(theEvent, theControl, theParams, theTarget, theOriginalEvent){
             console.log("'ctl-event' received in app.  Control is", theControl);
             console.log( 'arguments', arguments);
             showDetailsJson(theControl.getData())
         }
+        // activeControl.readonly = true;
         activeControl.loadToElement(ThisPage.spot$('preview-area'))
 
         //--- allow console access for testing

@@ -2128,7 +2128,6 @@ var ActionAppCore = {};
 
     };
 
-
     function dropMenuOpen(theParams, theTarget) {
         // var tmpParams = ThisApp.getActionParams(theParams, theTarget, ['menuname'])
         var tmpEl = $(theTarget);
@@ -2154,7 +2153,6 @@ var ActionAppCore = {};
         ThisApp.loadSpot('flyover-menu', tmpMenuHTML);
 
         var tmpDropMenu = $('[dropmenu="menu"]', ThisApp.getSpot('flyover-menu'))
-        console.log('tmpDropMenu', tmpDropMenu);
         tmpDropMenu.show();
         tmpFO.css('width', tmpEl.css('width'));
         tmpFO.css('top', (tmpOffset.top - tmpPageOffset.top) + 'px');
@@ -2373,8 +2371,6 @@ var ActionAppCore = {};
 
         for (var iPos = 0; iPos < tmpMax; iPos++) {
             if (tmpAtEl.hasClass('ui-layout-pane')) {
-                //Done
-                // console.log( 'resizeToParent went up: ', iPos);
                 return true;
             }
             tmpAtEl.css('height', '100%');
@@ -2388,6 +2384,7 @@ var ActionAppCore = {};
 
     function initAppMarkup() {
         initFlyoverMarkup();
+        initPromptMarkup()
     }
 
     function initFlyoverMarkup() {
@@ -2404,6 +2401,19 @@ var ActionAppCore = {};
         tmpHTML.push('	</div>')
         tmpHTML.push('</div>')
 
+        $('body').append(tmpHTML.join(''))
+    }
+
+    
+    function initPromptMarkup() {
+        var tmpHTML = [];
+        tmpHTML.push('<div appuse="promptermask" action="clearPrompter" class="pagemask hidden">')
+        tmpHTML.push('	<div appuse="prompter" class="flyover hidden">')
+        tmpHTML.push('		<div class="prompter-content" spot="prompter-content">')
+        tmpHTML.push('		</div>')
+        tmpHTML.push('		<div style="clear:both"></div>')
+        tmpHTML.push('	</div>')
+        tmpHTML.push('</div>')
         $('body').append(tmpHTML.join(''))
     }
 
@@ -3461,7 +3471,7 @@ License: MIT
         tmpHTML.push('	<div appuse="_prompter:prompt-dialog-title" class="header"></div>')
         tmpHTML.push('	<div class="scrolling content">')
         tmpHTML.push('	<div appuse="_prompter:prompt-dialog-text-top" class="forms-top-content"></div>')
-        tmpHTML.push('	<div appuse="_prompter:prompt-dialog-text">')
+        tmpHTML.push('	<div appuse="_prompter:prompt-dialog-text" class="app-layout-pane">')
         tmpHTML.push('  </div>')
         tmpHTML.push('  </div>')
         tmpHTML.push('	<div class="actions">')
@@ -4415,7 +4425,6 @@ License: MIT
         var tmpLayoutReq = this.getContentRequired();
         var tmpInitReq = ThisApp.loadResources.bind(this);
 
-        console.log('tmpLayoutReq', tmpLayoutReq);
         if (tmpLayoutReq) {
             tmpPromLayoutReq = tmpInitReq(tmpLayoutReq, { nsParent: this.parentControl })
         }
@@ -5893,7 +5902,6 @@ License: MIT
             var tmpRegions = ['center','north', 'south', 'east', 'west'];
             for (var i = 0; i < tmpRegions.length; i++) {
                 var tmpRegion = tmpRegions[i];
-                console.log( 'tmpRegion', tmpRegion);
                 var tmpRegionConfig = theObject[tmpRegion] || '';
                 var tmpUseDefault = false;
                 if( tmpRegionConfig === true ){
@@ -6704,6 +6712,7 @@ License: MIT
             var tmpHTML = [];
             //---> ToDo: Add value and default value to other fields *****
             var tmpValue = tmpObject.value || tmpObject.default || '';
+            var tmpDispValue = tmpValue;
             var tmpSizeName = '';
             if (tmpObject.size && tmpObject.size > 0 && tmpObject.size < 17) {
                 tmpSizeName = getNumName(tmpObject.size)
@@ -6739,6 +6748,18 @@ License: MIT
             tmpClasses += getValueIfTrue(theObject, ['compact', 'fluid']);
             tmpClasses += getValueIfThere(theObject, ['color', 'size']);
 
+            
+            // theControlObj.readonly = true;
+            var tmpSpecs = theControlObj.controlSpec.controlConfig;
+            if( tmpSpecs && tmpSpecs.options && tmpSpecs.options.readonly === true){
+                theControlObj.readonly = true;
+            }
+            var tmpFieldType = 'text';
+            if( theControlObj.readonly === true){
+                tmpFieldType = 'hidden';
+                tmpReq = '';
+            }
+            
             tmpHTML.push('<div controls fieldwrap name="' + theObject.name + '" class="' + tmpClasses + tmpSizeName + tmpReq + ' ui ' + tmpFieldOrInput + '">')
             if (theObject.label) {
                 tmpHTML.push('<label>')
@@ -6754,8 +6775,12 @@ License: MIT
                 }
                 tmpPH = ' placeholder="' + tmpPH + ' ';
             }
-            tmpHTML.push('<input ' + tmpInputClasses + ' type="text" controls field ' + tmpValue + ' name="' + theObject.name + '" ' + tmpPH + '">')
 
+            tmpHTML.push('<input ' + tmpInputClasses + ' type="' + tmpFieldType + '" controls field ' + tmpValue + ' name="' + theObject.name + '" ' + tmpPH + '">')
+
+if( theControlObj.readonly === true){
+    tmpHTML.push('<b>' + tmpDispValue + '</b>')
+}
 
             tmpHTML.push('</input>')
             tmpHTML.push(getNoteMarkup(theObject));
