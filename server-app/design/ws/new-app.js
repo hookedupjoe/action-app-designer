@@ -55,6 +55,7 @@ module.exports.setup = function setup(scope) {
                 var tmpAppDetails = $.await($.bld.getJsonFile(tmpAppBase + 'app-info.json'));
                 tmpAppDetails.title = tmpAppTitle;
                 tmpAppDetails.details = tmpAppDesc || '';
+                tmpAppDetails.name = tmpAppName;
                 
                 $.await($.bld.saveJsonFile(tmpAppBase + 'app-info.json', tmpAppDetails))
 

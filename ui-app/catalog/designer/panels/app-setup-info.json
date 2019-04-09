@@ -18,9 +18,8 @@
 						"items": [
 							{
 								"ctl": "field",
-								"name": "appname",
+								"name": "name",
 								"label": "Application Filename",
-								"default": "app014",
 								"readonly": true,
 								"req": true
 							},
@@ -28,7 +27,6 @@
 								"ctl": "field",
 								"name": "title",
 								"label": "Application Title",
-								"default": "Fourteen",
 								"req": true
 							}
 						]
