@@ -20,24 +20,41 @@ module.exports.setup = function setup(scope) {
         return new Promise($.async(function (resolve, reject) {
             try {
                 var tmpWSDir = scope.locals.path.workspace + 'apps/';
+                var tmpReq = {
+                    appname: req.query.appname,
+                    pagename: req.query.pagename,
+                    pagetitle: req.query.pagetitle || req.query.pagename
+                }
 
-                var tmpAppName = req.query.appname || req.query.filename || '';
+                var tmpAppName = tmpReq.appname;
                 tmpAppName = tmpAppName
                     .replace('.json', '')
 
                 if( !(tmpAppName) ){
                     throw "Application name not provided"
                 }
-                var tmpPageName = req.query.pagename || req.query.name || '';
+                var tmpPageName = tmpReq.pagename || '';
                 if( !(tmpPageName) ){
                     throw "Page name not provided"
                 }
 
-                    // console.log( 'tmpAppName', tmpAppName);
+                var tmpPageTitle = tmpReq.pagetitle || '';
+
+                var tmpSpecs = {
+                    pageName: tmpPageName,
+                    pageTitle: tmpPageTitle,
+                    navOptions: {
+                        topLink: true,
+                        sideLink: true
+                    }
+                }
+
+                var tmpThisPageSpecsText = 'var thisPageSpecs = ' + JSON.stringify(tmpSpecs, null, '\t');
+
                 var tmpAppBase = tmpWSDir + tmpAppName + '/';
                 var tmpAppDetails = $.await($.bld.getJsonFile(tmpAppBase + 'app-info.json'))
                 var tmpAppTitle = tmpAppDetails.title || '';
-console.log( 'tmpAppBase', tmpAppBase);
+
                 if( !(tmpAppTitle) ){
                     throw( "Application " + tmpAppName + " not found");
                 }
@@ -45,13 +62,13 @@ console.log( 'tmpAppBase', tmpAppBase);
                 var tmpPages = $.await($.bld.getDirFiles(tmpPagesBase))
 
                 if( tmpPages.indexOf(tmpPageName) > -1){
-                    throw "Page " + tmpPageName + " already exists"
+                    //  throw "Page " + tmpPageName + " already exists"
                 }
 
 
                 var tmpPartsLoc = scope.locals.path.designer + '/build/tpl-page/';
                 var tmpTpl = $.await($.bld.getTextFile(tmpPartsLoc + 'tpl-index.js'))
-
+                
                 var tmpTplParts = tmpTpl.split("//~");
                 var tmpTplIndex = {
                     thisPageSpecs: ''
@@ -68,26 +85,32 @@ console.log( 'tmpAppBase', tmpAppBase);
                 var tmpInPart = false;
                 for (var aIndex in tmpTplParts) {
                     var tmpPart = tmpTplParts[aIndex];
-                   // console.log( 'tmpPart', tmpPart);
-                    var tmpLen = tmpPart.length;
                     if (tmpTplIndex.hasOwnProperty(tmpPart)) {
                         tmpInPart = true;
                         tmpPartName = tmpPart;
-                        //console.log( 'tmpPartName', tmpPartName);
                     } else if (tmpInPart) {
-                        tmpTplIndex[tmpPartName] = aIndex; // tmpPart
-                        //console.log( 'tmpPart set for ' + tmpPartName, tmpPart);
+                        tmpTplIndex[tmpPartName] = aIndex;
                         tmpInPart = false;
-                    } else {
-                       // console.log("NOT ANYWHERE", tmpPart)
                     }
 
                 }
-                // console.log( 'tmpTplParts', tmpTplParts);
+
+                var tmpThisPageSpecsPos =  tmpTplIndex['thisPageSpecs'];
+                if( tmpThisPageSpecsPos !== ''){
+                    tmpTplParts[tmpThisPageSpecsPos] = wrapIt(tmpThisPageSpecsText);
+                    tmpThisPageSpecsText = tmpThisPageSpecsText + '\t';
+                }
+
+                var tmpNewPage = tmpTplParts.join("//~");
+
+                var tmpNewPageBase = tmpPagesBase + tmpPageName + '/';
+
+                $.await($.fs.ensureDir(tmpNewPageBase))
+                $.await($.fs.writeFile(tmpNewPageBase + 'index.js',tmpNewPage))
+
                 var tmpRet = {
-                    testing: true,
-                    len: tmpTplParts.length,
-                    index: tmpTplIndex
+                    status: true,
+                    page: tmpNewPage
                 }
 
                 resolve(tmpRet);
@@ -122,6 +145,11 @@ console.log( 'tmpAppBase', tmpAppBase);
             res.json({ status: false, error: ex.toString() })
         }
     })
+
+
+    function wrapIt(theString){
+        return '\r\n\r\n'+ theString + '\r\n\r\n'
+    }
 };
 
 
