@@ -4772,7 +4772,6 @@ License: MIT
         var tmpPromRequired = true;
         var tmpPromLayoutReq = true;
         var tmpLayoutReq = this.getContentRequired();
-        console.log( 'tmpLayoutReq', tmpLayoutReq);
         var tmpInitReq = ThisApp.loadResources.bind(this);
 
         if (tmpLayoutReq) {
@@ -4849,7 +4848,6 @@ License: MIT
             if (theReply && Array.isArray(theReply.content)) {
                 //--- Update internal content of this instnce only
                 tmpThis.loadConfig(theReply);
-                console.log( 'reload from URI reloading',theReply);
                 // this.controlConfig.options = (theReply.options || {});
                 // tmpConfig.content = theReply.content;
                 tmpThis.refreshUI(tmpOptions);
