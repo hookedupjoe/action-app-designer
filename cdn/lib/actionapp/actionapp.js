@@ -4697,11 +4697,8 @@ License: MIT
             tmpMyConfig.content = ThisApp.clone(tmpConfig.content);
         }
         this.parent = theOptions.parent || theControlSpec.parent;
-
-
-        if (tmpOptions && tmpOptions.parent) {
-            this.parentControl = tmpOptions.parent ? tmpOptions.parent : false;
-        }
+        //--- ToDo: Review need for two of these
+        this.parentControl = this.parent;
 
         this.loadConfig(tmpMyConfig);
 
@@ -4785,7 +4782,7 @@ License: MIT
         ThisApp.apiCall({ url: tmpURI }).then(function (theReply) {
             if (theReply && Array.isArray(theReply.content)) {
                 //--- Update internal content of this instnce only
-                this.loadConfig(theReply);
+                tmpThis.loadConfig(theReply);
                 console.log( 'reload from URI reloading',theReply);
                 // this.controlConfig.options = (theReply.options || {});
                 // tmpConfig.content = theReply.content;
