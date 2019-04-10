@@ -62,6 +62,7 @@ License: MIT
     *    If your component need to do stuff to be availale in the background, do it here
     */
     var actions = ThisPage.pageActions;
+    var openAppGroupName = 'open-apps';
     var loadedApps = {};
     window.loadedApps = loadedApps;
     var appSetupConfig = false;
@@ -82,7 +83,8 @@ License: MIT
     *     that are needed even if the page was not activated yet
     */
     ThisPage._onFirstActivate = function (theApp) {
-
+        openAppGroupName = ThisPage.ns(openAppGroupName);
+        console.log( 'openAppGroupName', openAppGroupName);
         //--- This tells the page to layout the page, load templates and controls, et
         ThisPage.initOnFirstLoad().then(
             function () {
@@ -309,6 +311,7 @@ License: MIT
 
     };
 
+      
   actions.showAppConsole = showAppConsole;
   function showAppConsole(theParams, theTarget){
       var tmpParams = ThisApp.getActionParams(theParams, theTarget, ['appname']);
@@ -320,18 +323,28 @@ License: MIT
       
       if( loadedApps[tmpAppName] ){
           console.log(tmpAppName + " already loaded. showing");
+          var tmpTabAttr = {group:openAppGroupName, item:tmpAppName};
+          ThisApp.gotoTab(tmpTabAttr);
           //ToDo: Refresh using instance data instead of reloading element
-          loadedApps[tmpAppName].loadToElement(ThisPage.getSpot('preview-panel'));
+          //loadedApps[tmpAppName].loadToElement(ThisPage.getSpot('preview-panel'));
       } else {
         var tmpNewApp = ThisPage.getControl('panelAppConsole').create('app-'+tmpAppName);
         tmpNewApp.setup({appname:tmpAppName});
         loadedApps[tmpAppName] = tmpNewApp;
         window[tmpAppName] = tmpNewApp;
-          tmpNewApp.loadToElement(ThisPage.getSpot('preview-panel'));
+        //ThisPage.getSpot('preview-panel')
+
+        ThisPage.addToSpot('preview-panel', '<div appuse="cards" group="' + openAppGroupName + '" item="' + tmpAppName + '">TESTING</div>' );
+        var tmpTabAttr = {group:openAppGroupName, item:tmpAppName};
+        var tmpNewGroup = ThisPage.getByAttr$(tmpTabAttr);
+        console.log( 'tmpNewGroup', tmpNewGroup);
+        console.log( 'tmpTabAttr', tmpTabAttr);
+        //tmpNewGroup.html("Hello World Again " + tmpAppName)
+        tmpNewApp.loadToElement(tmpNewGroup);
+        ThisApp.gotoTab(tmpTabAttr);
+        //tmpNewApp.loadToElement();
           //ToDo: Refresh using instance data after loading one time
-          
         }
-     
   };
     
   actions.showPrompter = showPrompter;
@@ -389,6 +402,8 @@ tmpHTML.push('</div>')
             ThisApp.common.apiCall({
                 url: '/design/ws/new-app',
                 data: theData
+            }).then(function(theReply){
+                ThisPage.parts.west.parts.workspace.refreshFromURI();
             })
             console.log('theData', theData);
         })

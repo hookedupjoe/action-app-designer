@@ -15,7 +15,7 @@ License: MIT
 				"size": "large",
 				"color": "blue",
 				"icon": "globe",
-				"text": "My First Application"
+				"text": "Application"
 			},
 			{
 				"ctl": "tabs",
@@ -37,7 +37,7 @@ License: MIT
 										"content": [
 											{
 												"ctl": "panel",
-												"controlname": "design/ws/get-pages?appname=app001",
+												"controlname": "design/ws/get-pages?appname=",
 												"name": "pages"
 											}
 										]
@@ -65,7 +65,7 @@ License: MIT
 						"content": [
 							{
 								"ctl": "panel",
-								"controlname": "design/ws/panel-app-setup?appname=app001",
+								"controlname": "design/ws/panel-app-setup?appname=",
 								"name": "setupinfo"
 							}
 						]
@@ -103,10 +103,11 @@ License: MIT
 	var ThisControl = { specs: ControlSpecs, options: { proto: ControlCode, parent: ThisApp } };
 
 	function setup(theDetails){
-
+		console.log( 'setup theDetails', theDetails);
+		var tmpAppName = theDetails.appname || '';
+		this.controlConfig.index.controls.pages.controlname += tmpAppName
+		this.controlConfig.index.controls.setupinfo.controlname += tmpAppName
 	}
-
-
 
 	return ThisControl;
 })(ActionAppCore, $);

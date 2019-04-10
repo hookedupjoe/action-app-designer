@@ -1041,7 +1041,6 @@ var ActionAppCore = {};
      */
     me.gotoTab = function (theOptions, theOptionalItemName, theOptionalPageName) {
         var tmpOptions = theOptions || {};
-
         if (typeof (theOptions) == 'string' && theOptionalItemName) {
             var tmpNewOptions = {
                 group: theOptions,
@@ -1102,6 +1101,7 @@ var ActionAppCore = {};
             appuse: 'cards',
             group: tmpGroupName
         }
+        
         me.getByAttr$(tmpSelector, tmpParent).addClass('hidden').transition('hide', 1);
         tmpSelector.item = tmpItemId;
         me.getByAttr$(tmpSelector, tmpParent).removeClass('hidden').transition(tmpAnimation + ' in', tmpAnimDuration);
