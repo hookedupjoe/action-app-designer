@@ -37,7 +37,7 @@ License: MIT
 										"content": [
 											{
 												"ctl": "panel",
-												"controlname": "design/ws/get-pages",
+												"controlname": "design/ws/get-pages?appname=app001",
 												"name": "pages"
 											}
 										]
@@ -65,7 +65,7 @@ License: MIT
 						"content": [
 							{
 								"ctl": "panel",
-								"controlname": "design/ws/panel-app-setup",
+								"controlname": "design/ws/panel-app-setup?appname=app001",
 								"name": "setupinfo"
 							}
 						]

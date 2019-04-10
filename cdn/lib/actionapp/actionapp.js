@@ -4646,7 +4646,6 @@ License: MIT
             return;
         }
         this.controlConfig.index = me._loadContentIndex(this.controlConfig.content)
-        console.log( 'this.controlConfig.index', this.controlConfig.index);
     }
 
 
@@ -4687,10 +4686,25 @@ License: MIT
     function ControlInstance(theControlSpec, theControlName, theOptions) {
         var tmpOptions = theOptions || {};
         this.controlSpec = theControlSpec;
+        var tmpConfig = this.controlSpec.controlConfig;
+        tmpConfig.options = tmpConfig.options || {};
+        var tmpMyConfig  = {
+            options: {},
+            content: []
+        };
+        if( tmpConfig ){
+            tmpMyConfig.options = ThisApp.clone(tmpConfig.options);
+            tmpMyConfig.content = ThisApp.clone(tmpConfig.content);
+        }
+        if( tmpConfig.parent ){            
+            this.parent = tmpConfig.parent;
+        }
 
         if (tmpOptions && tmpOptions.parent) {
             this.parentControl = tmpOptions.parent ? tmpOptions.parent : false;
         }
+
+        this.loadConfig(tmpMyConfig);
 
         this.controlName = theControlName;
         this.actions = new Index();
@@ -4711,6 +4725,24 @@ License: MIT
     }
 
 
+    
+    meInstance.loadConfig = function (theConfig) {
+        if (!theConfig) {
+            throw "Config not provided"
+        }
+
+        this.controlConfig = theConfig;
+        this.setupConfig()
+    };
+    meInstance.setupConfig = function () {
+        if (!(this.controlConfig)) {
+            return;
+        }
+        if (!(this.controlConfig.content)) {
+            return;
+        }
+        this.controlConfig.index = me._loadContentIndex(this.controlConfig.content)
+    }
 
     // meInstance.prompt = meControl.prompt;
 
@@ -4726,12 +4758,14 @@ License: MIT
     meInstance.refreshUI = function (theOptions) {
         var tmpOptions = theOptions || {};
         var tmpThis = this;
-        tmpThis.controlSpec.controlConfig.options = tmpThis.controlSpec.controlConfig.options || {};
+        var tmpConfig = this.controlConfig;
+
+        tmpConfig.options = tmpConfig.options || {};
         if( typeof(tmpOptions.readonly) === 'boolean'){
-            tmpThis.controlSpec.controlConfig.options.readonly = tmpOptions.readonly;
+            tmpConfig.options.readonly = tmpOptions.readonly;
         }
         if( tmpOptions.doc){
-            tmpThis.controlSpec.controlConfig.options.doc = tmpOptions.doc;
+            tmpConfig.options.doc = tmpOptions.doc;
         }
         this.loadToElement(this.parentEl, theOptions);
     }
@@ -4752,8 +4786,8 @@ License: MIT
         ThisApp.apiCall({ url: tmpURI }).then(function (theReply) {
             if (theReply && Array.isArray(theReply.content)) {
                 //--- Update internal content of this instnce only
-                tmpThis.controlSpec.controlConfig.options = (theReply.options || {});
-                tmpThis.controlSpec.controlConfig.content = theReply.content;
+                tmpConfig.options = (theReply.options || {});
+                tmpConfig.content = theReply.content;
                 tmpThis.refreshUI(tmpOptions);
                 dfd.resolve(true)
             } else {
@@ -4992,7 +5026,7 @@ License: MIT
         return this.controlSpec.getHTML(this.controlName, this);
     }
     meInstance.getConfig = function () {
-        return this.controlSpec.controlConfig || {};
+        return this.controlConfig || {};
     }
 
     meInstance.runItemAction = function (theName, theActionName, theOptionalParams) {
@@ -5265,28 +5299,28 @@ License: MIT
 
     meInstance.getIndex = function () {
         try {
-            return this.controlSpec.controlConfig.index;
+            return this.getConfig().index;
         } catch (ex) {
             return false;
         }
     }
     meInstance.getFieldSpecs = function (theFN) {
         try {
-            return this.controlSpec.controlConfig.index.fields[theFN];
+            return this.getConfig().index.fields[theFN];
         } catch (ex) {
             return false;
         }
     }
     meInstance.getItemSpecs = function (theFN) {
         try {
-            return this.controlSpec.controlConfig.index.items[theFN];
+            return this.getConfig().index.items[theFN];
         } catch (ex) {
             return false;
         }
     }
     meInstance.hasField = function (theName) {
         try {
-            if (isObj(this.controlSpec.controlConfig.index.fields[theName])) {
+            if (isObj(this.getConfig().index.fields[theName])) {
                 return true;
             }
         } catch (ex) {
@@ -5296,7 +5330,7 @@ License: MIT
     }
     meInstance.hasItem = function (theName) {
         try {
-            if (isObj(this.controlSpec.controlConfig.index.items[theName])) {
+            if (isObj(this.getConfig().index.items[theName])) {
                 return true;
             }
         } catch (ex) {
@@ -5570,13 +5604,13 @@ License: MIT
         tmpThis.parentEl.on('click', tmpThis.onItemClick.bind(this))
 
 
-        tmpThis.controlSpec.controlConfig.options = tmpThis.controlSpec.controlConfig.options || {};
+        tmpThis.getConfig().options = tmpThis.getConfig().options || {};
         this.controlSpec.assureRequired().then(function () {
             var tmpInitResults = tmpThis.initControlComponents();
             if (tmpInitResults && tmpInitResults.then) {
                 tmpThis.initControlComponents().then(function (theReply) {
                     tmpThis.refreshControl();
-                    var tmpDoc = tmpOptions.doc || tmpThis.controlSpec.controlConfig.options.doc || false;
+                    var tmpDoc = tmpOptions.doc || tmpThis.getConfig().options.doc || false;
                     if( tmpDoc ){
                         tmpThis.loadData(tmpDoc);
                     }
@@ -6862,7 +6896,7 @@ License: MIT
             };
             return tmpRet;
         },
-        getHTML: function (theControlName, theObject, theControlObj) {
+        getHTML: function (theControlName, theObject, theControlObj) {            
             var tmpObject = theObject || {};
             var tmpHTML = [];
             //---> ToDo: Add value and default value to other fields *****
@@ -6908,7 +6942,7 @@ License: MIT
 
             // theControlObj.readonly = true;
             var tmpDispOnly = (tmpObject.readonly === true);
-            var tmpSpecs = theControlObj.controlSpec.controlConfig;
+            var tmpSpecs = theControlObj.getConfig();
             if (tmpSpecs && tmpSpecs.options && tmpSpecs.options.readonly === true) {
                 tmpDispOnly = true;
             }
@@ -6986,7 +7020,7 @@ License: MIT
             }
 
             var tmpDispOnly = (tmpObject.readonly === true);
-            var tmpSpecs = theControlObj.controlSpec.controlConfig;
+            var tmpSpecs = theControlObj.getConfig();
             if (tmpSpecs && tmpSpecs.options && tmpSpecs.options.readonly === true) {
                 tmpDispOnly = true;
             }
