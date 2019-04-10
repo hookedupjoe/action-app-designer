@@ -568,13 +568,14 @@ var ActionAppCore = {};
             try {
                 tmpResourceData = eval(tmpResourceData);
                 tmpResourceData = ThisApp.controls.newControl(tmpResourceData.specs, tmpResourceData.options || {})
-                tmpResourceData.controlConfig.parent = tmpThis;
+                tmpResourceData.parent = tmpThis;
             } catch (ex) {
                 console.warn("Could not convert control to object", tmpResourceData);
             }
         } else if (theType == 'panels') {
             try {
-                tmpResourceData = ThisApp.controls.newControl(tmpResourceData, { parent: tmpThis })
+                tmpResourceData = ThisApp.controls.newControl(tmpResourceData, {})
+                tmpResourceData.parent = tmpThis;
             } catch (ex) {
                 console.warn("Could not convert panel to object");
             }
@@ -3214,9 +3215,6 @@ License: MIT
                     tmpInstanceName = tmpLT.partname || tmpLT.name;
                 }
                 var tmpCtl = this.res.panels[tmpLTName];
-                if (tmpCtl && tmpCtl.controlConfig) {
-                    tmpCtl.controlConfig.parentRegionName = aName;
-                }
 
                 this.loadLayoutControl(aName, tmpCtl, tmpInstanceName);
             }
@@ -3237,9 +3235,6 @@ License: MIT
                     tmpInstanceName = tmpLT.partname || tmpLT.name;
                 }
                 var tmpCtl = this.res.controls[tmpLTName];
-                if (tmpCtl && tmpCtl.controlConfig) {
-                    tmpCtl.controlConfig.parentRegionName = aName;
-                }
 
                 this.loadLayoutControl(aName, tmpCtl, tmpInstanceName);
             }
@@ -4484,13 +4479,18 @@ License: MIT
             }
         }
 
+        ///--- Move parent from config into base
+        if( theConfig.parent ){
+            this.parent = theConfig.parent
+            delete theConfig.parent;
+        }
         this.loadConfig(theConfig);
     }
 
     var meControl = Control.prototype;
     meControl.create = function (theControlName, theOptions) {
         var tmpOptions = theOptions || {};
-        tmpOptions.parent = tmpOptions.parent || this.controlConfig.parent
+        tmpOptions.parent = tmpOptions.parent || this.parent ; //|| this.controlConfig.parent
         tmpOptions.proto = tmpOptions.proto || this.controlConfig.proto || false;
         var tmpObj = new ControlInstance(this, theControlName, tmpOptions);
         if (tmpOptions.proto) {
@@ -4696,9 +4696,8 @@ License: MIT
             tmpMyConfig.options = ThisApp.clone(tmpConfig.options);
             tmpMyConfig.content = ThisApp.clone(tmpConfig.content);
         }
-        if( tmpConfig.parent ){            
-            this.parent = tmpConfig.parent;
-        }
+        this.parent = theOptions.parent || theControlSpec.parent;
+
 
         if (tmpOptions && tmpOptions.parent) {
             this.parentControl = tmpOptions.parent ? tmpOptions.parent : false;
@@ -4786,8 +4785,10 @@ License: MIT
         ThisApp.apiCall({ url: tmpURI }).then(function (theReply) {
             if (theReply && Array.isArray(theReply.content)) {
                 //--- Update internal content of this instnce only
-                tmpConfig.options = (theReply.options || {});
-                tmpConfig.content = theReply.content;
+                this.loadConfig(theReply);
+                console.log( 'reload from URI reloading',theReply);
+                // this.controlConfig.options = (theReply.options || {});
+                // tmpConfig.content = theReply.content;
                 tmpThis.refreshUI(tmpOptions);
                 dfd.resolve(true)
             } else {
