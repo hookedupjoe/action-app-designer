@@ -1,8 +1,12 @@
+//[PART[Bubble-start]]
 (function (ActionAppCore, $) {
 
+    //[PART[Bubble-start]END]
+    //[PART[SiteMod]]
     var SiteMod = ActionAppCore.module("site");
 
-    //~thisPageSpecs//~
+    //[PART[SiteMod]END]
+    //[PART[thisPageSpecs]]
     var thisPageSpecs = {
         pageName: "NewTestPage",
         pageTitle: "Testing",
@@ -11,11 +15,13 @@
             sideLink: true
         }
     };
-    //~thisPageSpecs\//~
 
+    //[PART[thisPageSpecs]END]
+    //[PART[pageBaseURL]]
     var pageBaseURL = 'app/pages/' + thisPageSpecs.pageName + '/';
 
-    //~layoutOptions//~
+    //[PART[pageBaseURL]END]
+    //[PART[layoutOptions]]
     thisPageSpecs.layoutOptions = {
         baseURL: pageBaseURL,
         north: { partname: "north", control: "north" },
@@ -24,61 +30,82 @@
         center: { partname: "center", control: "center" },
         south: false
     }
-    //~layoutOptions\//~
+    //[PART[layoutOptions]END]
 
-    //~layoutConfig//~
+    //[PART[layoutConfig]]
     thisPageSpecs.layoutConfig = {
         west__size: "500"
         , east__size: "250"
     }
-    //~layoutConfig\//~
+    //[PART[layoutConfig]END]
 
+    //[PART[ThisPage]]
     var ThisPage = new SiteMod.SitePage(thisPageSpecs);
 
+
+    //[PART[ThisPage]END]
+    //[PART[CONFIGONLY]]
+    //=======   CONFIG ONLY - DO NOT UPDATE ABOVE THIS LINE
+    //=== === === === === === === === === === === === === === === === === === === === === === 
+
+
+    //[PART[CONFIGONLY]END]
+    //[PART[actions]]
     var actions = ThisPage.pageActions;
+    //[PART[actions]END]
 
+    //[PART[_onPreInit]]
     ThisPage._onPreInit = function (theApp) {
-        //~_onPreInit//~
+        ThisPage._om = theApp.om;
 
-        //~_onPreInit\//~
     }
+    //[PART[_onPreInit]END]
 
+    //[PART[_onInit]]
     ThisPage._onInit = function () {
-    //~_onInit//~
 
-    //~_onInit\//~
-}
+    }
 
-
+    //[PART[_onInit]END]
+    //[PART[_onFirstActivate-start]]
     ThisPage._onFirstActivate = function (theApp) {
-        //~_onFirstActivate//~
 
-        //~_onFirstActivate\//~
+        //[PART[_onFirstActivate-start]END]
+        //[PART[initOnFirstLoad]]
         ThisPage.initOnFirstLoad().then(
-            function () {
-                //~initOnFirstLoad//~
-
-                //~initOnFirstLoad\//~
+            //[PART[initOnFirstLoad]END]    
+            //[PART[_onFirstActivate-start]]
+            ThisPage._onFirstActivate = function (theApp) {
+                //[PART[_onFirstActivate-start]END]
+                //[PART[YourOnInitCode]]                
+                //---- YOUR ON PAGE READY THE FIRST TIME CODE HERE
+                //[PART[YourOnInitCode]END]                
+                //[PART[_onActivate]]
                 ThisPage._onActivate();
+                //[PART[_onActivate]END]                
+                //[PART[_onFirstActivate-end]]
             }
+            //[PART[_onFirstActivate-end]END]
         );
+        //[PART[_onFirstActivate-end]]
     }
+    //[PART[_onFirstActivate-end]END]
 
-
+    //[PART[_onActivate]]
     ThisPage._onActivate = function () {
-    //~_onActivate//~
+        //-- Do refresh / checks here to update when page is activated
 
-    //~_onActivate\//~
     }
+    //[PART[_onActivate]END]
 
+    //[PART[_onResizeLayout]]
     ThisPage._onResizeLayout = function (thePane, theElement, theState, theOptions, theName) {
-    //~_onResizeLayout//~
 
-    //~_onResizeLayout\//~
     }
 
     //------- --------  --------  --------  --------  --------  --------  -------- 
-    //~YourPageCode//~
+    //[PART[_onResizeLayout]END]
+    //[PART[YourPageCode]]
 
 
     actions.loadASpot = loadASpot;
@@ -108,6 +135,7 @@
 
 
     };
-    //~YourPageCode\//~
-    
+    //[PART[YourPageCode]END]
+//[PART[Bubble-end]]    
 })(ActionAppCore, $);
+//[PART[Bubble-end]END]

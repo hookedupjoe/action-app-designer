@@ -59,18 +59,6 @@ License: MIT
 						]
 					},
 					{
-						"label": "Setup",
-						"name": "apptabs-setup",
-						"ctl": "tab",
-						"content": [
-							{
-								"ctl": "panel",
-								"controlname": "design/ws/panel-app-setup?appname=",
-								"name": "setupinfo"
-							}
-						]
-					},
-					{
 						"label": "Preview",
 						"name": "apptabs-preview",
 						"ctl": "tab",
@@ -91,6 +79,18 @@ License: MIT
 								"spotname": "apptabs-deploy"
 							}
 						]
+					},
+					{
+						"label": "Setup",
+						"name": "apptabs-setup",
+						"ctl": "tab",
+						"content": [
+							{
+								"ctl": "panel",
+								"controlname": "design/ws/panel-app-setup?appname=",
+								"name": "setupinfo"
+							}
+						]
 					}
 				]
 			}
@@ -103,7 +103,6 @@ License: MIT
 	var ThisControl = { specs: ControlSpecs, options: { proto: ControlCode, parent: ThisApp } };
 
 	function setup(theDetails){
-		console.log( 'setup theDetails', theDetails);
 		var tmpAppName = theDetails.appname || '';
 		this.controlConfig.index.controls.pages.controlname += tmpAppName
 		this.controlConfig.index.controls.setupinfo.controlname += tmpAppName

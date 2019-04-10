@@ -2,7 +2,7 @@
 
     var SiteMod = ActionAppCore.module("site");
 
-    //~thisPageSpecs//~
+    //[PART[thisPageSpecs]]
     var thisPageSpecs = {
         pageName: "NewTestPage",
         pageTitle: "Testing",
@@ -11,11 +11,11 @@
             sideLink: true
         }
     };
-    //~thisPageSpecs\//~
+    //[PART[thisPageSpecs]END]
 
     var pageBaseURL = 'app/pages/' + thisPageSpecs.pageName + '/';
 
-    //~layoutOptions//~
+    //[PART[layoutOptions]]
     thisPageSpecs.layoutOptions = {
         baseURL: pageBaseURL,
         north: { partname: "north", control: "north" },
@@ -24,41 +24,41 @@
         center: { partname: "center", control: "center" },
         south: false
     }
-    //~layoutOptions\//~
+    //[PART[layoutOptions]END]
 
-    //~layoutConfig//~
+    //[PART[layoutConfig]]
     thisPageSpecs.layoutConfig = {
         west__size: "500"
         , east__size: "250"
     }
-    //~layoutConfig\//~
+    //[PART[layoutConfig]END]
 
     var ThisPage = new SiteMod.SitePage(thisPageSpecs);
 
     var actions = ThisPage.pageActions;
 
     ThisPage._onPreInit = function (theApp) {
-        //~_onPreInit//~
+        //[PART[_onPreInit]]
 
-        //~_onPreInit\//~
+        //[PART[_onPreInit]END]
     }
 
     ThisPage._onInit = function () {
-    //~_onInit//~
+    //[PART[_onInit]]
 
-    //~_onInit\//~
+    //[PART[_onInit]END]
 }
 
 
     ThisPage._onFirstActivate = function (theApp) {
-        //~_onFirstActivate//~
+        //[PART[_onFirstActivate]]
 
-        //~_onFirstActivate\//~
+        //[PART[_onFirstActivate]END]
         ThisPage.initOnFirstLoad().then(
             function () {
-                //~initOnFirstLoad//~
+                //[PART[initOnFirstLoad]]
 
-                //~initOnFirstLoad\//~
+                //[PART[initOnFirstLoad]END]
                 ThisPage._onActivate();
             }
         );
@@ -66,19 +66,19 @@
 
 
     ThisPage._onActivate = function () {
-    //~_onActivate//~
+    //[PART[_onActivate]]
 
-    //~_onActivate\//~
+    //[PART[_onActivate]END]
     }
 
     ThisPage._onResizeLayout = function (thePane, theElement, theState, theOptions, theName) {
-    //~_onResizeLayout//~
+    //[PART[_onResizeLayout]]
 
-    //~_onResizeLayout\//~
+    //[PART[_onResizeLayout]END]
     }
 
     //------- --------  --------  --------  --------  --------  --------  -------- 
-    //~YourPageCode//~
+    //[PART[YourPageCode]]
 
 
     actions.loadASpot = loadASpot;
@@ -108,6 +108,6 @@
 
 
     };
-    //~YourPageCode\//~
+    //[PART[YourPageCode]END]
     
 })(ActionAppCore, $);

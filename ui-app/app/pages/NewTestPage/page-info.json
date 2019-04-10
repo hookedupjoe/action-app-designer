@@ -1,0 +1,33 @@
+{
+	"pageInfo": {
+		"pageName": "NewTestPage",
+		"pageTitle": "Testing",
+		"navOptions": {
+			"topLink": true,
+			"sideLink": true
+		}
+	},
+	"layoutOptions": {
+		"baseURL": "AUTOMATIC",
+		"north": {
+			"partname": "north",
+			"control": "north"
+		},
+		"east": {
+			"html": "east"
+		},
+		"west": {
+			"partname": "west",
+			"control": "west"
+		},
+		"center": {
+			"partname": "center",
+			"control": "center"
+		},
+		"south": false
+	},
+	"layoutConfig": {
+		"west__size": "500",
+		"east__size": "250"
+	}
+}

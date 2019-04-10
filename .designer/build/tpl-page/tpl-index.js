@@ -11,7 +11,7 @@
             sideLink: true
         }
     };
-    //~thisPageSpecs\//~
+    //~thisPageSpecs~//~
 
     var pageBaseURL = 'app/pages/' + thisPageSpecs.pageName + '/';
 
@@ -24,14 +24,14 @@
         center: { partname: "center", control: "center" },
         south: false
     }
-    //~layoutOptions\//~
+    //~layoutOptions~//~
 
     //~layoutConfig//~
     thisPageSpecs.layoutConfig = {
         west__size: "500"
         , east__size: "250"
     }
-    //~layoutConfig\//~
+    //~layoutConfig~//~
 
     var ThisPage = new SiteMod.SitePage(thisPageSpecs);
 
@@ -40,25 +40,25 @@
     ThisPage._onPreInit = function (theApp) {
         //~_onPreInit//~
 
-        //~_onPreInit\//~
+        //~_onPreInit~//~
     }
 
     ThisPage._onInit = function () {
-    //~_onInit//~
+        //~_onInit//~
 
-    //~_onInit\//~
-}
+        //~_onInit~//~
+    }
 
 
     ThisPage._onFirstActivate = function (theApp) {
         //~_onFirstActivate//~
 
-        //~_onFirstActivate\//~
+        //~_onFirstActivate~//~
         ThisPage.initOnFirstLoad().then(
             function () {
                 //~initOnFirstLoad//~
 
-                //~initOnFirstLoad\//~
+                //~initOnFirstLoad~//~
                 ThisPage._onActivate();
             }
         );
@@ -66,15 +66,15 @@
 
 
     ThisPage._onActivate = function () {
-    //~_onActivate//~
+        //~_onActivate//~
 
-    //~_onActivate\//~
+        //~_onActivate~//~
     }
 
     ThisPage._onResizeLayout = function (thePane, theElement, theState, theOptions, theName) {
-    //~_onResizeLayout//~
+        //~_onResizeLayout//~
 
-    //~_onResizeLayout\//~
+        //~_onResizeLayout~//~
     }
 
     //------- --------  --------  --------  --------  --------  --------  -------- 
@@ -108,6 +108,6 @@
 
 
     };
-    //~YourPageCode\//~
-    
+    //~YourPageCode~//~
+
 })(ActionAppCore, $);
