@@ -326,6 +326,7 @@ License: MIT
         var tmpNewApp = ThisPage.getControl('panelAppConsole').create('app-'+tmpAppName);
         tmpNewApp.setup({appname:tmpAppName});
         loadedApps[tmpAppName] = tmpNewApp;
+        window[tmpAppName] = tmpNewApp;
           tmpNewApp.loadToElement(ThisPage.getSpot('preview-panel'));
           //ToDo: Refresh using instance data after loading one time
           
