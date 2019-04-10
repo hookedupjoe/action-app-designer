@@ -4499,38 +4499,38 @@ License: MIT
         return tmpObj
     }
 
-    meControl.getContentRequired = function () {
-        var tmpRet = {}
-        var tmpReq = this.controlConfig.index.required;
-        if (tmpReq) {
-            return tmpReq;
-        }
-        return tmpRet;
-    }
+    // meControl.getContentRequired = function () {
+    //     var tmpRet = {}
+    //     var tmpReq = this.controlConfig.index.required;
+    //     if (tmpReq) {
+    //         return tmpReq;
+    //     }
+    //     return tmpRet;
+    // }
 
-    meControl.assureRequired = function () {
-        var dfd = jQuery.Deferred();
-        if (this.assureRequiredRun === true) {
-            dfd.resolve(true)
-            return dfd.promise();
-        }
-        this.assureRequiredRun = true;
-        this.options = this.options || {};
-        var tmpPromRequired = true;
-        var tmpPromLayoutReq = true;
-        var tmpLayoutReq = this.getContentRequired();
-        var tmpInitReq = ThisApp.loadResources.bind(this);
+    // meControl.assureRequired = function () {
+    //     var dfd = jQuery.Deferred();
+    //     // if (this.assureRequiredRun === true) {
+    //     //     dfd.resolve(true)
+    //     //     return dfd.promise();
+    //     // }
+    //     this.assureRequiredRun = true;
+    //     this.options = this.options || {};
+    //     var tmpPromRequired = true;
+    //     var tmpPromLayoutReq = true;
+    //     var tmpLayoutReq = this.getContentRequired();
+    //     var tmpInitReq = ThisApp.loadResources.bind(this);
 
-        if (tmpLayoutReq) {
-            tmpPromLayoutReq = tmpInitReq(tmpLayoutReq, { nsParent: this.parentControl })
-        }
+    //     if (tmpLayoutReq) {
+    //         tmpPromLayoutReq = tmpInitReq(tmpLayoutReq, { nsParent: this.parentControl })
+    //     }
 
-        $.when(tmpPromRequired, tmpPromLayoutReq).then(function (theReply) {
-            dfd.resolve(true);
-        })
+    //     $.when(tmpPromRequired, tmpPromLayoutReq).then(function (theReply) {
+    //         dfd.resolve(true);
+    //     })
 
-        return dfd.promise();
-    }
+    //     return dfd.promise();
+    // }
 
 
     //--- ToDo: Review this, better way?  Just use prompt options?
@@ -4708,7 +4708,33 @@ License: MIT
         this.liveIndex = {};
         this.parts = {};
 
+        this.res = {
+            "panels": {},
+            "controls": {},
+            "html": {}
+        };
+
         this.initPubSub();
+
+          //--- Grab some common functionality from app ...
+          var tmpStuffToPullIn = [
+            , 'getResourceURIsForType'
+            , 'addResourceFromContent',
+            , 'loadResources',
+            , 'addResource'
+            , 'getPanel'
+            , 'getControl'
+            , 'getResourceForType'
+        ];
+
+        for (var iStuff = 0; iStuff < tmpStuffToPullIn.length; iStuff++) {
+            var tmpFuncName = tmpStuffToPullIn[iStuff];
+            var tmpFunc = ThisApp[tmpFuncName];
+            if (ThisApp.util.isFunc(tmpFunc)) {
+                this[tmpFuncName] = tmpFunc.bind(this);
+            }
+        }
+
     }
 
     var meInstance = ControlInstance.prototype;
@@ -4718,6 +4744,46 @@ License: MIT
 
     meInstance.extend = function (theNewFunctionality) {
         $.extend(this, theNewFunctionality)
+    }
+
+
+    meInstance.refreshIndex = function () {
+        this.setupConfig();
+    }
+    
+    meInstance.getContentRequired = function () {
+        var tmpRet = {}
+        this.refreshIndex();
+        var tmpReq = this.controlConfig.index.required;
+        if (tmpReq) {
+            return tmpReq;
+        }
+        return tmpRet;
+    }
+
+    meInstance.assureRequired = function () {
+        var dfd = jQuery.Deferred();
+        // if (this.assureRequiredRun === true) {
+        //     dfd.resolve(true)
+        //     return dfd.promise();
+        // }
+        // this.assureRequiredRun = true;
+        this.options = this.options || {};
+        var tmpPromRequired = true;
+        var tmpPromLayoutReq = true;
+        var tmpLayoutReq = this.getContentRequired();
+        console.log( 'tmpLayoutReq', tmpLayoutReq);
+        var tmpInitReq = ThisApp.loadResources.bind(this);
+
+        if (tmpLayoutReq) {
+            tmpPromLayoutReq = tmpInitReq(tmpLayoutReq, { nsParent: this.parentControl })
+        }
+
+        $.when(tmpPromRequired, tmpPromLayoutReq).then(function (theReply) {
+            dfd.resolve(true);
+        })
+
+        return dfd.promise();
     }
 
 
@@ -4763,7 +4829,7 @@ License: MIT
         if( tmpOptions.doc){
             tmpConfig.options.doc = tmpOptions.doc;
         }
-        this.loadToElement(this.parentEl, theOptions);
+        return this.loadToElement(this.parentEl, theOptions);
     }
 
     meInstance.refreshFromURI = function (theOptionalURI, theOptions) {
@@ -5603,7 +5669,7 @@ License: MIT
 
 
         tmpThis.getConfig().options = tmpThis.getConfig().options || {};
-        this.controlSpec.assureRequired().then(function () {
+        this.assureRequired().then(function () {
             var tmpInitResults = tmpThis.initControlComponents();
             if (tmpInitResults && tmpInitResults.then) {
                 tmpThis.initControlComponents().then(function (theReply) {
