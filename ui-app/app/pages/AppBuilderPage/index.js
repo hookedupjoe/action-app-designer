@@ -63,6 +63,7 @@ License: MIT
     */
     var actions = ThisPage.pageActions;
     var loadedApps = {};
+    window.loadedApps = loadedApps;
     var appSetupConfig = false;
 
     ThisPage._onPreInit = function (theApp) {

@@ -4662,7 +4662,7 @@ License: MIT
 
     meControl.getHTML = function (theControlName, theInstance) {
 
-        var tmpHTML = getControlHTML(theControlName, this.controlConfig, theInstance);
+        var tmpHTML = getControlHTML(theControlName, (theInstance.controlConfig || this.controlConfig), theInstance);
 
         //--- If parent control is avail and has a ns implemented, use it
         //    ... to convert _page_: and pagespot, etc as usual
