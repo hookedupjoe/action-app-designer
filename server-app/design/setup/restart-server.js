@@ -1,6 +1,6 @@
 'use strict';
-const THIS_MODULE_NAME = 'initial-setup';
-const THIS_MODULE_TITLE = 'Create the initial setup json for the application';
+const THIS_MODULE_NAME = 'restart-server';
+const THIS_MODULE_TITLE = 'Restarts this node server';
 
 module.exports.setup = function setup(scope) {
     var config = scope;
@@ -20,26 +20,8 @@ module.exports.setup = function setup(scope) {
         var self = this;
         return new Promise($.async(function (resolve, reject) {
             try {
-
-                var tmpRootDir = req.query.root || req.query.rootdir || ($.os.homedir() + '/actapp/');
-
-                tmpRootDir = tmpRootDir.replace('[home]', $.os.homedir());
-
-                if( !(tmpRootDir.endsWith('/'))){
-                    tmpRootDir += '/';
-                }
-                var tmpSetupDetails = {
-                    rootDir: tmpRootDir
-                }
-                const tmpSettingsDir = bld.settingsHome();
-                $.await($.fs.ensureDir(tmpSettingsDir));
-                $.await(bld.saveJsonFile(tmpSettingsDir + 'setup.json', tmpSetupDetails));
-                
-                var tmpRet = {status:true}
-                $.await($.fs.ensureDir(tmpSetupDetails.rootDir))
-                $.await($.fs.ensureDir(tmpSetupDetails.rootDir + 'apps/'))
-                resolve(tmpRet);
-                
+                bld.restartServer();
+                resolve(true);                
             }
             
             catch (error) {
@@ -67,7 +49,6 @@ module.exports.setup = function setup(scope) {
             //--- Getting documents to use directly by source, 
             //    .. do not wrap the success flag
             res.json(tmpResults)
-           
         } catch (ex) {
             res.json({ status: false, error: ex.toString() })
         }

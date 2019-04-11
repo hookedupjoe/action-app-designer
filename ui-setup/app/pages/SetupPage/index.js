@@ -104,7 +104,13 @@ License: MIT
             url: '/design/setup/initial-setup?rootdir=' + tmpDir
         }).then(function(theReply){
             console.log( 'initial-setup Reply', theReply);
-            alert("You Did it!  Now restart the node.js server and refresh this page.", "Setup Complete", "c");
+            alert("You Did it! The Action App Designer Server is starting", "Setup Complete", "c").then(function(theReply){
+                ThisApp.apiCall({url:'/design/setup/restart-server'})
+                ThisApp.delay(10000).then(function(theReply){
+                    window.location = window.location;
+                })
+                
+            });
         })
     };
     //===== PAGE-ACTIONS-END

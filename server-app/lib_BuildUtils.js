@@ -18,6 +18,7 @@ let utils = {
   buildApp: buildApp,
   updateAppSetup: updateAppSetup,
   getBuildConfigJson: getBuildConfigJson,
+  restartServer: restartServer,
   replaceAll: replaceAll,
   replaceFromMap: replaceFromMap,
   replaceFile: replaceFile,
@@ -26,6 +27,20 @@ let utils = {
 
 module.exports = utils;
    
+function restartServer(){
+   var {spawn} = require('child_process');
+
+
+   var logfile = 'restartlog.log';
+   var out = $.fs.openSync(logfile, 'a');
+   var err = $.fs.openSync(logfile, 'a');
+   var subprocess = spawn('restart.bat', [], {detached: true, stdio: ['ignore', out, err]});
+
+    subprocess.unref();
+    
+    process.exit();
+  }
+
 function updateAppSetup(theAppName, theSetupDetails) {
  // console.log( 'updateAppSetup', theAppName, theSetupDetails);
   var self = this;
