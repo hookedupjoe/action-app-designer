@@ -82,23 +82,10 @@ for( var aIndex in tmpBuildCfg.plugins){
                         "ctl": "tab",
                         "content": [
                           {
-                            "ctl": "fieldrow",
-                            "name": "info-row",
-                            "items": [
-                              {
-                                "ctl": "field",
-                                "name": "name",
-                                "label": "Application Filename",
-                                "readonly": true,
-                                "req": true
-                              },
-                              {
-                                "ctl": "field",
-                                "name": "title",
-                                "label": "Application Title",
-                                "req": true
-                              }
-                            ]
+                            "ctl": "field",
+                            "name": "title",
+                            "label": "Application Title",
+                            "req": true
                           },
                           {
                             "ctl": "dropdown",
@@ -108,6 +95,10 @@ for( var aIndex in tmpBuildCfg.plugins){
                             "default": "local",
                             "list": tmpPages.join(','),
                             "req": true
+                          },
+                          {
+                            "ctl": "hidden",
+                            "name": "name"
                           }
                         ]
                       },

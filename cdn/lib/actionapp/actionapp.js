@@ -6994,7 +6994,7 @@ License: MIT
             }
 
 
-
+            
             var tmpItems = tmpObject.items || tmpObject.content || [];
 
             if (tmpValue) {
@@ -7037,6 +7037,9 @@ License: MIT
                 //tmpFieldType = 'hidden';
                 tmpReq = '';
                 tmpReadOnly = ' readonly '
+            }
+            if( theControlName == 'hidden' ){
+                tmpFieldType = 'hidden';
             }
 
             tmpHTML.push('<div controls fieldwrap name="' + theObject.name + '" class="' + tmpClasses + tmpSizeName + tmpReq + ' ui ' + tmpFieldOrInput + '">')
@@ -7923,6 +7926,7 @@ License: MIT
 
     me.webControls.add('fieldrow', me.ControlFieldRow);
     me.webControls.add('field', me.ControlField);
+    me.webControls.add('hidden', me.ControlField);
     me.webControls.add('dropdown', me.ControlDropDown);
     me.webControls.add('checkboxlist', me.ControlCheckboxList);
     me.webControls.add('radiolist', me.ControlRadioList);

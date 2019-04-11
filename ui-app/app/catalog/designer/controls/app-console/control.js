@@ -63,20 +63,9 @@ License: MIT
 						"name": "apptabs-preview",
 						"ctl": "tab",
 						"content": [
-							
-							{
-								"ctl": "button",
-								"color": "green",
-								pageaction: "rebuildApp",
-								"attr": {
-									appname: ""
-								},
-								text: "Rebuild from options",
-								"name": "rebuild-app"
-							},
 							{
 								"ctl": "a",
-								"classes": "ui button blue",
+								"classes": "ui button green",
 								"attr": {
 									href: "http://localhost:33461/app001",
 									target: "app-app001"
@@ -86,12 +75,22 @@ License: MIT
 							},
 							{
 								"ctl": "button",
+								"color": "blue",
 								pageaction: "openInCode",
 								"attr": {
 									appname: ""
 								},
 								text: "Open in VS Code",
 								"name": "open-in-vs-code"
+							},
+							{
+								"ctl": "button",
+								pageaction: "rebuildApp",
+								"attr": {
+									appname: ""
+								},
+								text: "Rebuild",
+								"name": "rebuild-app"
 							}
 						]
 					},
