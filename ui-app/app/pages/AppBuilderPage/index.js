@@ -46,8 +46,8 @@ License: MIT
     //--- Customize default layout configuration
     //--- See http://layout.jquery-dev.com/documentation.cfm for details
     thisPageSpecs.layoutConfig = {
-        west__size: "300"
-        , east__size: "350"
+        west__size: "250"
+        , east__size: "400"
     }
 
 
@@ -481,7 +481,7 @@ License: MIT
         }).then(function(theReply){
             tmpApp.refreshSetupInfo();
             tmpApp.parts.setupinfo.refreshUI({readonly:true});
-
+            refreshWorkspace();
             dfd.resolve(true)
         })
        } catch (ex) {
@@ -494,6 +494,11 @@ License: MIT
     };
     
 
+    actions.refreshWorkspace = refreshWorkspace;
+    function refreshWorkspace(){
+        ThisPage.parts.west.parts.workspace.refreshFromURI();
+    };
+    
 
     actions.addApp = addApp;
     function addApp(theParams, theTarget) {

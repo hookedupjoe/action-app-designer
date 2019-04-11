@@ -11,9 +11,16 @@ License: MIT
 			}
 		},
 		"options": {
-			"padding": true,
+			"padding": false,
 		},
 		"content": [
+			
+			{
+				"ctl": "button",
+				pageaction: "refreshWorkspace",
+				text: "Refresh",
+				"name": "refresh-workspace"
+			},
 			{
 				"ctl": "panel",
 				"controlname": "design/ws/get-apps",
