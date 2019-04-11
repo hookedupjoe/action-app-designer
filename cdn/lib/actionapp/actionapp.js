@@ -4810,10 +4810,7 @@ License: MIT
 
     //--- Return cached control element
     meInstance.getEl = function () {
-        if (!this.controlEl) {
-            this.ControlEl = me.getControlEl$(this.controlName);
-        }
-        return this.ControlEl
+        return this.parentEl
     }
 
     meInstance.refreshUI = function (theOptions) {
