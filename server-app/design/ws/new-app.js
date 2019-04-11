@@ -59,8 +59,11 @@ module.exports.setup = function setup(scope) {
                 
                 $.await($.bld.saveJsonFile(tmpAppBase + 'app-info.json', tmpAppDetails))
 
-                var tmpRet = {status: true};
-                resolve(tmpRet);
+                $.bld.buildApp(tmpAppName).then(function(theReply){
+                    var tmpRet = {status: true};
+                    resolve(tmpRet);
+                })
+
 
             }
             catch (error) {

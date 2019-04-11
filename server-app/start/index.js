@@ -5,6 +5,8 @@ Common routes index to setup application routes
 
 module.exports.setup = function (app, scope) {
 
+    //--- plug 
+    process.scope = scope;
     //--- Add Global Uitilies to commonly passed locals
     scope.locals.$ = require(scope.locals.path.libraries + "/globalUtilities").$;
     scope.locals.$.NoSQL = require(scope.locals.path.libraries + "/lib_NoSQL.js");
