@@ -5839,13 +5839,14 @@ License: MIT
 
                 //=== type is index or field
                 var tmpToAdd = tmpItem;
-                if (tmpType == 'items') {
-                    //--- Only push in control type along with name for items
-                    var tmpDetail = tmpItem.text || tmpItem.title || tmpItem.label || '';
-                    if (tmpCtl != 'button') {
-                        tmpToAdd = { ctl: tmpCtl, detail: tmpDetail }
-                    }
-                }
+                //--- Always add reference, is by pointer anyway
+                // if (tmpType == 'items') {
+                //     //--- Only push in control type along with name for items
+                //     var tmpDetail = tmpItem.text || tmpItem.title || tmpItem.label || '';
+                //     if (tmpCtl != 'button') {
+                //         tmpToAdd = { ctl: tmpCtl, detail: tmpDetail }
+                //     }
+                // }
                 if (tmpIndex[tmpType][tmpName]) {
                     //--- If exists, create array and push item in
                     tmpIndex[tmpType][tmpName] = [tmpIndex[tmpType][tmpName]];
