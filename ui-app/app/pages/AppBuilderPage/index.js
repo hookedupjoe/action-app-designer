@@ -84,7 +84,6 @@ License: MIT
     */
     ThisPage._onFirstActivate = function (theApp) {
         // openAppGroupName = ThisPage.ns(openAppGroupName);
-        console.log( 'openAppGroupName', openAppGroupName);
         //--- This tells the page to layout the page, load templates and controls, et
         ThisPage.initOnFirstLoad().then(
             function () {
@@ -337,8 +336,9 @@ License: MIT
         ThisPage.addToSpot('body', '<div appuse="cards" group="' + openAppGroupName + '" item="' + tmpAppName + '">TESTING</div>' );
         var tmpTabAttr = {group:openAppGroupName, item:tmpAppName};
         var tmpNewGroup = ThisPage.getByAttr$({group:openAppGroupName, item:tmpAppName, appuse:'cards'});
-        console.log( 'tmpNewGroup', tmpNewGroup);
-        console.log( 'tmpTabAttr', tmpTabAttr);
+
+        // console.log( 'tmpNewGroup', tmpNewGroup);
+        // console.log( 'tmpTabAttr', tmpTabAttr);
         //tmpNewGroup.html("Hello World Again " + tmpAppName)
         tmpNewApp.loadToElement(tmpNewGroup);
         ThisApp.gotoTab(tmpTabAttr);

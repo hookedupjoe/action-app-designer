@@ -104,9 +104,10 @@ License: MIT
 
 	function setup(theDetails){
 		var tmpAppName = theDetails.appname || '';
+		var tmpTitle = theDetails.title || tmpAppName;
 		this.controlConfig.index.controls.pages.controlname += tmpAppName
 		this.controlConfig.index.controls.setupinfo.controlname += tmpAppName
-		console.log( 'this.controlConfig.index.controls.setupinfo.controlname', this.controlConfig.index.controls.setupinfo.controlname);
+		// console.log( 'this.controlConfig.index', this.controlConfig.index);
 	}
 
 	return ThisControl;
