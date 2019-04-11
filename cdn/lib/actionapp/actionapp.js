@@ -4937,7 +4937,12 @@ License: MIT
             specs: tmpSpecs
         }
     }
-
+    
+    meInstance.getItemEl = function (theItemName) {
+        var tmpEl = this.getElByName$(theItemName, 'item')
+        if (!(tmpEl)) { return false }        
+        return tmpEl;
+    }
 
     //--- end spots
 
