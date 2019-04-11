@@ -36,7 +36,7 @@ License: MIT
         north: { control: "north" },
         east: { html: "east" },
         west: { partname: "west", control: "west" },
-        center:  { html: "mock-workspace-page" },
+        center:  { html: "body" },
         south: false
     }
 
@@ -62,7 +62,7 @@ License: MIT
     *    If your component need to do stuff to be availale in the background, do it here
     */
     var actions = ThisPage.pageActions;
-    var openAppGroupName = 'open-apps';
+    var openAppGroupName = 'workspace-outline';
     var loadedApps = {};
     window.loadedApps = loadedApps;
     var appSetupConfig = false;
@@ -83,7 +83,7 @@ License: MIT
     *     that are needed even if the page was not activated yet
     */
     ThisPage._onFirstActivate = function (theApp) {
-        openAppGroupName = ThisPage.ns(openAppGroupName);
+        // openAppGroupName = ThisPage.ns(openAppGroupName);
         console.log( 'openAppGroupName', openAppGroupName);
         //--- This tells the page to layout the page, load templates and controls, et
         ThisPage.initOnFirstLoad().then(
@@ -322,7 +322,7 @@ License: MIT
       }
       
       if( loadedApps[tmpAppName] ){
-          console.log(tmpAppName + " already loaded. showing");
+          console.log(tmpAppName + " already loaded. showing " + tmpAppName);
           var tmpTabAttr = {group:openAppGroupName, item:tmpAppName};
           ThisApp.gotoTab(tmpTabAttr);
           //ToDo: Refresh using instance data instead of reloading element
@@ -334,9 +334,9 @@ License: MIT
         window[tmpAppName] = tmpNewApp;
         //ThisPage.getSpot('preview-panel')
 
-        ThisPage.addToSpot('preview-panel', '<div appuse="cards" group="' + openAppGroupName + '" item="' + tmpAppName + '">TESTING</div>' );
+        ThisPage.addToSpot('body', '<div appuse="cards" group="' + openAppGroupName + '" item="' + tmpAppName + '">TESTING</div>' );
         var tmpTabAttr = {group:openAppGroupName, item:tmpAppName};
-        var tmpNewGroup = ThisPage.getByAttr$(tmpTabAttr);
+        var tmpNewGroup = ThisPage.getByAttr$({group:openAppGroupName, item:tmpAppName, appuse:'cards'});
         console.log( 'tmpNewGroup', tmpNewGroup);
         console.log( 'tmpTabAttr', tmpTabAttr);
         //tmpNewGroup.html("Hello World Again " + tmpAppName)

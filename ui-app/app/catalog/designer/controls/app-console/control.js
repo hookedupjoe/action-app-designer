@@ -106,6 +106,7 @@ License: MIT
 		var tmpAppName = theDetails.appname || '';
 		this.controlConfig.index.controls.pages.controlname += tmpAppName
 		this.controlConfig.index.controls.setupinfo.controlname += tmpAppName
+		console.log( 'this.controlConfig.index.controls.setupinfo.controlname', this.controlConfig.index.controls.setupinfo.controlname);
 	}
 
 	return ThisControl;
