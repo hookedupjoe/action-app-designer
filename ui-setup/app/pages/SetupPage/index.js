@@ -104,9 +104,9 @@ License: MIT
             url: '/design/setup/initial-setup?rootdir=' + tmpDir
         }).then(function(theReply){
             console.log( 'initial-setup Reply', theReply);
-            alert("You Did it! The Action App Designer Server is starting", "Setup Complete", "c").then(function(theReply){
+            alert("You Did it! The Action App Designer Server is starting, this page will refresh automatically after you see flashes as the server starts up. ", "Setup Complete", "c").then(function(theReply){
                 ThisApp.apiCall({url:'/design/setup/restart-server'})
-                ThisApp.delay(10000).then(function(theReply){
+                ThisApp.delay(8000).then(function(theReply){
                     window.location = window.location;
                 })
                 
