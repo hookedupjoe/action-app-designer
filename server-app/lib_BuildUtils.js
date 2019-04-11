@@ -16,6 +16,7 @@ let utils = {
   writeJsonFile: saveJsonFile,
   settingsHome: settingsHome,
   buildApp: buildApp,
+  updateAppSetup: updateAppSetup,
   getBuildConfigJson: getBuildConfigJson,
   replaceAll: replaceAll,
   replaceFromMap: replaceFromMap,
@@ -24,10 +25,46 @@ let utils = {
 };
 
 module.exports = utils;
+   
+function updateAppSetup(theAppName, theSetupDetails) {
+ // console.log( 'updateAppSetup', theAppName, theSetupDetails);
+  var self = this;
+  return new Promise($.async(function (resolve, reject) {
+      try {
+          var scope = process.scope;
+
+          var bld = $.bld;
+          var tmpAppName = theAppName || '';
+          if(!(tmpAppName) ){
+              throw "Application name not provided"
+          }
+
+          var tmpWSDir = scope.locals.path.workspace + 'apps/';
+          
+          var tmpAppBase = tmpWSDir + tmpAppName + '/';
+          // console.log( 'Saving to ', tmpAppBase, theSetupDetails);
+          $.await(utils.saveJsonFile(tmpAppBase + 'app-info.json',theSetupDetails))
+          $.await(buildApp(tmpAppName));
+
+          var tmpRet = {
+              status: true,
+              refresh: true
+          }
+
+          resolve(tmpRet);
+
+      }
+      catch (error) {
+          console.log('Err : ' + error);
+          reject(error);
+      }
+
+  }));
 
 
 
-  
+}
+
 function buildApp(theAppName) {
   var self = this;
   return new Promise($.async(function (resolve, reject) {

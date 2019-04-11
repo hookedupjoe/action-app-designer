@@ -1894,27 +1894,35 @@ var ActionAppCore = {};
             throw "No URL provided"
         }
 
-        var tmpRequest = {
-            cache: false,
-            success: function (theResponse) {
-                dfd.resolve(theResponse);
-            },
-            error: function (theError) {
-                dfd.reject(theError)
-            }
-        };
-        $.extend(tmpRequest, tmpOptions);
-
-        //--- Auto Detect data, convert data and use POST
-        if (tmpRequest.data) {
-            if (typeof (tmpRequest.data) == 'string') {
-                tmpRequest.data = JSON.parse(tmpRequest.data);
-            }
-            tmpRequest.method = 'POST';
-            tmpRequest.dataType = "json";
+        // var tmpRequest = {
+        //     cache: false,
+        //     success: function (theResponse) {
+        //         dfd.resolve(theResponse);
+        //     },
+        //     error: function (theError) {
+        //         dfd.reject(theError)
+        //     }
+        // };
+        //$.extend(tmpRequest, tmpOptions);
+        tmpOptions.cache = false;
+        tmpOptions.success = function (theResponse) {
+            dfd.resolve(theResponse);
+        }
+        tmpOptions.error = function (theError) {
+            dfd.reject(theError)
         }
 
-        $.ajax(tmpRequest);
+        
+        //--- Auto Detect data, convert data and use POST
+        if (tmpOptions.data) {
+            if (typeof (tmpOptions.data) == 'object') {
+                tmpOptions.data = JSON.stringify(tmpOptions.data);
+            }
+            tmpOptions.method = 'POST';
+            tmpOptions.contentType = 'application/json';
+        }
+
+        $.ajax(tmpOptions);
         return dfd.promise();
     }
 

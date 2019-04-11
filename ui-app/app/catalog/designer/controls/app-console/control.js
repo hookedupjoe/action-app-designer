@@ -112,6 +112,58 @@ License: MIT
 						"ctl": "tab",
 						"content": [
 							{
+								"ctl": "button",
+								"toright": true,
+								"color": "blue",
+								"size": "large",
+								"labeled": true,
+								"right": true,
+								"icon": "arrow down",
+								pageaction: "promptAppSetup",
+								"attr": {
+									appname: ""
+								},
+								text: "Edit Setup",
+								"name": "edit-app-setup"
+							},
+							{
+								"ctl": "button",
+								"size": "large",
+								"basic": true,
+								"icon": "close",
+								hidden: true,
+								pageaction: "cancelAppSetup",
+								"attr": {
+									appname: ""
+								},
+								text: "Cancel",
+								"name": "cancel-app-setup"
+							},
+							{
+								"ctl": "button",
+								"hidden": true,
+								"toright": true,
+								"color": "green",
+								"size": "large",
+								"labeled": true,
+								"right": true,
+								"icon": "save",
+								pageaction: "saveAppSetup",
+								"attr": {
+									appname: ""
+								},
+								text: "Save Setup",
+								"name": "save-app-setup"
+							},
+							{
+								"ctl": "divider",
+								"color": "blue",
+								"size": "medium",
+								"text": "Welcome",
+								"clearing": true
+							}
+							,
+							{
 								"ctl": "panel",
 								"controlname": "design/ws/panel-app-setup?appname=",
 								"name": "setupinfo"
@@ -125,6 +177,9 @@ License: MIT
 
 	var ControlCode = {
 		setup: setup,
+		refreshPages: refreshPages,
+		refreshSetupInfo: refreshSetupInfo,
+		getSetupInfo: getSetupInfo,
 		promptForSetupInfo: promptForSetupInfo
 	};
 	var ThisControl = { specs: ControlSpecs, options: { proto: ControlCode, parent: ThisApp } };
@@ -149,17 +204,38 @@ License: MIT
 		this.controlConfig.index.items["rebuild-app"].attr = {
 			appname: tmpAppName
 		}
+		this.controlConfig.index.items["edit-app-setup"].attr = {
+			appname: tmpAppName
+		}
+		this.controlConfig.index.items["save-app-setup"].attr = {
+			appname: tmpAppName
+		}
+		this.controlConfig.index.items["cancel-app-setup"].attr = {
+			appname: tmpAppName
+		}
+		
 		
 
 		
 
 
 	}
-
+	
 	function promptForSetupInfo() {
 		this.parts.setupinfo.refreshUI({ readonly: false });
 		this.gotoItem('setupinfo');
 		this.parts.setupinfo.gotoField("appname");
+	}
+
+	function refreshPages(){
+		this.parts.pages.refreshFromURI();
+	}
+
+	function refreshSetupInfo(){
+		this.parts.setupinfo.refreshFromURI();
+	}
+	function getSetupInfo(){
+		return this.parts.setupinfo.getData();
 	}
 
 	return ThisControl;
