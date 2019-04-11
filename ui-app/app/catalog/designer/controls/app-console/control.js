@@ -64,8 +64,14 @@ License: MIT
 						"ctl": "tab",
 						"content": [
 							{
-								"ctl": "pagespot",
-								"spotname": "apptabs-preview"
+								"ctl": "a",
+								"classes": "ui button blue",
+								"attr": {
+										href:"http://localhost:33461/app001",
+										target: "app-app001"
+								},
+								text: "Preview Now",
+								"name": "preview-link"
 							}
 						]
 					},
@@ -113,6 +119,11 @@ License: MIT
 			tmpAppTitle = '[' + tmpAppName + '] ' + tmpTitle;
 		}
 		this.controlConfig.index.items.title.text = tmpAppTitle;
+		this.controlConfig.index.items["preview-link"].attr = {
+			href:"http://localhost:33461/" + tmpAppName,
+			target: "app" + tmpAppName
+		}
+
 	}
 
 	function promptForSetupInfo(){
