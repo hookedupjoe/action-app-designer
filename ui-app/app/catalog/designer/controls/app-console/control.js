@@ -63,15 +63,35 @@ License: MIT
 						"name": "apptabs-preview",
 						"ctl": "tab",
 						"content": [
+							
+							{
+								"ctl": "button",
+								"color": "green",
+								pageaction: "rebuildApp",
+								"attr": {
+									appname: ""
+								},
+								text: "Rebuild from options",
+								"name": "rebuild-app"
+							},
 							{
 								"ctl": "a",
 								"classes": "ui button blue",
 								"attr": {
-										href:"http://localhost:33461/app001",
-										target: "app-app001"
+									href: "http://localhost:33461/app001",
+									target: "app-app001"
 								},
 								text: "Preview Now",
 								"name": "preview-link"
+							},
+							{
+								"ctl": "button",
+								pageaction: "openInCode",
+								"attr": {
+									appname: ""
+								},
+								text: "Open in VS Code",
+								"name": "open-in-vs-code"
 							}
 						]
 					},
@@ -109,25 +129,35 @@ License: MIT
 	};
 	var ThisControl = { specs: ControlSpecs, options: { proto: ControlCode, parent: ThisApp } };
 
-	function setup(theDetails){
+	function setup(theDetails) {
 		var tmpAppName = theDetails.appname || '';
 		var tmpTitle = theDetails.title || heDetails.apptitle || tmpAppName;
 		this.controlConfig.index.controls.pages.controlname += tmpAppName
 		this.controlConfig.index.controls.setupinfo.controlname += tmpAppName
 		var tmpAppTitle = tmpAppName
-		if( tmpTitle ){
+		if (tmpTitle) {
 			tmpAppTitle = '[' + tmpAppName + '] ' + tmpTitle;
 		}
 		this.controlConfig.index.items.title.text = tmpAppTitle;
 		this.controlConfig.index.items["preview-link"].attr = {
-			href:"http://localhost:33461/" + tmpAppName,
+			href: "http://localhost:33461/" + tmpAppName,
 			target: "app" + tmpAppName
 		}
+		this.controlConfig.index.items["open-in-vs-code"].attr = {
+			appname: tmpAppName
+		}
+		this.controlConfig.index.items["rebuild-app"].attr = {
+			appname: tmpAppName
+		}
+		
+
+		
+
 
 	}
 
-	function promptForSetupInfo(){
-		this.parts.setupinfo.refreshUI({readonly:false});
+	function promptForSetupInfo() {
+		this.parts.setupinfo.refreshUI({ readonly: false });
 		this.gotoItem('setupinfo');
 		this.parts.setupinfo.gotoField("appname");
 	}

@@ -36,7 +36,7 @@ License: MIT
         north: { control: "north" },
         east: { html: "east" },
         west: { partname: "west", control: "west" },
-        center:  { html: "body" },
+        center: { html: "body" },
         south: false
     }
 
@@ -141,7 +141,7 @@ License: MIT
         var tmpThis = this;
 
         ThisPage.loadResources(tmpRequiredSpecs).then(function () {
-            
+
         })
 
     }
@@ -201,14 +201,14 @@ License: MIT
 
 
     actions.runTest2 = runTest2;
-    function runTest2(theParams, theTarget){
+    function runTest2(theParams, theTarget) {
         alert("Page Test 2");
     };
 
-    
+
     actions.runTest1 = runTest1;
     function runTest1(theParams, theTarget) {
-       
+
         var defaultLayoutOptions = {
             spacing_closed: 8,
             spacing_open: 6,
@@ -226,11 +226,11 @@ License: MIT
             north__togglerLength_open: 0,
             north__spacing_open: 0
         };
-    
-// alert("Test One Ran")
-        
-       ThisPage.getSpot('layout').layout(defaultLayoutOptions);
-       
+
+        // alert("Test One Ran")
+
+        ThisPage.getSpot('layout').layout(defaultLayoutOptions);
+
 
     };
 
@@ -304,83 +304,108 @@ License: MIT
 
     };
 
-      
-  actions.showAppConsole = showAppConsole;
-  function showAppConsole(theParams, theTarget){
-      var tmpParams = ThisApp.getActionParams(theParams, theTarget, ['appname','apptitle']);
-      var tmpAppName = tmpParams.appname || '';
-      if( !(tmpAppName) ){
-          alert("No app name provided to open");
-          return;
-      }
-      var tmpAppTitle = tmpParams.apptitle || '';
-      
-      if( loadedApps[tmpAppName] ){
-          var tmpTabAttr = {group:openAppGroupName, item:tmpAppName};
-          ThisApp.gotoTab(tmpTabAttr);
-          //ToDo: Refresh using instance data instead of reloading element
-          //loadedApps[tmpAppName].loadToElement(ThisPage.getSpot('preview-panel'));
-      } else {
-        var tmpNewApp = ThisPage.getControl('panelAppConsole').create('app-'+tmpAppName);
-        tmpNewApp.setup({appname:tmpAppName, title: tmpAppTitle});
-        loadedApps[tmpAppName] = tmpNewApp;
-        window[tmpAppName] = tmpNewApp;
-        //ThisPage.getSpot('preview-panel')
 
-        ThisPage.addToSpot('body', '<div appuse="cards" group="' + openAppGroupName + '" item="' + tmpAppName + '">TESTING</div>' );
-        var tmpTabAttr = {group:openAppGroupName, item:tmpAppName};
-        var tmpNewGroup = ThisPage.getByAttr$({group:openAppGroupName, item:tmpAppName, appuse:'cards'});
-
-        // console.log( 'tmpNewGroup', tmpNewGroup);
-        // console.log( 'tmpTabAttr', tmpTabAttr);
-        //tmpNewGroup.html("Hello World Again " + tmpAppName)
-        tmpNewApp.loadToElement(tmpNewGroup);
-        ThisApp.gotoTab(tmpTabAttr);
-        //tmpNewApp.loadToElement();
-          //ToDo: Refresh using instance data after loading one time
+    actions.showAppConsole = showAppConsole;
+    function showAppConsole(theParams, theTarget) {
+        var tmpParams = ThisApp.getActionParams(theParams, theTarget, ['appname', 'apptitle']);
+        var tmpAppName = tmpParams.appname || '';
+        if (!(tmpAppName)) {
+            alert("No app name provided to open");
+            return;
         }
-  };
-    
-  actions.showPrompter = showPrompter;
-  function showPrompter(theParams, theTarget){
-       var tmpEl = $(theTarget);
-       var tmpPageEl = tmpEl.closest('[group="app:pages"]');
-       var tmpPromptEl = ThisApp.getByAttr$({ appuse: 'prompter' });
+        var tmpAppTitle = tmpParams.apptitle || '';
 
-       
+        if (loadedApps[tmpAppName]) {
+            var tmpTabAttr = { group: openAppGroupName, item: tmpAppName };
+            ThisApp.gotoTab(tmpTabAttr);
+            //ToDo: Refresh using instance data instead of reloading element
+            //loadedApps[tmpAppName].loadToElement(ThisPage.getSpot('preview-panel'));
+        } else {
+            var tmpNewApp = ThisPage.getControl('panelAppConsole').create('app-' + tmpAppName);
+            tmpNewApp.setup({ appname: tmpAppName, title: tmpAppTitle });
+            loadedApps[tmpAppName] = tmpNewApp;
+            window[tmpAppName] = tmpNewApp;
+            //ThisPage.getSpot('preview-panel')
+
+            ThisPage.addToSpot('body', '<div appuse="cards" group="' + openAppGroupName + '" item="' + tmpAppName + '">TESTING</div>');
+            var tmpTabAttr = { group: openAppGroupName, item: tmpAppName };
+            var tmpNewGroup = ThisPage.getByAttr$({ group: openAppGroupName, item: tmpAppName, appuse: 'cards' });
+
+            // console.log( 'tmpNewGroup', tmpNewGroup);
+            // console.log( 'tmpTabAttr', tmpTabAttr);
+            //tmpNewGroup.html("Hello World Again " + tmpAppName)
+            tmpNewApp.loadToElement(tmpNewGroup);
+            ThisApp.gotoTab(tmpTabAttr);
+            //tmpNewApp.loadToElement();
+            //ToDo: Refresh using instance data after loading one time
+        }
+    };
+
+    actions.showPrompter = showPrompter;
+    function showPrompter(theParams, theTarget) {
+        var tmpEl = $(theTarget);
+        var tmpPageEl = tmpEl.closest('[group="app:pages"]');
+        var tmpPromptEl = ThisApp.getByAttr$({ appuse: 'prompter' });
+
+
         //--- Move the flyover mast and related flyover to the page
         //    ... so that pageaction works naturally
         tmpPromptEl.detach().appendTo(tmpPageEl);
 
-       var tmpHTML = [];
-tmpHTML.push('<div class="ui dimmer modals page transition visible active" style="display: flex !important;">')
-tmpHTML.push('  <div class="ui modal transition visible active" style="display: block !important;">')
-tmpHTML.push('    <div spot="prompter-dlg-content" >')
+        var tmpHTML = [];
+        tmpHTML.push('<div class="ui dimmer modals page transition visible active" style="display: flex !important;">')
+        tmpHTML.push('  <div class="ui modal transition visible active" style="display: block !important;">')
+        tmpHTML.push('    <div spot="prompter-dlg-content" >')
 
-tmpHTML.push('<div style="padding:5px;border:solid 5px transparent;" appcomp="layout">')
-tmpHTML.push('    <div class="ui-layout-center">Center</div>')
-tmpHTML.push('    <div class="ui-layout-north">North</div>')
-tmpHTML.push('    <div class="ui-layout-south">South</div>')
-tmpHTML.push('    <div class="ui-layout-east">East</div>')
-tmpHTML.push('    <div class="ui-layout-west">West</div>')
-tmpHTML.push('</div>')
-
-
-tmpHTML.push('    </div>')
-tmpHTML.push('  </div>')
-tmpHTML.push('</div>')
-
-       ThisApp.loadSpot('prompter-content', tmpHTML.join(''));
-
-       tmpPromptEl.removeClass('hidden');
-       ThisApp.initAppComponents(ThisApp.getSpot('prompter-content'))
+        tmpHTML.push('<div style="padding:5px;border:solid 5px transparent;" appcomp="layout">')
+        tmpHTML.push('    <div class="ui-layout-center">Center</div>')
+        tmpHTML.push('    <div class="ui-layout-north">North</div>')
+        tmpHTML.push('    <div class="ui-layout-south">South</div>')
+        tmpHTML.push('    <div class="ui-layout-east">East</div>')
+        tmpHTML.push('    <div class="ui-layout-west">West</div>')
+        tmpHTML.push('</div>')
 
 
-       ThisApp.refreshLayouts();
+        tmpHTML.push('    </div>')
+        tmpHTML.push('  </div>')
+        tmpHTML.push('</div>')
 
-  };
-  
+        ThisApp.loadSpot('prompter-content', tmpHTML.join(''));
+
+        tmpPromptEl.removeClass('hidden');
+        ThisApp.initAppComponents(ThisApp.getSpot('prompter-content'))
+
+
+        ThisApp.refreshLayouts();
+
+    };
+
+    actions.openInCode = openInCode;
+    function openInCode(theParams, theTarget){
+        var tmpParams = ThisApp.getActionParams(theParams, theTarget, ['appname']);
+        var tmpAppName = tmpParams.appname || ''
+        if( !(tmpAppName) ){
+            alert("No app to open");
+            return;
+        }
+        ThisApp.apiCall({url: '/design/ws/launch-app?appname=' + tmpAppName})
+    };
     
+    
+    actions.rebuildApp = rebuildApp;
+    function rebuildApp(theParams, theTarget){
+        var tmpParams = ThisApp.getActionParams(theParams, theTarget, ['appname']);
+        var tmpAppName = tmpParams.appname || ''
+        if( !(tmpAppName) ){
+            alert("No app to open");
+            return;
+        }
+        ThisApp.apiCall({url: '/design/ws/build-app?appname=' + tmpAppName}).then(function(theReply){
+            alert("Recreated " + tmpAppName, "Build Complete", "c");
+        })
+    };
+    
+
     actions.addApp = addApp;
     function addApp(theParams, theTarget) {
         ThisPage.getPanel('frmNewApp').prompt(
@@ -392,11 +417,11 @@ tmpHTML.push('</div>')
             if (!theSubmitted) {
                 return;
             }
-            
+
             ThisApp.common.apiCall({
                 url: '/design/ws/new-app',
                 data: theData
-            }).then(function(theReply){
+            }).then(function (theReply) {
                 ThisPage.parts.west.parts.workspace.refreshFromURI();
             })
             console.log('theData', theData);
