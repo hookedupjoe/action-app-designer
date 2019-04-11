@@ -31,7 +31,7 @@ function restartServer(){
    var {spawn} = require('child_process');
 
 
-   var logfile = 'restartlog.log';
+   var logfile = 'restart.log';
    var out = $.fs.openSync(logfile, 'a');
    var err = $.fs.openSync(logfile, 'a');
    var subprocess = spawn('restart.bat', [], {detached: true, stdio: ['ignore', out, err]});
