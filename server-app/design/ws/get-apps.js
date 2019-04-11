@@ -54,6 +54,7 @@ module.exports.setup = function setup(scope) {
                         "meta": "&#160;",
                         attr: {
                             pageaction: 'showAppConsole',
+                            apptitle: tmpAppTitle,
                             appname: tmpAppName
                         },
                         "level": 1,

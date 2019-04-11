@@ -141,8 +141,7 @@ License: MIT
         var tmpThis = this;
 
         ThisPage.loadResources(tmpRequiredSpecs).then(function () {
-            console.log('PAGE loadResources done', ThisPage.res);
-            // console.log( 'tmpThis', tmpThis);
+            
         })
 
     }
@@ -163,7 +162,6 @@ License: MIT
             } else {
                 delete (tmpDoc._key);
                 var tmpCtl = eval(tmpDoc);
-                console.log('tmpCtl', tmpCtl);
                 tmpCtl.prompt()
             }
         });
@@ -240,7 +238,6 @@ License: MIT
     function demoLoadIFrame(theParams, theTarget) {
         var tmpParams = ThisApp.getActionParams(theParams, theTarget, ['testname']);
         var tmpFrame = ThisPage.getByAttr$({ appuse: 'bodyframe' });
-        console.log('tmpFrame', tmpFrame);
         tmpFrame.get(0).src = '/catalog/testing/subdemo.html';
     };
 
@@ -254,21 +251,18 @@ License: MIT
 
         if (tmpScope == 'children' && tmpSelect) {
             var tmpShow = tmpSelect == 'true';
-            console.log('tmpShow', tmpShow);
             var tmpContainer = tmpEl.closest('tr').next();
             if (tmpContainer && tmpContainer.length) {
                 var tmpToggles = $('[oluse="collapsable"]', tmpContainer);
 
                 for (var iToggle = 0; iToggle < tmpToggles.length; iToggle++) {
                     var tmpToggle = $(tmpToggles[iToggle]);
-                    console.log('tmpToggle', tmpToggle);
 
                     var tmpToggleNode = tmpToggle.find('[action="toggleMe"]');
                     var tmpIcon = tmpToggleNode.find('i');
 
                     tmpToggle = tmpToggle.next();
 
-                    console.log('tmpToggleNode', tmpToggleNode);
                     var tmpIsVis = tmpToggle.is(":visible");
                     if (!(tmpShow)) {
                         tmpToggle.hide();
@@ -313,22 +307,22 @@ License: MIT
       
   actions.showAppConsole = showAppConsole;
   function showAppConsole(theParams, theTarget){
-      var tmpParams = ThisApp.getActionParams(theParams, theTarget, ['appname']);
+      var tmpParams = ThisApp.getActionParams(theParams, theTarget, ['appname','apptitle']);
       var tmpAppName = tmpParams.appname || '';
       if( !(tmpAppName) ){
           alert("No app name provided to open");
           return;
       }
+      var tmpAppTitle = tmpParams.apptitle || '';
       
       if( loadedApps[tmpAppName] ){
-          console.log(tmpAppName + " already loaded. showing " + tmpAppName);
           var tmpTabAttr = {group:openAppGroupName, item:tmpAppName};
           ThisApp.gotoTab(tmpTabAttr);
           //ToDo: Refresh using instance data instead of reloading element
           //loadedApps[tmpAppName].loadToElement(ThisPage.getSpot('preview-panel'));
       } else {
         var tmpNewApp = ThisPage.getControl('panelAppConsole').create('app-'+tmpAppName);
-        tmpNewApp.setup({appname:tmpAppName});
+        tmpNewApp.setup({appname:tmpAppName, title: tmpAppTitle});
         loadedApps[tmpAppName] = tmpNewApp;
         window[tmpAppName] = tmpNewApp;
         //ThisPage.getSpot('preview-panel')

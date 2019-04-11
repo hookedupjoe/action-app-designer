@@ -98,16 +98,27 @@ License: MIT
 	}
 
 	var ControlCode = {
-		setup: setup
+		setup: setup,
+		promptForSetupInfo: promptForSetupInfo
 	};
 	var ThisControl = { specs: ControlSpecs, options: { proto: ControlCode, parent: ThisApp } };
 
 	function setup(theDetails){
 		var tmpAppName = theDetails.appname || '';
-		var tmpTitle = theDetails.title || tmpAppName;
+		var tmpTitle = theDetails.title || heDetails.apptitle || tmpAppName;
 		this.controlConfig.index.controls.pages.controlname += tmpAppName
 		this.controlConfig.index.controls.setupinfo.controlname += tmpAppName
-		// console.log( 'this.controlConfig.index', this.controlConfig.index);
+		var tmpAppTitle = tmpAppName
+		if( tmpTitle ){
+			tmpAppTitle = '[' + tmpAppName + '] ' + tmpTitle;
+		}
+		this.controlConfig.index.items.title.text = tmpAppTitle;
+	}
+
+	function promptForSetupInfo(){
+		this.parts.setupinfo.refreshUI({readonly:false});
+		this.gotoItem('setupinfo');
+		this.parts.setupinfo.gotoField("appname");
 	}
 
 	return ThisControl;
