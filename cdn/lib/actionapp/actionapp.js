@@ -4387,6 +4387,7 @@ License: MIT
 
         var tmpData = {};
         var tmpControl = theControlEl;
+        var tmpIsMultiValue = false;
 
         if (tmpControl && tmpControl.length == 1) {
             var tmpFields = getControlFields(tmpControl, theOptionalFieldName);
@@ -4398,6 +4399,9 @@ License: MIT
 
                     if (tmpFN) {
                         if (tmpFT == 'radio' || tmpFT == 'checkbox') {
+                            if ( tmpFT == 'checkbox' ){
+                                tmpIsMultiValue = true;
+                            }
                             var tmpIsChecked = tmpField[0].checked;
                             var tmpVal = '';
                             if (tmpIsChecked) {
@@ -4410,6 +4414,9 @@ License: MIT
                                     tmpExistingVal += ","
                                 }
                                 tmpExistingVal += tmpVal;
+                            }
+                            if( tmpIsMultiValue ){
+                                tmpExistingVal = tmpExistingVal.split(',')
                             }
                             tmpData[tmpFN] = tmpExistingVal;
                         } else {
@@ -5066,6 +5073,7 @@ License: MIT
         }
 
         var tmpFieldSpecs = this.getFieldSpecs(theFieldName);
+        
         if (tmpFieldSpecs) {
             var tmpCtl = tmpFieldSpecs.ctl || 'field';
             var tmpControl = me.webControls.get(tmpCtl);
@@ -7157,7 +7165,12 @@ License: MIT
             //--- Really this can be left out and it will use this by default
             //--   adding this to show how to return values for custom fields that are not based on simple / standard form logic
             if (theControlEl && theFieldSpecs) {
-                return me._getControlData(theControlEl, theFieldSpecs.name);
+                var tmpData = me._getControlData(theControlEl, theFieldSpecs.name);
+                // console.log( 'getFieldValue theFieldSpecs', theFieldSpecs);
+                if( theFieldSpecs.multi === true && isStr(tmpData) ){
+                    tmpData = tmpData.split(',');
+                }
+                return tmpData;
             }
             return '';
         },
