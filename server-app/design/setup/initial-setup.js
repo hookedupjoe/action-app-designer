@@ -23,6 +23,8 @@ module.exports.setup = function setup(scope) {
 
                 var tmpRootDir = req.query.root || req.query.rootdir || ($.os.homedir() + '/actapp/');
 
+                tmpRootDir = tmpRootDir.replace('[home]', $.os.homedir());
+
                 if( !(tmpRootDir.endsWith('/'))){
                     tmpRootDir += '/';
                 }
