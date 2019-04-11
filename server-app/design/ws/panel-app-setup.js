@@ -22,26 +22,47 @@ module.exports.setup = function setup(scope) {
         return new Promise($.async(function (resolve, reject) {
             try {
 
-              var tmpAppConfig = $.await($.bld.getJsonFile(scope.locals.path.designer + '/build/app-build-config.json'));
+              var tmpBuildCfg = $.await($.bld.getBuildConfigJson());
               var tmpWSDir = scope.locals.path.workspace + 'apps/';
 
               var tmpAppName = req.query.appname || req.query.name || req.query.filename || '';
-              tmpAppName = tmpAppName
-                  .replace('.json', '')
+              tmpAppName = tmpAppName.replace('.json', '')
               
               var tmpAppBase = tmpWSDir + tmpAppName + '/';
               var tmpAppDetails = $.await($.bld.getJsonFile(tmpAppBase + 'app-info.json'))
 
-var tmpLibLocations = '';
-var tmpAppTpls = tmpAppConfig.applicationTemplates || [];
+              var tmpPagesBase = tmpAppBase + '/app/pages/';
+              var tmpPages = $.await($.bld.getDirFiles(tmpPagesBase))
+
+              // console.log( 'tmpBuildCfg', tmpBuildCfg);
+
+var tmpAppTpls = tmpBuildCfg.applicationTemplates || [];
 var tmpAppsList = [];
 
 for (var aIndex in tmpAppTpls){
   var tmpTpl = tmpAppTpls[aIndex];
   var tmpTplItem = tmpTpl.title + "|" + tmpTpl.name;
   tmpAppsList.push(tmpTplItem);
-  
 }
+
+var tmpLibLocations = [];
+for( var aIndex in tmpBuildCfg.libraryLocations){
+  var tmpEntry = tmpBuildCfg.libraryLocations[aIndex];
+  tmpLibLocations.push(tmpEntry.label + "|" + tmpEntry.name)
+}
+
+var tmpLibs = [];
+for( var aIndex in tmpBuildCfg.libraries){
+  var tmpEntry = tmpBuildCfg.libraries[aIndex];
+  tmpLibs.push(tmpEntry.name)
+}
+
+var tmpPlugins = [];
+for( var aIndex in tmpBuildCfg.plugins){
+  var tmpEntry = tmpBuildCfg.plugins[aIndex];
+  tmpPlugins.push(tmpEntry.name)
+}
+
 
 
                 var tmpRet = {
@@ -85,7 +106,7 @@ for (var aIndex in tmpAppTpls){
                             "name": "pages",
                             "label": "Pages to load",
                             "default": "local",
-                            "list": "HomePage,LogsPage,TestPage",
+                            "list": tmpPages.join(','),
                             "req": true
                           }
                         ]
@@ -100,7 +121,7 @@ for (var aIndex in tmpAppTpls){
                             "name": "cdn",
                             "label": "Library Location",
                             "default": "local",
-                            "list": "Preview|local,Cloud|cloud,In App|app",
+                            "list": tmpLibLocations.join(","),
                             "req": true
                           },
                           {
@@ -109,7 +130,7 @@ for (var aIndex in tmpAppTpls){
                             "name": "libraries",
                             "label": "Libraries",
                             "default": "local",
-                            "list": "DataTables,Ace",
+                            "list": tmpLibs.join(","),
                             "req": true
                           },
                           {
@@ -118,7 +139,7 @@ for (var aIndex in tmpAppTpls){
                             "name": "plugins",
                             "label": "Plugins",
                             "default": "local",
-                            "list": "DataTables,SvgWorkspaces",
+                            "list":  tmpPlugins.join(","),
                             "req": true
                           }
                         ]
