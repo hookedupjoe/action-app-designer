@@ -89,7 +89,7 @@ function setup() {
                 serverApps: tmpWSDirectory + "designer-servers/"
             }
             
-            app.use(express.static(scope.locals.path.root + '/cdn'));
+            app.use(express.static(scope.locals.path.root + '/ui-libs'));
             app.use(express.static(scope.locals.path.root + tmpStaticDir));
 
             //--- Plug in application routes
@@ -141,7 +141,7 @@ function setup() {
             preview.use(bodyParser.urlencoded({ extended: false }));
             preview.use(cookieParser());
 
-            preview.use(express.static(scope.locals.path.root + '/cdn'));
+            preview.use(express.static(scope.locals.path.root + '/ui-libs'));
             preview.use(express.static(tmpWSDirectory + '/ui-apps'));
 
                         //--- Plug in application routes
