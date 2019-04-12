@@ -20,7 +20,7 @@ scope.locals = {
         root: path.resolve(__dirname)
     }
 };
-scope.locals.path.start = scope.locals.path.root + "/server-app";
+scope.locals.path.start = scope.locals.path.root + "/designer-app";
 scope.locals.path.libraries = scope.locals.path.root + "/server-libs";
 // scope.locals.path.localSecurity = scope.locals.path.root + "/local_security";
 
@@ -68,14 +68,14 @@ function setup() {
                 root: tmpWSDirectory,
                 deploy: tmpWSDirectory + "deploy/",
                 uiApps: tmpWSDirectory + "ui-apps/",
-                serverApps: tmpWSDirectory + "server-apps/"
+                serverApps: tmpWSDirectory + "designer-apps/"
             }
             
             app.use(express.static(scope.locals.path.root + '/cdn'));
             app.use(express.static(scope.locals.path.root + tmpStaticDir));
 
             //--- Plug in application routes
-            require('./server-app/start').setup(app, scope);
+            require('./designer-app/start').setup(app, scope);
 
             // error handlers
             app.use(function (req, res, next) {
