@@ -1,1 +1,44 @@
+<div class="ui segment">
+    <h3>Notes</h3>
+    <p>
+      <ul>
+        <li>Create a new application</li>
+        <li>Use Preview to see it</li>
+        <li>Use the setup tab to see / edit details</li>
+        <li>When setup details are changed, preview again to see changes</li>
+        <li>Can edit UI elements in Visual Studio Code and just hit refresh on preview screen</li>
+      </ul>
+    
+    </p>
+    <h3>Deployment Notes</h3>
+    <p>
+      <ul>
+        <li>Use the Deploy tab to build the deployment files</li>
+        <li>Then use the open in VS code to get to the terminal</li>
+        <li>In the terminal, you need to log in one time - then you can deploy over and over</li>
+        <li>To log in to bluemix, use the login.bat (sorry mac folks for now)</li>
+        <li>Use login yourusername@us.ibm.com orgname space (see below)</li>
+        <li>You can use npm install (one time)</li>
+        <li>Then npm start as usual</li>
+        <li>Use control - click to open the site at 33462</li>
+        <li>If it looks good, ctrl-c to break out</li>
+        <li>Then use "tocloud" bat file to push out </li>
+        <li> .. or type this in manually (whoa) </li>
+        <li>ibmcloud app push</li>
+        <li>... and enjoy</li>
+      </ul>
+    
+      <b>Params for login.bat</b>
+      <pre>
+        param 1 = yourname@us.ibm.com (i.e. joefran@us.ibm.com)
+        param 2 = Org (i.e. joefran)
+        param 3 = Space (i.e. dev)
+    </pre>
+    
+    <b>Important: Do not edit code in the deploy area, it is replaced.</b>
+    <br />
+    * Also - if it says actapp-app001 is used, yea I may have used that one, lol.
+    
+    </p>
+</div>
 <div pagespot="preview-panel"></div>
