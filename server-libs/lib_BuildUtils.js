@@ -81,10 +81,12 @@ function updateAppSetup(theAppName, theSetupDetails, scope) {
 
 }
 
-function buildApp(theAppName, scope) {
+function buildApp(theAppName, scope, theOptions) {
   var self = this;
   return new Promise($.async(function (resolve, reject) {
       try {
+          var tmpOptions = theOptions || {};
+          
           var bld = $.bld;
           var tmpAppName = theAppName || '';
           if(!(tmpAppName) ){
@@ -92,11 +94,20 @@ function buildApp(theAppName, scope) {
           }
 
           var tmpWSDir = scope.locals.path.ws.uiApps;
+          var tmpDeployDir = scope.locals.path.ws.deploy;
           
           var tmpAppBase = tmpWSDir + tmpAppName + '/';
           var tmpAppDetails = $.await(utils.getJsonFile(tmpAppBase + 'app-info.json'))
+          tmpDeployDir += tmpAppName + '/ui-app/';
 
           var tmpBuildCfg = $.await(utils.getBuildConfigJson(scope));
+
+          if( typeof(tmpOptions.cdn) === 'string'){
+            tmpAppDetails.cdn = tmpOptions.cdn;
+          }
+          if( tmpOptions.deploy === true){
+            tmpAppBase = tmpDeployDir;
+          }
 
           var tmpPartsLoc = scope.locals.path.designer + '/build/tpl-parts/';
           var tmpIndex = $.await(utils.getTextFile(tmpPartsLoc + 'tpl-index.html'))

@@ -61,10 +61,15 @@ module.exports.setup = function setup(scope) {
 
                 var tmpServerFilesLoc = scope.locals.path.designer + '/build/tpl-servers/ui-app/';
 
+
                 $.await($.fs.copy(tmpServerFilesLoc,tmpDeployBase));
                 var tmpManifestText = $.await($.bld.getTextFile(tmpDeployBase + 'manifest.yml'));
                 tmpManifestText = tmpManifestText.replace('{{URL-PREFIX}}', tmpReq.prefix);
                 $.await($.fs.writeFile(tmpDeployBase + 'manifest.yml',tmpManifestText))
+
+                //--- Rebuild using defaults
+                // $.await($.bld.buildApp(tmpAppName,scope));
+                $.await($.bld.buildApp(tmpAppName,scope,{cdn:'cloud', deploy:true}));
 
                 var tmpRet = {
                     status: true,
