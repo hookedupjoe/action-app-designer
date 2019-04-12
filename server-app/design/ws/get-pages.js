@@ -19,7 +19,7 @@ module.exports.setup = function setup(scope) {
         var self = this;
         return new Promise($.async(function (resolve, reject) {
             try {
-                var tmpWSDir = scope.locals.path.workspace + 'apps/';
+                var tmpWSDir = scope.locals.path.ws.uiApps;
 
                 var tmpAppName = req.query.appname || req.query.name || req.query.filename || '';
                 tmpAppName = tmpAppName

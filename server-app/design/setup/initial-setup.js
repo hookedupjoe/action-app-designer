@@ -37,7 +37,8 @@ module.exports.setup = function setup(scope) {
                 
                 var tmpRet = {status:true}
                 $.await($.fs.ensureDir(tmpSetupDetails.rootDir))
-                $.await($.fs.ensureDir(tmpSetupDetails.rootDir + 'apps/'))
+                $.await($.fs.ensureDir(tmpSetupDetails.rootDir + 'ui-apps/'))
+                $.await($.fs.ensureDir(tmpSetupDetails.rootDir + 'server-apps/'))
                 resolve(tmpRet);
                 
             }

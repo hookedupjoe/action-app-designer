@@ -35,7 +35,7 @@ module.exports.setup = function setup(scope) {
                     "content": []
                 }
 
-                var tmpWSDir = scope.locals.path.workspace + 'apps/';
+                var tmpWSDir = scope.locals.path.ws.uiApps;
                 
                 var tmpFiles = $.await($.bld.getDirFiles(tmpWSDir))
 

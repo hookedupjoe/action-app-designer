@@ -41,6 +41,9 @@ function restartServer(){
     process.exit();
   }
 
+function getDirApps(){
+    
+}  
 function updateAppSetup(theAppName, theSetupDetails) {
  // console.log( 'updateAppSetup', theAppName, theSetupDetails);
   var self = this;
@@ -54,7 +57,7 @@ function updateAppSetup(theAppName, theSetupDetails) {
               throw "Application name not provided"
           }
 
-          var tmpWSDir = scope.locals.path.workspace + 'apps/';
+          var tmpWSDir = scope.locals.path.ws.uiApps;
           
           var tmpAppBase = tmpWSDir + tmpAppName + '/';
           // console.log( 'Saving to ', tmpAppBase, theSetupDetails);
@@ -92,7 +95,7 @@ function buildApp(theAppName) {
               throw "Application name not provided"
           }
 
-          var tmpWSDir = scope.locals.path.workspace + 'apps/';
+          var tmpWSDir = scope.locals.path.ws.uiApps;
           
           var tmpAppBase = tmpWSDir + tmpAppName + '/';
           var tmpAppDetails = $.await(utils.getJsonFile(tmpAppBase + 'app-info.json'))

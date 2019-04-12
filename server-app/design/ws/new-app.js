@@ -43,7 +43,7 @@ module.exports.setup = function setup(scope) {
                 console.log( 'tmpAppTitle', tmpAppTitle);
                 console.log( 'tmpTemplate', tmpTemplate);
 
-                var tmpWSDir = scope.locals.path.workspace + 'apps/';
+                var tmpWSDir = scope.locals.path.ws.uiApps;
                 var tmpAppBase = tmpWSDir + tmpAppName + '/';
 
                 var tmpBuildCfg = $.await($.bld.getBuildConfigJson(scope));

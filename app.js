@@ -60,8 +60,16 @@ function setup() {
                     tmpStaticDir = '/ui-setup';
                 }
             }
-            scope.locals.path.workspace = tmpWSDirectory;
 
+            //--- Deprecated - remove
+            // scope.locals.path.workspace = tmpWSDirectory;
+
+            scope.locals.path.ws = {
+                root: tmpWSDirectory,
+                uiApps: tmpWSDirectory + "ui-apps/",
+                serverApps: tmpWSDirectory + "server-apps/"
+            }
+            
             app.use(express.static(scope.locals.path.root + '/cdn'));
             app.use(express.static(scope.locals.path.root + tmpStaticDir));
 
@@ -115,7 +123,7 @@ function setup() {
             preview.use(cookieParser());
 
             preview.use(express.static(scope.locals.path.root + '/cdn'));
-            preview.use(express.static(tmpWSDirectory + '/apps'));
+            preview.use(express.static(tmpWSDirectory + '/ui-apps'));
 
             // error handlers
             preview.use(function (req, res, next) {
