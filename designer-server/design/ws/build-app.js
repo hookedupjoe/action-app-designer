@@ -19,7 +19,7 @@ module.exports.setup = function setup(scope) {
     base.run = function (req, res, next) {
         var self = this;
         var tmpAppName = req.query.appname || req.query.name || req.query.filename || '';
-        return bld.buildApp(tmpAppName)
+        return bld.buildApp(tmpAppName, scope)
        
 
 

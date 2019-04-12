@@ -44,13 +44,11 @@ function restartServer(){
 function getDirApps(){
     
 }  
-function updateAppSetup(theAppName, theSetupDetails) {
+function updateAppSetup(theAppName, theSetupDetails, scope) {
  // console.log( 'updateAppSetup', theAppName, theSetupDetails);
   var self = this;
   return new Promise($.async(function (resolve, reject) {
       try {
-          var scope = process.scope;
-
           var bld = $.bld;
           var tmpAppName = theAppName || '';
           if(!(tmpAppName) ){
@@ -62,7 +60,7 @@ function updateAppSetup(theAppName, theSetupDetails) {
           var tmpAppBase = tmpWSDir + tmpAppName + '/';
           // console.log( 'Saving to ', tmpAppBase, theSetupDetails);
           $.await(utils.saveJsonFile(tmpAppBase + 'app-info.json',theSetupDetails))
-          $.await(buildApp(tmpAppName));
+          $.await(buildApp(tmpAppName, scope));
 
           var tmpRet = {
               status: true,
@@ -83,12 +81,10 @@ function updateAppSetup(theAppName, theSetupDetails) {
 
 }
 
-function buildApp(theAppName) {
+function buildApp(theAppName, scope) {
   var self = this;
   return new Promise($.async(function (resolve, reject) {
       try {
-          var scope = process.scope;
-
           var bld = $.bld;
           var tmpAppName = theAppName || '';
           if(!(tmpAppName) ){
@@ -100,7 +96,7 @@ function buildApp(theAppName) {
           var tmpAppBase = tmpWSDir + tmpAppName + '/';
           var tmpAppDetails = $.await(utils.getJsonFile(tmpAppBase + 'app-info.json'))
 
-          var tmpBuildCfg = $.await(utils.getBuildConfigJson());
+          var tmpBuildCfg = $.await(utils.getBuildConfigJson(scope));
 
           var tmpPartsLoc = scope.locals.path.designer + '/build/tpl-parts/';
           var tmpIndex = $.await(utils.getTextFile(tmpPartsLoc + 'tpl-index.html'))
@@ -319,8 +315,8 @@ function settingsHome() {
   return tmpHomeDir + '/.actapp/';
 }
 
-function getBuildConfigJson(){
-  return utils.getJsonFile(process.scope.locals.path.designer + '/build/app-build-config.json');
+function getBuildConfigJson(scope){
+  return utils.getJsonFile(scope.locals.path.designer + '/build/app-build-config.json');
 }
 
 

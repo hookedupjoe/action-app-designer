@@ -11,7 +11,10 @@ var path = require('path'),
     http = require('http'),
     chalk = require('chalk'),
     fs = require('fs-extra'),
+    previewScope = {},
     scope = {};
+
+
 
 scope.locals = {
     name: 'action-app-designer',
@@ -20,12 +23,27 @@ scope.locals = {
         root: path.resolve(__dirname)
     }
 };
-scope.locals.path.start = scope.locals.path.root + "/designer-app";
+scope.locals.path.start = scope.locals.path.root + "/designer-server";
 scope.locals.path.libraries = scope.locals.path.root + "/server-libs";
 // scope.locals.path.localSecurity = scope.locals.path.root + "/local_security";
 
 var $ = require(scope.locals.path.libraries + '/globalUtilities.js').$;
 var bld = require(scope.locals.path.libraries + '/lib_buildUtils.js');
+
+
+
+
+previewScope.locals = {
+    name: 'action-app-preview-server',
+    title: 'Action App Preview Server',
+    path: {
+        root: path.resolve(__dirname)
+    }
+}
+previewScope.locals.path.start = scope.locals.path.root + "/preview-server";
+previewScope.locals.path.libraries = scope.locals.path.root + "/server-libs";
+
+
 
 
 var express = require('express'),
@@ -68,14 +86,14 @@ function setup() {
                 root: tmpWSDirectory,
                 deploy: tmpWSDirectory + "deploy/",
                 uiApps: tmpWSDirectory + "ui-apps/",
-                serverApps: tmpWSDirectory + "designer-apps/"
+                serverApps: tmpWSDirectory + "designer-servers/"
             }
             
             app.use(express.static(scope.locals.path.root + '/cdn'));
             app.use(express.static(scope.locals.path.root + tmpStaticDir));
 
             //--- Plug in application routes
-            require('./designer-app/start').setup(app, scope);
+            require('./designer-server/start').setup(app, scope);
 
             // error handlers
             app.use(function (req, res, next) {
@@ -126,6 +144,9 @@ function setup() {
             preview.use(express.static(scope.locals.path.root + '/cdn'));
             preview.use(express.static(tmpWSDirectory + '/ui-apps'));
 
+                        //--- Plug in application routes
+            require('./preview-server/start').setup(preview, previewScope);
+                        
             // error handlers
             preview.use(function (req, res, next) {
                 var err = new Error('Not Found');

@@ -22,7 +22,7 @@ module.exports.setup = function setup(scope) {
         return new Promise($.async(function (resolve, reject) {
             try {
 
-              var tmpBuildCfg = $.await($.bld.getBuildConfigJson());
+              var tmpBuildCfg = $.await($.bld.getBuildConfigJson(scope));
               var tmpWSDir = scope.locals.path.ws.uiApps;
 
               var tmpAppName = req.query.appname || req.query.name || req.query.filename || '';

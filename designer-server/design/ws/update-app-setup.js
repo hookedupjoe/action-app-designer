@@ -34,7 +34,7 @@ module.exports.setup = function setup(scope) {
             throw("No app name passed")
         }
 
-        return bld.updateAppSetup(tmpAppName, tmpBody)
+        return bld.updateAppSetup(tmpAppName, tmpBody, scope)
        
 
 
