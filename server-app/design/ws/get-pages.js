@@ -37,7 +37,7 @@ module.exports.setup = function setup(scope) {
                     "type": "app",
                     "name": "app-" + tmpAppName + "",
                     "item": "app-" + tmpAppName + "",
-                    "details": tmpAppTitle + " pages",
+                    "details": "./app/pages",
                     "meta": "&#160;",
                     "level": 1,
                     "refresh": true,
