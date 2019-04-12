@@ -4417,6 +4417,9 @@ License: MIT
                             }
                             tmpData[tmpFN] = tmpData[tmpFN] || '';
                             var tmpExistingVal = tmpData[tmpFN];
+                            if (Array.isArray(tmpExistingVal)){
+                                tmpExistingVal = tmpExistingVal.join(",");
+                            }
                             if (tmpVal) {
                                 if (tmpExistingVal) {
                                     tmpExistingVal += ","
@@ -4424,7 +4427,9 @@ License: MIT
                                 tmpExistingVal += tmpVal;
                             }
                             if( tmpIsMultiValue ){
-                                tmpExistingVal = tmpExistingVal.split(',')
+                                if( (typeof(tmpExistingVal) == 'string')){
+                                    tmpExistingVal = tmpExistingVal.split(',')
+                                }
                             }
                             tmpData[tmpFN] = tmpExistingVal;
                         } else {

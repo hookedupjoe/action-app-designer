@@ -82,6 +82,15 @@ for( var aIndex in tmpBuildCfg.plugins){
                         "ctl": "tab",
                         "content": [
                           {
+                            "ctl": "dropdown",
+                            "multi": true,
+                            "name": "pages",
+                            "label": "Pages to load",
+                            "default": "local",
+                            "list": tmpPages.join(','),
+                            "req": true
+                          },
+                          {
                             "ctl": "field",
                             "name": "title",
                             "label": "Application Title",
@@ -93,15 +102,7 @@ for( var aIndex in tmpBuildCfg.plugins){
                             "label": "Deployment URL Prefix",
                             "req": true
                           },
-                          {
-                            "ctl": "dropdown",
-                            "multi": true,
-                            "name": "pages",
-                            "label": "Pages to load",
-                            "default": "local",
-                            "list": tmpPages.join(','),
-                            "req": true
-                          },
+                          
                           {
                             "ctl": "hidden",
                             "name": "name"
