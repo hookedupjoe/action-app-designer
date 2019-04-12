@@ -21,8 +21,8 @@ scope.locals = {
     }
 };
 scope.locals.path.start = scope.locals.path.root + "/server-app";
-scope.locals.path.libraries = scope.locals.path.root + "/server-app";
-scope.locals.path.localSecurity = scope.locals.path.root + "/local_security";
+scope.locals.path.libraries = scope.locals.path.root + "/server-libs";
+// scope.locals.path.localSecurity = scope.locals.path.root + "/local_security";
 
 var $ = require(scope.locals.path.libraries + '/globalUtilities.js').$;
 var bld = require(scope.locals.path.libraries + '/lib_buildUtils.js');
