@@ -88,6 +88,12 @@ for( var aIndex in tmpBuildCfg.plugins){
                             "req": true
                           },
                           {
+                            "ctl": "field",
+                            "name": "prefix",
+                            "label": "Deployment URL Prefix",
+                            "req": true
+                          },
+                          {
                             "ctl": "dropdown",
                             "multi": true,
                             "name": "pages",

@@ -28,14 +28,12 @@ module.exports.setup = function setup(scope) {
                 }
                 var tmpReq = {
                     appname: req.query.appname,
-                    prefix: req.query.prefix || ('actapp-' + req.query.appname)
+                    prefix: req.query.prefix || ''
                 }
                 
                 
-                if( !(tmpReq.prefix) ){
-                    throw "No host name prefix provided"
-                }    
-
+                var tmpPrefix = tmpReq.prefix;
+                
                 var tmpAppName = tmpReq.appname;
                 tmpAppName = tmpAppName.replace('.json', '');
 
@@ -51,8 +49,8 @@ module.exports.setup = function setup(scope) {
                     throw( "Application " + tmpAppName + " not found");
                 }
 
-                // var tmpDeployDetails = $.await($.bld.getJsonFile(tmpAppBase + 'deploy-info.json'))
-                
+                tmpPrefix = tmpPrefix || tmpAppDetails.prefix || ('actapp-' + tmpAppName)
+
                 var tmpDeployBase = tmpDeployDir + tmpAppName + '/';
 
                 $.await($.fs.ensureDir(tmpDeployBase));
@@ -64,7 +62,7 @@ module.exports.setup = function setup(scope) {
 
                 $.await($.fs.copy(tmpServerFilesLoc,tmpDeployBase));
                 var tmpManifestText = $.await($.bld.getTextFile(tmpDeployBase + 'manifest.yml'));
-                tmpManifestText = tmpManifestText.replace('{{URL-PREFIX}}', tmpReq.prefix);
+                tmpManifestText = tmpManifestText.replace('{{URL-PREFIX}}', tmpPrefix);
                 $.await($.fs.writeFile(tmpDeployBase + 'manifest.yml',tmpManifestText))
 
                 //--- Rebuild using defaults
