@@ -499,6 +499,33 @@ License: MIT
         ThisPage.parts.west.parts.workspace.refreshFromURI();
     };
     
+    actions.createAppDeployment = createAppDeployment;
+    function createAppDeployment(theParams, theTarget){
+        var tmpParams = ThisApp.getActionParams(theParams, theTarget, ['appname']);
+        var tmpAppName = tmpParams.appname || tmpParams.name || '';
+        var tmpURL = '/design/ws/deploy-app?appname=' + tmpAppName
+        ThisApp.apiCall({url: tmpURL}).then(function(theReply){
+            var tmpPath = theReply.path || '';
+            console.log( 'tmpPath theReply', tmpPath, theReply);
+            ThisApp.confirm("Done, open in VS code now?", "Deployment Created").then(function(theIsYes){
+                if (!theIsYes){
+                    return;
+                }
+                vscodeDeployment({appname: tmpAppName})
+            })
+        })
+    };
+    
+    actions.vscodeDeployment = vscodeDeployment;
+    function vscodeDeployment(theParams, theTarget){
+        var tmpParams = ThisApp.getActionParams(theParams, theTarget, ['appname']);
+        var tmpAppName = tmpParams.appname || tmpParams.name || '';
+        var tmpURL = '/design/ws/launch-app-deploy?appname=' + tmpAppName
+        ThisApp.apiCall({url: tmpURL}).then(function(theReply){
+            
+        })
+    };
+    
 
     actions.addApp = addApp;
     function addApp(theParams, theTarget) {

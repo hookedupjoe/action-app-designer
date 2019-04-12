@@ -18,6 +18,16 @@ License: MIT
 				"text": "Application"
 			},
 			{
+				"ctl": "button",
+				"color": "blue",
+				pageaction: "openInCode",
+				"attr": {
+					appname: ""
+				},
+				text: "Open in VS Code",
+				"name": "open-in-vs-code"
+			},
+			{
 				"ctl": "tabs",
 				"name": "apptabs",
 				"tabs": [
@@ -29,12 +39,13 @@ License: MIT
 							{
 								"ctl": "tabs",
 								"name": "apptabs-design-tabs",
-								"tabs": [
+								"tabs": [									
 									{
 										"label": "Pages",
 										"name": "apptabs-pages",
 										"ctl": "tab",
 										"content": [
+											
 											{
 												"ctl": "panel",
 												"controlname": "design/ws/get-pages?appname=",
@@ -72,17 +83,7 @@ License: MIT
 								},
 								text: "Preview Now",
 								"name": "preview-link"
-							},
-							{
-								"ctl": "button",
-								"color": "blue",
-								pageaction: "openInCode",
-								"attr": {
-									appname: ""
-								},
-								text: "Open in VS Code",
-								"name": "open-in-vs-code"
-							},
+							},							
 							{
 								"ctl": "button",
 								pageaction: "rebuildApp",
@@ -100,8 +101,22 @@ License: MIT
 						"ctl": "tab",
 						"content": [
 							{
-								"ctl": "pagespot",
-								"spotname": "apptabs-deploy"
+								"ctl": "button",
+								pageaction: "createAppDeployment",
+								"attr": {
+									appname: ""
+								},
+								text: "Build Deployment",
+								"name": "build-deploy-app"
+							},
+							{
+								"ctl": "button",
+								pageaction: "vscodeDeployment",
+								"attr": {
+									appname: ""
+								},
+								text: "Open Deployment in Code",
+								"name": "launch-deploy-app"
 							}
 						]
 					},
@@ -213,6 +228,14 @@ License: MIT
 			appname: tmpAppName
 		}
 		
+		this.controlConfig.index.items["build-deploy-app"].attr = {
+			appname: tmpAppName
+		}
+		this.controlConfig.index.items["launch-deploy-app"].attr = {
+			appname: tmpAppName
+		}
+		
+		 
 		
 
 		
