@@ -1,0 +1,7 @@
+applications:
+- path: .
+  memory: 128M
+  buildpack: sdk-for-nodejs
+  instances: 1
+  name: {{URL-PREFIX}}
+  disk_quota: 256M

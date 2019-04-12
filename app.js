@@ -66,6 +66,7 @@ function setup() {
 
             scope.locals.path.ws = {
                 root: tmpWSDirectory,
+                deploy: tmpWSDirectory + "deploy/",
                 uiApps: tmpWSDirectory + "ui-apps/",
                 serverApps: tmpWSDirectory + "server-apps/"
             }
