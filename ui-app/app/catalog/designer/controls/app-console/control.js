@@ -150,10 +150,14 @@ License: MIT
 								"basic": true,
 								"icon": "close",
 								hidden: true,
-								pageaction: "cancelAppSetup",
-								"attr": {
-									appname: ""
+								"onClick": {
+									"run": "action",
+									"action": "cancelAppSetup"
 								},
+								// pageaction: "cancelAppSetup",
+								// "attr": {
+								// 	appname: ""
+								// },
 								text: "Cancel",
 								"name": "cancel-app-setup"
 							},
@@ -166,10 +170,14 @@ License: MIT
 								"labeled": true,
 								"right": true,
 								"icon": "save",
-								pageaction: "saveAppSetup",
-								"attr": {
-									appname: ""
-								},
+								"onClick": {
+									"run": "action",
+									"action": "saveAppSetup"
+								},								
+								// pageaction: "saveAppSetup",
+								// "attr": {
+								// 	appname: ""
+								// },
 								text: "Save Setup",
 								"name": "save-app-setup"
 							},
@@ -202,6 +210,9 @@ License: MIT
 		refreshPages: refreshPages,
 		refreshSetupInfo: refreshSetupInfo,
 		getSetupInfo: getSetupInfo,
+		cancelAppSetup: cancelAppSetup,
+		saveAppSetup: saveAppSetup,
+		updateAppSetup: updateAppSetup,
 		promptForSetupInfo: promptForSetupInfo
 	};
 
@@ -214,6 +225,72 @@ License: MIT
 			this.setItemDisplay('cancel-app-setup', true)
 	};
 
+
+	function cancelAppSetup(theParams, theTarget){
+			this.setItemDisplay('edit-app-setup', true)
+			this.setItemDisplay('save-app-setup', false)
+			this.setItemDisplay('cancel-app-setup', false)
+			this.parts.setupinfo.refreshUI({readonly:true});
+			
+	};
+	
+	function saveAppSetup(theParams, theTarget){
+			// var tmpParams = ThisApp.getActionParams(theParams, theTarget, ['appname']);
+			var tmpAppName = this.params.appname || '';
+
+			this.setItemDisplay('edit-app-setup', true)
+			this.setItemDisplay('save-app-setup', false)
+			this.setItemDisplay('cancel-app-setup', false)
+
+			var tmpData = this.getSetupInfo();
+			var tmpThis = this;
+			this.updateAppSetup(tmpAppName,tmpData).then(function(theReply){
+					if( theReply === true ){
+						tmpThis.gotoItem("preview-link");
+					} else {
+							alert("Not Updated, there was a problem", "Did not save", "e")
+					}
+			})
+			
+	};
+	
+
+	function updateAppSetup(theAppName, theDetails){
+			var dfd = jQuery.Deferred();
+			
+			
+		 try {
+			var tmpAppName = theAppName;
+			if( !(tmpAppName) ){
+					throw("No app to open");
+			}
+			var tmpNewSetupInfo = theDetails;
+			if( !(tmpNewSetupInfo) ){
+					throw("No details to process");
+			}
+
+			console.log( 'tmpThis', tmpThis);
+			var tmpThis = this;
+			ThisApp.apiCall({
+					url: '/design/ws/update-app-setup',
+					data: (tmpNewSetupInfo)
+			}).then(function(theReply){
+				console.log( 'update-app-setup',theReply);
+				
+					tmpThis.refreshSetupInfo();
+					tmpThis.parts.setupinfo.refreshUI({readonly:true});
+					tmpThis.publish('update-app-setup', [tmpThis]);
+					dfd.resolve(true)
+			})
+		 } catch (ex) {
+				 console.error("Calling app setup update",ex)
+				 dfd.resolve(false);
+		 }
+			
+			
+			return dfd.promise();
+	};
+		
 
 	//---- Initial Setup of the control
 	function setup(theDetails) {
