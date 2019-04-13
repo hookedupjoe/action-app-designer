@@ -4475,7 +4475,7 @@ License: MIT
     function Control(theConfig) {
         this.controlConfig = false;
 
-        this.myActions = {}; //--- A place for actions
+        this.actions = {}; //--- A place for actions
 
         this.res = {
             "panels": {},
@@ -5528,6 +5528,25 @@ License: MIT
                     var tmpSource = tmpOnClick.source || "control";
                     //Note: Can use tmpOnClick.source, "page","app", "control"
                     //       default is "control" if not provided
+
+                    //ToDo: Page and App Actions
+                    if( tmpSource == "control"){
+                        //console.log( 'tmpAction', tmpAction, this);
+                        var tmpActions = this.actions || {};
+                        var tmpToRun = tmpActions[tmpAction] || this[tmpAction];
+
+                        if (isFunc(tmpToRun)) {
+                            var tmpActParams = ThisApp.clone(tmpOnClick);
+                            //--- Run action with only the params object, not target
+                            //---  run in a way that it binds to this control when run
+                            return tmpToRun.apply(this,tmpActParams);
+                        } else {
+                            console.warn("Action not found for " + tmpAction)
+                        }
+                    } else {
+                        console.warn("Not yet implemented for source " + tmpSource)
+                    }
+                    
                     console.log("Run action", tmpAction, tmpSource);
                 }
                 //--- Not a known internal action

@@ -133,10 +133,14 @@ License: MIT
 								"labeled": true,
 								"right": true,
 								"icon": "arrow down",
-								pageaction: "promptAppSetup",
-								"attr": {
-									appname: ""
+								"onClick": {
+									"run": "action",
+									"action": "promptAppSetup"
 								},
+								// pageaction: "promptAppSetup",
+								// "attr": {
+								// 	appname: ""
+								// },
 								text: "Edit Setup",
 								"name": "edit-app-setup"
 							},
@@ -190,16 +194,32 @@ License: MIT
 	}
 
 	var ControlCode = {
+		// actions: {
+		// 	promptAppSetup: promptAppSetup
+		// },
+		promptAppSetup: promptAppSetup,
 		setup: setup,
 		refreshPages: refreshPages,
 		refreshSetupInfo: refreshSetupInfo,
 		getSetupInfo: getSetupInfo,
 		promptForSetupInfo: promptForSetupInfo
 	};
+
 	var ThisControl = { specs: ControlSpecs, options: { proto: ControlCode, parent: ThisApp } };
 
+	function promptAppSetup(theParams, theTarget){
+			this.promptForSetupInfo();
+			this.setItemDisplay('edit-app-setup', false)
+			this.setItemDisplay('save-app-setup', true)
+			this.setItemDisplay('cancel-app-setup', true)
+	};
+
+
+	//---- Initial Setup of the control
 	function setup(theDetails) {
 		var tmpAppName = theDetails.appname || '';
+		this.params = this.params || {};
+		this.params.appname = tmpAppName;
 		var tmpTitle = theDetails.title || heDetails.apptitle || tmpAppName;
 		this.controlConfig.index.controls.pages.controlname += tmpAppName
 		this.controlConfig.index.controls.setupinfo.controlname += tmpAppName
