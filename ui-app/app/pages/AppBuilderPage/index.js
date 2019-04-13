@@ -141,11 +141,14 @@ License: MIT
             //--- For Debugging
             window[tmpAppName] = tmpNewApp;
 
+            //--- Create a new card for this app
             ThisPage.addToSpot('body', '<div appuse="cards" group="' + openAppGroupName + '" item="' + tmpAppName + '">TESTING</div>');
             var tmpTabAttr = { group: openAppGroupName, item: tmpAppName };
+            //--- Find created cards jQuery element
             var tmpNewGroup = ThisPage.getByAttr$({ group: openAppGroupName, item: tmpAppName, appuse: 'cards' });
-
+            //--- Load App Console into that card
             tmpNewApp.loadToElement(tmpNewGroup);
+            //--- Go to the newly added card (to show it and hide others)
             ThisApp.gotoTab(tmpTabAttr);
         }
     };
