@@ -137,6 +137,8 @@ License: MIT
                 refreshWorkspace()
             })
             loadedApps[tmpAppName] = tmpNewApp;
+
+            //--- For Debugging
             window[tmpAppName] = tmpNewApp;
 
             ThisPage.addToSpot('body', '<div appuse="cards" group="' + openAppGroupName + '" item="' + tmpAppName + '">TESTING</div>');
