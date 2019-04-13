@@ -268,6 +268,44 @@ License: MIT
         })
     };
 
+    
+    actions.showAppConsole = showAppConsole;
+    function showAppConsole(theParams, theTarget) {
+        var tmpParams = ThisApp.getActionParams(theParams, theTarget, ['appname', 'apptitle']);
+        var tmpAppName = tmpParams.appname || '';
+        if (!(tmpAppName)) {
+            alert("No app name provided to open");
+            return;
+        }
+        var tmpAppTitle = tmpParams.apptitle || '';
+
+        if (loadedApps[tmpAppName]) {
+            var tmpTabAttr = { group: openAppGroupName, item: tmpAppName };
+            ThisApp.gotoTab(tmpTabAttr);
+            //ToDo: Refresh using instance data instead of reloading element
+            //loadedApps[tmpAppName].loadToElement(ThisPage.getSpot('preview-panel'));
+        } else {
+            var tmpNewApp = ThisPage.getControl('panelAppConsole').create('app-' + tmpAppName);
+            tmpNewApp.setup({ appname: tmpAppName, title: tmpAppTitle });
+            loadedApps[tmpAppName] = tmpNewApp;
+            window[tmpAppName] = tmpNewApp;
+            //ThisPage.getSpot('preview-panel')
+
+            ThisPage.addToSpot('body', '<div appuse="cards" group="' + openAppGroupName + '" item="' + tmpAppName + '">TESTING</div>');
+            var tmpTabAttr = { group: openAppGroupName, item: tmpAppName };
+            var tmpNewGroup = ThisPage.getByAttr$({ group: openAppGroupName, item: tmpAppName, appuse: 'cards' });
+
+            // console.log( 'tmpNewGroup', tmpNewGroup);
+            // console.log( 'tmpTabAttr', tmpTabAttr);
+            //tmpNewGroup.html("Hello World Again " + tmpAppName)
+            tmpNewApp.loadToElement(tmpNewGroup);
+            ThisApp.gotoTab(tmpTabAttr);
+            //tmpNewApp.loadToElement();
+            //ToDo: Refresh using instance data after loading one time
+        }
+    };
+
+    
     actions.addApp = addApp;
     function addApp(theParams, theTarget) {
         ThisPage.getPanel('frmNewApp').prompt(
