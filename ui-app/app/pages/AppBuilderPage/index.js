@@ -133,140 +133,12 @@ License: MIT
         ThisApp.apiCall({url: '/design/ws/launch-app?appname=' + tmpAppName})
     };
     
-    
-    // actions.rebuildApp = rebuildApp;
-    // function rebuildApp(theParams, theTarget){
-    //     var tmpParams = ThisApp.getActionParams(theParams, theTarget, ['appname']);
-    //     var tmpAppName = tmpParams.appname || ''
-    //     if( !(tmpAppName) ){
-    //         alert("No app to open");
-    //         return;
-    //     }
-    //     ThisApp.apiCall({url: '/design/ws/build-app?appname=' + tmpAppName}).then(function(theReply){
-    //         alert("Recreated " + tmpAppName, "Build Complete", "c");
-    //     })
-    // };
-    
    
-    // actions.promptAppSetup = promptAppSetup;
-    // function promptAppSetup(theParams, theTarget){
-    //     var tmpParams = ThisApp.getActionParams(theParams, theTarget, ['appname']);
-    //     var tmpAppName = tmpParams.appname || '';
-
-    //     var tmpApp = loadedApps[tmpAppName];
-    //     tmpApp.promptForSetupInfo();
-    //     tmpApp.setItemDisplay('edit-app-setup', false)
-    //     tmpApp.setItemDisplay('save-app-setup', true)
-    //     tmpApp.setItemDisplay('cancel-app-setup', true)
-        
-    // };
-
-    // actions.cancelAppSetup = cancelAppSetup;
-    // function cancelAppSetup(theParams, theTarget){
-    //     var tmpParams = ThisApp.getActionParams(theParams, theTarget, ['appname']);
-    //     var tmpAppName = tmpParams.appname || '';
-
-    //     var tmpApp = loadedApps[tmpAppName];
-    //     tmpApp.promptForSetupInfo();
-    //     tmpApp.setItemDisplay('edit-app-setup', true)
-    //     tmpApp.setItemDisplay('save-app-setup', false)
-    //     tmpApp.setItemDisplay('cancel-app-setup', false)
-    //     tmpApp.parts.setupinfo.refreshUI({readonly:true});
-        
-    // };
-    
-    // actions.saveAppSetup = saveAppSetup;
-    // function saveAppSetup(theParams, theTarget){
-    //     var tmpParams = ThisApp.getActionParams(theParams, theTarget, ['appname']);
-    //     var tmpAppName = tmpParams.appname || tmpParams.name || '';
-
-    //     var tmpApp = loadedApps[tmpAppName];
-    //     tmpApp.setItemDisplay('edit-app-setup', true)
-    //     tmpApp.setItemDisplay('save-app-setup', false)
-    //     tmpApp.setItemDisplay('cancel-app-setup', false)
-
-    //     var tmpData = tmpApp.getSetupInfo();
-        
-    //     updateAppSetup(tmpAppName,tmpData).then(function(theReply){
-    //         if( theReply === true ){
-    //             tmpApp.gotoItem("preview-link");
-    //         } else {
-    //             alert("Not Updated, there was a problem", "Did not save", "e")
-    //         }
-    //     })
-        
-    // };
-    
-
-    // function updateAppSetup(theAppName, theDetails){
-    //     var dfd = jQuery.Deferred();
-        
-        
-    //    try {
-    //     var tmpAppName = theAppName;
-    //     if( !(tmpAppName) ){
-    //         throw("No app to open");
-    //     }
-    //     var tmpNewSetupInfo = theDetails;
-    //     if( !(tmpNewSetupInfo) ){
-    //         throw("No details to process");
-    //     }
-
-    //     console.log( 'tmpNewSetupInfo', tmpNewSetupInfo);
-
-    //     var tmpApp = loadedApps[tmpAppName];
-            
-    //     ThisApp.apiCall({
-    //         url: '/design/ws/update-app-setup',
-    //         data: (tmpNewSetupInfo)
-    //     }).then(function(theReply){
-    //         tmpApp.refreshSetupInfo();
-    //         tmpApp.parts.setupinfo.refreshUI({readonly:true});
-    //         refreshWorkspace();
-    //         dfd.resolve(true)
-    //     })
-    //    } catch (ex) {
-    //        console.error("Calling app setup update",ex)
-    //        dfd.resolve(false);
-    //    }
-        
-        
-    //     return dfd.promise();
-    // };
-    
-
     actions.refreshWorkspace = refreshWorkspace;
     function refreshWorkspace(){
         ThisPage.parts.west.parts.workspace.refreshFromURI();
     };
     
-    // actions.createAppDeployment = createAppDeployment;
-    // function createAppDeployment(theParams, theTarget){
-    //     var tmpParams = ThisApp.getActionParams(theParams, theTarget, ['appname']);
-    //     var tmpAppName = tmpParams.appname || tmpParams.name || '';
-    //     var tmpURL = '/design/ws/deploy-app?appname=' + tmpAppName
-    //     ThisApp.apiCall({url: tmpURL}).then(function(theReply){
-    //         var tmpPath = theReply.path || '';
-    //         console.log( 'tmpPath theReply', tmpPath, theReply);
-    //         ThisApp.confirm("Done, open in VS code now?", "Deployment Created").then(function(theIsYes){
-    //             if (!theIsYes){
-    //                 return;
-    //             }
-    //             vscodeDeployment({appname: tmpAppName})
-    //         })
-    //     })
-    // };
-    
-    // actions.vscodeDeployment = vscodeDeployment;
-    // function vscodeDeployment(theParams, theTarget){
-    //     var tmpParams = ThisApp.getActionParams(theParams, theTarget, ['appname']);
-    //     var tmpAppName = tmpParams.appname || tmpParams.name || '';
-    //     var tmpURL = '/design/ws/launch-app-deploy?appname=' + tmpAppName
-    //     ThisApp.apiCall({url: tmpURL}).then(function(theReply){
-            
-    //     })
-    // };
-
     
     actions.showAppConsole = showAppConsole;
     function showAppConsole(theParams, theTarget) {
@@ -284,6 +156,10 @@ License: MIT
         } else {
             var tmpNewApp = ThisPage.getControl('panelAppConsole').create('app-' + tmpAppName);
             tmpNewApp.setup({ appname: tmpAppName, title: tmpAppTitle });
+            tmpNewApp.subscribe('update-app-setup', function(){
+                console.log( 'update-app-setup arguments',  arguments);
+                refreshWorkspace()
+            })
             loadedApps[tmpAppName] = tmpNewApp;
             window[tmpAppName] = tmpNewApp;
 
