@@ -39,13 +39,13 @@ License: MIT
 							{
 								"ctl": "tabs",
 								"name": "apptabs-design-tabs",
-								"tabs": [									
+								"tabs": [
 									{
 										"label": "Pages",
 										"name": "apptabs-pages",
 										"ctl": "tab",
 										"content": [
-											
+
 											{
 												"ctl": "panel",
 												"controlname": "design/ws/get-pages?appname=",
@@ -83,13 +83,17 @@ License: MIT
 								},
 								text: "Preview Now",
 								"name": "preview-link"
-							},							
+							},
 							{
 								"ctl": "button",
-								pageaction: "rebuildApp",
-								"attr": {
-									appname: ""
+								"onClick": {
+									"run": "action",
+									"action": "rebuildApp"
 								},
+								// pageaction: "rebuildApp",
+								// "attr": {
+								// 	appname: ""
+								// },
 								text: "Rebuild",
 								"name": "rebuild-app"
 							}
@@ -102,19 +106,27 @@ License: MIT
 						"content": [
 							{
 								"ctl": "button",
-								pageaction: "createAppDeployment",
-								"attr": {
-									appname: ""
+								"onClick": {
+									"run": "action",
+									"action": "createAppDeployment"
 								},
+								// pageaction: "createAppDeployment",
+								// "attr": {
+								// 	appname: ""
+								// },
 								text: "Build Deployment",
 								"name": "build-deploy-app"
 							},
 							{
 								"ctl": "button",
-								pageaction: "vscodeDeployment",
-								"attr": {
-									appname: ""
+								"onClick": {
+									"run": "action",
+									"action": "vscodeDeployment"
 								},
+								// pageaction: "vscodeDeployment",
+								// "attr": {
+								// 	appname: ""
+								// },
 								text: "Open Deployment in Code",
 								"name": "launch-deploy-app"
 							}
@@ -173,7 +185,7 @@ License: MIT
 								"onClick": {
 									"run": "action",
 									"action": "saveAppSetup"
-								},								
+								},
 								// pageaction: "saveAppSetup",
 								// "attr": {
 								// 	appname: ""
@@ -213,84 +225,128 @@ License: MIT
 		cancelAppSetup: cancelAppSetup,
 		saveAppSetup: saveAppSetup,
 		updateAppSetup: updateAppSetup,
+		createAppDeployment: createAppDeployment,
+		vscodeDeployment: vscodeDeployment,
+		rebuildApp: rebuildApp,
 		promptForSetupInfo: promptForSetupInfo
 	};
 
 	var ThisControl = { specs: ControlSpecs, options: { proto: ControlCode, parent: ThisApp } };
 
-	function promptAppSetup(theParams, theTarget){
-			this.promptForSetupInfo();
-			this.setItemDisplay('edit-app-setup', false)
-			this.setItemDisplay('save-app-setup', true)
-			this.setItemDisplay('cancel-app-setup', true)
+	function promptAppSetup(theParams, theTarget) {
+		this.promptForSetupInfo();
+		this.setItemDisplay('edit-app-setup', false)
+		this.setItemDisplay('save-app-setup', true)
+		this.setItemDisplay('cancel-app-setup', true)
 	};
 
 
-	function cancelAppSetup(theParams, theTarget){
-			this.setItemDisplay('edit-app-setup', true)
-			this.setItemDisplay('save-app-setup', false)
-			this.setItemDisplay('cancel-app-setup', false)
-			this.parts.setupinfo.refreshUI({readonly:true});
-			
+	function cancelAppSetup(theParams, theTarget) {
+		this.setItemDisplay('edit-app-setup', true)
+		this.setItemDisplay('save-app-setup', false)
+		this.setItemDisplay('cancel-app-setup', false)
+		this.parts.setupinfo.refreshUI({ readonly: true });
+
 	};
-	
-	function saveAppSetup(theParams, theTarget){
-			// var tmpParams = ThisApp.getActionParams(theParams, theTarget, ['appname']);
-			var tmpAppName = this.params.appname || '';
 
-			this.setItemDisplay('edit-app-setup', true)
-			this.setItemDisplay('save-app-setup', false)
-			this.setItemDisplay('cancel-app-setup', false)
+	function saveAppSetup(theParams, theTarget) {
+		// var tmpParams = ThisApp.getActionParams(theParams, theTarget, ['appname']);
+		var tmpAppName = this.params.appname || '';
 
-			var tmpData = this.getSetupInfo();
-			var tmpThis = this;
-			this.updateAppSetup(tmpAppName,tmpData).then(function(theReply){
-					if( theReply === true ){
-						tmpThis.gotoItem("preview-link");
-					} else {
-							alert("Not Updated, there was a problem", "Did not save", "e")
-					}
-			})
-			
+		this.setItemDisplay('edit-app-setup', true)
+		this.setItemDisplay('save-app-setup', false)
+		this.setItemDisplay('cancel-app-setup', false)
+
+		var tmpData = this.getSetupInfo();
+		var tmpThis = this;
+		this.updateAppSetup(tmpAppName, tmpData).then(function (theReply) {
+			if (theReply === true) {
+				tmpThis.gotoItem("preview-link");
+			} else {
+				alert("Not Updated, there was a problem", "Did not save", "e")
+			}
+		})
+
 	};
-	
 
-	function updateAppSetup(theAppName, theDetails){
-			var dfd = jQuery.Deferred();
-			
-			
-		 try {
+
+	function updateAppSetup(theAppName, theDetails) {
+		var dfd = jQuery.Deferred();
+
+
+		try {
 			var tmpAppName = theAppName;
-			if( !(tmpAppName) ){
-					throw("No app to open");
+			if (!(tmpAppName)) {
+				throw ("No app to open");
 			}
 			var tmpNewSetupInfo = theDetails;
-			if( !(tmpNewSetupInfo) ){
-					throw("No details to process");
+			if (!(tmpNewSetupInfo)) {
+				throw ("No details to process");
 			}
 
-			console.log( 'tmpThis', tmpThis);
 			var tmpThis = this;
 			ThisApp.apiCall({
-					url: '/design/ws/update-app-setup',
-					data: (tmpNewSetupInfo)
-			}).then(function(theReply){
-				console.log( 'update-app-setup',theReply);
-				
-					tmpThis.refreshSetupInfo();
-					tmpThis.parts.setupinfo.refreshUI({readonly:true});
-					tmpThis.publish('update-app-setup', [tmpThis]);
-					dfd.resolve(true)
+				url: '/design/ws/update-app-setup',
+				data: (tmpNewSetupInfo)
+			}).then(function (theReply) {
+				tmpThis.refreshSetupInfo();
+				tmpThis.parts.setupinfo.refreshUI({ readonly: true });
+				tmpThis.publish('update-app-setup', [tmpThis]);
+				dfd.resolve(true)
 			})
-		 } catch (ex) {
-				 console.error("Calling app setup update",ex)
-				 dfd.resolve(false);
-		 }
-			
-			
-			return dfd.promise();
+		} catch (ex) {
+			console.error("Calling app setup update", ex)
+			dfd.resolve(false);
+		}
+
+
+		return dfd.promise();
 	};
-		
+
+
+
+	function createAppDeployment() {
+		var tmpAppName = this.params.appname || ''
+		if (!(tmpAppName)) {
+			alert("No app to open");
+			return;
+		}
+		var tmpURL = '/design/ws/deploy-app?appname=' + tmpAppName
+		var tmpThis = this;
+		ThisApp.apiCall({ url: tmpURL }).then(function (theReply) {
+			ThisApp.confirm("Done, open in VS code now?", "Deployment Created").then((function (theIsYes) {
+				if (!theIsYes) {
+					return;
+				}
+				tmpThis.vscodeDeployment({ appname: tmpAppName })
+			}).bind(this))
+		})
+	};
+
+	function vscodeDeployment() {
+		var tmpAppName = this.params.appname || ''
+		if (!(tmpAppName)) {
+			alert("No app to open");
+			return;
+		}
+		var tmpURL = '/design/ws/launch-app-deploy?appname=' + tmpAppName
+		ThisApp.apiCall({ url: tmpURL }).then(function (theReply) {
+
+		})
+	};
+
+
+	function rebuildApp() {
+		var tmpAppName = this.params.appname || ''
+		if (!(tmpAppName)) {
+			alert("No app to open");
+			return;
+		}
+		ThisApp.apiCall({ url: '/design/ws/build-app?appname=' + tmpAppName }).then(function (theReply) {
+			alert("Recreated " + tmpAppName, "Build Complete", "c");
+		})
+	};
+
 
 	//---- Initial Setup of the control
 	function setup(theDetails) {
@@ -315,45 +371,45 @@ License: MIT
 		this.controlConfig.index.items["rebuild-app"].attr = {
 			appname: tmpAppName
 		}
-		this.controlConfig.index.items["edit-app-setup"].attr = {
-			appname: tmpAppName
-		}
-		this.controlConfig.index.items["save-app-setup"].attr = {
-			appname: tmpAppName
-		}
-		this.controlConfig.index.items["cancel-app-setup"].attr = {
-			appname: tmpAppName
-		}
-		
-		this.controlConfig.index.items["build-deploy-app"].attr = {
-			appname: tmpAppName
-		}
-		this.controlConfig.index.items["launch-deploy-app"].attr = {
-			appname: tmpAppName
-		}
-		
-		 
-		
+		// this.controlConfig.index.items["edit-app-setup"].attr = {
+		// 	appname: tmpAppName
+		// }
+		// this.controlConfig.index.items["save-app-setup"].attr = {
+		// 	appname: tmpAppName
+		// }
+		// this.controlConfig.index.items["cancel-app-setup"].attr = {
+		// 	appname: tmpAppName
+		// }
 
-		
+		// this.controlConfig.index.items["build-deploy-app"].attr = {
+		// 	appname: tmpAppName
+		// }
+		// this.controlConfig.index.items["launch-deploy-app"].attr = {
+		// 	appname: tmpAppName
+		// }
+
+
+
+
+
 
 
 	}
-	
+
 	function promptForSetupInfo() {
 		this.parts.setupinfo.refreshUI({ readonly: false });
 		this.gotoItem('setupinfo');
 		this.parts.setupinfo.gotoField("appname");
 	}
 
-	function refreshPages(){
+	function refreshPages() {
 		this.parts.pages.refreshFromURI();
 	}
 
-	function refreshSetupInfo(){
+	function refreshSetupInfo() {
 		this.parts.setupinfo.refreshFromURI();
 	}
-	function getSetupInfo(){
+	function getSetupInfo() {
 		return this.parts.setupinfo.getData();
 	}
 
