@@ -345,7 +345,7 @@ License: MIT
 		var tmpAppName = theDetails.appname || '';
 		this.params = this.params || {};
 		this.params.appname = tmpAppName;
-		var tmpTitle = theDetails.title || heDetails.apptitle || tmpAppName;
+		var tmpTitle = theDetails.title || theDetails.apptitle || tmpAppName;
 		this.controlConfig.index.controls.pages.controlname += tmpAppName
 		this.controlConfig.index.controls.setupinfo.controlname += tmpAppName
 		var tmpAppTitle = tmpAppName

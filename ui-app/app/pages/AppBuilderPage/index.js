@@ -119,13 +119,13 @@ License: MIT
     
     actions.showAppConsole = showAppConsole;
     function showAppConsole(theParams, theTarget) {
-        var tmpParams = ThisApp.getActionParams(theParams, theTarget, ['appname', 'apptitle']);
-        var tmpAppName = tmpParams.appname || '';
+        var tmpParams = ThisApp.getActionParams(theParams, theTarget, ['appname', 'apptitle', 'name','title']);
+        var tmpAppName = tmpParams.appname  || tmpParams.name || '';
         if (!(tmpAppName)) {
             alert("No app name provided to open");
             return;
         }
-        var tmpAppTitle = tmpParams.apptitle || '';
+        var tmpAppTitle = tmpParams.apptitle || tmpParams.title || '';
 
         if (loadedApps[tmpAppName]) {
             var tmpTabAttr = { group: openAppGroupName, item: tmpAppName };
@@ -171,6 +171,7 @@ License: MIT
                 data: theData
             }).then(function (theReply) {
                 ThisPage.parts.west.parts.workspace.refreshFromURI();
+                showAppConsole(theData);
             })
             console.log('theData', theData);
         })
