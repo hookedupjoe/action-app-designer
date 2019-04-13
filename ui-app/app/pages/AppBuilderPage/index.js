@@ -40,9 +40,6 @@ License: MIT
         south: false
     }
 
-    //center:  { html: "layout-demo-1" },
-    //center: { control: "center" },
-
     //--- Customize default layout configuration
     //--- See http://layout.jquery-dev.com/documentation.cfm for details
     thisPageSpecs.layoutConfig = {
@@ -88,8 +85,6 @@ License: MIT
         ThisPage.initOnFirstLoad().then(
             function () {
                 //--- Now your done - READY to do stuff the first time on your page
-                //ThisPage.loadPageSpot('header-area', 'Welcome');
-
 
                 //--- Do special stuff on page load here
                 //--- Then optionally call the stuff that will happen every time 
@@ -111,28 +106,10 @@ License: MIT
     //--- Layout related lifecycle hooks
     ThisPage._onResizeLayout = function (thePane, theElement, theState, theOptions, theName) {
 
-
-        if (thePane == 'center') {
-
-
-        } else if (thePane == 'east') {
-
-        }
     }
 
     //=== Page Stuff
 
-    actions.openInCode = openInCode;
-    function openInCode(theParams, theTarget){
-        var tmpParams = ThisApp.getActionParams(theParams, theTarget, ['appname']);
-        var tmpAppName = tmpParams.appname || ''
-        if( !(tmpAppName) ){
-            alert("No app to open");
-            return;
-        }
-        ThisApp.apiCall({url: '/design/ws/launch-app?appname=' + tmpAppName})
-    };
-    
    
     actions.refreshWorkspace = refreshWorkspace;
     function refreshWorkspace(){

@@ -20,9 +20,9 @@ License: MIT
 			{
 				"ctl": "button",
 				"color": "blue",
-				pageaction: "openInCode",
-				"attr": {
-					appname: ""
+				"onClick": {
+					"run": "action",
+					"action": "openInCode"
 				},
 				text: "Open in VS Code",
 				"name": "open-in-vs-code"
@@ -90,10 +90,6 @@ License: MIT
 									"run": "action",
 									"action": "rebuildApp"
 								},
-								// pageaction: "rebuildApp",
-								// "attr": {
-								// 	appname: ""
-								// },
 								text: "Rebuild",
 								"name": "rebuild-app"
 							}
@@ -110,10 +106,6 @@ License: MIT
 									"run": "action",
 									"action": "createAppDeployment"
 								},
-								// pageaction: "createAppDeployment",
-								// "attr": {
-								// 	appname: ""
-								// },
 								text: "Build Deployment",
 								"name": "build-deploy-app"
 							},
@@ -123,10 +115,6 @@ License: MIT
 									"run": "action",
 									"action": "vscodeDeployment"
 								},
-								// pageaction: "vscodeDeployment",
-								// "attr": {
-								// 	appname: ""
-								// },
 								text: "Open Deployment in Code",
 								"name": "launch-deploy-app"
 							}
@@ -149,10 +137,6 @@ License: MIT
 									"run": "action",
 									"action": "promptAppSetup"
 								},
-								// pageaction: "promptAppSetup",
-								// "attr": {
-								// 	appname: ""
-								// },
 								text: "Edit Setup",
 								"name": "edit-app-setup"
 							},
@@ -166,10 +150,6 @@ License: MIT
 									"run": "action",
 									"action": "cancelAppSetup"
 								},
-								// pageaction: "cancelAppSetup",
-								// "attr": {
-								// 	appname: ""
-								// },
 								text: "Cancel",
 								"name": "cancel-app-setup"
 							},
@@ -186,10 +166,6 @@ License: MIT
 									"run": "action",
 									"action": "saveAppSetup"
 								},
-								// pageaction: "saveAppSetup",
-								// "attr": {
-								// 	appname: ""
-								// },
 								text: "Save Setup",
 								"name": "save-app-setup"
 							},
@@ -228,6 +204,7 @@ License: MIT
 		createAppDeployment: createAppDeployment,
 		vscodeDeployment: vscodeDeployment,
 		rebuildApp: rebuildApp,
+		openInCode: openInCode,
 		promptForSetupInfo: promptForSetupInfo
 	};
 
@@ -348,6 +325,21 @@ License: MIT
 	};
 
 
+	
+	function openInCode(){
+		var tmpAppName = this.params.appname || ''
+		if (!(tmpAppName)) {
+			alert("No app to open");
+			return;
+		}
+			if( !(tmpAppName) ){
+					alert("No app to open");
+					return;
+			}
+			ThisApp.apiCall({url: '/design/ws/launch-app?appname=' + tmpAppName})
+	};
+	
+
 	//---- Initial Setup of the control
 	function setup(theDetails) {
 		var tmpAppName = theDetails.appname || '';
@@ -365,12 +357,12 @@ License: MIT
 			href: "http://localhost:33461/" + tmpAppName,
 			target: "app" + tmpAppName
 		}
-		this.controlConfig.index.items["open-in-vs-code"].attr = {
-			appname: tmpAppName
-		}
-		this.controlConfig.index.items["rebuild-app"].attr = {
-			appname: tmpAppName
-		}
+		// this.controlConfig.index.items["open-in-vs-code"].attr = {
+		// 	appname: tmpAppName
+		// }
+		// this.controlConfig.index.items["rebuild-app"].attr = {
+		// 	appname: tmpAppName
+		// }
 		// this.controlConfig.index.items["edit-app-setup"].attr = {
 		// 	appname: tmpAppName
 		// }
