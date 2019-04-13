@@ -157,7 +157,6 @@ License: MIT
             var tmpNewApp = ThisPage.getControl('panelAppConsole').create('app-' + tmpAppName);
             tmpNewApp.setup({ appname: tmpAppName, title: tmpAppTitle });
             tmpNewApp.subscribe('update-app-setup', function(){
-                console.log( 'update-app-setup arguments',  arguments);
                 refreshWorkspace()
             })
             loadedApps[tmpAppName] = tmpNewApp;
