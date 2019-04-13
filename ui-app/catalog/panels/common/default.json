@@ -3,7 +3,20 @@
 	  "readonly": false,
 		"padding": true
 	},
-	"content": [	{
+	"content": [	
+		{
+			"ctl": "button",
+			"color": "green",
+			"icon": "search",
+			"name": "btn-search",
+			"onClick": {
+				"run": "action",
+				"action": "runSearch",
+				"params": {"q": "Testing"}
+			}
+		}
+		,
+		{
 		"ctl": "title",
 		"name": "title",
 		"size": "large",
