@@ -1,6 +1,11 @@
 # Action App Designer
 Designed to build applications using the Action App environment
 
+Important: Install this .. run as administrator when doing so..
+npm install --global --production windows-build-tools
+and
+npm config set python C:\Users\YOURUSERNAME\.windows-build-tools\python27\python.exe
+
 ## What is it?
 * An application design to run LOCALLY ONLY that will serve as the designer client
 * To get started, you will need CouchDB and the following setup
