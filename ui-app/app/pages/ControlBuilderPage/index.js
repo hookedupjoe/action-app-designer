@@ -37,7 +37,7 @@ License: MIT
         east: { partname: "preview", panel: "previewPanel", source: "catalog/panels/common"},
         west: { partname: "controls", control: "ControlPanel"},
         north: { html: "north" },
-        south: false
+        south: { partname: "statusBar", control: "StatusBar", source: "catalog/controls/common"}
     }
 
     //--- Customize default layout configuration

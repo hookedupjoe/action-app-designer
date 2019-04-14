@@ -21,10 +21,11 @@ var thisPageSpecs = {
     thisPageSpecs.layoutOptions = {
         baseURL: pageBaseURL,
         center: { partname: "center", control: "center"},
-        east: false, //{ partname: "preview", panel: "previewPanel", source: "catalog/panels/common"},
+        east: { partname: "preview", panel: "previewPanel", source: "catalog/panels/common"},
         west: { partname: "controls", control: "ControlPanel"},
         north: { partname: "north", control: "north"},
-        south: false
+        south: { partname: "statusBar", control: "StatusBar", source: "catalog/controls/common"}
+        
     }
 //~layoutOptions~//~
 

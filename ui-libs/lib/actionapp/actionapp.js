@@ -471,12 +471,15 @@ var ActionAppCore = {};
             var tmpExists = false;
             if (ThisApp.resCache[tmpURI.type] && ThisApp.resCache[tmpURI.type][tmpURI.uri]) {
                 tmpExists = true;
+                // console.log( 'tmpURI.type][tmpURI.uri]', tmpURI.type, tmpURI.uri,ThisApp.resCache[tmpURI.type][tmpURI.uri]);
             }
 
             //--- ToDo: Implement App Caching Rules            
             if (tmpURI.uri.startsWith('design/')) {
                 tmpExists = false;
             }
+            //--- ToDo: Revisit cachine / using cache versions
+            //tmpExists = false;
 
 
             if ((!tmpExists)) {
@@ -2960,6 +2963,7 @@ License: MIT
             tmpPromRequired = tmpInitReq(this.options.required, { nsParent: this })
         }
         if (tmpLayoutReq) {
+            console.log( 'tmpLayoutReq', tmpLayoutReq);
             tmpPromLayoutReq = tmpInitReq(tmpLayoutReq, { nsParent: this })
         }
 
@@ -3151,7 +3155,16 @@ License: MIT
                     tmpLTName = tmpLT.control || tmpLT.value || tmpLT.panel || tmpLT.html;
                     tmpInstanceName = tmpLT.partname || tmpLT.name;
                 }
-                tmpControlsNode.map[tmpLTName] = tmpLTName;
+
+                if (tmpLT.source) {
+                    tmpControlsNode.map[tmpLTName] = {
+                        source: tmpLT.source,
+                        name: tmpLTName
+                    };
+                } else {
+                    tmpControlsNode.map[tmpLTName] = tmpLTName;
+                }
+                
             }
 
             if (tmpLTFound) {
@@ -3223,8 +3236,19 @@ License: MIT
                     tmpInstanceName = tmpLT.partname || tmpLT.name;
                 }
                 var tmpCtl = this.res.panels[tmpLTName];
+                
+                if( !(tmpCtl) && tmpLT.source ){
+                    console.log( 'tmpLT', tmpLT);
+                    tmpCtl = ThisApp.getPanel(tmpLT.source + "/" + tmpLTName)
+                }
+                if( !(tmpCtl) ){
 
-                this.loadLayoutControl(aName, tmpCtl, tmpInstanceName);
+                    console.log( 'page initLayout - loadLayoutControl', aName, tmpCtl, tmpInstanceName);
+                    console.log( 'tmpCtl missing', tmpCtl);
+                    alert("There was an issues showing this page, contact support")
+                } else {
+                    this.loadLayoutControl(aName, tmpCtl, tmpInstanceName);
+                }
             }
         }
 
@@ -3243,7 +3267,9 @@ License: MIT
                     tmpInstanceName = tmpLT.partname || tmpLT.name;
                 }
                 var tmpCtl = this.res.controls[tmpLTName];
-
+                if( !(tmpCtl) && tmpLT.source ){
+                    tmpCtl = ThisApp.getControl(tmpLT.source + "/" + tmpLTName)
+                }
                 this.loadLayoutControl(aName, tmpCtl, tmpInstanceName);
             }
         }
