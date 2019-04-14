@@ -471,7 +471,6 @@ var ActionAppCore = {};
             var tmpExists = false;
             if (ThisApp.resCache[tmpURI.type] && ThisApp.resCache[tmpURI.type][tmpURI.uri]) {
                 tmpExists = true;
-                // console.log( 'tmpURI.type][tmpURI.uri]', tmpURI.type, tmpURI.uri,ThisApp.resCache[tmpURI.type][tmpURI.uri]);
             }
 
             //--- ToDo: Implement App Caching Rules            
@@ -2963,7 +2962,6 @@ License: MIT
             tmpPromRequired = tmpInitReq(this.options.required, { nsParent: this })
         }
         if (tmpLayoutReq) {
-            console.log( 'tmpLayoutReq', tmpLayoutReq);
             tmpPromLayoutReq = tmpInitReq(tmpLayoutReq, { nsParent: this })
         }
 
@@ -3074,14 +3072,12 @@ License: MIT
                 tmpLTFound = true;
                 tmpAnyFound = true;
 
-                var tmpInstanceName = aName;
                 var tmpLT = tmpLTs[aName];
                 var tmpLTName = '';
                 if (typeof (tmpLT) == 'string') {
                     tmpLTName = tmpLT;
                 } else {
                     tmpLTName = tmpLT.control || tmpLT.value || tmpLT.panel || tmpLT.html;
-                    tmpInstanceName = tmpLT.partname || tmpLT.name;
                 }
                 tmpHTMLNode.map[tmpLTName] = tmpLTName;
             }
@@ -3105,7 +3101,6 @@ License: MIT
                 tmpLTFound = true;
                 tmpAnyFound = true;
 
-                var tmpInstanceName = aName;
                 var tmpLT = tmpLTs[aName];
 
                 var tmpLTName = '';
@@ -3113,7 +3108,6 @@ License: MIT
                     tmpLTName = tmpLT;
                 } else {
                     tmpLTName = tmpLT.control || tmpLT.value || tmpLT.panel || tmpLT.html;
-                    tmpInstanceName = tmpLT.partname || tmpLT.name;
                 }
 
                 if (tmpLT.source) {
@@ -3146,14 +3140,12 @@ License: MIT
                 tmpLTFound = true;
                 tmpAnyFound = true;
 
-                var tmpInstanceName = aName;
                 var tmpLT = tmpLTs[aName];
                 var tmpLTName = '';
                 if (typeof (tmpLT) == 'string') {
                     tmpLTName = tmpLT;
                 } else {
                     tmpLTName = tmpLT.control || tmpLT.value || tmpLT.panel || tmpLT.html;
-                    tmpInstanceName = tmpLT.partname || tmpLT.name;
                 }
 
                 if (tmpLT.source) {
@@ -3238,13 +3230,10 @@ License: MIT
                 var tmpCtl = this.res.panels[tmpLTName];
                 
                 if( !(tmpCtl) && tmpLT.source ){
-                    console.log( 'tmpLT', tmpLT);
                     tmpCtl = ThisApp.getPanel(tmpLT.source + "/" + tmpLTName)
                 }
                 if( !(tmpCtl) ){
-
-                    console.log( 'page initLayout - loadLayoutControl', aName, tmpCtl, tmpInstanceName);
-                    console.log( 'tmpCtl missing', tmpCtl);
+                    console.error( 'Panel Missing', tmpLTName);
                     alert("There was an issues showing this page, contact support")
                 } else {
                     this.loadLayoutControl(aName, tmpCtl, tmpInstanceName);
@@ -3270,7 +3259,12 @@ License: MIT
                 if( !(tmpCtl) && tmpLT.source ){
                     tmpCtl = ThisApp.getControl(tmpLT.source + "/" + tmpLTName)
                 }
-                this.loadLayoutControl(aName, tmpCtl, tmpInstanceName);
+                if( !(tmpCtl) ){
+                    console.error( 'Control Missing', tmpLTName);
+                    alert("There was an issues showing this page, contact support")
+                } else {
+                    this.loadLayoutControl(aName, tmpCtl, tmpInstanceName);
+                }
             }
         }
 
@@ -5557,7 +5551,6 @@ License: MIT
 
                     //ToDo: Page and App Actions
                     if( tmpSource == "control"){
-                        //console.log( 'tmpAction', tmpAction, this);
                         var tmpActions = this.actions || {};
                         var tmpToRun = tmpActions[tmpAction] || this[tmpAction];
 
@@ -5572,8 +5565,6 @@ License: MIT
                     } else {
                         console.warn("Not yet implemented for source " + tmpSource)
                     }
-                    
-                    // console.log("Run action", tmpAction, tmpSource);
                 }
                 //--- Not a known internal action
             }
@@ -7242,7 +7233,6 @@ License: MIT
             //--   adding this to show how to return values for custom fields that are not based on simple / standard form logic
             if (theControlEl && theFieldSpecs) {
                 var tmpData = me._getControlData(theControlEl, theFieldSpecs.name);
-                // console.log( 'getFieldValue theFieldSpecs', theFieldSpecs);
                 if( theFieldSpecs.multi === true && isStr(tmpData) ){
                     tmpData = tmpData.split(',');
                 }
