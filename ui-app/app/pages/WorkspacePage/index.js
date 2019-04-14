@@ -7,7 +7,7 @@ License: MIT
     var SiteMod = ActionAppCore.module("site");
 
     var thisPageSpecs = {
-        pageName: "AppBuilderPage",
+        pageName: "WorkspacePage",
         pageTitle: "Workspace",
         navOptions: {
             topLink: true,
