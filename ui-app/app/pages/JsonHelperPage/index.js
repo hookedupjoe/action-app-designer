@@ -74,7 +74,6 @@ var ThisPage = new SiteMod.SitePage(thisPageSpecs);
             function () {
             //~_onFirstLoad//~
             ThisPage.aceEditorEl = ThisPage.getSpot("ace-editor");
-            console.log( 'ThisPage.aceEditorEl', ThisPage.aceEditorEl);   
             ThisPage.aceEditor = ace.edit(ThisPage.aceEditorEl.get(0));
             ThisPage.aceEditor.setTheme("ace/theme/vibrant_ink");
             ThisPage.aceEditor.setFontSize(16);
@@ -159,7 +158,6 @@ actions.saveJson = saveJson;
 function saveJson(){
     var tmpJson = ThisPage.aceEditor.getValue();
     try {
-        console.log( 'tmpJson', tmpJson);
         if( ThisApp.util.isObj(tmpJson) ){
             tmpJson = ThisApp.json(tmpJson,true);
         }
@@ -206,7 +204,6 @@ function loadJsonClipboardSelected(theParams, theTarget){
 
 
 function controlFieldChanged(theEvent, theControl, theFieldName, theFieldValue){
-    console.log( 'controlFieldChanged(theEvent, theControl, theFieldName, theFieldValue)', theEvent, theControl, theFieldName, theFieldValue);
     if( theFieldName == 'json-clipboard'){
         var tmpEl = theControl.getItemEl('btn-load-selected');
         theFieldValue = theFieldValue.trim();
@@ -222,7 +219,23 @@ function controlFieldChanged(theEvent, theControl, theFieldName, theFieldValue){
             
         }
     }
-    
+}
+
+actions.clearClipboardList = clearClipboardList;
+function clearClipboardList(){
+    ThisApp.confirm("Are you sure? They will be fone forever", "Remove All Saved JSON?")
+  .then(function (theIsYes) {
+      if (!theIsYes){
+          return;
+      }
+      new PouchDB(dsNameJsonClipboard).destroy().then(function () {
+        // database destroyed
+        loadClipboardList();
+      }).catch(function (err) {
+        // error occurred
+      })
+  })
+
 }
 
 function loadClipboardList() {
@@ -234,11 +247,9 @@ function loadClipboardList() {
         if( theReply && theReply.docs ){
             tmpAll = theReply.docs;
         }
-        console.log( 'tmpAll', tmpAll);
         if( tmpAll.length ){
             for( var aIndex in tmpAll){
                 var tmpDoc = tmpAll[aIndex];
-                console.log( 'tmpDoc', tmpDoc);
                 var tmpID = tmpDoc._id;
                 var tmpJson = {};
 
@@ -257,21 +268,26 @@ function loadClipboardList() {
                
             }            
         }
-        // console.log( 'tmpAll', tmpAll);
         refreshClipboardList();    
+
+        var tmpEl = ThisPage.parts.controls.getItemEl('btn-delete-all-saved');
+
+        var tmpHasClass = tmpEl.hasClass('disabled');
+        if( tmpAll.length ){
+            if( tmpHasClass ){
+                tmpEl.removeClass('disabled')
+            }
+        } else {
+            if( !tmpHasClass ){
+                tmpEl.addClass('disabled')
+            }
+            
+        }
+
     });
 }
 
 function refreshClipboardList() {
-    // ThisPage.contextData.jsonClipboardIndex = {
-    //     "clipboard-1": {
-    //         test:1
-    //     }
-    //     ,
-    //     "clipboard-2": {
-    //         test:2
-    //     }
-    // }
     var tmpList = [];
     if(!(ThisPage.contextData.jsonClipboardIndex)){
         //ToDo: Show message about nothin gin index
@@ -289,7 +305,6 @@ function refreshClipboardList() {
     if( ThisPage.parts && ThisPage.parts.controls ){
         ThisPage.parts.controls.refreshUI();
     }
-    // ThisPage.contextData.jsonClipboardList = ['Select One|','clipboard-1','clipboard-2'];
 
 }
 

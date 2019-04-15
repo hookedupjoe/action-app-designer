@@ -54,11 +54,23 @@ License: MIT
 							},
 							{
 								"ctl":"button",
-								"text": "Load Selected JSON",
+								"text": "Load Selected",
 								"disabled": true,
 								"name": "btn-load-selected",
+								"fluid": true,
+								"color": "green",
 								"pageaction": "loadJsonClipboardSelected",
 							},
+							{
+								"ctl":"button",
+								"text": "Delete All Saved",
+								"fluid": true,						
+								"disabled": true,
+								"color": "red",							
+								"name": "btn-delete-all-saved",
+								"pageaction": "clearClipboardList",
+							}
+							
 						]
 					},
 					{
