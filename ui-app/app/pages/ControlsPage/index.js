@@ -64,7 +64,7 @@ License: MIT
             function () {
 
                 ThisPage.contextData.demoTitle = "Controls Page Default Title";
-                
+
                 loadControlsIndex();
 
                 ThisPage.selectedFieldName = '';
@@ -589,9 +589,11 @@ License: MIT
     };
     
 
-    ThisPage.getDynamicTitle = getDynamicTitle;
-    function getDynamicTitle() {
-        return "Dyno Title Works!"
+    ThisPage.getDefaultColor = getDefaultColor;
+    function getDefaultColor() {
+        return "blue";
     }
+
+    
 
 })(ActionAppCore, $);

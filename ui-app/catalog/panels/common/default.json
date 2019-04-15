@@ -8,7 +8,11 @@
 			"ctl": "title",
 			"name": "dyno-title",
 			"size": "large",
-			"color": "orange",
+			"color": {
+				"[computed]": {
+					"context": "page.owner.getDefaultColor()"
+			 }
+			},
 			"icon": "box",
 			"text": {
 				"[computed]": {
