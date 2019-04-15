@@ -9,15 +9,11 @@
 			"name": "dyno-title",
 			"size": "large",
 			"color": {
-				"[computed]": {
-					"context": "page.controller.getDefaultColor()"
-			 }
+				"[computed]": "page.controller.getDefaultColor()"
 			},
 			"icon": "box",
 			"text": {
-				"[computed]": {
-					"context": "page.data.demoTitle"
-			 }
+				"[computed]": "page.data.demoTitle"
 			}
 		},
 		{
