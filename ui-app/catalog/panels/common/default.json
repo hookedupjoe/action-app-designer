@@ -10,7 +10,7 @@
 			"size": "large",
 			"color": {
 				"[computed]": {
-					"context": "page.owner.getDefaultColor()"
+					"context": "page.controller.getDefaultColor()"
 			 }
 			},
 			"icon": "box",
