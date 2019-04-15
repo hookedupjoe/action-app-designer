@@ -21,7 +21,7 @@ var thisPageSpecs = {
     thisPageSpecs.layoutOptions = {
         baseURL: pageBaseURL,
         center: { partname: "center", control: "center"},
-        east: false,
+        east: { partname: "east", control: "east"},
         west: { partname: "controls", control: "ControlPanel"},
         north: { partname: "north", control: "north"},
         south: false
@@ -35,7 +35,13 @@ var thisPageSpecs = {
     }
 //~layoutConfig~//~
 
-    var ThisPage = new SiteMod.SitePage(thisPageSpecs);
+//~required//~
+thisPageSpecs.required = {
+    
+}
+
+//~required~//~
+var ThisPage = new SiteMod.SitePage(thisPageSpecs);
 
     var actions = ThisPage.pageActions;
 

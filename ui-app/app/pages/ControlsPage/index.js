@@ -586,4 +586,9 @@ License: MIT
     };
     
 
+    ThisPage.getDynamicTitle = getDynamicTitle;
+    function getDynamicTitle() {
+        return "Dyno Title Works!"
+    }
+
 })(ActionAppCore, $);

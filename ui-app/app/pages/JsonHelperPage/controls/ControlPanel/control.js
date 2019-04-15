@@ -28,58 +28,72 @@ License: MIT
 								"ctl":"button",
 								"text": "Clear JSON",
 								"pageaction": "clearJson",
+							},
+							{
+								"ctl":"sep",
+								"clearing": true
+							},
+							{
+								"ctl":"button",
+								"text": "Save JSON",
+								"pageaction": "saveJson",
+							},
+							{
+								"ctl":"dropdown",
+								"label": "Category",
+								"list": "default"
 							}
 						]
 					},
 					{
-						"label": "Catalog",
-						"name": "apps-catalog-tab",
+						"label": "Saved",
+						"name": "main-tab-2",
 						"ctl": "tab",
 						"content": [
 							{
+								"ctl":"button",
+								"text": "Save JSON",
+								"pageaction": "saveJson",
+							},
+							{
 								"ctl": "ui",
-								"name": "demo-cat-items",
+								"classes": "vertical menu slim fluid",
 								"content": [
 									{
-										"ctl": "ui",
-										"classes": "vertical menu slim fluid",
+										"ctl": "a",
+										"classes": "active blue item",
+										"text": "Designer",
 										"content": [
 											{
-												"ctl": "a",
-												"classes": "active blue item",
-												"text": "Item 1",
-												"content": [
-													{
-														"ctl": "i",
-														"classes": "ui icon arrow right blue"
-													}
-												]
-											},
-											{
-												"ctl": "a",
-												"classes": "item",
-												"text": "Item 2",
-												"content": [
-													{
-														"ctl": "i",
-														"classes": "ui icon arrow right blue"
-													}
-												]
-											},
-											{
-												"ctl": "a",
-												"classes": "item",
-												"text": "Another Item",
-												"content": [
-													{
-														"ctl": "i",
-														"classes": "ui icon arrow right blue"
-													}
-												]
+												"ctl": "ui",
+												"classes": "label  blue",
+												"text": "3"
 											}
 										]
-
-
+									},
+									{
+										"ctl": "a",
+										"classes": "item",
+										"text": "Test Apps",
+										"content": [
+											{
+												"ctl": "ui",
+												"classes": "label",
+												"text": "7"
+											}
+										]
+									},
+									{
+										"ctl": "a",
+										"classes": "item",
+										"text": "More Apps",
+										"content": [
+											{
+												"ctl": "ui",
+												"classes": "label",
+												"text": "2"
+											}
+										]
 									}
 								]
 							}

@@ -1,6 +1,6 @@
 'use strict';
-const THIS_MODULE_NAME = 'build-page';
-const THIS_MODULE_TITLE = 'Process: Create page in application from details';
+const THIS_MODULE_NAME = 'quick-page';
+const THIS_MODULE_TITLE = 'Process: Create new page using minimal details';
 
 module.exports.setup = function setup(scope) {
     var config = scope;
