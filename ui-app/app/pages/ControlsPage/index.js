@@ -64,7 +64,8 @@ License: MIT
             function () {
 
                 ThisPage.contextData.demoTitle = "Controls Page Default Title";
-
+                ThisPage.contextData.demoDropDownList  = "Dynamic|dyno,Static|static,Auto|auto";
+                
                 loadControlsIndex();
 
                 ThisPage.selectedFieldName = '';
