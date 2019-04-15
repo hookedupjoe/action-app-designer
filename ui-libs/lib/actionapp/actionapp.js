@@ -895,7 +895,7 @@ var ActionAppCore = {};
     /**
    * getSpot$
    *  - Returns jQuery element for the spot name provided
-   *  - Optionally pass a parent element as the scope to look in
+   *  - Optionally pass a parent element as the DOM to look in
    * 
    * Example: 
    *   var tmpEl = ThisApp.getSpot('main:out')
@@ -2218,9 +2218,7 @@ var ActionAppCore = {};
         var tmpEl = $(theTarget);
         //var tmpNext = tmpEl.parent().next(['group="' + tmpEl.attr('group') + '"']);
         var tmpSelect = tmpEl.attr('select') || '';
-        var tmpScope = tmpEl.attr('scope') || '';
-
-        //tmpScope == 'children' && ??
+       
         if (tmpSelect) {
             var tmpShow = tmpSelect == 'true';
             var tmpContainer = tmpEl.closest('tr').next();
@@ -2330,9 +2328,6 @@ var ActionAppCore = {};
 
         //--- Put your stuff here
         this.common = {};
-
-        //--- Application level scope, another place to put stuff
-        this.scope = {};
 
         //--- ToDo: Support options in theAppConfig to control this        
         me.siteLayout = $('body').layout({
@@ -2831,8 +2826,6 @@ License: MIT
         };
 
         this.common = {};
-        this.scope = {};
-
 
         this.layoutTemplates = this.options.layoutTemplates || false;
 
@@ -3331,7 +3324,7 @@ License: MIT
         return this.loadSpot(tmpName, theContent, theOptionalTemplateName);
     }
 
-    //--- Calls parent loadSpot with this scope and refreshes layouts
+    //--- Calls parent loadSpot within this page DOM and refreshes layouts
     me.loadSpot = function (theName, theContent, theOptionalTemplateName) {
         ThisApp.loadSpot(theName, theContent, theOptionalTemplateName, this.getParent$(), 'pagespot');
         try {
@@ -3341,7 +3334,7 @@ License: MIT
         }
     }
 
-    //--- Calls parent loadSpot with this scope and refreshes layouts
+    //--- Calls parent loadSpot within this page DOM and refreshes layouts
     me.addToSpot = function (theName, theContent, theOptionalTemplateName, thePrepend) {
         ThisApp.addToSpot(theName, theContent, theOptionalTemplateName, thePrepend, this.getParent$(), 'pagespot');
         try {
@@ -4532,14 +4525,6 @@ License: MIT
 
         this.actions = {}; //--- A place for actions
 
-        // this.context = {
-        //     owner: this,
-        //     data: {}
-        // }
-        // if( theConfig && theConfig.options && isObj(theConfig.options.contextData) ){
-        //     this.context.data = theConfig.options.contextData;
-        // }
-
         this.res = {
             "panels": {},
             "controls": {},
@@ -4974,7 +4959,7 @@ License: MIT
 
 
 
-    //--- Calls parent loadSpot with this scope and refreshes layouts
+    //--- Calls parent loadSpot with this instance DOM and refreshes layouts
     meInstance.loadSpot = function (theName, theContent, theOptionalTemplateName) {
         ThisApp.loadSpot(theName, theContent, theOptionalTemplateName, this.getParent$(), 'myspot');
         try {
@@ -4983,7 +4968,7 @@ License: MIT
 
         }
     }
-    //--- Calls parent loadSpot with this scope and refreshes layouts
+    //--- Calls parent loadSpot with this instance DOM and refreshes layouts
     meInstance.addToSpot = addToSpot = function (theName, theContent, theOptionalTemplateName, thePrepend) {
         ThisApp.addToSpot(theName, theContent, theOptionalTemplateName, thePrepend, this.getParent$(), 'myspot');
         try {
@@ -6981,7 +6966,7 @@ License: MIT
                 name: "spotname",
                 label: "Spot Name",
                 type: "string",
-                notes: "The unique name of this spot (in scope)"
+                notes: "The unique name of this spot in this control"
             }
 
             var tmpRet = {
@@ -7800,8 +7785,7 @@ License: MIT
                                 ctl: "i",
                                 attr: {
                                     action: "outlineDisplay",
-                                    select: "false",
-                                    scope: "children"
+                                    select: "false"
                                 },
                                 classes: "icon square minus large toright"
                             },
@@ -7809,8 +7793,7 @@ License: MIT
                                 ctl: "i",
                                 attr: {
                                     action: "outlineDisplay",
-                                    select: "true",
-                                    scope: "children"
+                                    select: "true"
                                 },
                                 classes: "icon square plus large toright"
                             }
