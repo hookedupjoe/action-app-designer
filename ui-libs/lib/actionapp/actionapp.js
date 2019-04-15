@@ -169,7 +169,7 @@ var ActionAppCore = {};
         me.components = {};
 
         me.context = {
-            owner: me,
+            controller: me,
             data: {}
         }
 
@@ -588,9 +588,15 @@ var ActionAppCore = {};
             }
         }
         tmpResourceData.baseURI = theFullPath;
+        var tmpCheckPath = theFullPath;
+        var tmpCheckPos = tmpCheckPath.indexOf("?");
+        if( tmpCheckPos > -1){
+            tmpCheckPath = tmpCheckPath.substr(0,tmpCheckPos);
+        }
 
-        if (me.resourceInitFlags[theFullPath] !== true) {
-            me.resourceInitFlags[theFullPath] = true;
+        //--- If the base element (with no params) is not loaded, get the CSS and load it
+        if (me.resourceInitFlags[tmpCheckPath] !== true) {
+            me.resourceInitFlags[tmpCheckPath] = true;
             if (tmpResourceData.controlConfig) {
                 tmpResourceData.controlConfig.uri = theFullPath;
             }
@@ -600,7 +606,6 @@ var ActionAppCore = {};
                     if (Array.isArray(tmpCSS)) {
                         tmpCSS = tmpCSS.join('\n');
                     }
-                    console.info("Added css to header for control " + theFullPath)
                     $('head').append('<style>' + tmpCSS + '</style>');
                 }
             }
@@ -2814,7 +2819,7 @@ License: MIT
         this.context = {
             app: ThisApp.context,
             page: {
-                owner: this,
+                controller: this,
                 data: this.options.contextData || {}
             }
         };
@@ -4784,7 +4789,7 @@ License: MIT
         this.context = {
             app: ThisApp.context,
             this: {
-                owner: this,
+                controller: this,
                 data: {}
             }
         };
@@ -5777,8 +5782,6 @@ License: MIT
     meInstance.loadToElement = function (theEl, theOptions) {
         var dfd = jQuery.Deferred();
         var tmpOptions = theOptions || {};
-        // var tmpContext = this.context || ThisApp.getContext();
-        // console.log('loadToElement this.context', this.context);
 
         var tmpThis = this;
         tmpThis.parentEl = ThisApp.asSpot(theEl);
@@ -6128,23 +6131,19 @@ License: MIT
                     var tmpCompContext = tmpComputed.context || '';
                     if (tmpCompContext) {
                         try {
-                            console.log( 'EVAL tmpCompContext', tmpCompContext);
                             tmpCompValue = eval('tmpContext.' + tmpCompContext)
                         } catch (ex) {
                             console.warn("Attempt to us computed context value failed ", ex)
                         }
+                    } else {
+                        console.warn("No context passed for computed value, see documentation for details.")
                     }
                     tmpRet[aFN] = tmpCompValue;
-                    // console.log('tmpCompValue', tmpCompValue);
                 }
-
                 tmpIsDyno = true;
 
             }
 
-        }
-        if (tmpIsDyno) {
-            console.log('processDynamicContent', tmpRet);
         }
         return tmpRet
     }
