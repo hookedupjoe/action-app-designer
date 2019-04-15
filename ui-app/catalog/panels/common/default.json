@@ -11,7 +11,9 @@
 			"color": "orange",
 			"icon": "box",
 			"text": {
-				"return": "ThisPage.getDynamicTitle()"
+				"[computed]": {
+					"context": "app.data.demoTitle"
+			 }
 			}
 		},
 		{

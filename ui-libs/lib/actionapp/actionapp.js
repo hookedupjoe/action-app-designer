@@ -2218,7 +2218,7 @@ var ActionAppCore = {};
         var tmpEl = $(theTarget);
         //var tmpNext = tmpEl.parent().next(['group="' + tmpEl.attr('group') + '"']);
         var tmpSelect = tmpEl.attr('select') || '';
-       
+
         if (tmpSelect) {
             var tmpShow = tmpSelect == 'true';
             var tmpContainer = tmpEl.closest('tr').next();
@@ -4731,9 +4731,9 @@ License: MIT
         return getControlEl$(this.getControlName())
     }
 
-    meControl.getHTML = function (theControlName, theInstance, theContext) {
+    meControl.getHTML = function (theControlName, theInstance) {
 
-        var tmpHTML = getControlHTML(theControlName, (theInstance.controlConfig || this.controlConfig), theInstance, theContext);
+        var tmpHTML = getControlHTML(theControlName, (theInstance.controlConfig || this.controlConfig), theInstance);
 
         //--- If parent control is avail and has a ns implemented, use it
         //    ... to convert _page_: and pagespot, etc as usual
@@ -5180,8 +5180,8 @@ License: MIT
     meInstance.gotoItem = function (theName) {
         return me.gotoItem(this.getEl(), theName)
     }
-    meInstance.getHTML = function (theContext) {
-        return this.controlSpec.getHTML(this.controlName, this, theContext);
+    meInstance.getHTML = function () {
+        return this.controlSpec.getHTML(this.controlName, this);
     }
     meInstance.getConfig = function () {
         return this.controlConfig || {};
@@ -5775,12 +5775,14 @@ License: MIT
     meInstance.loadToElement = function (theEl, theOptions) {
         var dfd = jQuery.Deferred();
         var tmpOptions = theOptions || {};
-        var tmpContext = this.context || ThisApp.getContext();
-        console.log('loadToElement tmpContext', tmpContext);
+        // var tmpContext = this.context || ThisApp.getContext();
+        // console.log('loadToElement this.context', this.context);
 
         var tmpThis = this;
         tmpThis.parentEl = ThisApp.asSpot(theEl);
-        var tmpHTML = tmpThis.getHTML(tmpContext);
+
+        //--- Load dynamic content into
+        var tmpHTML = tmpThis.getHTML();
         tmpThis.parentEl.html(tmpHTML);
         tmpThis.parentEl.on('change', tmpThis.onFieldChange.bind(this))
         tmpThis.parentEl.on('click', tmpThis.onItemClick.bind(this))
@@ -5817,7 +5819,7 @@ License: MIT
     //==== HTML Control Builder ======  ======  ======  ======  ======  ======  ======  ======  ======  ======     
 
     me.getControlHTML = getControlHTML;
-    function getControlHTML(theControlName, theSpecs, theControlObj, theContext) {
+    function getControlHTML(theControlName, theSpecs, theControlObj) {
         var tmpHTML = [];
         var tmpSpecs = theSpecs || {};
         var tmpSpecOptions = tmpSpecs.options || {};
@@ -5827,7 +5829,7 @@ License: MIT
             return '';
         }
 
-        tmpHTML.push(getContentHTML(theControlName, tmpItems, theControlObj, theContext));
+        tmpHTML.push(getContentHTML(theControlName, tmpItems, theControlObj));
         var tmpAttr = '';
         if (tmpSpecOptions.padding !== false) {
             tmpAttr = ' segment basic slim ';
@@ -5844,7 +5846,7 @@ License: MIT
     }
 
     me.getContentHTML = getContentHTML;
-    function getContentHTML(theControlName, theItems, theControlObj, theContext) {
+    function getContentHTML(theControlName, theItems, theControlObj) {
         var tmpHTML = [];
         var tmpItems = theItems || [];
         if (!(tmpItems && tmpItems.length)) {
@@ -5875,7 +5877,7 @@ License: MIT
                         tmpActive = ' active ';
                     }
                     tmpTabsHTML.push('<div controls tab appuse="cards" group="' + tmpTabName + '" item="' + tmpTab.name + '" class="' + tmpHidden + '">');
-                    tmpTabsHTML.push(getContentHTML(theControlName, tmpTab.content, theControlObj, theContext))
+                    tmpTabsHTML.push(getContentHTML(theControlName, tmpTab.content, theControlObj))
                     tmpTabsHTML.push('</div>');
 
                     tmpTabs.push('<a appuse="tablinks" group="' + tmpTabName + '" item="' + tmpTab.name + '" action="_app:showSubPage" class="item ' + tmpColor + tmpActive + '">' + tmpTab.label + '</a>')
@@ -6101,13 +6103,61 @@ License: MIT
 
     }
 
+    me.processDynamicContent = processDynamicContent
+    function processDynamicContent(theControlName, theObject, theControlObj) {
+        var tmpRet = ThisApp.clone(theObject);
+        var tmpIsDyno = false;
+        var tmpContext = theControlObj.context || ThisApp.getContext();
+
+        for (var aFN in tmpRet) {
+            var tmpObj = tmpRet[aFN];
+            var tmpCompKey = '[computed]';
+            if (isObj(tmpObj) && tmpObj.hasOwnProperty(tmpCompKey)) {
+                var tmpComputed = tmpObj[tmpCompKey];
+
+                if (isStr(tmpComputed)) {
+                    tmpComputed = {
+                        "context": tmpComputed
+                    }
+                }
+
+                if (isObj(tmpComputed)) {
+                    var tmpCompValue = '';
+                    var tmpCompContext = tmpComputed.context || '';
+                    if (tmpCompContext) {
+                        try {
+                            console.log( 'EVAL tmpCompContext', tmpCompContext);
+                            tmpCompValue = eval('tmpContext.' + tmpCompContext)
+                        } catch (ex) {
+                            console.warn("Attempt to us computed context value failed ", ex)
+                        }
+                    }
+                    tmpRet[aFN] = tmpCompValue;
+                    // console.log('tmpCompValue', tmpCompValue);
+                }
+
+                tmpIsDyno = true;
+
+            }
+
+        }
+        if (tmpIsDyno) {
+            console.log('processDynamicContent', tmpRet);
+        }
+        return tmpRet
+    }
+
     me.getHTMLForControl = getHTMLForControl
-    function getHTMLForControl(theControlName, theObject, theControlObj, theContext) {
+    function getHTMLForControl(theControlName, theObject, theControlObj) {
+        // console.log( 'getHTMLForControl theObject', theObject);
+
         var tmpHTML = [];
         tmpHTML.push('')
         if (!(theControlName)) {
             return '';
         }
+
+        var tmpDataObject = me.processDynamicContent(theControlName, theObject, theControlObj);
 
         var tmpControl = me.webControls.get(theControlName);
         // if( isFunc(tmpControl) ){
@@ -6117,7 +6167,8 @@ License: MIT
             console.warn("No HTML for " + theControlName)
             return '';
         }
-        tmpHTML.push(tmpControl.getHTML(theControlName, theObject, theControlObj, theContext))
+
+        tmpHTML.push(tmpControl.getHTML(theControlName, tmpDataObject, theControlObj))
 
         return tmpHTML.join('');
     }
@@ -6233,7 +6284,7 @@ License: MIT
 
             return tmpRet;
         },
-        getHTML: function (theControlName, theObject, theControlObj, theContext) {
+        getHTML: function (theControlName, theObject, theControlObj) {
             var tmpObject = theObject || {};
 
             var tmpHTML = [];
@@ -6281,7 +6332,7 @@ License: MIT
                         tmpRegionConfig = [tmpRegionConfig]
                     }
                     tmpHTML.push('<div class="ui-layout-' + tmpRegion + '">')
-                    tmpHTML.push(getContentHTML(theControlName, tmpRegionConfig, theControlObj, theContext))
+                    tmpHTML.push(getContentHTML(theControlName, tmpRegionConfig, theControlObj))
                     tmpHTML.push('</div>')
                 }
             }
@@ -6309,7 +6360,7 @@ License: MIT
 
             return tmpRet;
         },
-        getHTML: function (theControlName, theObject, theControlObj, theContext) {
+        getHTML: function (theControlName, theObject, theControlObj) {
             var tmpObject = theObject || {};
 
             var tmpHTML = [];
@@ -6347,7 +6398,7 @@ License: MIT
 
             tmpHTML.push('	<div dropmenu="menu" style="display:none"><div class="menu transition fluid" tabindex="-1" style="display: block !important;">')
             var tmpItems = tmpObject.items || tmpObject.content || [];
-            tmpHTML.push(getContentHTML(theControlName, tmpItems, theControlObj, theContext))
+            tmpHTML.push(getContentHTML(theControlName, tmpItems, theControlObj))
             tmpHTML.push('	</div></div>')
 
             tmpHTML.push('</div>')
@@ -6484,7 +6535,7 @@ License: MIT
 
             return tmpRet;
         },
-        getHTML: function (theControlName, theObject, theControlObj, theContext) {
+        getHTML: function (theControlName, theObject, theControlObj) {
             var tmpObject = theObject || {};
 
             var tmpHTML = [];
@@ -6542,7 +6593,7 @@ License: MIT
             }
 
             var tmpItems = tmpObject.items || tmpObject.content || [];
-            tmpHTML.push(getContentHTML(theControlName, tmpItems, theControlObj, theContext))
+            tmpHTML.push(getContentHTML(theControlName, tmpItems, theControlObj))
 
             tmpHTML.push('</button>')
             tmpHTML = tmpHTML.join('');
@@ -6656,7 +6707,7 @@ License: MIT
 
             return tmpRet;
         },
-        getHTML: function (theControlName, theObject, theControlObj, theContext) {
+        getHTML: function (theControlName, theObject, theControlObj) {
             var tmpObject = theObject || {};
             var tmpHTML = [];
             var tmpHidden = '';
@@ -6680,7 +6731,7 @@ License: MIT
             tmpHTML.push('<div ' + getItemAttrString(theObject) + ' class="ui ' + tmpControlClass + ' ' + tmpClasses + '" ' + tmpStyle + '>')
 
             var tmpItems = tmpObject.items || tmpObject.content || [];
-            tmpHTML.push(getContentHTML(theControlName, tmpItems, theControlObj, theContext))
+            tmpHTML.push(getContentHTML(theControlName, tmpItems, theControlObj))
 
             tmpHTML.push('</div>')
 
@@ -6709,7 +6760,7 @@ License: MIT
 
             return tmpRet;
         },
-        getHTML: function (theControlName, theObject, theControlObj, theContext) {
+        getHTML: function (theControlName, theObject, theControlObj) {
             var tmpObject = theObject || {};
             var tmpHTML = [];
             var tmpHidden = '';
@@ -6742,7 +6793,7 @@ License: MIT
 
             var tmpItems = tmpObject.items || tmpObject.content || [];
             if (tmpItems) {
-                tmpHTML.push(getContentHTML(theControlName, tmpItems, theControlObj, theContext))
+                tmpHTML.push(getContentHTML(theControlName, tmpItems, theControlObj))
             }
 
             tmpHTML.push('</' + tmpControlElem + '>')
@@ -6770,7 +6821,7 @@ License: MIT
             };
             return tmpRet;
         },
-        getHTML: function (theControlName, theObject, theControlObj, theContext, theIsUI) {
+        getHTML: function (theControlName, theObject, theControlObj, theIsUI) {
             var tmpObject = theObject || {};
             var tmpHTML = [];
             var tmpHidden = '';
@@ -6798,7 +6849,7 @@ License: MIT
 
             var tmpItems = tmpObject.items || tmpObject.content || [];
             if (tmpItems) {
-                tmpHTML.push(getContentHTML(theControlName, tmpItems, theControlObj, theContext))
+                tmpHTML.push(getContentHTML(theControlName, tmpItems, theControlObj))
             }
 
             tmpHTML.push('</div>')
@@ -6827,7 +6878,7 @@ License: MIT
             return tmpRet;
         },
         getHTML: function (theControlName, theObject, theControlObj) {
-            return me.ControlElement.getHTML(theControlName, theObject, theControlObj, theContext, true)
+            return me.ControlElement.getHTML(theControlName, theObject, theControlObj, true)
         },
         isField: false
     }
@@ -6978,7 +7029,7 @@ License: MIT
             };
             return tmpRet;
         },
-        getHTML: function (theControlName, theObject, theControlObj, theContext) {
+        getHTML: function (theControlName, theObject, theControlObj) {
             var tmpObject = theObject || {};
             var tmpName = tmpObject.spotname || tmpObject.name || 'default-spot';
             var tmpClasses = tmpObject.class || tmpObject.classes || '';
@@ -6995,7 +7046,7 @@ License: MIT
 
             var tmpItems = tmpObject.items || tmpObject.content || [];
             if (tmpItems) {
-                tmpHTML.push(getContentHTML(theControlName, tmpItems, theControlObj, theContext))
+                tmpHTML.push(getContentHTML(theControlName, tmpItems, theControlObj))
             }
 
             tmpHTML.push('</div>')
@@ -7079,7 +7130,7 @@ License: MIT
             };
             return tmpRet;
         },
-        getHTML: function (theControlName, theObject, theControlObj, theContext) {
+        getHTML: function (theControlName, theObject, theControlObj) {
             var tmpObject = theObject || {};
             var tmpHTML = [];
             //---> ToDo: Add value and default value to other fields *****
@@ -7165,7 +7216,7 @@ License: MIT
             tmpHTML.push(getNoteMarkup(theObject));
 
 
-            tmpHTML.push(getContentHTML(theControlName, tmpItems, theControlObj, theContext))
+            tmpHTML.push(getContentHTML(theControlName, tmpItems, theControlObj))
 
 
             tmpHTML.push('</div>')
@@ -7693,7 +7744,7 @@ License: MIT
 
             return tmpNewContent;
         },
-        getHTML: function (theControlName, theObject, theControlObj, theContext) {
+        getHTML: function (theControlName, theObject, theControlObj) {
             var tmpObject = theObject || {};
             var tmpHTML = [];
             var tmpNewContent = this.getCustomContent(theControlName, theObject, theControlObj);
@@ -7717,7 +7768,7 @@ License: MIT
 
             //--- Create the proper content and index needed for this
             // theControlObj.initCustomSpec(tmpNewContent);
-            tmpHTML.push(getContentHTML(theControlName, tmpNewContent, theControlObj, theContext))
+            tmpHTML.push(getContentHTML(theControlName, tmpNewContent, theControlObj))
 
             tmpHTML.push('</div>')
 
@@ -7891,7 +7942,7 @@ License: MIT
 
             return tmpNewContent;
         },
-        getHTML: function (theControlName, theObject, theControlObj, theContext) {
+        getHTML: function (theControlName, theObject, theControlObj) {
             var tmpObject = theObject || {};
             var tmpHTML = [];
             var tmpNewContent = this.getCustomContent(theControlName, theObject, theControlObj);
@@ -7913,7 +7964,7 @@ License: MIT
             tmpHTML = [];
             tmpHTML.push('<div ' + getItemAttrString(tmpObject) + ' class="ui ' + tmpControlClass + ' ' + tmpClasses + '" ' + tmpStyle + '>')
 
-            tmpHTML.push(getContentHTML(theControlName, tmpNewContent, theControlObj, theContext))
+            tmpHTML.push(getContentHTML(theControlName, tmpNewContent, theControlObj))
 
             tmpHTML.push('</div>')
 
