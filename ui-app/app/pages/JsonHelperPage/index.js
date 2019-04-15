@@ -54,13 +54,21 @@ var ThisPage = new SiteMod.SitePage(thisPageSpecs);
     ThisPage._onInit = function () {
     //~_onInit//~
 
+    
+
     //~_onInit~//~
     }
 
 
     ThisPage._onFirstActivate = function (theApp) {
     //~_onFirstActivate//~
-
+    //--- Before the controls are loaded in initOnFirstLoad ..
+    //      we want to update the source of the computed content
+    ThisPage.contextData.jsonClipboardIndex = {}
+    ThisPage.contextData.jsonClipboardList = '';
+    
+    loadClipboardList();
+    
     //~_onFirstActivate~//~
         ThisPage.initOnFirstLoad().then(
             function () {
@@ -76,6 +84,8 @@ var ThisPage = new SiteMod.SitePage(thisPageSpecs);
             resizeEditor();
             loadJson({});
 
+            ThisPage.parts.controls.subscribe('field-change', controlFieldChanged);
+            
             //~_onFirstLoad~//~
                 ThisPage._onActivate();
             }
@@ -98,6 +108,8 @@ var ThisPage = new SiteMod.SitePage(thisPageSpecs);
     //------- --------  --------  --------  --------  --------  --------  -------- 
 //~YourPageCode//~
 
+var dsNameJsonClipboard ='json-helper-page-json-clipboard';
+
 function resizeEditor() {
     if(ThisPage.aceEditorEl && ThisPage.aceEditor){
         var tmpH = ThisPage.layout.panes.center.height()
@@ -116,20 +128,21 @@ function clearJson(){
 actions.formatJson = formatJson;
 function formatJson(){
     var tmpJSON = ThisPage.aceEditor.getValue();
+    var tmpConverter = {};
     try {
-        var tmpEval = eval('ThisPage.__jsonConverter =' + tmpJSON)
+        
+        var tmpEval = eval('tmpConverter =' + tmpJSON)
         loadJson(tmpEval);    
     } catch (ex) {
         try {
-            console.log( 'try to with tmpJSON string', tmpJSON);
             if( tmpJSON.startsWith('var ')){
-                tmpJSON = tmpJSON.replace("var ", "window._tmp__");
+                tmpJSON = tmpJSON.replace("var ", "tmpConverter.");
             }
             var tmpEval = eval(tmpJSON)
             loadJson(tmpEval);    
         } catch (ex) {
             console.error("formatJson err",ex)
-            alert("Could not load", "Format Error", "e");
+            alert("Invalid JSON", "Format Error", "e");
         }
         
     }
@@ -142,6 +155,143 @@ function loadJson(theObj){
     ThisPage.aceEditor.clearSelection();
 };
 
+actions.saveJson = saveJson;
+function saveJson(){
+    var tmpJson = ThisPage.aceEditor.getValue();
+    try {
+        console.log( 'tmpJson', tmpJson);
+        if( ThisApp.util.isObj(tmpJson) ){
+            tmpJson = ThisApp.json(tmpJson,true);
+        }
+        
+        if( ThisApp.util.isStr(tmpJson) ){
+            //--- If this errors out, it is not valid and will show as such below
+            ThisApp.json(tmpJson,true);
+        }
+
+        ThisApp.input("Name of this clipboard item", "Save Clipboard").then(function(theReply){
+            if(!(theReply)){
+                return
+            };
+            //--- Clean up name for db save use?
+            //theReply = theReply.replace(/-/g, '');
+
+            var tmpDoc = {title: theReply, data: tmpJson};
+
+            ThisApp.om.putObject(dsNameJsonClipboard,theReply,tmpDoc).then(function(theReply){
+                ThisPage.contextData.jsonClipboardIndex[theReply] = ThisApp.json(tmpJson,true);
+                loadClipboardList()
+            })
+            
+        })
+        
+    } catch (ex) {
+        console.error("Error saving",ex);
+        alert("Could not save. Try to reformat and try again.", "Not Saved", "e");
+    }
+
+};
+
+
+actions.loadJsonClipboardSelected = loadJsonClipboardSelected;
+function loadJsonClipboardSelected(theParams, theTarget){
+    var tmpSelected = ThisPage.parts.controls.getFieldValue('json-clipboard');
+    var tmpData = ThisPage.contextData.jsonClipboardIndex[tmpSelected];
+    if(!ThisApp.util.isObj(tmpData)){
+        alert("Not found, refresh the page and try again");
+        return;
+    }
+    loadJson(tmpData);
+};
+
+
+function controlFieldChanged(theEvent, theControl, theFieldName, theFieldValue){
+    console.log( 'controlFieldChanged(theEvent, theControl, theFieldName, theFieldValue)', theEvent, theControl, theFieldName, theFieldValue);
+    if( theFieldName == 'json-clipboard'){
+        var tmpEl = theControl.getItemEl('btn-load-selected');
+        theFieldValue = theFieldValue.trim();
+        var tmpHasClass = tmpEl.hasClass('disabled');
+        if( theFieldValue ){
+            if( tmpHasClass ){
+                tmpEl.removeClass('disabled')
+            }
+        } else {
+            if( !tmpHasClass ){
+                tmpEl.addClass('disabled')
+            }
+            
+        }
+    }
+    
+}
+
+function loadClipboardList() {
+    ThisPage.contextData.jsonClipboardIndex = {};
+    
+    ThisApp.om.getObjects(dsNameJsonClipboard).then(function(theReply){
+        var tmpAll = false;
+        
+        if( theReply && theReply.docs ){
+            tmpAll = theReply.docs;
+        }
+        console.log( 'tmpAll', tmpAll);
+        if( tmpAll.length ){
+            for( var aIndex in tmpAll){
+                var tmpDoc = tmpAll[aIndex];
+                console.log( 'tmpDoc', tmpDoc);
+                var tmpID = tmpDoc._id;
+                var tmpJson = {};
+
+                try {
+                    if( tmpDoc.data ){
+                        if( ThisApp.util.isStr(tmpDoc.data) ){
+                            tmpJson = ThisApp.json(tmpDoc.data);
+                        } else {
+                            tmpJson = tmpDoc.data
+                        }
+                    }
+                    ThisPage.contextData.jsonClipboardIndex[tmpID] = tmpJson;
+                } catch (ex) {
+                    console.warn("Error loading saved object, did not load. " + tmpID);
+                }
+               
+            }            
+        }
+        // console.log( 'tmpAll', tmpAll);
+        refreshClipboardList();    
+    });
+}
+
+function refreshClipboardList() {
+    // ThisPage.contextData.jsonClipboardIndex = {
+    //     "clipboard-1": {
+    //         test:1
+    //     }
+    //     ,
+    //     "clipboard-2": {
+    //         test:2
+    //     }
+    // }
+    var tmpList = [];
+    if(!(ThisPage.contextData.jsonClipboardIndex)){
+        //ToDo: Show message about nothin gin index
+        return;
+    }
+
+    var tmpIndex = ThisPage.contextData.jsonClipboardIndex;
+    for( var aName in tmpIndex){
+        var tmpEntry = tmpIndex[aName];
+        tmpList.push(aName);        
+    }
+
+    tmpList.sort();
+    ThisPage.contextData.jsonClipboardList = tmpList;
+    if( ThisPage.parts && ThisPage.parts.controls ){
+        ThisPage.parts.controls.refreshUI();
+    }
+    // ThisPage.contextData.jsonClipboardList = ['Select One|','clipboard-1','clipboard-2'];
+
+}
 
 //~YourPageCode~//~
 

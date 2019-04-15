@@ -5530,7 +5530,7 @@ License: MIT
 
         var tmpFN = theFN;
         var tmpSpecs = this.getFieldSpecs(tmpFN);
-
+console.log( 'tmpFN', tmpFN);
         if (tmpSpecs) {
             var tmpOnChange = tmpSpecs.onChange || false;
             if (tmpOnChange) {
@@ -5544,6 +5544,7 @@ License: MIT
                 }
             }
         }
+        this.publish('field-change',[this,tmpFN,this.getFieldValue(tmpFN)])
     }
 
     meInstance.refreshControl = function () {
@@ -6560,7 +6561,7 @@ License: MIT
             }
 
             var tmpClasses = ''
-            tmpClasses += getValueIfTrue(theObject, ['basic', 'compact', 'fluid', 'right', 'labeled', 'circular']);
+            tmpClasses += getValueIfTrue(theObject, ['basic', 'compact', 'fluid', 'right', 'labeled', 'circular', 'disabled']);
             tmpClasses += getValueIfThere(theObject, ['color', 'size', 'floated']);
 
             if (tmpObject.toright === true) {

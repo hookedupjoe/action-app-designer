@@ -65,6 +65,7 @@ License: MIT
 
                 ThisPage.contextData.demoTitle = "Controls Page Default Title";
                 ThisPage.contextData.demoDropDownList  = "Dynamic|dyno,Static|static,Auto|auto";
+                window.controlsPage = ThisPage;
                 
                 loadControlsIndex();
 

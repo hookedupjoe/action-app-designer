@@ -21,8 +21,8 @@ Object Manager uses known or identified sources
   om.getObject(sourceName, docID)
   om.putObject(sourceName, docID, theObject)
   om.deleteObject(sourceName, docID)
-  om.getAll(sourceName)
-  om.getAll(sourceName, ['key1','key2']);
+  om.getObjects(sourceName)
+  om.getObjects(sourceName, ['key1','key2']);
 
 Object Manager can be extended to handle custom sources
   om.putSourceHandler('mytestdb',{"handler":"[couch]", "options":{"dbName","some-database-name"}}); 

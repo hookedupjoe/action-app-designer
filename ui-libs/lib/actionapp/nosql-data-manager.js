@@ -286,7 +286,7 @@ $.fn.NoSqlDataManager = (function ($) {
         var tmpHandlerDetails = getDocumentHandler(theSourceName);
         //---ToDo: Work out deeper path or rename
         theObject._id = thePath;
-
+console.log( 'putDocument(theSourceName, thePath, theObject)', theSourceName, thePath, theObject);
         var tmpActionDetails = {
             action: 'put',
             doc: theObject,
@@ -453,13 +453,16 @@ $.fn.NoSqlDataManager = (function ($) {
 
             });
         } else if (tmpAction == 'getDocs') {
+            
             var tmpRet = [];
             var tmpOptions = { include_docs: true };
             var tmpKeys = theAction.keys || [];
             if ((tmpKeys) && tmpKeys.length > 0) {
                 tmpOptions.keys = tmpKeys;
             }
+            console.log( 'getDocs tmpDB', tmpDB);
             tmpDB.allDocs(tmpOptions).then(function (theResponse) {
+                console.log( 'theResponse', theResponse);
                 tmpRet = me.transformNoSQLDocs(theResponse)
                 dfd.resolve(tmpRet);
             }).catch(function (err) {

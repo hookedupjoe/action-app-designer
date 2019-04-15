@@ -39,10 +39,26 @@ License: MIT
 								"pageaction": "saveJson",
 							},
 							{
+								"ctl":"divider",
+								"label": "Clipboard",
+								"size":"small",
+								"color": "blue"
+							},
+							{
 								"ctl":"dropdown",
-								"label": "Category",
-								"list": "default"
-							}
+								"label": "Saved JSON",
+								"name":"json-clipboard",
+								"list": {
+									"[computed]": "context.page.data.jsonClipboardList || ''"
+								}
+							},
+							{
+								"ctl":"button",
+								"text": "Load Selected JSON",
+								"disabled": true,
+								"name": "btn-load-selected",
+								"pageaction": "loadJsonClipboardSelected",
+							},
 						]
 					},
 					{
