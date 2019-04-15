@@ -1731,26 +1731,20 @@ var ActionAppCore = {};
     }
 
 
-        /**
-        * getContext
-        *    - Returns the context to use for dynamic content
-        *
-        * @param  {Object} theOptions  The details on the page and control the context should be created in
-        * @return void
-        */
-       me.getContext = function (theOptions) {
-           var tmpOptions = theOptions || {};
-           var tmpRet = {}
-           tmpRet.app = ThisApp.context || {owner: ThisApp, data: {} };
-           if( tmpOptions.page ){
-            tmpRet.page = tmpRet.page.context || {owner: tmpRet.page, data: {} };
-           }
-           
-           $.extend(tmpRet, tmpOptions);
-           return tmpRet;
-        
-        }
-        
+    /**
+    * getContext
+    *    - Returns the application level context
+    *
+    * @param  {Object} theOptions  The details on the page and control the context should be created in
+    * @return void
+    */
+    me.getContext = function () {
+        var tmpOptions = theOptions || {};
+        var tmpRet = {}
+        tmpRet.app = ThisApp.context
+        return tmpRet;
+    }
+
 
     //======================================
     //======================================
@@ -1809,7 +1803,7 @@ var ActionAppCore = {};
 
 
 
-    
+
 
 
     //--- Internal Functionality ========== ========== ========== ========== ========== ========== ========== ========== ========== ========== 
@@ -2721,6 +2715,7 @@ var ActionAppCore = {};
 
     //ThisApp.util...
     var utilFunctions = {
+        isPage: isPage,
         isStr: isStr,
         isFunc: isFunc,
         isObj: isObj,
@@ -2883,10 +2878,7 @@ License: MIT
             this.loadLayoutControl = function (theRegion, theControl, theInstanceName) {
                 var tmpRegionSpotName = this.layoutOptions.spotPrefix + ":" + theRegion;
                 var tmpInstance = this.createInstance(theControl, theInstanceName);
-                var tmpLoadOptions = {
-                    context: this.context
-                }
-                tmpInstance.loadToElement(tmpRegionSpotName, tmpLoadOptions);
+                tmpInstance.loadToElement(tmpRegionSpotName);
             }
             this.loadRegion = function (theRegion, theContent, theOptionalTemplateName) {
                 var tmpRegionSpotName = this.layoutOptions.spotPrefix + ":" + theRegion;
@@ -3949,13 +3941,7 @@ License: MIT
                     var tmpFunc = tmpOptions.onBeforeLoad.bind(tmpControlObject);
                     tmpFunc(tmpControlObject, this);
                 }
-                //--- No special context for dialog right now, just use default
-                var tmpLoadOptions = {
-                    context: {
-                        app: ThisApp.context
-                    }
-                }
-                tmpControlObject.loadToElement(me.promptDialogText.get(0), tmpLoadOptions)
+                tmpControlObject.loadToElement(me.promptDialogText.get(0))
 
                 if (ThisApp.util.isObj(tmpOptions.doc)) {
                     tmpControlObject.loadData(tmpOptions.doc);
@@ -4816,20 +4802,17 @@ License: MIT
             }
         };
 
-        if( tmpMyConfig && tmpMyConfig.options && isObj(tmpMyConfig.options.contextData) ){
+        if (tmpMyConfig && tmpMyConfig.options && isObj(tmpMyConfig.options.contextData)) {
             this.context.this.data = tmpMyConfig.options.contextData;
         }
         //--- Pull in references for easy access to context items
-        if( this.parentControl && this.parentControl.context ){
-            if( isObj(this.parentControl.context.page) ){
-                this.context.page = this.parentControl.context.page;
+        if (this.parent && this.parent.context) {
+            if (isObj(this.parent.context.page)) {
+                this.context.page = this.parent.context.page;
             }
-            if( isObj(this.parentControl.context.control) ){
-                this.context.control = this.parentControl.context.control;
+            if (!(ThisApp.util.isPage(this.parent))) {
+                this.context.control = this.parent.context;
             }
-        }
-        if( !isObj(this.context.control) ){
-            this.context.control = this.context.this;
         }
 
         this.res = {
@@ -4949,7 +4932,6 @@ License: MIT
         if (tmpOptions.doc) {
             tmpConfig.options.doc = tmpOptions.doc;
         }
-        tmpOptions.context = this.context;
 
         return this.loadToElement(this.parentEl, tmpOptions);
     }
@@ -5214,7 +5196,6 @@ License: MIT
         return me.gotoItem(this.getEl(), theName)
     }
     meInstance.getHTML = function (theContext) {
-        console.log('getHTML',theContext);
         return this.controlSpec.getHTML(this.controlName, this, theContext);
     }
     meInstance.getConfig = function () {
@@ -5621,12 +5602,6 @@ License: MIT
                     if (tmpIsValid) {
                         this.publish(tmpEvent, [this, tmpPubParams, tmpTarget, theEvent])
                     }
-                    // } else if (tmpToRun == 'action') {
-                    //     var tmpAction = tmpOnClick.action || 'click';
-                    //     console.log("Run action", tmpAction);
-                    // } else if (tmpToRun == 'pageaction') {
-                    //     var tmpAction = tmpOnClick.action || 'click';
-                    //     console.log("Run pageaction", tmpAction);
                 } else if (tmpToRun == 'action') {
                     var tmpAction = tmpOnClick.action || 'click';
                     var tmpSource = tmpOnClick.source || "control";
@@ -5709,7 +5684,7 @@ License: MIT
                     } else {
                         var tmpPart = tmpCtl.create(tmpPartName);
                         this.parts[tmpPartName] = tmpPart;
-                        tmpDefs.push(tmpPart.loadToElement(tmpControlEl, {context: this.context}));
+                        tmpDefs.push(tmpPart.loadToElement(tmpControlEl));
                     }
                 }
 
@@ -5736,7 +5711,7 @@ License: MIT
                     }
                     var tmpPart = tmpCtl.create(tmpPartName);
                     this.parts[tmpPartName] = tmpPart;
-                    tmpDefs.push(tmpPart.loadToElement(tmpControlEl, {context: this.context}));
+                    tmpDefs.push(tmpPart.loadToElement(tmpControlEl));
                 }
 
             }
@@ -5815,8 +5790,8 @@ License: MIT
     meInstance.loadToElement = function (theEl, theOptions) {
         var dfd = jQuery.Deferred();
         var tmpOptions = theOptions || {};
-        var tmpContext = tmpOptions.context || this.context || ThisApp.getContext();
-        console.log( 'loadToElement tmpContext', tmpContext);
+        var tmpContext = this.context || ThisApp.getContext();
+        console.log('loadToElement tmpContext', tmpContext);
 
         var tmpThis = this;
         tmpThis.parentEl = ThisApp.asSpot(theEl);
