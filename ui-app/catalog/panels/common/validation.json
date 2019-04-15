@@ -1,7 +1,8 @@
 {
-	"onValidate": {
-		"isStoredFunction": true,
-		"_func": "function(theControl){\r\n            if (!theControl){\r\n                return true;\r\n            }\r\n            console.log(\"Validation called \", theControl);\r\n            var tmpLast = theControl.getFieldValue('last');\r\n            console.log( 'tmpLast', tmpLast);\r\n            if( tmpLast == 'na' ){\r\n\r\n                theControl.setFieldMessage('last', 'na not allowed', {color:'red'})\r\n                return \"We do not allow na in the last field\"\r\n            }\r\n            return true;\r\n        }"
+	"options": {
+		"onValidate": {
+			"[function]": "function(theControl){\r\n            if (!theControl){\r\n                return true;\r\n            }\r\n            console.log(\"Validation called \", theControl);\r\n            var tmpLast = theControl.getFieldValue('last');\r\n            console.log( 'tmpLast', tmpLast);\r\n            if( tmpLast == 'na' ){\r\n\r\n                theControl.setFieldMessage('last', 'na not allowed', {color:'red'})\r\n                return \"We do not allow na in the last field\"\r\n            }\r\n            return true;\r\n        }"
+		}
 	},
 	"content": [
 		{

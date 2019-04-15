@@ -2573,8 +2573,7 @@ var ActionAppCore = {};
             } else if (isFunc(tmpEntry)) {
                 //--- Convert to string to save
                 tmpRet[aName] = {
-                    isStoredFunction: true,
-                    "_func": tmpEntry.toString()
+                    "[function]": tmpEntry.toString()
                 }
             } else if (isPage(tmpEntry)) {
                 //--- Ignore if page in object
@@ -2657,8 +2656,9 @@ var ActionAppCore = {};
                 if (tmpIsArray) {
                     tmpRet.push(myConvertFromJsonLive(tmpEntry));
                 } else {
-                    if (tmpEntry.isStoredFunction && tmpEntry.hasOwnProperty('_func')) {
-                        tmpRet[aName] = stringToFunction(tmpEntry._func);
+                    //tmpEntry.isStoredFunction && 
+                    if (tmpEntry['[function]']) {
+                        tmpRet[aName] = stringToFunction(tmpEntry['[function]']);
                     } else {
                         tmpRet[aName] = tmpEntry;
                     }
@@ -2707,7 +2707,7 @@ var ActionAppCore = {};
     }
     function stringToFunction(theString) {
         try {
-            return eval("window.__funcmyConvert = " + theString)
+            return eval("window._FunctionConverter = " + theString)
         } catch (ex) {
             return false;
         }
@@ -5381,11 +5381,13 @@ License: MIT
 
 
         if (tmpIsValid) {
-            var tmpOnValidate = this._onValidate || this.onValidate || tmpConfig._onValidate || tmpConfig.onValidate;
+            var tmpConfigOptions = tmpConfig.options || {};
+            var tmpOnValidate = this._onValidate || this.onValidate || tmpConfigOptions._onValidate || tmpConfigOptions.onValidate;
 
             if (isObj(tmpOnValidate)) {
-                if (tmpOnValidate.isStoredFunction && tmpOnValidate._func) {
-                    tmpOnValidate = ThisApp.util.stringToFunction(tmpOnValidate._func);
+                //tmpOnValidate.isStoredFunction && 
+                if (tmpOnValidate['[function]']) {
+                    tmpOnValidate = ThisApp.util.stringToFunction(tmpOnValidate['[function]']);
                 } else {
                     var tmpName = tmpOnValidate.run;
                     var tmpToRun = me.validations.get(tmpName)
