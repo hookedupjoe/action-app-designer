@@ -6133,7 +6133,8 @@ License: MIT
                     var tmpCompContext = tmpComputed.context || '';
                     if (tmpCompContext) {
                         try {
-                            tmpCompValue = eval('tmpContext.' + tmpCompContext)
+                            var context = tmpContext;
+                            tmpCompValue = eval(tmpCompContext)
                         } catch (ex) {
                             console.warn("Attempt to us computed context value failed ", ex)
                         }

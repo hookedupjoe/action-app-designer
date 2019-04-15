@@ -7,14 +7,17 @@
     "searchbar": {
       "title": "Search Bar"
     },
+    "showfor": {
+      "title": "Show For Demo"
+    },
     "server-control": {
       "title": "Server Side Control"
     },
+    "computed-values": {
+      "title": "Computed Values"
+    },
     "controlsdemo": {
       "title": "Nested Controls"
-    },
-    "showfor": {
-      "title": "Show For Demo"
     },
     "layout-with-control": {
       "title": "Layout With Controls"
