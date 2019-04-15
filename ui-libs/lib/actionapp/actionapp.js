@@ -2818,6 +2818,8 @@ License: MIT
                 data: this.options.contextData || {}
             }
         };
+        //--- Quick access to context data
+        this.contextData = this.context.page.data;
 
         this.res = {
             "panels": {},

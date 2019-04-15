@@ -63,8 +63,8 @@ License: MIT
         ThisPage.initOnFirstLoad().then(
             function () {
 
-                ThisApp.context.data.demoTitle = "Test By Controls Page";
-
+                ThisPage.contextData.demoTitle = "Controls Page Default Title";
+                
                 loadControlsIndex();
 
                 ThisPage.selectedFieldName = '';

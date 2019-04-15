@@ -12,7 +12,7 @@
 			"icon": "box",
 			"text": {
 				"[computed]": {
-					"context": "app.data.demoTitle"
+					"context": "page.data.demoTitle"
 			 }
 			}
 		},
