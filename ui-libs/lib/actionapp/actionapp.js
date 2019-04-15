@@ -5530,7 +5530,6 @@ License: MIT
 
         var tmpFN = theFN;
         var tmpSpecs = this.getFieldSpecs(tmpFN);
-console.log( 'tmpFN', tmpFN);
         if (tmpSpecs) {
             var tmpOnChange = tmpSpecs.onChange || false;
             if (tmpOnChange) {

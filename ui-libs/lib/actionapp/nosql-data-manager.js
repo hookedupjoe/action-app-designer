@@ -286,7 +286,6 @@ $.fn.NoSqlDataManager = (function ($) {
         var tmpHandlerDetails = getDocumentHandler(theSourceName);
         //---ToDo: Work out deeper path or rename
         theObject._id = thePath;
-console.log( 'putDocument(theSourceName, thePath, theObject)', theSourceName, thePath, theObject);
         var tmpActionDetails = {
             action: 'put',
             doc: theObject,
@@ -405,7 +404,6 @@ console.log( 'putDocument(theSourceName, thePath, theObject)', theSourceName, th
         var tmpDBName = theAction.source || '';
 
         if (!(typeof (theOptions.db) == 'object')) {
-            console.log("Getting Database theAction, tmpDBName, theOptions",theAction, tmpDBName, theOptions)
             me.getDatabase(tmpDBName, theOptions).then(function (theDB) {
                 theOptions.db = theDB;
                 me.sourceHandlerForNoSQL(theAction, theOptions).then(function (theResponse) {
@@ -460,9 +458,7 @@ console.log( 'putDocument(theSourceName, thePath, theObject)', theSourceName, th
             if ((tmpKeys) && tmpKeys.length > 0) {
                 tmpOptions.keys = tmpKeys;
             }
-            console.log( 'getDocs tmpDB', tmpDB);
             tmpDB.allDocs(tmpOptions).then(function (theResponse) {
-                console.log( 'theResponse', theResponse);
                 tmpRet = me.transformNoSQLDocs(theResponse)
                 dfd.resolve(tmpRet);
             }).catch(function (err) {
