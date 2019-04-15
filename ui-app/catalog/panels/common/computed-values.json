@@ -15,6 +15,14 @@
 			"text": {
 				"[computed]": "context.page.data.demoTitle || 'No Default Title'"
 			}
-		}
+		},
+		{
+			"ctl": "dropdown",
+			"name": "dyno-dropdown",
+			"label": "Dynamic List",
+			"list": {
+				"[computed]": "context.page.data.demoDropDownList || ['Not Found']"
+			}
+				}
 	]
 }

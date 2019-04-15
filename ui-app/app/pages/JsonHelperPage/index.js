@@ -77,7 +77,7 @@ var ThisPage = new SiteMod.SitePage(thisPageSpecs);
             ThisPage.aceEditor = ace.edit(ThisPage.aceEditorEl.get(0));
             ThisPage.aceEditor.setTheme("ace/theme/vibrant_ink");
             ThisPage.aceEditor.setFontSize(16);
-            ThisPage.aceEditor.session.setMode("ace/mode/javascript");
+            ThisPage.aceEditor.session.setMode("ace/mode/json");
             ThisPage.aceEditor.session.setTabSize(2);
 
             resizeEditor();

@@ -1,28 +1,75 @@
 {
 	"options": {
-		"readonly": false,
 		"padding": true
 	},
 	"content": [
 		{
 			"ctl": "title",
-			"name": "dyno-title",
+			"name": "title",
 			"size": "large",
-			"color": {
-				"[computed]": "(context.page.controller.getDefaultColor ? context.page.controller.getDefaultColor() : 'green')"
-			},
-			"icon": "box",
-			"text": {
-				"[computed]": "context.page.data.demoTitle || 'No Default Title'"
-			}
+			"color": "blue",
+			"icon": "columns",
+			"text": "PageName"
 		},
 		{
-			"ctl": "dropdown",
-			"name": "dyno-dropdown",
-			"label": "Dynamic List",
-			"list": {
-				"[computed]": "context.page.data.demoDropDownList || ['Not Found']"
-			}
+			"ctl": "tabs",
+			"name": "pagetabs",
+			"tabs": [
+				{
+					"label": "Page Setup",
+					"name": "pagetabs-setup",
+					"ctl": "tab",
+					"content": [
+						{
+							"ctl": "control",
+							"controlname": "app/catalog/designer/controls/page-console-setup",
+							"name": "setupinfo"
+						}
+					]
+				},
+				{
+					"label": "Layout",
+					"name": "pagetabs-layout",
+					"ctl": "tab",
+					"content": [
+						{
+							"ctl": "panel",
+							"controlname": "design/ws/panel-app-setup?appname=",
+							"name": "setupinfo"
+						}
+					]
+				},
+				{
+					"label": "Events",
+					"name": "pagetabs-events",
+					"ctl": "tab",
+					"content": [
+						{
+							"ctl": "panel",
+							"controlname": "design/ws/panel-app-setup?appname=",
+							"name": "setupinfo"
+						}
+					]
+				},
+				{
+					"label": "Code",
+					"name": "pagetabs-code",
+					"ctl": "tab",
+					"content": [
+						{
+							"ctl": "panel",
+							"controlname": "design/ws/panel-app-setup?appname=",
+							"name": "setupinfo"
+						}
+					]
 				}
+
+				
+			]
+
+
+		}
+
 	]
+
 }
