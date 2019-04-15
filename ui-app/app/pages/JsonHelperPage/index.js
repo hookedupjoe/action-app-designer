@@ -21,7 +21,7 @@ var thisPageSpecs = {
     thisPageSpecs.layoutOptions = {
         baseURL: pageBaseURL,
         center: { partname: "center", control: "center"},
-        east: { partname: "east", control: "east"},
+        east: false,
         west: { partname: "controls", control: "ControlPanel"},
         north: { partname: "north", control: "north"},
         south: false
