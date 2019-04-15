@@ -1103,7 +1103,7 @@ var ActionAppCore = {};
             appuse: 'cards',
             group: tmpGroupName
         }
-        
+
         me.getByAttr$(tmpSelector, tmpParent).addClass('hidden').transition('hide', 1);
         tmpSelector.item = tmpItemId;
         me.getByAttr$(tmpSelector, tmpParent).removeClass('hidden').transition(tmpAnimation + ' in', tmpAnimDuration);
@@ -1914,7 +1914,7 @@ var ActionAppCore = {};
             dfd.reject(theError)
         }
 
-        
+
         //--- Auto Detect data, convert data and use POST
         if (tmpOptions.data) {
             if (typeof (tmpOptions.data) == 'object') {
@@ -2721,19 +2721,25 @@ var ActionAppCore = {};
             if (typeof (theItem) == 'string') {
                 return JSON.parse(theItem)
             } else if (typeof (theItem) == 'object') {
-                try {
-                    return JSON.stringify(theItem, null, '\t')
-                } catch (ex) {
-                    if (theAutoCleanIfNeeded) {
-                        var tmpClean = convertToJsonLive(theItem);
-                        try {
-                            return JSON.stringify(tmpClean, null, '\t')
-                        } catch (ex2) {
-                            throw ("Could not convert object " + ex2)
-                        }
-                    } else {
+                // try {
+                //     return JSON.stringify(theItem, null, '\t')
+                // } catch (ex) {
+
+                // }
+                if (theAutoCleanIfNeeded) {
+                    var tmpClean = convertToJsonLive(theItem);
+                    try {
+                        return JSON.stringify(tmpClean, null, '\t')
+                    } catch (ex2) {
+                        throw ("Could not convert object " + ex2)
+                    }
+                } else {
+                    try {
+                        return JSON.stringify(theItem, null, '\t')
+                    } catch (ex) {
                         throw ("Error processing json convert " + ex)
                     }
+
                 }
             } else {
                 throw ("Need a string or object")
@@ -3156,7 +3162,7 @@ License: MIT
                 } else {
                     tmpControlsNode.map[tmpLTName] = tmpLTName;
                 }
-                
+
             }
 
             if (tmpLTFound) {
@@ -3228,12 +3234,12 @@ License: MIT
                     tmpInstanceName = tmpLT.partname || tmpLT.name;
                 }
                 var tmpCtl = this.res.panels[tmpLTName];
-                
-                if( !(tmpCtl) && tmpLT.source ){
+
+                if (!(tmpCtl) && tmpLT.source) {
                     tmpCtl = ThisApp.getPanel(tmpLT.source + "/" + tmpLTName)
                 }
-                if( !(tmpCtl) ){
-                    console.error( 'Panel Missing', tmpLTName);
+                if (!(tmpCtl)) {
+                    console.error('Panel Missing', tmpLTName);
                     alert("There was an issues showing this page, contact support")
                 } else {
                     this.loadLayoutControl(aName, tmpCtl, tmpInstanceName);
@@ -3256,11 +3262,11 @@ License: MIT
                     tmpInstanceName = tmpLT.partname || tmpLT.name;
                 }
                 var tmpCtl = this.res.controls[tmpLTName];
-                if( !(tmpCtl) && tmpLT.source ){
+                if (!(tmpCtl) && tmpLT.source) {
                     tmpCtl = ThisApp.getControl(tmpLT.source + "/" + tmpLTName)
                 }
-                if( !(tmpCtl) ){
-                    console.error( 'Control Missing', tmpLTName);
+                if (!(tmpCtl)) {
+                    console.error('Control Missing', tmpLTName);
                     alert("There was an issues showing this page, contact support")
                 } else {
                     this.loadLayoutControl(aName, tmpCtl, tmpInstanceName);
@@ -4427,7 +4433,7 @@ License: MIT
 
                     if (tmpFN) {
                         if (tmpFT == 'radio' || tmpFT == 'checkbox') {
-                            if ( tmpFT == 'checkbox' ){
+                            if (tmpFT == 'checkbox') {
                                 tmpIsMultiValue = true;
                             }
                             var tmpIsChecked = tmpField[0].checked;
@@ -4437,7 +4443,7 @@ License: MIT
                             }
                             tmpData[tmpFN] = tmpData[tmpFN] || '';
                             var tmpExistingVal = tmpData[tmpFN];
-                            if (Array.isArray(tmpExistingVal)){
+                            if (Array.isArray(tmpExistingVal)) {
                                 tmpExistingVal = tmpExistingVal.join(",");
                             }
                             if (tmpVal) {
@@ -4446,8 +4452,8 @@ License: MIT
                                 }
                                 tmpExistingVal += tmpVal;
                             }
-                            if( tmpIsMultiValue ){
-                                if( (typeof(tmpExistingVal) == 'string')){
+                            if (tmpIsMultiValue) {
+                                if ((typeof (tmpExistingVal) == 'string')) {
                                     tmpExistingVal = tmpExistingVal.split(',')
                                 }
                             }
@@ -4523,7 +4529,7 @@ License: MIT
         }
 
         ///--- Move parent from config into base
-        if( theConfig.parent ){
+        if (theConfig.parent) {
             this.parent = theConfig.parent
             delete theConfig.parent;
         }
@@ -4533,7 +4539,7 @@ License: MIT
     var meControl = Control.prototype;
     meControl.create = function (theControlName, theOptions) {
         var tmpOptions = theOptions || {};
-        tmpOptions.parent = tmpOptions.parent || this.parent ; //|| this.controlConfig.parent
+        tmpOptions.parent = tmpOptions.parent || this.parent; //|| this.controlConfig.parent
         tmpOptions.proto = tmpOptions.proto || this.controlConfig.proto || false;
         var tmpObj = new ControlInstance(this, theControlName, tmpOptions);
         if (tmpOptions.proto) {
@@ -4731,11 +4737,11 @@ License: MIT
         this.controlSpec = theControlSpec;
         var tmpConfig = this.controlSpec.controlConfig;
         tmpConfig.options = tmpConfig.options || {};
-        var tmpMyConfig  = {
+        var tmpMyConfig = {
             options: {},
             content: []
         };
-        if( tmpConfig ){
+        if (tmpConfig) {
             tmpMyConfig.options = ThisApp.clone(tmpConfig.options);
             tmpMyConfig.content = ThisApp.clone(tmpConfig.content);
         }
@@ -4759,8 +4765,8 @@ License: MIT
 
         this.initPubSub();
 
-          //--- Grab some common functionality from app ...
-          var tmpStuffToPullIn = [
+        //--- Grab some common functionality from app ...
+        var tmpStuffToPullIn = [
             , 'getResourceURIsForType'
             , 'addResourceFromContent',
             , 'loadResources',
@@ -4793,7 +4799,7 @@ License: MIT
     meInstance.refreshIndex = function () {
         this.setupConfig();
     }
-    
+
     meInstance.getContentRequired = function () {
         var tmpRet = {}
         this.refreshIndex();
@@ -4829,7 +4835,7 @@ License: MIT
     }
 
 
-    
+
     meInstance.loadConfig = function (theConfig) {
         if (!theConfig) {
             throw "Config not provided"
@@ -4862,10 +4868,10 @@ License: MIT
         var tmpConfig = this.controlConfig;
 
         tmpConfig.options = tmpConfig.options || {};
-        if( typeof(tmpOptions.readonly) === 'boolean'){
+        if (typeof (tmpOptions.readonly) === 'boolean') {
             tmpConfig.options.readonly = tmpOptions.readonly;
         }
-        if( tmpOptions.doc){
+        if (tmpOptions.doc) {
             tmpConfig.options.doc = tmpOptions.doc;
         }
         return this.loadToElement(this.parentEl, theOptions);
@@ -4980,10 +4986,10 @@ License: MIT
             specs: tmpSpecs
         }
     }
-    
+
     meInstance.getItemEl = function (theItemName) {
         var tmpEl = this.getElByName$(theItemName, 'item')
-        if (!(tmpEl)) { return false }        
+        if (!(tmpEl)) { return false }
         return tmpEl;
     }
 
@@ -5109,7 +5115,7 @@ License: MIT
         }
 
         var tmpFieldSpecs = this.getFieldSpecs(theFieldName);
-        
+
         if (tmpFieldSpecs) {
             var tmpCtl = tmpFieldSpecs.ctl || 'field';
             var tmpControl = me.webControls.get(tmpCtl);
@@ -5537,12 +5543,12 @@ License: MIT
                     if (tmpIsValid) {
                         this.publish(tmpEvent, [this, tmpPubParams, tmpTarget, theEvent])
                     }
-                // } else if (tmpToRun == 'action') {
-                //     var tmpAction = tmpOnClick.action || 'click';
-                //     console.log("Run action", tmpAction);
-                // } else if (tmpToRun == 'pageaction') {
-                //     var tmpAction = tmpOnClick.action || 'click';
-                //     console.log("Run pageaction", tmpAction);
+                    // } else if (tmpToRun == 'action') {
+                    //     var tmpAction = tmpOnClick.action || 'click';
+                    //     console.log("Run action", tmpAction);
+                    // } else if (tmpToRun == 'pageaction') {
+                    //     var tmpAction = tmpOnClick.action || 'click';
+                    //     console.log("Run pageaction", tmpAction);
                 } else if (tmpToRun == 'action') {
                     var tmpAction = tmpOnClick.action || 'click';
                     var tmpSource = tmpOnClick.source || "control";
@@ -5550,7 +5556,7 @@ License: MIT
                     //       default is "control" if not provided
 
                     //ToDo: Page and App Actions
-                    if( tmpSource == "control"){
+                    if (tmpSource == "control") {
                         var tmpActions = this.actions || {};
                         var tmpToRun = tmpActions[tmpAction] || this[tmpAction];
 
@@ -5558,7 +5564,7 @@ License: MIT
                             var tmpActParams = ThisApp.clone(tmpOnClick);
                             //--- Run action with only the params object, not target
                             //---  run in a way that it binds to this control when run
-                            return tmpToRun.apply(this,tmpActParams);
+                            return tmpToRun.apply(this, tmpActParams);
                         } else {
                             console.warn("Action not found for " + tmpAction)
                         }
@@ -5731,7 +5737,7 @@ License: MIT
     meInstance.loadToElement = function (theEl, theOptions) {
         var dfd = jQuery.Deferred();
         var tmpOptions = theOptions || {};
-        
+
         var tmpThis = this;
         tmpThis.parentEl = ThisApp.asSpot(theEl);
         var tmpHTML = tmpThis.getHTML();
@@ -5747,7 +5753,7 @@ License: MIT
                 tmpThis.initControlComponents().then(function (theReply) {
                     tmpThis.refreshControl();
                     var tmpDoc = tmpOptions.doc || tmpThis.getConfig().options.doc || false;
-                    if( tmpDoc ){
+                    if (tmpDoc) {
                         tmpThis.loadData(tmpDoc);
                     }
                     dfd.resolve(true)
@@ -7033,7 +7039,7 @@ License: MIT
             };
             return tmpRet;
         },
-        getHTML: function (theControlName, theObject, theControlObj) {            
+        getHTML: function (theControlName, theObject, theControlObj) {
             var tmpObject = theObject || {};
             var tmpHTML = [];
             //---> ToDo: Add value and default value to other fields *****
@@ -7050,7 +7056,7 @@ License: MIT
             }
 
 
-            
+
             var tmpItems = tmpObject.items || tmpObject.content || [];
 
             if (tmpValue) {
@@ -7094,7 +7100,7 @@ License: MIT
                 tmpReq = '';
                 tmpReadOnly = ' readonly '
             }
-            if( theControlName == 'hidden' ){
+            if (theControlName == 'hidden') {
                 tmpFieldType = 'hidden';
             }
 
@@ -7233,7 +7239,7 @@ License: MIT
             //--   adding this to show how to return values for custom fields that are not based on simple / standard form logic
             if (theControlEl && theFieldSpecs) {
                 var tmpData = me._getControlData(theControlEl, theFieldSpecs.name);
-                if( theFieldSpecs.multi === true && isStr(tmpData) ){
+                if (theFieldSpecs.multi === true && isStr(tmpData)) {
                     tmpData = tmpData.split(',');
                 }
                 return tmpData;

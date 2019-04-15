@@ -59,9 +59,9 @@ var thisPageSpecs = {
     //~_onFirstActivate~//~
         ThisPage.initOnFirstLoad().then(
             function () {
-            //~initOnFirstLoad//~
+            //~_onFirstLoad//~
 
-            //~initOnFirstLoad~//~
+            //~_onFirstLoad~//~
                 ThisPage._onActivate();
             }
         );
