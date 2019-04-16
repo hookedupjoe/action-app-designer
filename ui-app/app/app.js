@@ -3,8 +3,8 @@
   ThisApp = null;
 
   var tmpPageNames = [   
-    'WorkspacePage',
     'PageEditor',
+    'WorkspacePage',
     'ControlsPage',
     'JsonHelperPage',
     'ControlBuilderPage',

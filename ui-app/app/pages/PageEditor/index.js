@@ -142,8 +142,11 @@ License: MIT
             //--- Find created cards jQuery element
             var tmpNewGroup = ThisPage.getByAttr$({ group: openPageGroupName, item: tmpPageName, appuse: 'cards' });
             //--- Load Page Console into that card
+            var tmpPageDetails = { pagename: tmpPageName, title: tmpPageTitle };
+            
+            tmpNewPage.preLoad(tmpPageDetails);
             tmpNewPage.loadToElement(tmpNewGroup).then(function(theReply){
-                tmpNewPage.setup({ pagename: tmpPageName, title: tmpPageTitle });
+                tmpNewPage.setup(tmpPageDetails);
             });
             //--- Go to the newly added card (to show it and hide others)
             ThisApp.gotoTab(tmpTabAttr);

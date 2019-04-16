@@ -240,17 +240,22 @@ License: MIT
 
 	var ControlCode = {
 		setup: setup,
+		preLoad: preLoad,
 		refreshFromSource: refreshFromSource,
 		refreshFromLoaded: refreshFromLoaded,
 		resizeEditor: resizeEditor,
 		refreshEditorFromCodeIndex: refreshEditorFromCodeIndex,
 		showCode: showCode,
-		showRequired: showRequired,
+		uniqueGroups: uniqueGroups,
 		setupEditor: setupEditor
 	};
 
 
-
+	//--- Run before
+	function preLoad(theDetails) {
+		var tmpPageName = theDetails.pagename || '';
+		this.uniqueGroups(tmpPageName);
+	}
 	//---- Initial Setup of the control
 	function setup(theDetails) {
 		var tmpPageName = theDetails.pagename || '';
@@ -265,11 +270,24 @@ License: MIT
 		}
 		this.controlConfig.index.items.title.text = tmpPageTitle;
 
+
 		this.setupEditor();
-		console.log('this.context.page.controller', this.context.page.controller);
 		this.endpointURL = 'design/ws/page-code?run&source=workspace&pagename=' + tmpPageName;
 		this.refreshFromSource();
 
+	}
+
+
+	function uniqueGroups(theUniqueness) {
+		var tmpIndex = this.getIndex();
+		if (tmpIndex && tmpIndex.items) {
+			for (var aName in tmpIndex.items) {
+				var tmpEntry = tmpIndex.items[aName];
+				if (tmpEntry && ThisApp.util.isStr(tmpEntry.group)) {
+					tmpEntry.group += theUniqueness;
+				}
+			}
+		}
 	}
 
 	function setupEditor() {
@@ -277,16 +295,11 @@ License: MIT
 			return;
 		}
 		this.editorSetup = true;
-
-		//~_onFirstLoad//~
+		
 		this.aceEditorEl = this.getSpot("ace-editor");
-		console.log('this.aceEditorEl', this.aceEditorEl);
 		this.aceEditor = ace.edit(this.aceEditorEl.get(0));
 		this.aceEditor.setTheme("ace/theme/vibrant_ink");
 		this.aceEditor.setFontSize(16);
-		//this.aceEditor.session.setMode("ace/mode/javascript");
-		//this.aceEditor.session.setTabSize(2);
-
 
 		this.resizeEditor();
 	}
@@ -294,9 +307,7 @@ License: MIT
 	function resizeEditor() {
 		if (this.aceEditorEl && this.aceEditor) {
 			var tmpLayoutPaneEl = this.aceEditorEl.closest('.ui-layout-pane');
-			console.log('tmpLayoutPaneEl', tmpLayoutPaneEl);
 			var tmpH = tmpLayoutPaneEl.height() || 500;
-			console.log('tmpH', tmpH);
 			this.aceEditorEl
 				.css('height', '' + tmpH + 'px')
 				.css('position', 'relative')
@@ -305,12 +316,10 @@ License: MIT
 	}
 
 	function refreshEditorFromCodeIndex() {
-		//console.log( 'refreshEditorFromCodeIndex this.codeIndex', this.loaded.codeIndex);
 		for (var aName in this.loaded.codeIndex) {
 			var tmpCode = this.loaded.codeIndex[aName];
 			if (!(this.loaded.sessions[aName])) {
 				this.loaded.sessions[aName] = ace.createEditSession(aName, "ace/mode/javascript")
-				//	console.log( 'this.loaded.sessions[aName]', this.loaded.sessions[aName]);
 			}
 			this.loaded.sessions[aName].setValue(tmpCode);
 		}
@@ -319,11 +328,8 @@ License: MIT
 
 	var defaultCodeName = 'thisPageSpecs'
 	function refreshFromLoaded() {
-		//console.log( 'refreshFromLoaded', this.loaded);
-
 		this.refreshEditorFromCodeIndex();
-		this.showCode()
-		//this.aceEditor.setValue(tmpCode || 'not found')
+		this.showCode();
 	}
 
 
@@ -334,10 +340,6 @@ License: MIT
 		}
 		var tmpName = tmpParams.name || tmpParams.codename || defaultCodeName;
 		this.aceEditor.setSession(this.loaded.sessions[tmpName])
-	}
-	function showRequired(theParams) {
-		console.log('showRequired params', theParams);
-		this.showCode('required');
 	}
 
 	function refreshFromSource() {
