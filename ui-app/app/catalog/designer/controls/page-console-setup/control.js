@@ -9,26 +9,55 @@ License: MIT
 			"padding": false
 		},
 		"content": [
+
+			{
+				"ctl": "tabs",
+				"name": "page-setup-tabs",
+				"tabs": [
+					{
+						"label": "Page Info",
+						"name": "page-setup-tabs-info",
+						"ctl": "tab",
+						"content": [
+							{
+								"ctl": "field",
+								readonly: true,
+								"name": "title",
+								"label": "Page / Tab Title",
+								"req": true
+							},
+							{
+								"ctl": "radiolist",
+								readonly: true,
+								"name": "where-to-show",
+								"label": "Where to show",
+								"list": "Primary|primary,Side Only|side,Hidden|hidden",
+								"req": true
+							},
+							{
+								"ctl": "hidden",
+								"name": "pagename"
+							}
+						]
+					},
+					{
+						"label": "Page Resources",
+						"name": "page-setup-tabs-required",
+						"ctl": "tab",
+						"content": [
+							{
+								"ctl": "textarea",
+								label: "Resources loaded when page loads",
+								"name": "setup-required"
+							}
+						]
+					}
+
+				]
+			}
+
 	
-                          {
-                            "ctl": "field",
-														readonly: true,
-                            "name": "title",
-                            "label": "Page / Tab Title",
-                            "req": true
-                          },
-                          {
-														"ctl": "radiolist",
-														readonly: true,
-                            "name": "where-to-show",
-														"label": "Where to show",
-														"list": "Primary|primary,Side Only|side,Hidden|hidden",
-                            "req": true
-                          },
-                          {
-                            "ctl": "hidden",
-                            "name": "pagename"
-                          }
+                          
 
 		]
 

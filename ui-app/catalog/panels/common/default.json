@@ -63,18 +63,6 @@
 							"name": "page-code"
 						}
 					]
-				},
-				{
-					"label": "Required",
-					"name": "pagetabs-Required",
-					"ctl": "tab",
-					"content": [
-						{
-							"ctl": "panel",
-							"controlname": "design/ws/panel-app-setup?appname=",
-							"name": "setupinfo"
-						}
-					]
 				}
 
 				
