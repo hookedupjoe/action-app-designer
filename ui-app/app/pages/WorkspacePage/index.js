@@ -170,7 +170,7 @@ License: MIT
                 url: '/design/ws/new-app',
                 data: theData
             }).then(function (theReply) {
-                ThisPage.parts.west.parts.workspace.refreshFromURI();
+                refreshWorkspace();
                 showAppConsole(theData);
             })
             console.log('theData', theData);

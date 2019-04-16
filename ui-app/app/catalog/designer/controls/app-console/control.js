@@ -190,9 +190,6 @@ License: MIT
 	}
 
 	var ControlCode = {
-		// actions: {
-		// 	promptAppSetup: promptAppSetup
-		// },
 		promptAppSetup: promptAppSetup,
 		setup: setup,
 		refreshPages: refreshPages,
@@ -357,35 +354,7 @@ License: MIT
 			href: "http://localhost:33461/" + tmpAppName,
 			target: "app" + tmpAppName
 		}
-		// this.controlConfig.index.items["open-in-vs-code"].attr = {
-		// 	appname: tmpAppName
-		// }
-		// this.controlConfig.index.items["rebuild-app"].attr = {
-		// 	appname: tmpAppName
-		// }
-		// this.controlConfig.index.items["edit-app-setup"].attr = {
-		// 	appname: tmpAppName
-		// }
-		// this.controlConfig.index.items["save-app-setup"].attr = {
-		// 	appname: tmpAppName
-		// }
-		// this.controlConfig.index.items["cancel-app-setup"].attr = {
-		// 	appname: tmpAppName
-		// }
-
-		// this.controlConfig.index.items["build-deploy-app"].attr = {
-		// 	appname: tmpAppName
-		// }
-		// this.controlConfig.index.items["launch-deploy-app"].attr = {
-		// 	appname: tmpAppName
-		// }
-
-
-
-
-
-
-
+	
 	}
 
 	function promptForSetupInfo() {

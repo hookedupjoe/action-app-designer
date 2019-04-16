@@ -19,12 +19,9 @@ License: MIT
 						"ctl": "tab",
 						"content": [
 							{
-								"ctl": "checkboxlist",
-								readonly: true,
-								"name": "regions-to-include",
-								"label": "Optional Regions",
-								"list": "North,South,East,West",
-								"req": true
+								"ctl": "textarea",
+								label: "Layout Options JSON",
+								"name": "layout-options"
 							}
 						]
 					},
@@ -36,7 +33,7 @@ License: MIT
 							{
 								"ctl": "textarea",
 								label: "Config JSON",
-								"name": "setupinfo"
+								"name": "layout-config"
 							}
 						]
 					}
