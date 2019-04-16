@@ -4,18 +4,17 @@ License: MIT
 */
 (function (ActionAppCore, $) {
 
-	var ControlSpecs = {
+	var ControlSpecs = { 
 		"options": {
-			"padding": true
+			padding: false,
 		},
 		"content": [
-			{
-				"ctl": "button",
-				"pageaction": "addPage",
-				"label": "Add New Page"
-			}
-		]
-	}
+		{
+			"ctl": "pagespot",
+			"name": "ace-editor"
+		}
+	]
+}
 
 		var ControlCode = {};
 	var ThisControl = {specs: ControlSpecs, options: { proto: ControlCode, parent: ThisApp }};
@@ -24,4 +23,5 @@ License: MIT
 	return ThisControl;
 
 })(ActionAppCore, $);
+
 

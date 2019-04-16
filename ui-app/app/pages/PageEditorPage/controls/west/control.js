@@ -14,27 +14,26 @@ License: MIT
 			"padding": false,
 		},
 		"content": [
-			
 			{
 				"ctl": "button",
-				pageaction: "refreshWorkspace",
+				pageaction: "refreshPages",
 				text: "Refresh",
 				basic: true,
-				"name": "refresh-workspace"
+				"name": "refresh-pages"
 			},
 			{
 				"ctl": "button",
-				pageaction: "addApp",
-				text: "New App",
-				color: 'blue',
+				pageaction: "addPage",
+				text: "Add Page",
 				basic: true,
+				color: "green",
 				icon: "plus",
-				"name": "btn-new-app"
+				"name": "btn-new-page"
 			},
 			{
 				"ctl": "panel",
-				"controlname": "design/ws/get-apps",
-				"name": "workspace"
+				"controlname": "design/ws/get-ws-pages",
+				"name": "pages"
 			}
 		]
 		}

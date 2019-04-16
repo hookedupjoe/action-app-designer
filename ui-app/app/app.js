@@ -4,11 +4,10 @@
 
   var tmpPageNames = [   
     'WorkspacePage',
+    'PageEditorPage',
     'ControlsPage',
-    'PageDesigner',
-    'ControlBuilderPage',
     'JsonHelperPage',
-    'ProjectDashboardPage',
+    'ControlBuilderPage',
     'LogsPage'
   ];
 

@@ -10,9 +10,9 @@ License: MIT
 		},
 		"content": [
 			{
-				"ctl": "button",
-				"pageaction": "addPage",
-				"label": "Add New Page"
+				"ctl": "title",
+				"size": "small",
+				"text": "JSON Helper 2000"
 			}
 		]
 	}

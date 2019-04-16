@@ -12,6 +12,23 @@
 			"details": "Starting point for single page application"
 		}
 	],
+	"pageTemplates": [
+		{
+			"name": "DefaultPage",
+			"title": "Default Page",
+			"details": "General starting point for a page"
+		},
+		{
+			"name": "DemoDesigner",
+			"title": "Designer Starting Point",
+			"details": "Starting point for a page that is used for designing stuff"
+		},
+		{
+			"name": "JsonHelperPage",
+			"title": "JSON Usage Starting Point",
+			"details": "Starting point for a page that is uses JSON"
+		}
+	],
 	"libraryLocations": [
 		{
 			"name": "local",

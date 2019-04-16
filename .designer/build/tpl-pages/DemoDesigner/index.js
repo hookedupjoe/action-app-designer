@@ -5,8 +5,8 @@
 //~thisPageSpecs//~
 
 var thisPageSpecs = {
-	"pageName": "PageDesigner",
-	"pageTitle": "Page Designer",
+	"pageName": "DemoDesigner",
+	"pageTitle": "Demo Designer",
 	"navOptions": {
 		"topLink": true,
 		"sideLink": true
@@ -35,22 +35,6 @@ var thisPageSpecs = {
         , east__size: "250"
     }
 //~layoutConfig~//~
-
-
-    //~required//~
-    thisPageSpecs.required = {
-        // controls: {
-        //     map: {
-        //         "app/catalog/designer/controls/page-console": "pageConsole"
-        //     }
-        // },
-        panels: {
-            map: {
-                "design/ws/frmNewPage": "frmNewPage"
-            }
-        }
-    }
-    //~required~//~
 
     var ThisPage = new SiteMod.SitePage(thisPageSpecs);
 
@@ -99,34 +83,6 @@ var thisPageSpecs = {
     //------- --------  --------  --------  --------  --------  --------  -------- 
 //~YourPageCode//~
 
-
-
-
-
-
-actions.addPage = addPage;
-function addPage(theParams, theTarget) {
-    ThisPage.getPanel('frmNewPage').prompt(
-        {
-            isNew: true,
-            doc: { template: 'DefaultPage' }
-        }
-    ).then(function (theSubmitted, theData) {
-        if (!theSubmitted) {
-            return;
-        }
-
-        console.log( 'addPage Data', theData);
-        // ThisApp.common.apiCall({
-        //     url: '/design/ws/new-page?run&target=workspace',
-        //     data: theData
-        // }).then(function (theReply) {
-        //     refreshWorkspace();
-        //     showAppConsole(theData);
-        // })
-        //console.log('theData', theData);
-    })
-};
 
 //~YourPageCode~//~
 

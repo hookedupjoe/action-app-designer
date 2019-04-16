@@ -10,16 +10,15 @@ License: MIT
 		},
 		"content": [
 			{
-				"ctl": "button",
-				"pageaction": "addPage",
-				"label": "Add New Page"
+				"ctl": "title",
+				"size": "small",
+				"text": "Page Editor"
 			}
 		]
 	}
 
-		var ControlCode = {};
+	var ControlCode = {};
 	var ThisControl = {specs: ControlSpecs, options: { proto: ControlCode, parent: ThisApp }};
-
 
 	return ThisControl;
 

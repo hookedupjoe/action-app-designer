@@ -1,0 +1,76 @@
+{
+	"options": {
+		"padding": true
+	},
+	"content": [
+		{
+			"ctl": "title",
+			"name": "title",
+			"size": "large",
+			"color": "blue",
+			"icon": "columns",
+			"text": "PageName"
+		},
+		{
+			"ctl": "tabs",
+			"name": "pagetabs",
+			"tabs": [
+				{
+					"label": "Page Setup",
+					"name": "pagetabs-setup",
+					"ctl": "tab",
+					"content": [
+						{
+							"ctl": "control",
+							"controlname": "app/catalog/designer/controls/page-console-setup",
+							"name": "page-setup"
+						}
+					]
+				},
+			
+				{
+					"label": "Layout",
+					"name": "pagetabs-layout",
+					"ctl": "tab",
+					"content": [
+						{
+							"ctl": "control",
+							"controlname": "app/catalog/designer/controls/page-console-layout",
+							"name": "page-layout"
+						}
+					]
+				},
+				{
+					"label": "Events",
+					"name": "pagetabs-events",
+					"ctl": "tab",
+					"content": [
+						{
+							"ctl": "control",
+							"controlname": "app/catalog/designer/controls/page-console-events",
+							"name": "page-events"
+						}
+					]
+				},
+				{
+					"label": "Code",
+					"name": "pagetabs-code",
+					"ctl": "tab",
+					"content": [
+						{
+							"ctl": "textarea",
+							"label": "Page Code",
+							"name": "page-code"
+						}
+					]
+				}
+
+				
+			]
+
+
+		}
+
+	]
+
+}

@@ -6,13 +6,29 @@ License: MIT
 
 	var ControlSpecs = {
 		"options": {
-			"padding": true
+			"padding": false
 		},
 		"content": [
 			{
-				"ctl": "button",
-				"pageaction": "addPage",
-				"label": "Add New Page"
+				"ctl": "layout",
+				"name": "layout",
+			
+				"north": [
+					{
+						"ctl": "title",
+						"size": "small",
+						"text": "JSON - Helpers"
+					}
+				],
+
+				"center": [
+					{
+						"ctl": "title",
+						"size": "larger",
+						"text": "Post Master"
+					}
+				]
+
 			}
 		]
 	}

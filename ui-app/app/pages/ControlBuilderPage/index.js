@@ -10,7 +10,7 @@ License: MIT
         pageName: "ControlBuilderPage",
         pageTitle: "Control Builder",
         navOptions: {
-            topLink: true,
+            topLink: false,
             sideLink: true
         }
     };
