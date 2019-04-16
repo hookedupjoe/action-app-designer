@@ -7,7 +7,7 @@ License: MIT
     var SiteMod = ActionAppCore.module("site");
 
     var thisPageSpecs = {
-        pageName: "PageEditorPage",
+        pageName: "PageEditor",
         pageTitle: "Page Editor",
         navOptions: {
             topLink: true,

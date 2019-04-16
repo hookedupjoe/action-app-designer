@@ -189,9 +189,12 @@ License: MIT
 	}
 
 	var ControlCode = {
-		setup: setup
+		setup: setup,
+		refreshFromSource: refreshFromSource,
+		refreshFromLoaded: refreshFromLoaded
 	};
 
+	
 
 	//---- Initial Setup of the control
 	function setup(theDetails) {
@@ -206,12 +209,40 @@ License: MIT
 			tmpPageTitle = '[' + tmpPageName + '] ' + tmpTitle;
 		}
 		this.controlConfig.index.items.title.text = tmpPageTitle;
-		console.log( 'setup this', this);
-		
+
+		this.endpointURL = 'design/ws/page-code?run&source=workspace&pagename=' + tmpPageName;
+		this.refreshFromSource();
 	
 	}
 
+	function refreshFromLoaded(){
+		console.log( 'refreshFromLoaded', this.loaded);
+	}
 
+	function refreshFromSource(){
+		var tmpThis = this;
+
+		ThisApp.apiCall(this.endpointURL).then(function(theReply){
+			if( theReply && theReply.index && theReply.parts ){
+				var tmpIndex = theReply.index;
+				var tmpParts = theReply.parts;
+				var tmpCodeIndex = {};
+				
+				tmpThis.loaded = {
+					index: tmpIndex,
+					parts: tmpParts, 
+					codeIndex: tmpCodeIndex
+				}
+
+				for( var aName in tmpIndex){
+					var tmpCode = tmpParts[tmpIndex[aName]];
+					tmpCodeIndex[aName] = tmpCode
+				}
+			}
+			tmpThis.refreshFromLoaded();
+			
+		})
+	}
 
 
 
