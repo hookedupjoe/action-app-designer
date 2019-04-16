@@ -5616,7 +5616,7 @@ License: MIT
                             var tmpActParams = ThisApp.clone(tmpOnClick);
                             //--- Run action with only the params object, not target
                             //---  run in a way that it binds to this control when run
-                            return tmpToRun.apply(this, tmpActParams);
+                            return tmpToRun.apply(this, [tmpActParams]);
                         } else {
                             console.warn("Action not found for " + tmpAction)
                         }

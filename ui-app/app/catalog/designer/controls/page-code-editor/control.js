@@ -8,7 +8,7 @@ License: MIT
 		"options": {
 			"padding": false
 		},
-		"content": [		
+		"content": [
 			{
 				ctl: "layout",
 				name: "layout",
@@ -50,6 +50,11 @@ License: MIT
 										"meta": "&#160;",
 										"group": "page-code-outline",
 										"item": "setup-pageinfo",
+										"onClick": {
+											"run": "action",
+											"action": "showCode",
+											"name": "thisPageSpecs"
+										},
 										"icon": "file code outline",
 										"color": "blue"
 									},
@@ -60,6 +65,11 @@ License: MIT
 										"meta": "&#160;",
 										"group": "page-code-outline",
 										"item": "setup-resources",
+										"onClick": {
+											"run": "action",
+											"action": "showCode",
+											"name": "required"
+										},
 										"icon": "file code outline",
 										"color": "blue"
 									},
@@ -70,6 +80,11 @@ License: MIT
 										"meta": "&#160;",
 										"group": "page-code-outline",
 										"item": "setup-pagecode",
+										"onClick": {
+											"run": "action",
+											"action": "showCode",
+											"name": "YourPageCode"
+										},
 										"icon": "file code outline",
 										"color": "blue"
 									}
@@ -92,6 +107,11 @@ License: MIT
 										"meta": "&#160;",
 										"group": "page-code-outline",
 										"item": "layout-regions",
+										"onClick": {
+											"run": "action",
+											"action": "showCode",
+											"name": "layoutOptions"
+										},
 										"icon": "file code outline",
 										"color": "blue"
 									},
@@ -102,6 +122,11 @@ License: MIT
 										"meta": "&#160;",
 										"group": "page-code-outline",
 										"item": "layout-config",
+										"onClick": {
+											"run": "action",
+											"action": "showCode",
+											"name": "layoutConfig"
+										},
 										"icon": "file code outline",
 										"color": "blue"
 									}
@@ -124,6 +149,11 @@ License: MIT
 										"meta": "&#160;",
 										"group": "page-code-outline",
 										"item": "events-pre-init",
+										"onClick": {
+											"run": "action",
+											"action": "showCode",
+											"name": "_onPreInit"
+										},
 										"icon": "file code outline",
 										"color": "blue"
 									},
@@ -134,6 +164,11 @@ License: MIT
 										"meta": "&#160;",
 										"group": "page-code-outline",
 										"item": "events-init",
+										"onClick": {
+											"run": "action",
+											"action": "showCode",
+											"name": "_onInit"
+										},
 										"icon": "file code outline",
 										"color": "blue"
 									},
@@ -144,6 +179,11 @@ License: MIT
 										"meta": "&#160;",
 										"group": "page-code-outline",
 										"item": "events-preload",
+										"onClick": {
+											"run": "action",
+											"action": "showCode",
+											"name": "_onFirstActivate"
+										},
 										"icon": "file code outline",
 										"color": "blue"
 									},
@@ -154,6 +194,11 @@ License: MIT
 										"meta": "&#160;",
 										"group": "page-code-outline",
 										"item": "events-load",
+										"onClick": {
+											"run": "action",
+											"action": "showCode",
+											"name": "_onFirstLoad"
+										},
 										"icon": "file code outline",
 										"color": "blue"
 									},
@@ -164,6 +209,11 @@ License: MIT
 										"meta": "&#160;",
 										"group": "page-code-outline",
 										"item": "events-resize",
+										"onClick": {
+											"run": "action",
+											"action": "showCode",
+											"name": "_onResizeLayout"
+										},
 										"icon": "file code outline",
 										"color": "blue"
 									}
@@ -171,7 +221,7 @@ License: MIT
 							}
 						]
 					}
-				
+
 				],
 				north: [
 					{
@@ -183,9 +233,9 @@ License: MIT
 					}
 				]
 			}
-	
+
 		]
-	
+
 	}
 
 	var ControlCode = {
@@ -193,10 +243,13 @@ License: MIT
 		refreshFromSource: refreshFromSource,
 		refreshFromLoaded: refreshFromLoaded,
 		resizeEditor: resizeEditor,
+		refreshEditorFromCodeIndex: refreshEditorFromCodeIndex,
+		showCode: showCode,
+		showRequired: showRequired,
 		setupEditor: setupEditor
 	};
 
-	
+
 
 	//---- Initial Setup of the control
 	function setup(theDetails) {
@@ -213,71 +266,103 @@ License: MIT
 		this.controlConfig.index.items.title.text = tmpPageTitle;
 
 		this.setupEditor();
-		console.log( 'this.context.page.controller', this.context.page.controller);
+		console.log('this.context.page.controller', this.context.page.controller);
 		this.endpointURL = 'design/ws/page-code?run&source=workspace&pagename=' + tmpPageName;
 		this.refreshFromSource();
 
-	
 	}
 
-	function setupEditor(){
-		if( this.editorSetup === true ){
+	function setupEditor() {
+		if (this.editorSetup === true) {
 			return;
 		}
 		this.editorSetup = true;
 
-		  //~_onFirstLoad//~
-			this.aceEditorEl = this.getSpot("ace-editor");
-			console.log( 'this.aceEditorEl', this.aceEditorEl);
-			this.aceEditor = ace.edit(this.aceEditorEl.get(0));
-			this.aceEditor.setTheme("ace/theme/vibrant_ink");
-			this.aceEditor.setFontSize(16);
-			this.aceEditor.session.setMode("ace/mode/javascript");
-			this.aceEditor.session.setTabSize(2);
+		//~_onFirstLoad//~
+		this.aceEditorEl = this.getSpot("ace-editor");
+		console.log('this.aceEditorEl', this.aceEditorEl);
+		this.aceEditor = ace.edit(this.aceEditorEl.get(0));
+		this.aceEditor.setTheme("ace/theme/vibrant_ink");
+		this.aceEditor.setFontSize(16);
+		//this.aceEditor.session.setMode("ace/mode/javascript");
+		//this.aceEditor.session.setTabSize(2);
 
-			this.resizeEditor();
+
+		this.resizeEditor();
 	}
 
 	function resizeEditor() {
-    if(this.aceEditorEl && this.aceEditor){
-				var tmpLayoutPaneEl = this.aceEditorEl.closest('.ui-layout-pane');
-				console.log( 'tmpLayoutPaneEl', tmpLayoutPaneEl);
-				var tmpH = tmpLayoutPaneEl.height() || 500;
-				console.log( 'tmpH', tmpH);
-        this.aceEditorEl
-        .css('height','' + tmpH + 'px')
-        .css('position','relative')
-        this.aceEditor.resize(true);
-    }
-}
-
-	function refreshFromLoaded(){
-		console.log( 'refreshFromLoaded', this.loaded);
-		this.aceEditor.setValue('var tmp = "testing"')
+		if (this.aceEditorEl && this.aceEditor) {
+			var tmpLayoutPaneEl = this.aceEditorEl.closest('.ui-layout-pane');
+			console.log('tmpLayoutPaneEl', tmpLayoutPaneEl);
+			var tmpH = tmpLayoutPaneEl.height() || 500;
+			console.log('tmpH', tmpH);
+			this.aceEditorEl
+				.css('height', '' + tmpH + 'px')
+				.css('position', 'relative')
+			this.aceEditor.resize(true);
+		}
 	}
 
-	function refreshFromSource(){
+	function refreshEditorFromCodeIndex() {
+		//console.log( 'refreshEditorFromCodeIndex this.codeIndex', this.loaded.codeIndex);
+		for (var aName in this.loaded.codeIndex) {
+			var tmpCode = this.loaded.codeIndex[aName];
+			if (!(this.loaded.sessions[aName])) {
+				this.loaded.sessions[aName] = ace.createEditSession(aName, "ace/mode/javascript")
+				//	console.log( 'this.loaded.sessions[aName]', this.loaded.sessions[aName]);
+			}
+			this.loaded.sessions[aName].setValue(tmpCode);
+		}
+
+	}
+
+	var defaultCodeName = 'thisPageSpecs'
+	function refreshFromLoaded() {
+		//console.log( 'refreshFromLoaded', this.loaded);
+
+		this.refreshEditorFromCodeIndex();
+		this.showCode()
+		//this.aceEditor.setValue(tmpCode || 'not found')
+	}
+
+
+	function showCode(theParams) {
+		var tmpParams = theParams || {};
+		if (typeof (tmpParams) == 'string') {
+			tmpParams = { name: tmpParams }
+		}
+		var tmpName = tmpParams.name || tmpParams.codename || defaultCodeName;
+		this.aceEditor.setSession(this.loaded.sessions[tmpName])
+	}
+	function showRequired(theParams) {
+		console.log('showRequired params', theParams);
+		this.showCode('required');
+	}
+
+	function refreshFromSource() {
 		var tmpThis = this;
 
-		ThisApp.apiCall(this.endpointURL).then(function(theReply){
-			if( theReply && theReply.index && theReply.parts ){
+		ThisApp.apiCall(this.endpointURL).then(function (theReply) {
+			if (theReply && theReply.index && theReply.parts) {
 				var tmpIndex = theReply.index;
 				var tmpParts = theReply.parts;
 				var tmpCodeIndex = {};
-				
+
 				tmpThis.loaded = {
 					index: tmpIndex,
-					parts: tmpParts, 
-					codeIndex: tmpCodeIndex
+					parts: tmpParts,
+					codeIndex: tmpCodeIndex,
+					sessions: {}
 				}
 
-				for( var aName in tmpIndex){
+				for (var aName in tmpIndex) {
 					var tmpCode = tmpParts[tmpIndex[aName]];
 					tmpCodeIndex[aName] = tmpCode
 				}
 			}
 			tmpThis.refreshFromLoaded();
-			
+
 		})
 	}
 
