@@ -474,8 +474,13 @@ var ActionAppCore = {};
             }
 
             var tmpExists = false;
+            var tmpExisting = false;
             if (ThisApp.resCache[tmpURI.type] && ThisApp.resCache[tmpURI.type][tmpURI.uri]) {
                 tmpExists = true;
+                tmpExisting = ThisApp.resCache[tmpURI.type][tmpURI.uri];
+                //--- If existing in cache, also load reference as resource name
+                //     ** so a page can alias the control and use a cached version
+                tmpThis.res[tmpURI.type][(tmpURI.name || tmpURI.uri)] = tmpExisting;
             }
 
             //--- ToDo: Implement App Caching Rules            
@@ -483,10 +488,8 @@ var ActionAppCore = {};
                 tmpExists = false;
             }            
             //--- ToDo: Revisit cachine / using cache versions
-            //tmpExists = false;
-
             
-            if ((!tmpExists)) {
+            if( !(tmpExists) ){
                 var tmpURL = tmpURI.uri + me.getExtnForType(tmpURI.type);
                 tmpURL = assureRelative(tmpURL);
 
