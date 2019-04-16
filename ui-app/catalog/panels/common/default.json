@@ -23,19 +23,20 @@
 						{
 							"ctl": "control",
 							"controlname": "app/catalog/designer/controls/page-console-setup",
-							"name": "setupinfo"
+							"name": "page-setup"
 						}
 					]
 				},
+			
 				{
 					"label": "Layout",
 					"name": "pagetabs-layout",
 					"ctl": "tab",
 					"content": [
 						{
-							"ctl": "panel",
-							"controlname": "design/ws/panel-app-setup?appname=",
-							"name": "setupinfo"
+							"ctl": "control",
+							"controlname": "app/catalog/designer/controls/page-console-layout",
+							"name": "page-layout"
 						}
 					]
 				},
@@ -45,15 +46,27 @@
 					"ctl": "tab",
 					"content": [
 						{
-							"ctl": "panel",
-							"controlname": "design/ws/panel-app-setup?appname=",
-							"name": "setupinfo"
+							"ctl": "control",
+							"controlname": "app/catalog/designer/controls/page-console-events",
+							"name": "page-events"
 						}
 					]
 				},
 				{
 					"label": "Code",
 					"name": "pagetabs-code",
+					"ctl": "tab",
+					"content": [
+						{
+							"ctl": "textarea",
+							"label": "Page Code",
+							"name": "page-code"
+						}
+					]
+				},
+				{
+					"label": "Required",
+					"name": "pagetabs-Required",
 					"ctl": "tab",
 					"content": [
 						{
