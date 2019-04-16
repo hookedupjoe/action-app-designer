@@ -21,7 +21,7 @@ License: MIT
     thisPageSpecs.required = {
         controls: {
             map: {
-                "app/catalog/designer/controls/page-editor": "pageEditor"
+                "app/catalog/designer/controls/page-code-editor": "codeEditor"
             }
         },
         panels: {
@@ -126,7 +126,7 @@ License: MIT
             var tmpTabAttr = { group: openPageGroupName, item: tmpPageName };
             ThisApp.gotoTab(tmpTabAttr);
         } else {
-            var tmpNewPage = ThisPage.getControl('pageEditor').create('app-' + tmpPageName);
+            var tmpNewPage = ThisPage.getControl('codeEditor').create('page-' + tmpPageName);
             tmpNewPage.setup({ pagename: tmpPageName, title: tmpPageTitle });
             tmpNewPage.subscribe('update-app-setup', function(){
                 refreshWorkspace()

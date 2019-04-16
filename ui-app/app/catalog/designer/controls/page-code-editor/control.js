@@ -24,7 +24,7 @@ License: MIT
 						"ctl": "tbl-ol-node",
 						"name": "page-code",
 						"type": "page",
-						"details": "Page Outline",
+						"details": "Code Outline",
 						"meta": "&#160;",
 						"classes": "page-code-table",
 						"level": 1,
@@ -33,6 +33,48 @@ License: MIT
 						"icon": "columns",
 						"color": "green",
 						"content": [
+							{
+								"ctl": "tbl-ol-node",
+								"type": "setup",
+								"name": "Setup",
+								"details": "Page",
+								"meta": "&#160;",
+								"level": 2,
+								"icon": "certificate",
+								"color": "green",
+								"content": [
+									{
+										"ctl": "tbl-ol-node",
+										"name": "setup-pageinfo",
+										"details": "Page Info",
+										"meta": "&#160;",
+										"group": "page-code-outline",
+										"item": "setup-pageinfo",
+										"icon": "file code outline",
+										"color": "blue"
+									},
+									{
+										"ctl": "tbl-ol-node",
+										"name": "setup-resources",
+										"details": "Resources",
+										"meta": "&#160;",
+										"group": "page-code-outline",
+										"item": "setup-resources",
+										"icon": "file code outline",
+										"color": "blue"
+									},
+									{
+										"ctl": "tbl-ol-node",
+										"name": "setup-pagecode",
+										"details": "Page Code",
+										"meta": "&#160;",
+										"group": "page-code-outline",
+										"item": "setup-pagecode",
+										"icon": "file code outline",
+										"color": "blue"
+									}
+								]
+							},
 							{
 								"ctl": "tbl-ol-node",
 								"type": "layout",
@@ -134,7 +176,7 @@ License: MIT
 				north: [
 					{
 						"ctl": "title",
-						"name": "layout-title",
+						"name": "title",
 						"size": "large",
 						"color": "black",
 						"text": "Page Code"
@@ -164,6 +206,7 @@ License: MIT
 			tmpPageTitle = '[' + tmpPageName + '] ' + tmpTitle;
 		}
 		this.controlConfig.index.items.title.text = tmpPageTitle;
+		console.log( 'setup this', this);
 		
 	
 	}
