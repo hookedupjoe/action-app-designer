@@ -1,10 +1,10 @@
 {
 	"options": {
-		"padding": true
+		"padding": false
 	},
 	"content": [{
 		"ctl": "control",
-		"controlname": "app/catalog/designer/controls/page-editor",
+		"controlname": "app/catalog/designer/controls/page-code-editor",
 		"name": "page-editor"
 	}]
 
