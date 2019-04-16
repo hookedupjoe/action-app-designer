@@ -424,7 +424,7 @@ var ActionAppCore = {};
         var tmpResource = this.res[tmpType][theName];
         if (!(tmpResource)) {
             if (this.parentControl && isFunc(this.parentControl.getResourceForType)) {
-                tmpResource = this.parentControl.getResourceForType(theName)
+                tmpResource = this.parentControl.getResourceForType(theType, theName)
             }
             if (!(tmpResource)) {
                 tmpResource = ThisApp.resCache[tmpType][theName];
@@ -481,14 +481,17 @@ var ActionAppCore = {};
             //--- ToDo: Implement App Caching Rules            
             if (tmpURI.uri.startsWith('design/')) {
                 tmpExists = false;
-            }
+            }            
             //--- ToDo: Revisit cachine / using cache versions
             //tmpExists = false;
 
-
+            
             if ((!tmpExists)) {
                 var tmpURL = tmpURI.uri + me.getExtnForType(tmpURI.type);
                 tmpURL = assureRelative(tmpURL);
+
+                //ThisApp.appMessage("Getting " + tmpURL);
+
                 tmpRequests.push(tmpURI);
                 tmpDefs.push(
                     $.ajax({
@@ -552,7 +555,6 @@ var ActionAppCore = {};
         var tmpResourceData = theContent;
         var tmpName = theName;
         theType = resourceAlias[theType] || theType;
-        //tmpName = resourceAlias[tmpName] || tmpName;
         var tmpNS = tmpOptions.ns || tmpOptions.pageNamespace || tmpOptions.pageName || '';
         if (!tmpNS) {
             //--- Auto sense a namespace function, use it if present
@@ -5674,7 +5676,8 @@ License: MIT
 
                     var tmpCtl = this.parentControl.getControl(tmpControlName);
                     if (!(tmpCtl)) {
-                        console.warn("Could not find parent control " + tmpControlName)
+                        var tmpCached = ThisApp.resCache['controls'][tmpControlName];
+                        console.warn("initControlComponents Could not find parent control " + tmpControlName)
                     } else {
                         var tmpPart = tmpCtl.create(tmpPartName);
                         this.parts[tmpPartName] = tmpPart;
@@ -5797,19 +5800,14 @@ License: MIT
 
         tmpThis.getConfig().options = tmpThis.getConfig().options || {};
         this.assureRequired().then(function () {
-            var tmpInitResults = tmpThis.initControlComponents();
-            if (tmpInitResults && tmpInitResults.then) {
-                tmpThis.initControlComponents().then(function (theReply) {
-                    tmpThis.refreshControl();
-                    var tmpDoc = tmpOptions.doc || tmpThis.getConfig().options.doc || false;
-                    if (tmpDoc) {
-                        tmpThis.loadData(tmpDoc);
-                    }
-                    dfd.resolve(true)
-                });
-            } else {
-                dfd.resolve(false)
-            }
+            tmpThis.initControlComponents().then(function (theReply) {
+                tmpThis.refreshControl();
+                var tmpDoc = tmpOptions.doc || tmpThis.getConfig().options.doc || false;
+                if (tmpDoc) {
+                    tmpThis.loadData(tmpDoc);
+                }
+                dfd.resolve(true)
+            });
 
         })
 
