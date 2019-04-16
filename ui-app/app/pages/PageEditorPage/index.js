@@ -34,7 +34,7 @@ License: MIT
     thisPageSpecs.layoutOptions = {
         baseURL: pageBaseURL,
         north: false,
-        east: { html: "east" },
+        east: false,
         west: { partname: "west", control: "west" },
         center: { html: "body" },
         south: false
@@ -53,15 +53,15 @@ License: MIT
 
     // .. they happen in this order
 
-    //=== On Application Load ===
+    //=== On Page Load ===
     /*
     * This happens when the page is loaded, try to push activity back to when the tab is used
     *    If your component need to do stuff to be availale in the background, do it here
     */
     var actions = ThisPage.pageActions;
-    var openAppGroupName = 'workspace-outline';
-    var loadedApps = {};
-    window.loadedApps = loadedApps;
+    var openPageGroupName = 'page-editor-outline';
+    var loadedPages = {};
+    window.loadedPages = loadedPages;
     var appSetupConfig = false;
 
     ThisPage._onPreInit = function (theApp) {
@@ -111,43 +111,38 @@ License: MIT
     //=== Page Stuff
 
    
-    actions.refreshWorkspace = refreshWorkspace;
-    function refreshWorkspace(){
-        ThisPage.parts.west.parts.workspace.refreshFromURI();
-    };
     
-    
-    actions.showAppConsole = showAppConsole;
-    function showAppConsole(theParams, theTarget) {
+    actions.showPageConsole = showPageConsole;
+    function showPageConsole(theParams, theTarget) {
         var tmpParams = ThisApp.getActionParams(theParams, theTarget, ['appname', 'apptitle', 'name','title']);
-        var tmpAppName = tmpParams.appname  || tmpParams.name || '';
-        if (!(tmpAppName)) {
+        var tmpPageName = tmpParams.appname  || tmpParams.name || '';
+        if (!(tmpPageName)) {
             alert("No app name provided to open");
             return;
         }
-        var tmpAppTitle = tmpParams.apptitle || tmpParams.title || '';
+        var tmpPageTitle = tmpParams.apptitle || tmpParams.title || '';
 
-        if (loadedApps[tmpAppName]) {
-            var tmpTabAttr = { group: openAppGroupName, item: tmpAppName };
+        if (loadedPages[tmpPageName]) {
+            var tmpTabAttr = { group: openPageGroupName, item: tmpPageName };
             ThisApp.gotoTab(tmpTabAttr);
         } else {
-            var tmpNewApp = ThisPage.getControl('panelAppConsole').create('app-' + tmpAppName);
-            tmpNewApp.setup({ appname: tmpAppName, title: tmpAppTitle });
-            tmpNewApp.subscribe('update-app-setup', function(){
+            var tmpNewPage = ThisPage.getControl('pageEditor').create('app-' + tmpPageName);
+            tmpNewPage.setup({ pagename: tmpPageName, title: tmpPageTitle });
+            tmpNewPage.subscribe('update-app-setup', function(){
                 refreshWorkspace()
             })
-            loadedApps[tmpAppName] = tmpNewApp;
+            loadedPages[tmpPageName] = tmpNewPage;
 
             //--- For Debugging
-            window[tmpAppName] = tmpNewApp;
+            window[tmpPageName] = tmpNewPage;
 
             //--- Create a new card for this app
-            ThisPage.addToSpot('body', '<div appuse="cards" group="' + openAppGroupName + '" item="' + tmpAppName + '">TESTING</div>');
-            var tmpTabAttr = { group: openAppGroupName, item: tmpAppName };
+            ThisPage.addToSpot('body', '<div appuse="cards" group="' + openPageGroupName + '" item="' + tmpPageName + '">TESTING</div>');
+            var tmpTabAttr = { group: openPageGroupName, item: tmpPageName };
             //--- Find created cards jQuery element
-            var tmpNewGroup = ThisPage.getByAttr$({ group: openAppGroupName, item: tmpAppName, appuse: 'cards' });
-            //--- Load App Console into that card
-            tmpNewApp.loadToElement(tmpNewGroup);
+            var tmpNewGroup = ThisPage.getByAttr$({ group: openPageGroupName, item: tmpPageName, appuse: 'cards' });
+            //--- Load Page Console into that card
+            tmpNewPage.loadToElement(tmpNewGroup);
             //--- Go to the newly added card (to show it and hide others)
             ThisApp.gotoTab(tmpTabAttr);
         }

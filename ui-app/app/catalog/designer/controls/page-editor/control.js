@@ -210,8 +210,30 @@ License: MIT
 	}
 
 	var ControlCode = {
-	
+		setup: setup
 	};
+
+
+	//---- Initial Setup of the control
+	function setup(theDetails) {
+		var tmpPageName = theDetails.pagename || '';
+		this.params = this.params || {};
+		this.params.pagename = tmpPageName;
+		var tmpTitle = theDetails.title || theDetails.pagetitle || tmpPageName;
+		// this.controlConfig.index.controls.pages.controlname += tmpPageName
+		// this.controlConfig.index.controls.setupinfo.controlname += tmpPageName
+		var tmpPageTitle = tmpPageName
+		if (tmpTitle && (tmpTitle != tmpPageName)) {
+			tmpPageTitle = '[' + tmpPageName + '] ' + tmpTitle;
+		}
+		this.controlConfig.index.items.title.text = tmpPageTitle;
+		
+	
+	}
+
+
+
+
 
 	var ThisControl = { specs: ControlSpecs, options: { proto: ControlCode, parent: ThisApp } };
 
