@@ -39,9 +39,7 @@ License: MIT
 								"name": "Layout",
 								"details": "Layout",
 								"meta": "&#160;",
-								"level": 1,
-								"group": "page-code-outline",
-								"item": "outline-layout",
+								"level": 2,
 								"icon": "calculator",
 								"color": "orange",
 								"content": [
@@ -62,6 +60,68 @@ License: MIT
 										"meta": "&#160;",
 										"group": "page-code-outline",
 										"item": "layout-config",
+										"icon": "file code outline",
+										"color": "blue"
+									}
+								]
+							},
+							{
+								"ctl": "tbl-ol-node",
+								"type": "events",
+								"name": "Events",
+								"details": "Events",
+								"meta": "&#160;",
+								"level": 2,
+								"icon": "recycle",
+								"color": "black",
+								"content": [
+									{
+										"ctl": "tbl-ol-node",
+										"name": "events-pre-init",
+										"details": "Pre Init",
+										"meta": "&#160;",
+										"group": "page-code-outline",
+										"item": "events-pre-init",
+										"icon": "file code outline",
+										"color": "blue"
+									},
+									{
+										"ctl": "tbl-ol-node",
+										"name": "events-init",
+										"details": "Initialize",
+										"meta": "&#160;",
+										"group": "page-code-outline",
+										"item": "events-init",
+										"icon": "file code outline",
+										"color": "blue"
+									},
+									{
+										"ctl": "tbl-ol-node",
+										"name": "events-preload",
+										"details": "Pre Load",
+										"meta": "&#160;",
+										"group": "page-code-outline",
+										"item": "events-preload",
+										"icon": "file code outline",
+										"color": "blue"
+									},
+									{
+										"ctl": "tbl-ol-node",
+										"name": "events-load",
+										"details": "Initial Load",
+										"meta": "&#160;",
+										"group": "page-code-outline",
+										"item": "events-load",
+										"icon": "file code outline",
+										"color": "blue"
+									},
+									{
+										"ctl": "tbl-ol-node",
+										"name": "events-resize",
+										"details": "Resized",
+										"meta": "&#160;",
+										"group": "page-code-outline",
+										"item": "events-resize",
 										"icon": "file code outline",
 										"color": "blue"
 									}
