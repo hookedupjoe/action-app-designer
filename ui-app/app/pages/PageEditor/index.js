@@ -127,7 +127,7 @@ License: MIT
             ThisApp.gotoTab(tmpTabAttr);
         } else {
             var tmpNewPage = ThisPage.getControl('codeEditor').create('page-' + tmpPageName);
-            tmpNewPage.setup({ pagename: tmpPageName, title: tmpPageTitle });
+            
             tmpNewPage.subscribe('update-app-setup', function(){
                 refreshWorkspace()
             })
@@ -142,7 +142,9 @@ License: MIT
             //--- Find created cards jQuery element
             var tmpNewGroup = ThisPage.getByAttr$({ group: openPageGroupName, item: tmpPageName, appuse: 'cards' });
             //--- Load Page Console into that card
-            tmpNewPage.loadToElement(tmpNewGroup);
+            tmpNewPage.loadToElement(tmpNewGroup).then(function(theReply){
+                tmpNewPage.setup({ pagename: tmpPageName, title: tmpPageTitle });
+            });
             //--- Go to the newly added card (to show it and hide others)
             ThisApp.gotoTab(tmpTabAttr);
         }

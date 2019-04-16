@@ -15,8 +15,8 @@ License: MIT
 				center: [
 					{
 						ctl: "spot",
-						name: "center",
-						text: "Body Here"
+						name: "ace-editor",
+						text: ""
 					}
 				],
 				west: [
@@ -191,7 +191,9 @@ License: MIT
 	var ControlCode = {
 		setup: setup,
 		refreshFromSource: refreshFromSource,
-		refreshFromLoaded: refreshFromLoaded
+		refreshFromLoaded: refreshFromLoaded,
+		resizeEditor: resizeEditor,
+		setupEditor: setupEditor
 	};
 
 	
@@ -210,13 +212,48 @@ License: MIT
 		}
 		this.controlConfig.index.items.title.text = tmpPageTitle;
 
+		this.setupEditor();
+		console.log( 'this.context.page.controller', this.context.page.controller);
 		this.endpointURL = 'design/ws/page-code?run&source=workspace&pagename=' + tmpPageName;
 		this.refreshFromSource();
+
 	
 	}
 
+	function setupEditor(){
+		if( this.editorSetup === true ){
+			return;
+		}
+		this.editorSetup = true;
+
+		  //~_onFirstLoad//~
+			this.aceEditorEl = this.getSpot("ace-editor");
+			console.log( 'this.aceEditorEl', this.aceEditorEl);
+			this.aceEditor = ace.edit(this.aceEditorEl.get(0));
+			this.aceEditor.setTheme("ace/theme/vibrant_ink");
+			this.aceEditor.setFontSize(16);
+			this.aceEditor.session.setMode("ace/mode/javascript");
+			this.aceEditor.session.setTabSize(2);
+
+			this.resizeEditor();
+	}
+
+	function resizeEditor() {
+    if(this.aceEditorEl && this.aceEditor){
+				var tmpLayoutPaneEl = this.aceEditorEl.closest('.ui-layout-pane');
+				console.log( 'tmpLayoutPaneEl', tmpLayoutPaneEl);
+				var tmpH = tmpLayoutPaneEl.height() || 500;
+				console.log( 'tmpH', tmpH);
+        this.aceEditorEl
+        .css('height','' + tmpH + 'px')
+        .css('position','relative')
+        this.aceEditor.resize(true);
+    }
+}
+
 	function refreshFromLoaded(){
 		console.log( 'refreshFromLoaded', this.loaded);
+		this.aceEditor.setValue('var tmp = "testing"')
 	}
 
 	function refreshFromSource(){
