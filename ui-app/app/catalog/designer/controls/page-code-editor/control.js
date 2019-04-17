@@ -230,42 +230,18 @@ License: MIT
 						"fluid": true,
 						"readonly": true,
 						"inputClasses": "title",
-						"default": "My Page",
+						"default": "Page Editor",
 						"placeholder": "",
 						"content": [
 							{
 								"ctl": "button",
-								"color": "green",
-								"icon": "search",
-								"name": "title",
+								"color": "blue",
+								"icon": "save",
+								"name": "btn-save-code",
+								"label": "Save Changes",
 								"onClick": {
-									"run": "publish",
-									"event": "ctl-event",
-									"params": "search"
-								}
-							},
-							{
-								"ctl": "button",
-								"icon": "close",
-								"name": "btn-clear",
-								"onClick": {
-									"run": "publish",
-									"event": "ctl-event",
-									"params": "clear"
-								}
-							},
-							{
-								"ctl": "button",
-								"icon": "plus",
-								"text": "Add",
-								"right": "true",
-								"color": "orange",
-								"name": "btn-add",
-								"onClick": {
-									"run": "publish",
-									"event": "ctl-event",
-									"params": "add",
-									"validate": true
+									"run": "action",
+									"action": "saveCode"
 								}
 							}
 						]
@@ -285,6 +261,7 @@ License: MIT
 		refreshFromLoaded: refreshFromLoaded,
 		refreshEditorFromCodeIndex: refreshEditorFromCodeIndex,
 		showCode: showCode,
+		saveCode: saveCode,
 		uniqueGroups: uniqueGroups,
 		setupEditor: setupEditor
 	};
@@ -307,10 +284,14 @@ License: MIT
 		if (tmpTitle && (tmpTitle != tmpPageName)) {
 			tmpPageTitle = '[' + tmpPageName + '] ' + tmpTitle;
 		}
-		this.controlConfig.index.items.title.text = tmpPageTitle;
 
-
+		this.setFieldValue('title', tmpPageTitle);
 		this.setupEditor();
+		this.details = {
+			pagename: tmpPageName,
+			name: '',
+			target: 'workspace'
+		}
 		this.endpointURL = 'design/ws/page-code?run&source=workspace&pagename=' + tmpPageName;
 		this.refreshFromSource();
 
@@ -359,6 +340,35 @@ License: MIT
 	}
 
 
+
+	function saveCode() {
+		console.log( 'saveCode', saveCode);
+		var tmpNewCodeIndex = {};
+		for (var aName in this.loaded.sessions) {
+			var tmpSession = this.loaded.sessions[aName];
+			var tmpCode = tmpSession.getValue();
+			tmpNewCodeIndex[aName] = tmpCode;
+		}
+		var tmpRequest = {
+			pagename: this.details.pagename,
+			target: this.details.target || 'app',
+			name: this.details.name || '',
+			index: this.loaded.index,
+			parts: this.loaded.parts,
+			code: tmpNewCodeIndex,
+			origCode: this.loaded.codeIndex
+		}
+		console.log( 'tmpRequest', tmpRequest);
+		
+		ThisApp.apiCall({
+			url: '/design/ws/save-page',
+			data: tmpRequest
+		}).then(function(theReply){
+			console.log( 'theReply', theReply);
+		})
+	
+
+	}
 	function showCode(theParams) {
 		var tmpParams = theParams || {};
 		if (typeof (tmpParams) == 'string') {
