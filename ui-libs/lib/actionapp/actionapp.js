@@ -7196,6 +7196,7 @@ License: MIT
                 //tmpFieldType = 'hidden';
                 tmpReq = '';
                 tmpReadOnly = ' readonly '
+                
             }
             if (theControlName == 'hidden') {
                 tmpFieldType = 'hidden';
@@ -7208,9 +7209,7 @@ License: MIT
                 tmpHTML.push('</label>')
             }
             var tmpPH = '';
-            if (theObject.placeholder !== false) {
-                tmpPH = theObject.label || ''
-
+            if ((!tmpDispOnly) && theObject.placeholder !== false) {
                 if (typeof (theObject.placeholder) == 'string') {
                     tmpPH = theObject.placeholder;
                 }

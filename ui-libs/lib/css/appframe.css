@@ -24,6 +24,19 @@ html, body {
   display:none;
 }
 
+input[readonly], .ui.disabled.dropdown{
+  border: none !important;
+  font-weight: bolder;
+  color: #2185d0 !important;
+  cursor:default;
+}
+
+
+.full.ui.disabled.dropdown .ui.label {
+  border: none !important;
+  background-color:transparent !important;
+  color: #2185d0 !important;
+}
 
 .full.ui.disabled.dropdown .ui.label>.delete.icon {
   display:none;
@@ -33,6 +46,12 @@ html, body {
   height: 100%;
 }
 
+.ui.input > input.title {
+  font-size: 22px;
+  padding: 3px;
+  padding-left: 8px;
+  border: none;
+}
 .pad1 {
   padding: 1px !important;
 }

@@ -225,13 +225,53 @@ License: MIT
 				],
 				north: [
 					{
-						"ctl": "title",
+						"ctl": "field",
 						"name": "title",
-						"size": "large",
-						"color": "black",
-						"text": "Page Code"
+						"fluid": true,
+						"readonly": true,
+						"inputClasses": "title",
+						"default": "My Page",
+						"placeholder": "",
+						"content": [
+							{
+								"ctl": "button",
+								"color": "green",
+								"icon": "search",
+								"name": "title",
+								"onClick": {
+									"run": "publish",
+									"event": "ctl-event",
+									"params": "search"
+								}
+							},
+							{
+								"ctl": "button",
+								"icon": "close",
+								"name": "btn-clear",
+								"onClick": {
+									"run": "publish",
+									"event": "ctl-event",
+									"params": "clear"
+								}
+							},
+							{
+								"ctl": "button",
+								"icon": "plus",
+								"text": "Add",
+								"right": "true",
+								"color": "orange",
+								"name": "btn-add",
+								"onClick": {
+									"run": "publish",
+									"event": "ctl-event",
+									"params": "add",
+									"validate": true
+								}
+							}
+						]
 					}
 				]
+				
 			}
 
 		]
