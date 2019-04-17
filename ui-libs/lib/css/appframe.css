@@ -24,10 +24,9 @@ html, body {
   display:none;
 }
 
-input[readonly], .ui.disabled.dropdown{
+input[readonly], .ui.disabled.dropdown {
   border: none !important;
   font-weight: bolder;
-  color: #2185d0 !important;
   cursor:default;
 }
 
@@ -35,8 +34,14 @@ input[readonly], .ui.disabled.dropdown{
 .full.ui.disabled.dropdown .ui.label {
   border: none !important;
   background-color:transparent !important;
+}
+
+.ui.segment.blue input[readonly],
+.ui.segment.blue .ui.disabled.dropdown,
+.ui.segment.blue .full.ui.disabled.dropdown .ui.label {
   color: #2185d0 !important;
 }
+
 
 .full.ui.disabled.dropdown .ui.label>.delete.icon {
   display:none;
