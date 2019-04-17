@@ -5862,6 +5862,8 @@ License: MIT
             return '';
         }
 
+       
+
         for (var iPos = 0; iPos < tmpItems.length; iPos++) {
             var tmpItem = tmpItems[iPos];
             var tmpCtl = tmpItem.ctl || 'field'
@@ -5874,8 +5876,13 @@ License: MIT
                 if (tmpItem.color) {
                     tmpColor = tmpItem.color;
                 }
-
-                tmpTabsHTML.push('<div class=" ui bottom attached slim ' + tmpColor + ' segment " >');
+                var tmpUseLayout = (tmpItem.layout === true);
+                var tmpTabClasses = ' bottom attached slim ' + tmpColor + ' segment ';
+               
+                if( tmpUseLayout ){
+                    tmpTabClasses = tmpColor;
+                }
+                tmpTabsHTML.push('<div class=" ui ' + tmpTabClasses + '  " >');
                 for (var iTab = 0; iTab < tmpItem.tabs.length; iTab++) {
                     var tmpTab = tmpItem.tabs[iTab];
                     var tmpHidden = '';
@@ -5885,7 +5892,7 @@ License: MIT
                     } else {
                         tmpActive = ' active ';
                     }
-                    tmpTabsHTML.push('<div controls tab appuse="cards" group="' + tmpTabName + '" item="' + tmpTab.name + '" class="' + tmpHidden + '">');
+                    tmpTabsHTML.push('<div controls tab appuse="cards" group="' + tmpTabName + '" item="' + tmpTab.name + '" class="pad0 ' + tmpHidden + '">');
                     tmpTabsHTML.push(getContentHTML(theControlName, tmpTab.content, theControlObj))
                     tmpTabsHTML.push('</div>');
 
@@ -5894,13 +5901,21 @@ License: MIT
                 }
                 tmpTabsHTML.push('</div>');
 
-
+                
                 tmpTabs = tmpTabs.join('');
                 if (tmpTabs) {
-                    tmpTabs = '<div controls tabs class="ui top attached tabular menu" style="">' + tmpTabs + '</div>';
+                    tmpTabs = '<div controls tabs class="pad0 ui top attached tabular menu" style="">' + tmpTabs + '</div>';
+                    if( tmpUseLayout ){
+                        tmpTabs = '<div ctlcomp="layout"><div class="ui-layout-north">' + tmpTabs + '</div>';
+                    }
                 }
                 tmpHTML.push(tmpTabs);
-                tmpHTML.push(tmpTabsHTML.join(''));
+                tmpTabsHTML = tmpTabsHTML.join('');
+                if( tmpUseLayout ){
+                    tmpTabsHTML = '<div class="ui-layout-center">' + tmpTabsHTML + '</div>';
+                    tmpTabsHTML += '</div>';
+                }
+                tmpHTML.push(tmpTabsHTML);
 
             } else {
                 tmpHTML.push(getHTMLForControl(tmpCtl, tmpItem, theControlObj))

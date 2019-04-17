@@ -12,12 +12,12 @@ License: MIT
 			{
 				"ctl": "tabs",
 				"name": "pagetabs",
-				"layout": true,
 				"tabs": [
 					{
-						"label": "Code",
+						"label": "Tab One",
 						"name": "pagetabs-one",
 						"ctl": "tab",
+						"layout": true,
 						"content": [
 								{
 							ctl: "layout",
@@ -262,7 +262,7 @@ License: MIT
 						]
 					},
 					{
-						"label": "Resources",
+						"label": "Tab Two",
 						"name": "pagetabs-two",
 						"ctl": "tab",
 						"content": [
