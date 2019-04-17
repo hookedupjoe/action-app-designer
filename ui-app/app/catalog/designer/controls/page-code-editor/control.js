@@ -243,7 +243,6 @@ License: MIT
 		preLoad: preLoad,
 		refreshFromSource: refreshFromSource,
 		refreshFromLoaded: refreshFromLoaded,
-		resizeEditor: resizeEditor,
 		refreshEditorFromCodeIndex: refreshEditorFromCodeIndex,
 		showCode: showCode,
 		uniqueGroups: uniqueGroups,
@@ -300,19 +299,6 @@ License: MIT
 		this.aceEditor = ace.edit(this.aceEditorEl.get(0));
 		this.aceEditor.setTheme("ace/theme/vibrant_ink");
 		this.aceEditor.setFontSize(16);
-
-		this.resizeEditor();
-	}
-
-	function resizeEditor() {
-		if (this.aceEditorEl && this.aceEditor) {
-			var tmpLayoutPaneEl = this.aceEditorEl.closest('.ui-layout-pane');
-			var tmpH = tmpLayoutPaneEl.height() || 500;
-			this.aceEditorEl
-				.css('height', '' + tmpH + 'px')
-				.css('position', 'relative')
-			this.aceEditor.resize(true);
-		}
 	}
 
 	function refreshEditorFromCodeIndex() {

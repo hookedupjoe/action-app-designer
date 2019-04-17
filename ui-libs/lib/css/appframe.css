@@ -29,6 +29,10 @@ html, body {
   display:none;
 }
 
+.full-height, .ace_editor{
+  height: 100%;
+}
+
 .pad1 {
   padding: 1px !important;
 }
