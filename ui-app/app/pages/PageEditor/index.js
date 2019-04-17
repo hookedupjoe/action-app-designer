@@ -160,25 +160,29 @@ License: MIT
     
 
     actions.addPage = addPage;
-    function addPage(theParams, theTarget) {
+    function addPage() {
+        var tmpThis = this;
+        
         ThisPage.getPanel('frmNewPage').prompt(
             {
                 isNew: true,
-                doc: { template: 'default' }
+                doc: { template: 'DefaultPage' }
             }
         ).then(function (theSubmitted, theData) {
             if (!theSubmitted) {
                 return;
             }
-
-            // ThisApp.common.apiCall({
-            //     url: '/design/ws/new-page?run&target=workspace',
-            //     data: theData
-            // }).then(function (theReply) {
-            //     refreshWorkspace();
-            //     showAppConsole(theData);
-            // })
             console.log('theData', theData);
+        
+            theData.target = 'workspace';
+            ThisApp.common.apiCall({
+                url: '/design/ws/new-page?run',
+                data: theData
+            }).then(function (theReply) {
+                console.log( '/design/ws/new-page?run Reply', theReply);
+                tmpThis.refreshPages();
+            })
+            
         })
     };
 

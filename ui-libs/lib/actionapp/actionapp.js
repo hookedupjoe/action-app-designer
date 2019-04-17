@@ -3479,6 +3479,7 @@ License: MIT
             if (this.layoutOptions && this.layoutConfig) {
                 this.layoutSpot = ThisApp.getByAttr$({ group: ThisApp.pagesGroup, "item": this.pageName });
                 this.layout = this.layoutSpot.layout(this.layoutConfig);
+                //Todo: On refresh, publish
             };
 
         }
