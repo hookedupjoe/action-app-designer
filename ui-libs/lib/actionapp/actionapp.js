@@ -490,9 +490,13 @@ var ActionAppCore = {};
             //--- ToDo: Revisit cachine / using cache versions
             
             if( !(tmpExists) ){
-                var tmpURL = tmpURI.uri + me.getExtnForType(tmpURI.type);
+                
+                var tmpURL = tmpURI.uri;
+                if( !(tmpURI.uri.endsWith('/') || tmpURI.uri.endsWith('?open') || tmpURI.uri.endsWith('.xsp')) ){
+                    //--- Do not add extn to flat items
+                    tmpURL += me.getExtnForType(tmpURI.type);
+                } 
                 tmpURL = assureRelative(tmpURL);
-
                 //ThisApp.appMessage("Getting " + tmpURL);
 
                 tmpRequests.push(tmpURI);
@@ -2957,7 +2961,6 @@ License: MIT
                 tmpOpts[tmpRegion] = true;
             }
         }
-
         return theLayoutOptions;
 
     }
