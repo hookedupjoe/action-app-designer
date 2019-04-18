@@ -29,9 +29,8 @@ License: MIT
 								"icon": "search",
 								"name": "btn-search",
 								"onClick": {
-									"run": "publish",
-									"event": "ctl-event",
-									"params": "search"
+									"run": "action",
+									"action": "runSearch"
 								}
 							},
 							{
@@ -39,23 +38,8 @@ License: MIT
 								"icon": "close",
 								"name": "btn-clear",
 								"onClick": {
-									"run": "publish",
-									"event": "ctl-event",
-									"params": "clear"
-								}
-							},
-							{
-								"ctl": "button",
-								"icon": "plus",
-								"text": "Add",
-								"right": "true",
-								"color": "orange",
-								"name": "btn-add",
-								"onClick": {
-									"run": "publish",
-									"event": "ctl-event",
-									"params": "add",
-									"validate": true
+									"run": "action",
+									"action": "clearSearch"
 								}
 							}
 						]
@@ -65,10 +49,22 @@ License: MIT
 		]
 	}
 
-		var ControlCode = {};
+  var ControlCode = {
+		runSearch: runSearch,
+		clearSearch: clearSearch
+	};
+
+
+	function runSearch() {
+		console.log( 'runSearch', this);		
+	}
+	function clearSearch() {
+		console.log( 'clearSearch', this);		
+	}
+
+
+	//---- Return control
 	var ThisControl = {specs: ControlSpecs, options: { proto: ControlCode, parent: ThisApp }};
-
-
 	return ThisControl;
 
 })(ActionAppCore, $);
