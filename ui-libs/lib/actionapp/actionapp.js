@@ -2193,15 +2193,21 @@ var ActionAppCore = {};
         var tmpDefs = [];
         var tmpThis = this;
 
+        
+        
         if (theAppConfig.pages && theAppConfig.pages.length) {
             var tmpPageNames = theAppConfig.pages;
             for (var iPageName = 0; iPageName < tmpPageNames.length; iPageName++) {
                 var tmpPageName = tmpPageNames[iPageName];
-                var tmpURL = './app/pages/' + tmpPageName + '/index.js'
-                tmpDefs.push($.ajax({
-                    url: tmpURL,
-                    dataType: "script"
-                }));
+                var tmpPage = ThisApp.getPage(tmpPageName);
+                if( !(tmpPage)){
+                    var tmpURL = './app/pages/' + tmpPageName + '/index.js'
+                    tmpDefs.push($.ajax({
+                        url: tmpURL,
+                        dataType: "script"
+                    }));
+                }
+               
             }
         }
 
@@ -2821,15 +2827,7 @@ License: MIT
         this.pageActions = {}; //--- A place for actions
         this.pageTitle = this.options.pageTitle || '';
 
-        this.context = {
-            app: ThisApp.context,
-            page: {
-                controller: this,
-                data: this.options.contextData || {}
-            }
-        };
-        //--- Quick access to context data
-        this.contextData = this.context.page.data;
+        
 
         this.res = {
             "panels": {},
@@ -3413,6 +3411,16 @@ License: MIT
             this.app = theApp;
         }
 
+        this.context = {
+            app: ThisApp.context,
+            page: {
+                controller: this,
+                data: this.options.contextData || {}
+            }
+        };
+        //--- Quick access to context data
+        this.contextData = this.context.page.data;
+        
         //--- Grab some common functionality from app ...
         var tmpStuffToPullIn = [
             , 'getResourceURIsForType'
