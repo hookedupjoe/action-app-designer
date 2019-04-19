@@ -1,0 +1,11 @@
+{
+	"options": {
+		"padding": false
+	},
+	"content": [{
+		"ctl": "title",
+		"color": "blue",
+    "name": "title",
+    "text": "Title"
+	}]
+}
