@@ -2,8 +2,8 @@
 Designed to build applications using the Action App environment
 
 # To Run
-npm install
-npm start
+* npm install
+* npm start
 
 # Note
 
