@@ -1,0 +1,2 @@
+cls
+ibmcloud app push
