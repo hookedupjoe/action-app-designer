@@ -1,6 +1,9 @@
 # Action App Designer
 Designed to build applications using the Action App environment
 
+* Author - Joseph Francis
+* License - MIT
+
 # To Run
 * npm install
 * npm start
