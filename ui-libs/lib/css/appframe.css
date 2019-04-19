@@ -42,6 +42,66 @@ input[readonly], .ui.disabled.dropdown {
   color: #2185d0 !important;
 }
 
+.ui.segment.orange input[readonly],
+.ui.segment.orange .ui.disabled.dropdown,
+.ui.segment.orange .full.ui.disabled.dropdown .ui.label {
+ color: #cf590c !important;
+}
+
+.ui.segment.green input[readonly],
+.ui.segment.green .ui.disabled.dropdown,
+.ui.segment.green .full.ui.disabled.dropdown .ui.label {
+ color: #198f35 !important;
+}
+
+.ui.segment.purple input[readonly],
+.ui.segment.purple .ui.disabled.dropdown,
+.ui.segment.purple .full.ui.disabled.dropdown .ui.label {
+ color: #82299f !important;
+}
+
+.ui.segment.violet input[readonly],
+.ui.segment.violet .ui.disabled.dropdown,
+.ui.segment.violet .full.ui.disabled.dropdown .ui.label {
+ color: #502aa1 !important;
+}
+
+.ui.segment.red input[readonly],
+.ui.segment.red .ui.disabled.dropdown,
+.ui.segment.red .full.ui.disabled.dropdown .ui.label {
+ color: #b21e1e !important;
+}
+
+.ui.segment.brown input[readonly],
+.ui.segment.brown .ui.disabled.dropdown,
+.ui.segment.brown .full.ui.disabled.dropdown .ui.label {
+ color: #975b33 !important;
+}
+
+.ui.segment.yellow input[readonly],
+.ui.segment.yellow .ui.disabled.dropdown,
+.ui.segment.yellow .full.ui.disabled.dropdown .ui.label {
+ color: #cd9903 !important;
+}
+
+.ui.segment.olive input[readonly],
+.ui.segment.olive .ui.disabled.dropdown,
+.ui.segment.olive .full.ui.disabled.dropdown .ui.label {
+ color: #8d9e13 !important;
+}
+
+.ui.segment.teal input[readonly],
+.ui.segment.teal .ui.disabled.dropdown,
+.ui.segment.teal .full.ui.disabled.dropdown .ui.label {
+ color: #00827c !important;
+}
+
+.ui.segment.pink input[readonly],
+.ui.segment.pink .ui.disabled.dropdown,
+.ui.segment.pink .full.ui.disabled.dropdown .ui.label {
+ color: #c71f7e !important;
+}
+
 
 .full.ui.disabled.dropdown .ui.label>.delete.icon {
   display:none;
