@@ -6,267 +6,464 @@ License: MIT
 
 	var ControlSpecs = {
 		"options": {
-			"padding": true
+			"padding": false
 		},
 		"content": [
-			{
-				"ctl": "title",
-				"name": "title",
-				"size": "large",
-				"color": "blue",
-				"icon": "columns",
-				"text": "PageName"
-			},
-			{
-				"ctl": "tabs",
-				"name": "pagetabs",
-				"tabs": [
-					{
-						"label": "Setup",
-						"name": "pagetabs-setup",
-						"ctl": "tab",
-						"content": [
-							{
-								"ctl": "panel",
-								"controlname": "design/ws/panel-app-setup?appname=",
-								"name": "setupinfo"
+		{
+			ctl: "layout",
+			north: [
+				{
+					"ctl": "field",
+					"name": "title",
+					"fluid": true,
+					"readonly": true,
+					"inputClasses": "title",
+					"default": "Page",
+					"placeholder": "",
+					"content": [
+						{
+							"ctl": "button",
+							"color": "black",
+							basic: true,
+							right: true,
+							"icon": "cancel",
+							"name": "btn-close-page",
+							"label": "Close",
+							"onClick": {
+								"run": "action",
+								"action": "closePage"
 							}
-						]
-					},
-					{
-						"label": "Layout",
-						"name": "pagetabs-layout",
-						"ctl": "tab",
-						"content": [
-							{
-								"ctl": "panel",
-								"controlname": "design/ws/panel-app-setup?appname=",
-								"name": "setupinfo"
+						}
+					]
+				}
+			],
+			center: [
+				{
+					"ctl": "tabs",
+					"name": "pagetabs",
+					"layout": true,
+					"tabs": [
+						{
+							"label": "Code",
+							"name": "pagetabs-one",
+							"ctl": "tab",
+							"content": [
+									{
+								ctl: "layout",
+								name: "layout",
+								center: [
+									{
+										ctl: "spot",
+										name: "ace-editor",
+										text: ""
+									}
+								],
+								west: [
+									{
+										"ctl": "tbl-ol-node",
+										"name": "page-code",
+										"type": "page",
+										"details": "Code Outline",
+										"meta": "&#160;",
+										"classes": "page-code-table",
+										"level": 1,
+										"group": "page-code-outline",
+										"item": "page",
+										"icon": "columns",
+										"color": "green",
+										"content": [
+											{
+												"ctl": "tbl-ol-node",
+												"type": "setup",
+												"name": "Setup",
+												"details": "Page",
+												"meta": "&#160;",
+												"level": 2,
+												"icon": "certificate",
+												"color": "green",
+												"content": [
+													{
+														"ctl": "tbl-ol-node",
+														"name": "setup-pageinfo",
+														"details": "Page Info",
+														"meta": "&#160;",
+														"group": "page-code-outline",
+														"item": "setup-pageinfo",
+														"onClick": {
+															"run": "action",
+															"action": "showCode",
+															"name": "thisPageSpecs"
+														},
+														"icon": "file code outline",
+														"color": "blue"
+													},
+													{
+														"ctl": "tbl-ol-node",
+														"name": "setup-resources",
+														"details": "Resources",
+														"meta": "&#160;",
+														"group": "page-code-outline",
+														"item": "setup-resources",
+														"onClick": {
+															"run": "action",
+															"action": "showCode",
+															"name": "required"
+														},
+														"icon": "file code outline",
+														"color": "blue"
+													},
+													{
+														"ctl": "tbl-ol-node",
+														"name": "setup-pagecode",
+														"details": "Page Code",
+														"meta": "&#160;",
+														"group": "page-code-outline",
+														"item": "setup-pagecode",
+														"onClick": {
+															"run": "action",
+															"action": "showCode",
+															"name": "YourPageCode"
+														},
+														"icon": "file code outline",
+														"color": "blue"
+													}
+												]
+											},
+											{
+												"ctl": "tbl-ol-node",
+												"type": "layout",
+												"name": "Layout",
+												"details": "Layout",
+												"meta": "&#160;",
+												"level": 2,
+												"icon": "calculator",
+												"color": "orange",
+												"content": [
+													{
+														"ctl": "tbl-ol-node",
+														"name": "layout-regions",
+														"details": "Regions",
+														"meta": "&#160;",
+														"group": "page-code-outline",
+														"item": "layout-regions",
+														"onClick": {
+															"run": "action",
+															"action": "showCode",
+															"name": "layoutOptions"
+														},
+														"icon": "file code outline",
+														"color": "blue"
+													},
+													{
+														"ctl": "tbl-ol-node",
+														"name": "layout-config",
+														"details": "Config",
+														"meta": "&#160;",
+														"group": "page-code-outline",
+														"item": "layout-config",
+														"onClick": {
+															"run": "action",
+															"action": "showCode",
+															"name": "layoutConfig"
+														},
+														"icon": "file code outline",
+														"color": "blue"
+													}
+												]
+											},
+											{
+												"ctl": "tbl-ol-node",
+												"type": "events",
+												"name": "Events",
+												"details": "Events",
+												"meta": "&#160;",
+												"level": 2,
+												"icon": "recycle",
+												"color": "black",
+												"content": [
+													{
+														"ctl": "tbl-ol-node",
+														"name": "events-pre-init",
+														"details": "Pre Init",
+														"meta": "&#160;",
+														"group": "page-code-outline",
+														"item": "events-pre-init",
+														"onClick": {
+															"run": "action",
+															"action": "showCode",
+															"name": "_onPreInit"
+														},
+														"icon": "file code outline",
+														"color": "blue"
+													},
+													{
+														"ctl": "tbl-ol-node",
+														"name": "events-init",
+														"details": "Initialize",
+														"meta": "&#160;",
+														"group": "page-code-outline",
+														"item": "events-init",
+														"onClick": {
+															"run": "action",
+															"action": "showCode",
+															"name": "_onInit"
+														},
+														"icon": "file code outline",
+														"color": "blue"
+													},
+													{
+														"ctl": "tbl-ol-node",
+														"name": "events-preload",
+														"details": "Pre Load",
+														"meta": "&#160;",
+														"group": "page-code-outline",
+														"item": "events-preload",
+														"onClick": {
+															"run": "action",
+															"action": "showCode",
+															"name": "_onFirstActivate"
+														},
+														"icon": "file code outline",
+														"color": "blue"
+													},
+													{
+														"ctl": "tbl-ol-node",
+														"name": "events-load",
+														"details": "Initial Load",
+														"meta": "&#160;",
+														"group": "page-code-outline",
+														"item": "events-load",
+														"onClick": {
+															"run": "action",
+															"action": "showCode",
+															"name": "_onFirstLoad"
+														},
+														"icon": "file code outline",
+														"color": "blue"
+													},
+													{
+														"ctl": "tbl-ol-node",
+														"name": "events-resize",
+														"details": "Resized",
+														"meta": "&#160;",
+														"group": "page-code-outline",
+														"item": "events-resize",
+														"onClick": {
+															"run": "action",
+															"action": "showCode",
+															"name": "_onResizeLayout"
+														},
+														"icon": "file code outline",
+														"color": "blue"
+													}
+												]
+											}
+										]
+									}
+				
+								],
+								north: [
+									{
+										"ctl": "field",
+										"name": "code-title",
+										"fluid": true,
+										"readonly": true,
+										"inputClasses": "title",
+										"default": "Page Editor",
+										"placeholder": "",
+										"content": [
+											{
+												"ctl": "button",
+												"color": "blue",
+												"icon": "save",
+												"name": "btn-save-code",
+												"label": "Save Changes",
+												"onClick": {
+													"run": "action",
+													"action": "saveCode"
+												}
+											}
+										]
+									}
+								]
+								
 							}
-						]
-					},
-					{
-						"label": "Events",
-						"name": "pagetabs-events",
-						"ctl": "tab",
-						"content": [
-							{
-								"ctl": "panel",
-								"controlname": "design/ws/panel-app-setup?appname=",
-								"name": "setupinfo"
-							}
-						]
-					},
-					{
-						"label": "Code",
-						"name": "pagetabs-code",
-						"ctl": "tab",
-						"content": [
-							{
-								"ctl": "panel",
-								"controlname": "design/ws/panel-app-setup?appname=",
-								"name": "setupinfo"
-							}
-						]
-					}
-
-					
-				]
-
-
-			}
+							]
+						},
+						{
+							"label": "Page Catalog",
+							"name": "pagetabs-catalog",
+							"ctl": "tab",
+							"content": [
+								{
+									"ctl": "pagespot",
+									"spotname": "pagetabs-catalog",
+									"text": "Page Catalog will go here.  Controls, Panels, Templates and HTML"
+								}
+							]
+						}
+					]
+				}
+			]
+		}
 
 		]
 
 	}
 
 	var ControlCode = {
-		// actions: {
-		// 	promptAppSetup: promptAppSetup
-		// },
-		promptAppSetup: promptAppSetup,
 		setup: setup,
-		refreshPages: refreshPages,
-		refreshSetupInfo: refreshSetupInfo,
-		getSetupInfo: getSetupInfo,
-		cancelAppSetup: cancelAppSetup,
-		saveAppSetup: saveAppSetup,
-		updateAppSetup: updateAppSetup,
-		createAppDeployment: createAppDeployment,
-		vscodeDeployment: vscodeDeployment,
-		rebuildApp: rebuildApp,
-		openInCode: openInCode,
-		promptForSetupInfo: promptForSetupInfo
-	};
-
-	var ThisControl = { specs: ControlSpecs, options: { proto: ControlCode, parent: ThisApp } };
-
-	function promptAppSetup(theParams, theTarget) {
-		this.promptForSetupInfo();
-		this.setItemDisplay('edit-app-setup', false)
-		this.setItemDisplay('save-app-setup', true)
-		this.setItemDisplay('cancel-app-setup', true)
+		preLoad: preLoad,
+		refreshFromSource: refreshFromSource,
+		refreshFromLoaded: refreshFromLoaded,
+		refreshEditorFromCodeIndex: refreshEditorFromCodeIndex,
+		showCode: showCode,
+		saveCode: saveCode,
+		uniqueGroups: uniqueGroups,
+		setupEditor: setupEditor
 	};
 
 
-	function cancelAppSetup(theParams, theTarget) {
-		this.setItemDisplay('edit-app-setup', true)
-		this.setItemDisplay('save-app-setup', false)
-		this.setItemDisplay('cancel-app-setup', false)
-		this.parts.setupinfo.refreshUI({ readonly: true });
-
-	};
-
-	function saveAppSetup(theParams, theTarget) {
-		// var tmpParams = ThisApp.getActionParams(theParams, theTarget, ['appname']);
-		var tmpAppName = this.params.appname || '';
-
-		this.setItemDisplay('edit-app-setup', true)
-		this.setItemDisplay('save-app-setup', false)
-		this.setItemDisplay('cancel-app-setup', false)
-
-		var tmpData = this.getSetupInfo();
-		var tmpThis = this;
-		this.updateAppSetup(tmpAppName, tmpData).then(function (theReply) {
-			if (theReply === true) {
-				tmpThis.gotoItem("preview-link");
-			} else {
-				alert("Not Updated, there was a problem", "Did not save", "e")
-			}
-		})
-
-	};
-
-
-	function updateAppSetup(theAppName, theDetails) {
-		var dfd = jQuery.Deferred();
-
-
-		try {
-			var tmpAppName = theAppName;
-			if (!(tmpAppName)) {
-				throw ("No app to open");
-			}
-			var tmpNewSetupInfo = theDetails;
-			if (!(tmpNewSetupInfo)) {
-				throw ("No details to process");
-			}
-
-			var tmpThis = this;
-			ThisApp.apiCall({
-				url: '/design/ws/update-app-setup',
-				data: (tmpNewSetupInfo)
-			}).then(function (theReply) {
-				tmpThis.refreshSetupInfo();
-				tmpThis.parts.setupinfo.refreshUI({ readonly: true });
-				tmpThis.publish('update-app-setup', [tmpThis]);
-				dfd.resolve(true)
-			})
-		} catch (ex) {
-			console.error("Calling app setup update", ex)
-			dfd.resolve(false);
-		}
-
-
-		return dfd.promise();
-	};
-
-
-
-	function createAppDeployment() {
-		var tmpAppName = this.params.appname || ''
-		if (!(tmpAppName)) {
-			alert("No app to open");
-			return;
-		}
-		var tmpURL = '/design/ws/deploy-app?appname=' + tmpAppName
-		var tmpThis = this;
-		ThisApp.apiCall({ url: tmpURL }).then(function (theReply) {
-			ThisApp.confirm("Done, open in VS code now?", "Deployment Created").then((function (theIsYes) {
-				if (!theIsYes) {
-					return;
-				}
-				tmpThis.vscodeDeployment({ appname: tmpAppName })
-			}).bind(this))
-		})
-	};
-
-	function vscodeDeployment() {
-		var tmpAppName = this.params.appname || ''
-		if (!(tmpAppName)) {
-			alert("No app to open");
-			return;
-		}
-		var tmpURL = '/design/ws/launch-app-deploy?appname=' + tmpAppName
-		ThisApp.apiCall({ url: tmpURL }).then(function (theReply) {
-
-		})
-	};
-
-
-	function rebuildApp() {
-		var tmpAppName = this.params.appname || ''
-		if (!(tmpAppName)) {
-			alert("No app to open");
-			return;
-		}
-		ThisApp.apiCall({ url: '/design/ws/build-app?appname=' + tmpAppName }).then(function (theReply) {
-			alert("Recreated " + tmpAppName, "Build Complete", "c");
-		})
-	};
-
-
-
-	function openInCode() {
-		var tmpAppName = this.params.appname || ''
-		if (!(tmpAppName)) {
-			alert("No app to open");
-			return;
-		}
-		if (!(tmpAppName)) {
-			alert("No app to open");
-			return;
-		}
-		ThisApp.apiCall({ url: '/design/ws/launch-app?appname=' + tmpAppName })
-	};
-
-
+	//--- Run before
+	function preLoad(theDetails) {
+		var tmpPageName = theDetails.pagename || '';
+		this.uniqueGroups(tmpPageName);
+	}
 	//---- Initial Setup of the control
 	function setup(theDetails) {
-		// var tmpAppName = theDetails.appname || '';
-		// this.params = this.params || {};
-		// this.params.appname = tmpAppName;
-		// var tmpTitle = theDetails.title || theDetails.apptitle || tmpAppName;
-		// this.controlConfig.index.controls.pages.controlname += tmpAppName
-		// this.controlConfig.index.controls.setupinfo.controlname += tmpAppName
-		// var tmpAppTitle = tmpAppName
-		// if (tmpTitle) {
-		// 	tmpAppTitle = '[' + tmpAppName + '] ' + tmpTitle;
-		// }
-		// this.controlConfig.index.items.title.text = tmpAppTitle;
-		// this.controlConfig.index.items["preview-link"].attr = {
-		// 	href: "http://localhost:33461/" + tmpAppName,
-		// 	target: "app" + tmpAppName
-		// }
+		var tmpPageName = theDetails.pagename || '';
+		this.params = this.params || {};
+		this.params.pagename = tmpPageName;
+		var tmpTitle = theDetails.title || theDetails.pagetitle || tmpPageName;
+		// this.controlConfig.index.controls.pages.controlname += tmpPageName
+		// this.controlConfig.index.controls.setupinfo.controlname += tmpPageName
+		var tmpPageTitle = tmpPageName
+		if (tmpTitle && (tmpTitle != tmpPageName)) {
+			tmpPageTitle = '[' + tmpPageName + '] ' + tmpTitle;
+		}
+
+		this.setFieldValue('title', tmpPageTitle);
+		this.setupEditor();
+		this.details = {
+			pagename: tmpPageName,
+			name: '',
+			target: 'workspace'
+		}
+		this.endpointURL = 'design/ws/page-code?run&source=workspace&pagename=' + tmpPageName;
+		this.refreshFromSource();
 
 	}
 
-	function promptForSetupInfo() {
-		this.parts.setupinfo.refreshUI({ readonly: false });
-		this.gotoItem('setupinfo');
-		this.parts.setupinfo.gotoField("appname");
+
+	function uniqueGroups(theUniqueness) {
+		var tmpIndex = this.getIndex();
+		if (tmpIndex && tmpIndex.items) {
+			for (var aName in tmpIndex.items) {
+				var tmpEntry = tmpIndex.items[aName];
+				if (tmpEntry && ThisApp.util.isStr(tmpEntry.group)) {
+					tmpEntry.group += theUniqueness;
+				}
+			}
+		}
 	}
 
-	function refreshPages() {
-		this.parts.pages.refreshFromURI();
+	function setupEditor() {
+		if (this.editorSetup === true) {
+			return;
+		}
+		this.editorSetup = true;
+		
+		this.aceEditorEl = this.getSpot("ace-editor");
+		this.aceEditor = ace.edit(this.aceEditorEl.get(0));
+		this.aceEditor.setTheme("ace/theme/vibrant_ink");
+		this.aceEditor.setFontSize(16);
 	}
 
-	function refreshSetupInfo() {
-		this.parts.setupinfo.refreshFromURI();
+	function refreshEditorFromCodeIndex() {
+		for (var aName in this.loaded.codeIndex) {
+			var tmpCode = this.loaded.codeIndex[aName];
+			if (!(this.loaded.sessions[aName])) {
+				this.loaded.sessions[aName] = ace.createEditSession(aName, "ace/mode/javascript")
+			}
+			this.loaded.sessions[aName].setValue(tmpCode);
+		}
+
 	}
-	function getSetupInfo() {
-		return this.parts.setupinfo.getData();
+
+	var defaultCodeName = 'thisPageSpecs'
+	function refreshFromLoaded() {
+		this.refreshEditorFromCodeIndex();
+		this.showCode();
 	}
+
+
+
+	function saveCode() {
+		console.log( 'saveCode', saveCode);
+		var tmpNewCodeIndex = {};
+		for (var aName in this.loaded.sessions) {
+			var tmpSession = this.loaded.sessions[aName];
+			var tmpCode = tmpSession.getValue();
+			tmpNewCodeIndex[aName] = tmpCode;
+		}
+		var tmpRequest = {
+			pagename: this.details.pagename,
+			target: this.details.target || 'app',
+			name: this.details.name || '',
+			index: this.loaded.index,
+			parts: this.loaded.parts,
+			code: tmpNewCodeIndex,
+			origCode: this.loaded.codeIndex
+		}
+		console.log( 'tmpRequest', tmpRequest);
+		
+		ThisApp.apiCall({
+			url: '/design/ws/save-page',
+			data: tmpRequest
+		}).then(function(theReply){
+			console.log( 'theReply', theReply);
+		})
+	
+
+	}
+	function showCode(theParams) {
+		var tmpParams = theParams || {};
+		if (typeof (tmpParams) == 'string') {
+			tmpParams = { name: tmpParams }
+		}
+		var tmpName = tmpParams.name || tmpParams.codename || defaultCodeName;
+		this.aceEditor.setSession(this.loaded.sessions[tmpName])
+	}
+
+	function refreshFromSource() {
+		var tmpThis = this;
+
+		ThisApp.apiCall(this.endpointURL).then(function (theReply) {
+			if (theReply && theReply.index && theReply.parts) {
+				var tmpIndex = theReply.index;
+				var tmpParts = theReply.parts;
+				var tmpCodeIndex = {};
+
+				tmpThis.loaded = {
+					index: tmpIndex,
+					parts: tmpParts,
+					codeIndex: tmpCodeIndex,
+					sessions: {}
+				}
+
+				for (var aName in tmpIndex) {
+					var tmpCode = tmpParts[tmpIndex[aName]];
+					tmpCodeIndex[aName] = tmpCode
+				}
+			}
+			tmpThis.refreshFromLoaded();
+
+		})
+	}
+
+
+
+	var ThisControl = { specs: ControlSpecs, options: { proto: ControlCode, parent: ThisApp } };
 
 	return ThisControl;
 })(ActionAppCore, $);

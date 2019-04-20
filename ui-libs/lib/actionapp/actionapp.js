@@ -1086,7 +1086,7 @@ var ActionAppCore = {};
                 console.error("Can not go to tab, group and item are required.")
             }
         }
-        ThisApp.publish('_app:gotoTab', { group: tmpOptions.group, item: tmpOptions.item })
+        ThisApp.publish('gotoTab', { group: tmpOptions.group, item: tmpOptions.item })
 
         return me;
     }
@@ -1985,7 +1985,7 @@ var ActionAppCore = {};
         //--- Dynamically create the common dialog spot
         var tmpNewDiv = $('<div spot="site:global-dialog" class="hidden"></div>').appendTo('body');
         //--- Populate with common dialog (ToDo: Allow override?)
-        var tmpHTML = '<div appuse="global-dialog" class="ui modal longer inverted"><button style="float:right;margin-top:5px;margin-right:5px;" class="icon ui basic blue button circle" action="_app:closeCommonDialog" ><i class="close icon"></i> <span spot="site:dialog-close-text">Close</span></button><div spot="site:dialog-header" class="header"></div>  <div spot="site:dialog-content" class="content common-dialog-content"> </div> <div spot="site:dialog-footer" class="common-dialog-footer"></div> </div> ';
+        var tmpHTML = '<div appuse="global-dialog" class="ui modal longer inverted"><button style="float:right;margin-top:5px;margin-right:5px;" class="icon ui basic blue button circle" action="closeCommonDialog" ><i class="close icon"></i> <span spot="site:dialog-close-text">Close</span></button><div spot="site:dialog-header" class="header"></div>  <div spot="site:dialog-content" class="content common-dialog-content"> </div> <div spot="site:dialog-footer" class="common-dialog-footer"></div> </div> ';
         me.loadSpot(commonDialogSpot, tmpHTML)
     }
 
@@ -2386,7 +2386,9 @@ var ActionAppCore = {};
         me.registerAction("showPage", showPage);
         me.registerAction("showSubPage", showSubPage);
         me.registerAction("selectMe", showSubPage);
-        me.registerAction("openPage", openPage);
+
+        me.registerAction("closeCommonDialog", me.closeCommonDialog);
+        me.registerAction("gotoTab", me.gotoTab);
 
         me.registerAction("toggleMe", toggleMe);
         me.registerAction("outlineDisplay", outlineDisplay);
@@ -5920,7 +5922,7 @@ License: MIT
                     tmpTabsHTML.push(getContentHTML(theControlName, tmpTab.content, theControlObj))
                     tmpTabsHTML.push('</div>');
 
-                    tmpTabs.push('<a appuse="tablinks" group="' + tmpTabName + '" item="' + tmpTab.name + '" action="_app:showSubPage" class="item ' + tmpColor + tmpActive + '">' + tmpTab.label + '</a>')
+                    tmpTabs.push('<a appuse="tablinks" group="' + tmpTabName + '" item="' + tmpTab.name + '" action="showSubPage" class="item ' + tmpColor + tmpActive + '">' + tmpTab.label + '</a>')
 
                 }
                 tmpTabsHTML.push('</div>');

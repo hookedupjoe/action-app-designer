@@ -21,7 +21,7 @@ License: MIT
     thisPageSpecs.required = {
         controls: {
             map: {
-                "app/catalog/designer/controls/page-code-editor": "codeEditor"
+                "app/catalog/designer/controls/page-console": "codeEditor"
             }
         },
         panels: {
