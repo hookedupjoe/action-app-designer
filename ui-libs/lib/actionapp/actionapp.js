@@ -2233,7 +2233,7 @@ var ActionAppCore = {};
 
         return dfd.promise();
     }
-
+    me.outlineDisplay = outlineDisplay;
     function outlineDisplay(theParams, theTarget) {
         var tmpEl = $(theTarget);
         //var tmpNext = tmpEl.parent().next(['group="' + tmpEl.attr('group') + '"']);
@@ -2270,6 +2270,7 @@ var ActionAppCore = {};
 
     };
 
+    me.dropMenuOpen = dropMenuOpen;
     function dropMenuOpen(theParams, theTarget) {
         // var tmpParams = ThisApp.getActionParams(theParams, theTarget, ['menuname'])
         var tmpEl = $(theTarget);
@@ -2315,6 +2316,8 @@ var ActionAppCore = {};
             ThisApp.getByAttr$({ appuse: 'flyover' }).addClass('hidden');
         });
     }
+
+    me.toggleMe = toggleMe;
     function toggleMe(theParams, theTarget) {
         var tmpEl = $(theTarget);
         var tmpNext = tmpEl.parent().next(['group="' + tmpEl.attr('group') + '"']);
@@ -2383,20 +2386,8 @@ var ActionAppCore = {};
 
         me.showPage = showPage;
         me.showSubPage = showSubPage;
-        me.registerAction("showPage", showPage);
-        me.registerAction("showSubPage", showSubPage);
-        me.registerAction("selectMe", showSubPage);
-
-        me.registerAction("closeCommonDialog", me.closeCommonDialog);
-        me.registerAction("gotoTab", me.gotoTab);
-
-        me.registerAction("toggleMe", toggleMe);
-        me.registerAction("outlineDisplay", outlineDisplay);
-
-        me.registerAction("dropmenuopen", dropMenuOpen);
-        me.registerAction("clearFlyover", clearFlyover);
-
-
+        me.selectMe = showSubPage
+      
         me.$appPageContainer = $(me.config.container || '[appuse="main-page-container"]');
 
         for (var aName in me.components) {
