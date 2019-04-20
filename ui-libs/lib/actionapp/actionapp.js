@@ -1079,7 +1079,6 @@ var ActionAppCore = {};
             tmpHadPage = true;
         }
         if ((tmpOptions.group && tmpOptions.item)) {
-           // console.log( 'gotoTabLink tmpOptions', tmpOptions);
             me.gotoTabLink(tmpOptions);
             me.gotoCard(tmpOptions);
         } else {
@@ -1810,8 +1809,6 @@ var ActionAppCore = {};
         var tmpPage = $(theTargetObj, theOptionalParent).attr("item") || '';
         var tmpGroupName = $(theTargetObj, theOptionalParent).attr("group") || '';
         if (tmpPage && tmpGroupName) {
-            console.log( 'theOptionalParent', theOptionalParent);
-
             me.gotoTab({ group: tmpGroupName, item: tmpPage, parent: theOptionalParent });
         } else {
             console.error("No pagename provided");
@@ -2310,7 +2307,7 @@ var ActionAppCore = {};
     };
 
     me.clearFlyover = clearFlyover;
-    function clearFlyover(theParams, theTarget) {
+    function clearFlyover(theParams, theTarget, theOptionalParent) {
         var tmpMask = ThisApp.getByAttr$({ appuse: 'flyovermask' });
         var tmpFOFade = ThisApp.getByAttr$({ appuse: 'flyoverfade' });
         tmpMask.animate({ scrollTop: 0 }, 2, function () {
@@ -2321,7 +2318,7 @@ var ActionAppCore = {};
     }
 
     me.toggleMe = toggleMe;
-    function toggleMe(theParams, theTarget) {
+    function toggleMe(theParams, theTarget, theOptionalParent) {
         var tmpEl = $(theTarget);
         var tmpNext = tmpEl.parent().next(['group="' + tmpEl.attr('group') + '"']);
         var tmpIcon = tmpEl.find('i');
@@ -5674,18 +5671,6 @@ License: MIT
         return;
     }
 
-    meInstance.showSubPage = function(theAction, theTarget){
-        console.log( 'showSubPage', theAction, theTarget, this);
-        var tmpEl = $(theTarget);
-
-        var tmpControlEl = tmpEl.closest('[controls][control]');
-        console.log( 'tmpControlEl', tmpControlEl.attr('name'), tmpControlEl);
-        if( tmpControlEl && tmpControlEl.length ){
-            ThisApp.showSubPage(theAction, theTarget, tmpControlEl);
-        }
-        
-    }
-
     meInstance.runAction = function(theAction, theTarget){
         var tmpActions = this.actions || {};
         var tmpAction = theAction || '';
@@ -5693,11 +5678,11 @@ License: MIT
             console.warn("Action not provided for target el" + theTarget)
             return;
         }
-        var tmpToRun = tmpActions[tmpAction] || this[tmpAction];
+        var tmpToRun = tmpActions[tmpAction] || this[tmpAction] || ThisApp[tmpAction];
 
         if (isFunc(tmpToRun)) {
             //---  run in a way that it binds to this control when run
-            return tmpToRun.apply(this, [theAction, theTarget]);
+            return tmpToRun.apply(this, [theAction, theTarget, this.getEl()]);
         } else {
             console.warn("Action not found for " + tmpAction)
             return;
