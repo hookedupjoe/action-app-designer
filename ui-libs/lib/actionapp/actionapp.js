@@ -9,7 +9,7 @@ License: MIT
  *   
 
 
- *** See updated documentation at the CDN site and by running this code
+ *** See updated documentation at related sites by running repos / going to sites
 
 */
 
