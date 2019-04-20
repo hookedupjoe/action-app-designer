@@ -486,16 +486,16 @@ var ActionAppCore = {};
             //--- ToDo: Implement App Caching Rules            
             if (tmpURI.uri.startsWith('design/')) {
                 tmpExists = false;
-            }            
+            }
             //--- ToDo: Revisit cachine / using cache versions
-            
-            if( !(tmpExists) ){
-                
+
+            if (!(tmpExists)) {
+
                 var tmpURL = tmpURI.uri;
-                if( !(tmpURI.uri.endsWith('/') || tmpURI.uri.endsWith('?open') || tmpURI.uri.endsWith('.xsp')) ){
+                if (!(tmpURI.uri.endsWith('/') || tmpURI.uri.endsWith('?open') || tmpURI.uri.endsWith('.xsp'))) {
                     //--- Do not add extn to flat items
                     tmpURL += me.getExtnForType(tmpURI.type);
-                } 
+                }
                 tmpURL = assureRelative(tmpURL);
                 //ThisApp.appMessage("Getting " + tmpURL);
 
@@ -599,8 +599,8 @@ var ActionAppCore = {};
         tmpResourceData.baseURI = theFullPath;
         var tmpCheckPath = theFullPath;
         var tmpCheckPos = tmpCheckPath.indexOf("?");
-        if( tmpCheckPos > -1){
-            tmpCheckPath = tmpCheckPath.substr(0,tmpCheckPos);
+        if (tmpCheckPos > -1) {
+            tmpCheckPath = tmpCheckPath.substr(0, tmpCheckPos);
         }
 
         //--- If the base element (with no params) is not loaded, get the CSS and load it
@@ -1079,6 +1079,7 @@ var ActionAppCore = {};
             tmpHadPage = true;
         }
         if ((tmpOptions.group && tmpOptions.item)) {
+           // console.log( 'gotoTabLink tmpOptions', tmpOptions);
             me.gotoTabLink(tmpOptions);
             me.gotoCard(tmpOptions);
         } else {
@@ -1170,7 +1171,7 @@ var ActionAppCore = {};
         //--- Remove the 'active' class from all matching items for this group that are tablinks
         //--- Note: The getByAttr$ returns the elements, jQuery's removeClass 
         //          returns the elements being effected for chaining
-        me.getByAttr$(tmpSelector)
+        me.getByAttr$(tmpSelector,tmpParent)
             .removeClass('active');
 
 
@@ -1178,7 +1179,7 @@ var ActionAppCore = {};
         tmpSelector.item = tmpItemId;
         //--- Add the 'active' class to the one item we have
         //--- Note: This calls me.getByAttr$ not ThisApp.getByAttr$, which by default only searches this tab page content
-        me.getByAttr$(tmpSelector).addClass('active');
+        me.getByAttr$(tmpSelector, tmpParent).addClass('active');
     }
 
 
@@ -1802,14 +1803,16 @@ var ActionAppCore = {};
      * @param  {Object} theTargetObj   [target object with details about the page to open]
      * @return this
      */
-    var showSubPage = function (theAction, theTargetObj) {
+    var showSubPage = function (theAction, theTargetObj, theOptionalParent) {
         if (!theTargetObj) {
             theTargetObj = theAction;
         }
-        var tmpPage = $(theTargetObj).attr("item") || '';
-        var tmpGroupName = $(theTargetObj).attr("group") || '';
+        var tmpPage = $(theTargetObj, theOptionalParent).attr("item") || '';
+        var tmpGroupName = $(theTargetObj, theOptionalParent).attr("group") || '';
         if (tmpPage && tmpGroupName) {
-            me.gotoTab({ group: tmpGroupName, item: tmpPage });
+            console.log( 'theOptionalParent', theOptionalParent);
+
+            me.gotoTab({ group: tmpGroupName, item: tmpPage, parent: theOptionalParent });
         } else {
             console.error("No pagename provided");
         }
@@ -2197,21 +2200,21 @@ var ActionAppCore = {};
         var tmpDefs = [];
         var tmpThis = this;
 
-        
-        
+
+
         if (theAppConfig.pages && theAppConfig.pages.length) {
             var tmpPageNames = theAppConfig.pages;
             for (var iPageName = 0; iPageName < tmpPageNames.length; iPageName++) {
                 var tmpPageName = tmpPageNames[iPageName];
                 var tmpPage = ThisApp.getPage(tmpPageName);
-                if( !(tmpPage)){
+                if (!(tmpPage)) {
                     var tmpURL = './app/pages/' + tmpPageName + '/index.js'
                     tmpDefs.push($.ajax({
                         url: tmpURL,
                         dataType: "script"
                     }));
                 }
-               
+
             }
         }
 
@@ -2387,7 +2390,7 @@ var ActionAppCore = {};
         me.showPage = showPage;
         me.showSubPage = showSubPage;
         me.selectMe = showSubPage
-      
+
         me.$appPageContainer = $(me.config.container || '[appuse="main-page-container"]');
 
         for (var aName in me.components) {
@@ -2824,7 +2827,7 @@ License: MIT
         this.pageActions = {}; //--- A place for actions
         this.pageTitle = this.options.pageTitle || '';
 
-        
+
 
         this.res = {
             "panels": {},
@@ -3416,7 +3419,7 @@ License: MIT
         };
         //--- Quick access to context data
         this.contextData = this.context.page.data;
-        
+
         //--- Grab some common functionality from app ...
         var tmpStuffToPullIn = [
             , 'getResourceURIsForType'
@@ -3499,7 +3502,9 @@ License: MIT
         var tmpAction = tmpActionDetails.action;
         tmpObj = tmpActionDetails.el;
 
+        //--- ToDo: May want fly-over to stay open for multi-click options
         ThisApp.clearFlyover();
+
         if (tmpAction) {
             theEvent.preventDefault();
             theEvent.stopPropagation();
@@ -4484,7 +4489,7 @@ License: MIT
                             var tmpExistingVal = tmpData[tmpFN];
                             if (Array.isArray(tmpExistingVal)) {
                                 tmpExistingVal = tmpExistingVal.join(",");
-                                
+
                             }
                             if (tmpVal) {
                                 if (tmpExistingVal) {
@@ -4494,12 +4499,12 @@ License: MIT
                             }
                             if (tmpIsMultiValue) {
                                 if ((typeof (tmpExistingVal) == 'string')) {
-                                    if( tmpExistingVal ){
+                                    if (tmpExistingVal) {
                                         tmpExistingVal = tmpExistingVal.split(',');
                                     } else {
                                         tmpExistingVal = [];
                                     }
-                                    
+
                                 }
                             }
                             tmpData[tmpFN] = tmpExistingVal;
@@ -5344,8 +5349,8 @@ License: MIT
                         //--- ToDo: Add required field message option
                         tmpRetFields.push({ name: tmpFN, text: '' })
                     } else {
-                        if( Array.isArray(tmpFieldData)){
-                            if( tmpFieldData.length == 0 ){
+                        if (Array.isArray(tmpFieldData)) {
+                            if (tmpFieldData.length == 0) {
                                 tmpFieldIsValid = false;
                             }
                         }
@@ -5566,7 +5571,7 @@ License: MIT
                 }
             }
         }
-        this.publish('field-change',[this,tmpFN,this.getFieldValue(tmpFN)])
+        this.publish('field-change', [this, tmpFN, this.getFieldValue(tmpFN)])
     }
 
     meInstance.refreshControl = function () {
@@ -5592,61 +5597,112 @@ License: MIT
         }
     }
     meInstance.onItemClick = function (theEvent) {
-        //--- A field changed in this control
-        var tmpTarget = theEvent.target || theEvent.currentTarget || theEvent.delegetTarget || {};
+
+        var tmpObj = theEvent.target || theEvent.currentTarget || theEvent.delegetTarget || {};
+        var tmpActionDetails = ThisApp.getActionFromObj(tmpObj, 'myaction');
+        var tmpTargetHit = theEvent.target || theEvent.currentTarget || theEvent.delegetTarget || {};
+        tmpTargetHit = $(tmpTargetHit);
         //--- Get the acdtual control, not sub item like icon
-        tmpTarget = tmpTarget.closest('[name][controls]')
+        var tmpTarget =  $(tmpTargetHit).closest('[name][controls]')
         var tmpParams = ThisApp.getAttrs(tmpTarget, ['name', 'controls']);
-        if (tmpParams.controls && tmpParams.name) {
-            var tmpName = tmpParams.name;
-            tmpTarget = $(tmpTarget);
-            var tmpItem = tmpTarget.attr('item');
-            if (!isStr(tmpItem)) { return true };
-            var tmpSpecs = this.getItemSpecs(tmpName);
-            if (!(tmpSpecs)) { return true };
-            var tmpOnClick = tmpSpecs.onClick || false;
-            if (isObj(tmpOnClick)) {
-                var tmpToRun = tmpOnClick.run;
-                if (tmpToRun == 'publish') {
-                    var tmpEvent = tmpOnClick.event || 'click';
-                    var tmpIsValid = true;
-                    var tmpPubParams = tmpOnClick.params || '';
 
-                    if (tmpOnClick.validate === true) {
-                        var tmpValidation = this.validate();
-                        tmpIsValid = tmpValidation.isValid;
-                    }
-                    if (tmpIsValid) {
-                        this.publish(tmpEvent, [this, tmpPubParams, tmpTarget, theEvent])
-                    }
-                } else if (tmpToRun == 'action') {
-                    var tmpAction = tmpOnClick.action || 'click';
-                    var tmpSource = tmpOnClick.source || "control";
-                    //Note: Can use tmpOnClick.source, "page","app", "control"
-                    //       default is "control" if not provided
 
-                    //ToDo: Page and App Actions
-                    if (tmpSource == "control") {
-                        var tmpActions = this.actions || {};
-                        var tmpToRun = tmpActions[tmpAction] || this[tmpAction];
+        if (!(tmpActionDetails.hasOwnProperty('action') && tmpActionDetails.hasOwnProperty('el'))) {
+            //--- Look for object spec based actions (specific to controls)
+            if (tmpParams.controls && tmpParams.name) {
+                var tmpName = tmpParams.name;
+                tmpTarget = $(tmpTarget);
+                var tmpItem = tmpTarget.attr('item');
+                if (!isStr(tmpItem)) { return true };
+                var tmpSpecs = this.getItemSpecs(tmpName);
+                if (!(tmpSpecs)) { return true };
+                var tmpOnClick = tmpSpecs.onClick || false;
+                if (isObj(tmpOnClick)) {
+                    var tmpToRun = tmpOnClick.run;
+                    if (tmpToRun == 'publish') {
+                        var tmpEvent = tmpOnClick.event || 'click';
+                        var tmpIsValid = true;
+                        var tmpPubParams = tmpOnClick.params || '';
 
-                        if (isFunc(tmpToRun)) {
-                            var tmpActParams = ThisApp.clone(tmpOnClick);
-                            //--- Run action with only the params object, not target
-                            //---  run in a way that it binds to this control when run
-                            return tmpToRun.apply(this, [tmpActParams]);
-                        } else {
-                            console.warn("Action not found for " + tmpAction)
+                        if (tmpOnClick.validate === true) {
+                            var tmpValidation = this.validate();
+                            tmpIsValid = tmpValidation.isValid;
                         }
-                    } else {
-                        console.warn("Not yet implemented for source " + tmpSource)
+                        if (tmpIsValid) {
+                            this.publish(tmpEvent, [this, tmpPubParams, tmpTarget, theEvent])
+                        }
+                    } else if (tmpToRun == 'action') {
+                        var tmpAction = tmpOnClick.action || 'click';
+                        var tmpSource = tmpOnClick.source || "control";
+                        //Note: Can use tmpOnClick.source, "page","app", "control"
+                        //       default is "control" if not provided
+
+                        //ToDo: Page and App Actions
+                        if (tmpSource == "control") {
+                            var tmpActions = this.actions || {};
+                            var tmpToRun = tmpActions[tmpAction] || this[tmpAction];
+
+                            if (isFunc(tmpToRun)) {
+                                var tmpActParams = ThisApp.clone(tmpOnClick);
+                                //--- Run action with only the params object, not target
+                                //---  run in a way that it binds to this control when run
+                                return tmpToRun.apply(this, [tmpActParams]);
+                            } else {
+                                console.warn("Action not found for " + tmpAction)
+                            }
+                        } else {
+                            console.warn("Not yet implemented for source " + tmpSource)
+                        }
                     }
+                    //--- Not a known internal action
                 }
-                //--- Not a known internal action
             }
+            return;
         }
 
-        return true;
+        //--- We have a control level action to run, run it
+        var tmpAction = tmpActionDetails.action;
+        tmpObj = tmpActionDetails.el;
+
+        if (tmpAction) {
+            theEvent.preventDefault();
+            theEvent.stopPropagation();
+            this.runAction(tmpAction, tmpObj);
+            return;
+        }
+
+        return;
+    }
+
+    meInstance.showSubPage = function(theAction, theTarget){
+        console.log( 'showSubPage', theAction, theTarget, this);
+        var tmpEl = $(theTarget);
+
+        var tmpControlEl = tmpEl.closest('[controls][control]');
+        console.log( 'tmpControlEl', tmpControlEl.attr('name'), tmpControlEl);
+        if( tmpControlEl && tmpControlEl.length ){
+            ThisApp.showSubPage(theAction, theTarget, tmpControlEl);
+        }
+        
+    }
+
+    meInstance.runAction = function(theAction, theTarget){
+        var tmpActions = this.actions || {};
+        var tmpAction = theAction || '';
+        if( !(tmpAction) ){
+            console.warn("Action not provided for target el" + theTarget)
+            return;
+        }
+        var tmpToRun = tmpActions[tmpAction] || this[tmpAction];
+
+        if (isFunc(tmpToRun)) {
+            //---  run in a way that it binds to this control when run
+            return tmpToRun.apply(this, [theAction, theTarget]);
+        } else {
+            console.warn("Action not found for " + tmpAction)
+            return;
+        }
+
     }
     meInstance.onFieldChange = function (theEvent) {
 
@@ -5879,7 +5935,7 @@ License: MIT
             return '';
         }
 
-       
+
 
         for (var iPos = 0; iPos < tmpItems.length; iPos++) {
             var tmpItem = tmpItems[iPos];
@@ -5895,8 +5951,8 @@ License: MIT
                 }
                 var tmpUseLayout = (tmpItem.layout === true);
                 var tmpTabClasses = ' bottom attached slim ' + tmpColor + ' segment ';
-               
-                if( tmpUseLayout ){
+
+                if (tmpUseLayout) {
                     tmpTabClasses = tmpColor;
                 }
                 tmpTabsHTML.push('<div class=" ui ' + tmpTabClasses + '  " >');
@@ -5913,22 +5969,22 @@ License: MIT
                     tmpTabsHTML.push(getContentHTML(theControlName, tmpTab.content, theControlObj))
                     tmpTabsHTML.push('</div>');
 
-                    tmpTabs.push('<a appuse="tablinks" group="' + tmpTabName + '" item="' + tmpTab.name + '" action="showSubPage" class="item ' + tmpColor + tmpActive + '">' + tmpTab.label + '</a>')
+                    tmpTabs.push('<a appuse="tablinks" group="' + tmpTabName + '" item="' + tmpTab.name + '" myaction="showSubPage" class="item ' + tmpColor + tmpActive + '">' + tmpTab.label + '</a>')
 
                 }
                 tmpTabsHTML.push('</div>');
 
-                
+
                 tmpTabs = tmpTabs.join('');
                 if (tmpTabs) {
                     tmpTabs = '<div controls tabs class="pad0 ui top attached tabular menu" style="">' + tmpTabs + '</div>';
-                    if( tmpUseLayout ){
+                    if (tmpUseLayout) {
                         tmpTabs = '<div ctlcomp="layout"><div class="ui-layout-north">' + tmpTabs + '</div>';
                     }
                 }
                 tmpHTML.push(tmpTabs);
                 tmpTabsHTML = tmpTabsHTML.join('');
-                if( tmpUseLayout ){
+                if (tmpUseLayout) {
                     tmpTabsHTML = '<div class="ui-layout-center">' + tmpTabsHTML + '</div>';
                     tmpTabsHTML += '</div>';
                 }
@@ -7224,7 +7280,7 @@ License: MIT
                 //tmpFieldType = 'hidden';
                 tmpReq = '';
                 tmpReadOnly = ' readonly '
-                
+
             }
             if (theControlName == 'hidden') {
                 tmpFieldType = 'hidden';
@@ -7364,12 +7420,12 @@ License: MIT
             if (theControlEl && theFieldSpecs) {
                 var tmpData = me._getControlData(theControlEl, theFieldSpecs.name);
                 if (theFieldSpecs.multi === true && isStr(tmpData)) {
-                    if( tmpData ){
+                    if (tmpData) {
                         tmpData = tmpData.split(',');
                     } else {
                         tmpData = [];
                     }
-                    
+
                 }
                 return tmpData;
             }
