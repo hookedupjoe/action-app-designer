@@ -23,7 +23,7 @@ var ActionAppCore = {};
     //--- Create module
     ActionAppCore.createModule = function (theModName, theOptionalModuleContent) {
         if (modules.hasOwnProperty(theModName)) {
-            throw { error: "Module already exists", module: theModName }
+            throw { error: "Module already exists", module: theModName };
         }
         modules[theModName] = theOptionalModuleContent || {};
         return modules[theModName];
@@ -31,10 +31,10 @@ var ActionAppCore = {};
     //--- get / use module
     ActionAppCore.module = function (theModName) {
         if (!modules.hasOwnProperty(theModName)) {
-            throw { error: "Module does not exists", module: theModName }
+            throw { error: "Module does not exists", module: theModName };
         }
         return modules[theModName];
-    }
+    };
 
 })(ActionAppCore, $);
 
@@ -128,13 +128,13 @@ var ActionAppCore = {};
         } else {
             tmpEl.addClass('hidden');
         }
-    }
+    };
     me.show = function (theEl) {
         me.setDisplay(theEl, true);
-    }
+    };
     me.hide = function (theEl) {
         me.setDisplay(theEl, false);
-    }
+    };
 
     ExtendMod.SetDisplay = me;
 
@@ -160,7 +160,7 @@ var ActionAppCore = {};
 
         me.isDom = function (element) {
             return element instanceof Element;
-        }
+        };
 
         me.options = theOptions || {};
         me.actions = me.options.actions || {};
@@ -171,11 +171,11 @@ var ActionAppCore = {};
         me.context = {
             controller: me,
             data: {}
-        }
+        };
 
         me.resCacheFlags = {
             'catalog': true
-        }
+        };
         //--- Full Path Index
         me.resCache = {
             "panels": {},
@@ -201,11 +201,11 @@ var ActionAppCore = {};
 
         me.getNavConfig = function (theName) {
             return me.navConfig[theName];
-        }
+        };
 
 
         me.registerNavLink = function (theNavObject) {
-            if (!(theNavObject)) { return false };
+            if (!(theNavObject)) { return false }
             var tmpName = theNavObject.name || '';
             me.navConfig[tmpName] = theNavObject;
             var tmpOpts = theNavObject.options || {};
@@ -213,31 +213,31 @@ var ActionAppCore = {};
             theNavObject.isTopLink = (tmpOpts.topLink);
             theNavObject.iconHTML = tmpOpts.iconHTML || '';
             if (tmpOpts.icon) {
-                theNavObject.iconHTML = '<i class="' + tmpOpts.icon + ' icon"></i>'
+                theNavObject.iconHTML = '<i class="' + tmpOpts.icon + ' icon"></i>';
             }
-            me.config.navlinks.push(theNavObject)
+            me.config.navlinks.push(theNavObject);
             return true;
-        }
+        };
 
         me._messageOptions = {
             show: true
-        }
+        };
         me.setMessagesOption = function (theOption, theValue) {
-            ThisApp._messageOptions[theOption] = theValue
-        }
+            ThisApp._messageOptions[theOption] = theValue;
+        };
         me.setMessagesOptions = function (theOptions) {
             $.extend(ThisApp._messageOptions, theOptions);
-        }
+        };
         me.getMessages = function () {
             return me.messages;
-        }
+        };
         me.getMessageCount = function () {
             return me.messagesAt;
-        }
+        };
         me.clearMessages = function () {
             me.messages = [];
             me.messagesAt = 0;
-        }
+        };
 
         /**
          * appMessage
@@ -293,9 +293,9 @@ var ActionAppCore = {};
                 title: tmpOptions.title || '',
                 pos: tmpMsgPos,
                 data: tmpOptionalData
-            }
+            };
 
-            me.messages.push(tmpMsgObj)
+            me.messages.push(tmpMsgObj);
             var tmpIsShow = me._messageOptions.show;
             if (typeof (tmpOptions.show) == 'boolean') {
                 tmpIsShow = tmpOptions.show;
@@ -309,7 +309,7 @@ var ActionAppCore = {};
             }
 
             me.publish("message:sent", tmpMsgObj);
-        }
+        };
 
         /**
           * subscribe / unsubscribe / publish
@@ -344,10 +344,10 @@ var ActionAppCore = {};
         var tmpMS = theMS || 1000;
         var dfd = jQuery.Deferred();
         setTimeout(function () {
-            dfd.resolve(true)
-        }, tmpMS)
+            dfd.resolve(true);
+        }, tmpMS);
         return dfd.promise();
-    }
+    };
 
     me.initAppComponents = function (theOptionalTarget) {
         var tmpDDs = me.getByAttr$({ appcomp: 'dropdown' }, theOptionalTarget);
@@ -355,15 +355,13 @@ var ActionAppCore = {};
             tmpDDs.attr('appcomp', '')
                 .dropdown({
                     showOnFocus: false
-                })
-                ;
+                });
         }
 
         var tmpCBs = me.getByAttr$({ appcomp: 'checkbox' }, theOptionalTarget);
         if (tmpCBs && tmpCBs.length) {
             tmpCBs.attr('appcomp', '')
-                .checkbox()
-                ;
+                .checkbox();
         }
 
         var tmpLayouts = me.getByAttr$({ appcomp: 'layout' }, theOptionalTarget)
@@ -2582,11 +2580,8 @@ var ActionAppCore = {};
                 //--- Convert to string to save
                 tmpRet[aName] = {
                     "[function]": tmpEntry.toString()
-                }
+                };
             } else if (isPage(tmpEntry)) {
-                //--- Ignore if page in object
-
-
                 //--- Ignore if page in object    
             } else if (isObj(tmpEntry)) {
 
@@ -2636,7 +2631,7 @@ var ActionAppCore = {};
         }
         myConvertLiveLoops++;
         if (myConvertLiveLoops > 1000) {
-            console.warn("Too many loops, stopping json conversion")
+            console.warn("Too many loops, stopping json conversion");
             return {};
         }
         var tmpIsArray = Array.isArray(theObject);
@@ -2653,7 +2648,7 @@ var ActionAppCore = {};
                 //--- Do not add or convert
             } else if (isFunc(tmpEntry)) {
                 //--- Convert to string to save
-                tmpRet[aName] = tmpEntry
+                tmpRet[aName] = tmpEntry;
             } else if (isPage(tmpEntry)) {
                 //--- Ignore if page in object
 
@@ -2702,20 +2697,20 @@ var ActionAppCore = {};
         return (theObject instanceof SiteMod.SitePage)
     }
     function isElement(theObject) {
-        return (theObject instanceof Element)
+        return (theObject instanceof Element);
     }
     function isjQuery(theObject) {
-        return (theObject instanceof jQuery)
+        return (theObject instanceof jQuery);
     }
     function isArray(theObject) {
-        return Array.isArray(theObject)
+        return Array.isArray(theObject);
     }
     function functionToString(theFunction) {
         return theFunction.toString();
     }
     function stringToFunction(theString) {
         try {
-            return eval("window._FunctionConverter = " + theString)
+            return eval("window._FunctionConverter = " + theString);
         } catch (ex) {
             return false;
         }
@@ -2742,15 +2737,15 @@ var ActionAppCore = {};
             //--- Convert to JSON and back to create a copy
             var tmpClone = theObj;
             try {
-                tmpClone = this.json(this.json(theObj))
+                tmpClone = this.json(this.json(theObj));
             } catch (ex) {
-                console.warn("Could not clone, error " + ex)
+                console.warn("Could not clone, error " + ex);
             }
             return tmpClone
         },
         json: function (theItem, theAutoCleanIfNeeded) {
             if (typeof (theItem) == 'string') {
-                return JSON.parse(theItem)
+                return JSON.parse(theItem);
             } else if (typeof (theItem) == 'object') {
                 // try {
                 //     return JSON.stringify(theItem, null, '\t')
@@ -2760,15 +2755,15 @@ var ActionAppCore = {};
                 if (theAutoCleanIfNeeded) {
                     var tmpClean = convertToJsonLive(theItem);
                     try {
-                        return JSON.stringify(tmpClean, null, '\t')
+                        return JSON.stringify(tmpClean, null, '\t');
                     } catch (ex2) {
-                        throw ("Could not convert object " + ex2)
+                        throw ("Could not convert object " + ex2);
                     }
                 } else {
                     try {
-                        return JSON.stringify(theItem, null, '\t')
+                        return JSON.stringify(theItem, null, '\t');
                     } catch (ex) {
-                        throw ("Error processing json convert " + ex)
+                        throw ("Error processing json convert " + ex);
                     }
 
                 }
