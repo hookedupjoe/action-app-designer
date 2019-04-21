@@ -5672,16 +5672,16 @@ License: MIT
     }
 
     meInstance.runAction = function(theAction, theTarget){
-        var tmpActions = this.actions || {};
         var tmpAction = theAction || '';
         if( !(tmpAction) ){
             console.warn("Action not provided for target el" + theTarget)
             return;
         }
-        var tmpToRun = tmpActions[tmpAction] || this[tmpAction] || ThisApp[tmpAction];
+        var tmpToRun = this.actions[tmpAction] || this[tmpAction] || ThisApp[tmpAction];
 
         if (isFunc(tmpToRun)) {
             //---  run in a way that it binds to this control when run
+            //       and run with this control as the optional parent item
             return tmpToRun.apply(this, [theAction, theTarget, this.getEl()]);
         } else {
             console.warn("Action not found for " + tmpAction)
@@ -6654,6 +6654,8 @@ License: MIT
                 }
             } else if (isStr(tmpObject.pageaction)) {
                 tmpAction = ' pageaction="' + tmpObject.pageaction.trim() + '" ';
+            } else if (isStr(tmpObject.myaction)) {
+                tmpAction = ' myaction="' + tmpObject.myaction.trim() + '" ';
             }
             tmpHTML.push('<button ' + tmpAction + getItemAttrString(theObject) + ' class="ui button ' + tmpClasses + ' " ' + tmpStyle + '>')
 
