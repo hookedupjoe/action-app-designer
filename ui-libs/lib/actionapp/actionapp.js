@@ -1170,7 +1170,7 @@ var ActionAppCore = {};
         //--- Remove the 'active' class from all matching items for this group that are tablinks
         //--- Note: The getByAttr$ returns the elements, jQuery's removeClass 
         //          returns the elements being effected for chaining
-        me.getByAttr$(tmpSelector,tmpParent)
+        me.getByAttr$(tmpSelector, tmpParent)
             .removeClass('active');
 
 
@@ -5600,7 +5600,7 @@ License: MIT
         var tmpTargetHit = theEvent.target || theEvent.currentTarget || theEvent.delegetTarget || {};
         tmpTargetHit = $(tmpTargetHit);
         //--- Get the acdtual control, not sub item like icon
-        var tmpTarget =  $(tmpTargetHit).closest('[name][controls]')
+        var tmpTarget = $(tmpTargetHit).closest('[name][controls]')
         var tmpParams = ThisApp.getAttrs(tmpTarget, ['name', 'controls']);
 
 
@@ -5671,9 +5671,9 @@ License: MIT
         return;
     }
 
-    meInstance.runAction = function(theAction, theTarget){
+    meInstance.runAction = function (theAction, theTarget) {
         var tmpAction = theAction || '';
-        if( !(tmpAction) ){
+        if (!(tmpAction)) {
             console.warn("Action not provided for target el" + theTarget)
             return;
         }
@@ -5689,24 +5689,20 @@ License: MIT
         }
 
     }
-    meInstance.onFieldChange = function (theEvent) {
 
+    meInstance.onFieldChange = function (theEvent) {
         //--- A field changed in this control
         var tmpTarget = theEvent.target || theEvent.currentTarget || theEvent.delegetTarget || {};
-
         var tmpParams = ThisApp.getAttrs(tmpTarget, ['name', 'controls']);
-
         if (tmpParams.controls && tmpParams.name) {
             var tmpFN = tmpParams.name;
             this.refreshForField(tmpFN);
         }
-
     }
 
     meInstance.destroy = function () {
         this.parentEl.off('change');
         this.parentEl.off('click');
-
         //--- ToDo: Destory panel and control objects
         if (this.liveIndex) {
             if (this.liveIndex.dropdown) {
@@ -5720,19 +5716,13 @@ License: MIT
 
     meInstance.initControlComponents = function () {
         var dfd = jQuery.Deferred();
-
         var tmpEl = this.parentEl;
-
         var tmpDefs = [];
-
-
         var tmpControls = ThisApp.getByAttr$({ ctlcomp: 'control' }, tmpEl);
         if (tmpControls.length) {
             for (var iControl = 0; iControl < tmpControls.length; iControl++) {
-
                 var tmpControlEl = $(tmpControls[iControl]);
                 var tmpControlName = tmpControlEl.attr('controlname');
-
                 var tmpPartName = tmpControlEl.attr('partname') || tmpControlEl.attr('name') || tmpControlName;
                 if (tmpControlName && tmpPartName) {
 
@@ -5746,12 +5736,8 @@ License: MIT
                         tmpDefs.push(tmpPart.loadToElement(tmpControlEl));
                     }
                 }
-
             }
         }
-
-
-
 
         var tmpPanels = ThisApp.getByAttr$({ ctlcomp: 'panel' }, tmpEl);
         if (tmpPanels.length) {
@@ -5775,11 +5761,6 @@ License: MIT
 
             }
         }
-
-
-
-
-
 
         var tmpDDs = ThisApp.getByAttr$({ ctlcomp: 'dropdown' }, tmpEl);
 
@@ -5809,7 +5790,6 @@ License: MIT
                 .css('min-height', '200px')
                 .attr('ctlcomporig', 'layout')
                 .attr('ctlcomp', '')
-                // .layout()
                 ;
             //--- Assure all the elements to the next pane are 100%
             ThisApp.util.resizeToParent(tmpLayouts);
@@ -5826,40 +5806,26 @@ License: MIT
                     //--- Using custom template
                     tmpLayoutOptions = StaticApp.layoutTemplates[tmpLayoutTemplateName];
                 }
-
                 tmpLayoutEntry.layout(tmpLayoutOptions);
             }
-
-
-            // //--- Enable layouts and save the handles
-            //this.liveIndex.layouts = tmpLayouts.layout();
             //--- Tell the app to resize it's layouts
             ThisApp.resizeLayouts();
         }
-
         $.whenAll(tmpDefs).then(function (theReply) {
             dfd.resolve(true)
         })
-
-
         return dfd.promise();
-
     }
 
     meInstance.loadToElement = function (theEl, theOptions) {
         var dfd = jQuery.Deferred();
         var tmpOptions = theOptions || {};
-
         var tmpThis = this;
         tmpThis.parentEl = ThisApp.asSpot(theEl);
-
-        //--- Load dynamic content into
         var tmpHTML = tmpThis.getHTML();
         tmpThis.parentEl.html(tmpHTML);
-        tmpThis.parentEl.on('change', tmpThis.onFieldChange.bind(this))
-        tmpThis.parentEl.on('click', tmpThis.onItemClick.bind(this))
-
-
+        tmpThis.parentEl.on('change', tmpThis.onFieldChange.bind(this));
+        tmpThis.parentEl.on('click', tmpThis.onItemClick.bind(this));
         tmpThis.getConfig().options = tmpThis.getConfig().options || {};
         this.assureRequired().then(function () {
             tmpThis.initControlComponents().then(function (theReply) {
@@ -5868,20 +5834,11 @@ License: MIT
                 if (tmpDoc) {
                     tmpThis.loadData(tmpDoc);
                 }
-                dfd.resolve(true)
+                dfd.resolve(true);
             });
-
-        })
-
-
-
+        });
         return dfd.promise();
-
-    }
-
-
-
-
+    };
 
     //==== HTML Control Builder ======  ======  ======  ======  ======  ======  ======  ======  ======  ======     
 
@@ -5919,9 +5876,6 @@ License: MIT
         if (!(tmpItems && tmpItems.length)) {
             return '';
         }
-
-
-
         for (var iPos = 0; iPos < tmpItems.length; iPos++) {
             var tmpItem = tmpItems[iPos];
             var tmpCtl = tmpItem.ctl || 'field'
@@ -5953,13 +5907,9 @@ License: MIT
                     tmpTabsHTML.push('<div controls tab appuse="cards" group="' + tmpTabName + '" item="' + tmpTab.name + '" class="pad0 ' + tmpHidden + '">');
                     tmpTabsHTML.push(getContentHTML(theControlName, tmpTab.content, theControlObj))
                     tmpTabsHTML.push('</div>');
-
                     tmpTabs.push('<a appuse="tablinks" group="' + tmpTabName + '" item="' + tmpTab.name + '" myaction="showSubPage" class="item ' + tmpColor + tmpActive + '">' + tmpTab.label + '</a>')
-
                 }
                 tmpTabsHTML.push('</div>');
-
-
                 tmpTabs = tmpTabs.join('');
                 if (tmpTabs) {
                     tmpTabs = '<div controls tabs class="pad0 ui top attached tabular menu" style="">' + tmpTabs + '</div>';
@@ -5974,13 +5924,10 @@ License: MIT
                     tmpTabsHTML += '</div>';
                 }
                 tmpHTML.push(tmpTabsHTML);
-
             } else {
                 tmpHTML.push(getHTMLForControl(tmpCtl, tmpItem, theControlObj))
             }
-
         }
-
         tmpHTML = tmpHTML.join('');
         return tmpHTML;
     }
@@ -5998,70 +5945,41 @@ License: MIT
             outline: []
         }
         var tmpOL = theOptionalOutline || tmpIndex.outline;
-
         var tmpItems = theItems || [];
         if (!(tmpItems && tmpItems.length)) {
             return tmpIndex;
         }
-
         for (var iPos = 0; iPos < tmpItems.length; iPos++) {
             var tmpItem = tmpItems[iPos];
             var tmpCtl = tmpItem.ctl || 'field';
-
             var tmpThisObj = {
                 ctl: tmpCtl,
                 name: tmpItem.name || ''
             }
-
             tmpOL.push(tmpThisObj)
-
             var tmpControl = me.getWebControl(tmpCtl)
             var tmpType = me.getControlType(tmpCtl)
-
             tmpType = tmpType + 's';
-
             if (tmpItem.name) {
-
                 var tmpName = tmpItem.name;
-
                 if (tmpCtl == 'control' || tmpCtl == 'panel') {
                     tmpIndex.controls[tmpName] = tmpItem;
-                    //--- If we have a control name and source is not parent, add to the list
-                    //---   if source is parent, it will go up the chain and find it there
-                    //---   must be loaded by name by the parent
-                    //---   ** When used - can have a basic name, not full heirarchy
-                    //         ... and can also replace out any full with short name as alias
                     if (tmpControl && tmpItem.controlname && (!(tmpItem.source === 'parent'))) {
-                        //--- Create a node for this required item
                         tmpIndex.required[tmpCtl] = tmpIndex.required[tmpCtl] || {};
                         tmpIndex.required[tmpCtl].list = tmpIndex.required[tmpCtl].list || [];
                         tmpIndex.required[tmpCtl].list.push(tmpItem.controlname)
                     }
                 }
-
-                //=== type is index or field
                 var tmpToAdd = tmpItem;
-                //--- Always add reference, is by pointer anyway
-                // if (tmpType == 'items') {
-                //     //--- Only push in control type along with name for items
-                //     var tmpDetail = tmpItem.text || tmpItem.title || tmpItem.label || '';
-                //     if (tmpCtl != 'button') {
-                //         tmpToAdd = { ctl: tmpCtl, detail: tmpDetail }
-                //     }
-                // }
                 if (tmpIndex[tmpType][tmpName]) {
-                    //--- If exists, create array and push item in
                     tmpIndex[tmpType][tmpName] = [tmpIndex[tmpType][tmpName]];
                     console.warn("Control content has the same name more than once for " + tmpName);
                     tmpIndex[tmpType][tmpName].push(tmpToAdd);
                 } else {
                     tmpIndex[tmpType][tmpName] = tmpToAdd;
-                    //--- add to fieldList or itemList
                     tmpIndex[tmpType + 'List'].push(tmpName)
                 }
             }
-
-            //--- Get content items and run through those to create index items
             var tmpContentItems = ['items', 'tabs', 'content', 'center', 'north', 'south', 'east', 'west'];
             for (var aIndex in tmpContentItems) {
                 var tmpContentItem = tmpContentItems[aIndex];
@@ -6071,15 +5989,9 @@ License: MIT
                 }
             }
         }
-
-
         return tmpIndex;
     }
 
-
-
-
-    //--- Bubble Global Helpers
     var checkBoxAt = 0;
     var numLookup = ["zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten", "eleven", "twelve", "thirteen", "fourteen", "fifteen", "sixteen"]
 
@@ -6248,14 +6160,8 @@ License: MIT
         return tmpHTML.join('');
     }
 
-
-
-
-
     //--- Common Controls =========== =========== =========== =========== =========== ===========
     //--- =========== =========== =========== =========== =========== ===========
-
-
 
     //----   COMMON ITEM CONTROLS - INFORMATION =================================
 
@@ -6325,8 +6231,6 @@ License: MIT
         notes: "From 1 to 16 using Fields / Form grid"
     })
 
-
-
     me.getCommonControlProperties = getCommonControlProperties;
     function getCommonControlProperties(theCommonList) {
         var tmpCommonList = theCommonList || ['hidden'];
@@ -6344,7 +6248,6 @@ License: MIT
 
 
     //----   COMMON ITEM CONTROLS =================================
-
 
     me.ControlLayout = {
         getInfo: function (theControlName) {
@@ -7157,7 +7060,8 @@ License: MIT
             return tmpHTML.join('');
         },
         isField: false
-    }
+    };
+    
     me.ControlTab = {
         getInfo: function (theControlName) {
 
@@ -7180,20 +7084,9 @@ License: MIT
             return tmpHTML.join('');;
         },
         isField: false
-    }
-
-
-
-
-
-
-
-
-
-
+    };
 
     //----   COMMON FIELD CONTROLS =================================
-
 
     me.ControlField = {
         setFieldNote: commonSetFieldNote, setFieldMessage: commonSetFieldMessage,
@@ -7222,11 +7115,7 @@ License: MIT
             if (tmpObject.req === true) {
                 tmpReq = ' required ';
             }
-
-
-
             var tmpItems = tmpObject.items || tmpObject.content || [];
-
             if (tmpValue) {
                 tmpValue = ' value="' + tmpValue + '" ';
             }
@@ -7234,18 +7123,15 @@ License: MIT
             if (theObject.input === true) {
                 tmpFieldOrInput = 'input';
             }
-
             //--- All input fields with content (buttons) are input style
             if (tmpItems && tmpItems.length > 0) {
                 tmpFieldOrInput = 'input'
             }
-
             var tmpInputClasses = tmpObject.inputClasses || '';
             tmpInputClasses += getValueIfTrue(theObject, ['fit']);
             if (tmpInputClasses) {
                 tmpInputClasses = ' class="' + tmpInputClasses + '" '
             }
-
             var tmpClasses = ''
             tmpClasses += getValueIfTrue(theObject, ['compact', 'fluid']);
             tmpClasses += getValueIfThere(theObject, ['color', 'size']);
@@ -7260,24 +7146,22 @@ License: MIT
             if (theControlObj.readonly === true) {
                 tmpDispOnly = true;
             }
-
             var tmpReadOnly = '';
             var tmpFieldType = 'text';
             if (tmpDispOnly) {
                 //tmpFieldType = 'hidden';
                 tmpReq = '';
-                tmpReadOnly = ' readonly '
-
+                tmpReadOnly = ' readonly ';
             }
             if (theControlName == 'hidden') {
                 tmpFieldType = 'hidden';
             }
 
-            tmpHTML.push('<div controls fieldwrap name="' + theObject.name + '" class="' + tmpClasses + tmpSizeName + tmpReq + ' ui ' + tmpFieldOrInput + '">')
+            tmpHTML.push('<div controls fieldwrap name="' + theObject.name + '" class="' + tmpClasses + tmpSizeName + tmpReq + ' ui ' + tmpFieldOrInput + '">');
             if (theObject.label) {
-                tmpHTML.push('<label>')
-                tmpHTML.push(theObject.label || '')
-                tmpHTML.push('</label>')
+                tmpHTML.push('<label>');
+                tmpHTML.push(theObject.label || '');
+                tmpHTML.push('</label>');
             }
             var tmpPH = '';
             if ((!tmpDispOnly) && theObject.placeholder !== false) {
@@ -7286,18 +7170,11 @@ License: MIT
                 }
                 tmpPH = ' placeholder="' + tmpPH + ' ';
             }
-
             tmpHTML.push('<input ' + tmpReadOnly + tmpInputClasses + ' type="' + tmpFieldType + '" controls field ' + tmpValue + ' name="' + theObject.name + '" ' + tmpPH + '">')
             tmpHTML.push('</input>')
             tmpHTML.push(getNoteMarkup(theObject));
-
-
-            tmpHTML.push(getContentHTML(theControlName, tmpItems, theControlObj))
-
-
-            tmpHTML.push('</div>')
-
-
+            tmpHTML.push(getContentHTML(theControlName, tmpItems, theControlObj));
+            tmpHTML.push('</div>');
             tmpHTML = tmpHTML.join('');
             return tmpHTML;
         },
