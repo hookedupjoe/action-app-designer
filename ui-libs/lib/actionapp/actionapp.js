@@ -2514,42 +2514,29 @@ var ActionAppCore = {};
 
     function initAppMarkup() {
         initFlyoverMarkup();
-        initPromptMarkup()
+        initPromptMarkup();
     }
 
     function initFlyoverMarkup() {
-
         var tmpHTML = [];
-        // tmpHTML.push('<div appuse="flyoverfade" class="pagemaskfade hidden"></div>')
-        tmpHTML.push('<div appuse="flyovermask" action="clearFlyover" class="pagemask hidden">')
-        tmpHTML.push('	<div appuse="flyover" class="flyover hidden">')
-        tmpHTML.push('		<div class="ui content form">')
-        tmpHTML.push('			<div class="ui field" spot="flyover-menu">')
-        tmpHTML.push('			</div>')
-        tmpHTML.push('		</div>')
-        tmpHTML.push('		<div style="clear:both"></div>')
-        tmpHTML.push('	</div>')
-        tmpHTML.push('</div>')
-
+        tmpHTML.push('<div appuse="flyovermask" action="clearFlyover" class="pagemask hidden">');
+        tmpHTML.push('	<div appuse="flyover" class="flyover hidden">');
+        tmpHTML.push('		<div class="ui content form">');
+        tmpHTML.push('			<div class="ui field" spot="flyover-menu">');
+        tmpHTML.push('			</div>');
+        tmpHTML.push('		</div>');
+        tmpHTML.push('		<div style="clear:both"></div>');
+        tmpHTML.push('	</div>');
+        tmpHTML.push('</div>');
         $('body').append(tmpHTML.join(''))
     }
 
 
     function initPromptMarkup() {
         var tmpHTML = [];
-        // tmpHTML.push('<div appuse="promptermask" action="clearPrompter" class="pagemask hidden">')
-        // tmpHTML.push('	<div appuse="prompter" class="flyover hidden">')
-        // tmpHTML.push('		<div class="prompter-content" spot="prompter-content">')
-        // tmpHTML.push('		</div>')
-        // tmpHTML.push('		<div style="clear:both"></div>')
-        // tmpHTML.push('	</div>')
-        // tmpHTML.push('</div>')
-
-
-        tmpHTML.push('		<div class="prompter-content" spot="prompter-content">')
-        tmpHTML.push('		</div>')
-
-        $('body').append(tmpHTML.join(''))
+        tmpHTML.push('		<div class="prompter-content" spot="prompter-content">');
+        tmpHTML.push('		</div>');
+        $('body').append(tmpHTML.join(''));
     }
 
     var myConvertLiveLoops = 0;
@@ -2561,7 +2548,7 @@ var ActionAppCore = {};
     var myConvertToJsonLive = function (theObject) {
         myConvertLiveLoops++;
         if (myConvertLiveLoops > 1000) {
-            console.warn("Too many loops, stopping json conversion")
+            console.warn("Too many loops, stopping json conversion");
             return {};
         }
         var tmpIsArray = Array.isArray(theObject);
@@ -2584,20 +2571,17 @@ var ActionAppCore = {};
             } else if (isPage(tmpEntry)) {
                 //--- Ignore if page in object    
             } else if (isObj(tmpEntry)) {
-
                 if (tmpIsArray) {
                     tmpRet.push(myConvertToJsonLive(tmpEntry));
                 } else {
                     tmpRet[aName] = myConvertToJsonLive(tmpEntry);
                 }
-
             } else {
                 if (tmpIsArray) {
                     tmpRet.push(tmpEntry);
                 } else {
                     tmpRet[aName] = tmpEntry;
                 }
-
             }
         }
         try {
@@ -2612,7 +2596,6 @@ var ActionAppCore = {};
                     processEntry(tmpEntry);
                 }
             }
-
         }
         catch (e) {
             throw e;
@@ -2650,9 +2633,6 @@ var ActionAppCore = {};
                 //--- Convert to string to save
                 tmpRet[aName] = tmpEntry;
             } else if (isPage(tmpEntry)) {
-                //--- Ignore if page in object
-
-
                 //--- Ignore if page in object    
             } else if (isObj(tmpEntry)) {
 
@@ -2778,25 +2758,6 @@ var ActionAppCore = {};
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 /*
 Author: Joseph Francis
 License: MIT
@@ -2818,8 +2779,6 @@ License: MIT
         this.parts = this.part //longcut - keep typing it wrong, can use either :)
         this.pageActions = {}; //--- A place for actions
         this.pageTitle = this.options.pageTitle || '';
-
-
 
         this.res = {
             "panels": {},
@@ -2950,15 +2909,14 @@ License: MIT
             }
         }
         return theLayoutOptions;
-
     }
+
     me.initOnFirstLoad = function () {
         var dfd = jQuery.Deferred();
         var tmpThis = this;
         this.options = this.options || {};
         me.controls = {};
         var tmpThis = this;
-
 
         //--- Deprecated - backward compat functionality until apps are upgraded
         if (this.options.pageTemplates) {
@@ -2986,7 +2944,6 @@ License: MIT
         var tmpLayoutReq = this.getLayoutRequired();
 
         var tmpInitReq = ThisApp.loadResources.bind(this);
-
 
         if (this.options.required) {
             tmpPromRequired = tmpInitReq(this.options.required, { nsParent: this })
@@ -7509,11 +7466,6 @@ License: MIT
         },
         isField: true
     }
-
-
-
-
-
 
 
 
