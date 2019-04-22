@@ -23,7 +23,7 @@ module.exports.setup = function setup(scope) {
                 var tmpBase = {
                     "ctl": "tbl-ol-node",
                     "type": "workspace",
-                    "name": "workspace",
+                    "rem_name": "workspace",
                     "item": "workspace",
                     "details": "Workspace",
                     "meta": "&#160;",
@@ -108,8 +108,6 @@ module.exports.setup = function setup(scope) {
                 var tmpBase = {
                     "ctl": "tbl-ol-node",
                     "type": "apps",
-                    // "name": "apps",
-                    // "item": "apps",
                     "details": "Applications",
                     "meta": "&#160;",
                     "classes": "ws-editor-outline",
@@ -133,7 +131,7 @@ module.exports.setup = function setup(scope) {
                     var tmpApp = {
                         "ctl": "tbl-ol-node",
                         "type": "app",
-                        "name": tmpAppName + "",
+                        "rem_name": "ws-" + tmpAppName + "",
                         "item": "ws-" + tmpAppName + "",
                         "details": tmpAppTitle,
                         "meta": "&#160;",
@@ -183,7 +181,7 @@ module.exports.setup = function setup(scope) {
         return new Promise($.async(function (resolve, reject) {
             try {
 
-
+                var tmpBaseDir = theBaseDir;
                 var tmpTitle = "Workspace Pages"
 
                 var tmpPagesDir = scope.locals.path.ws.pages;
@@ -199,8 +197,6 @@ module.exports.setup = function setup(scope) {
                 var tmpBase = {
                     "ctl": "tbl-ol-node",
                     "type": "pages",
-                    // "name": "pages",
-                    // "item": "pages",
                     "details": tmpTitle,
                     "meta": "&#160;",
                     "classes": "page-editor-outline",
@@ -218,11 +214,16 @@ module.exports.setup = function setup(scope) {
                     var tmpPageName = tmpFiles[index];
                     var tmpPageBase = tmpPagesDir + tmpPageName + '/';
                     var tmpPageTitle = tmpPageName;
-
+                    var tmpEntryName = tmpPageName;
+                    if( tmpBaseDir ){
+                        tmpEntryName = tmpBaseDir + "-" + tmpEntryName
+                    } else {
+                        tmpEntryName = "ws-" + tmpEntryName
+                    }
                     var tmpPage = {
                         "ctl": "tbl-ol-node",
                         "type": "page",
-                        "name": tmpPageName + "",
+                        "rem_name": tmpEntryName,
                         "item": tmpPageName + "",
                         "details": tmpPageTitle,
                         "meta": "&#160;",
@@ -287,8 +288,6 @@ module.exports.setup = function setup(scope) {
                 var tmpBase = {
                     "ctl": "tbl-ol-node",
                     "type": "resources",
-                    // "name": "resources",
-                    // "item": "resources",
                     "details": tmpTitle,
                     "meta": "&#160;",
                     "classes": "ws-editor-outline",
@@ -314,8 +313,6 @@ module.exports.setup = function setup(scope) {
                     var tmpTypeEntry = {
                         "ctl": "tbl-ol-node",
                         "type": "resource-type",
-                        // "name": tmpType.type + "",
-                        // "item": tmpType.type + "",
                         "details": tmpType.type,
                         "meta": "&#160;",
                         "level": 2,
@@ -325,10 +322,15 @@ module.exports.setup = function setup(scope) {
                         "content": []
                     }
 
+                    var tmpEntryName = tmpFileName;
+
                     var tmpBaseDir = tmpCatDir + 'resources/' + tmpType.dir + '/';
                     if (theBaseDir) {
                         tmpBaseDir = theBaseDir + tmpType.dir + '/';
+                        tmpEntryName = tmpBaseDir + '-' + tmpBaseDir
                     }
+                    
+
                     var tmpFiles = $.await($.bld.getDirFiles(tmpBaseDir));
                     for (var index in tmpFiles) {
                         var tmpFileName = tmpFiles[index];
@@ -336,7 +338,7 @@ module.exports.setup = function setup(scope) {
                         var tmpEntry = {
                             "ctl": "tbl-ol-node",
                             "type": "resource",
-                            "name": tmpFileName + "",
+                            "rem_name": tmpEntryName,
                             "item": tmpFileName + "",
                             "details": tmpFileName,
                             "meta": "&#160;",
