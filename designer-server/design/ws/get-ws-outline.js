@@ -23,7 +23,7 @@ module.exports.setup = function setup(scope) {
                 var tmpBase = {
                     "ctl": "tbl-ol-node",
                     "type": "workspace",
-                    "rem_name": "workspace",
+                    "name": "workspace",
                     "item": "workspace",
                     "details": "Workspace",
                     "meta": "&#160;",
@@ -131,15 +131,9 @@ module.exports.setup = function setup(scope) {
                     var tmpApp = {
                         "ctl": "tbl-ol-node",
                         "type": "app",
-                        "rem_name": "ws-" + tmpAppName + "",
                         "item": "ws-" + tmpAppName + "",
                         "details": tmpAppTitle,
                         "meta": "&#160;",
-                        rem_attr: {
-                            pageaction: 'showAppConsole',
-                            apptitle: tmpAppTitle,
-                            appname: tmpAppName
-                        },
                         "level": 2,
                         "icon": "globe",
                         "color": "blue",
@@ -223,14 +217,9 @@ module.exports.setup = function setup(scope) {
                     var tmpPage = {
                         "ctl": "tbl-ol-node",
                         "type": "page",
-                        "rem_name": tmpEntryName,
                         "item": tmpPageName + "",
                         "details": tmpPageTitle,
                         "meta": "&#160;",
-                        rem_attr: {
-                            pageaction: 'showPageConsole',
-                            pagename: tmpPageName
-                        },
                         "level": 2,
                         "icon": "columns",
                         "color": "green",
@@ -338,15 +327,9 @@ module.exports.setup = function setup(scope) {
                         var tmpEntry = {
                             "ctl": "tbl-ol-node",
                             "type": "resource",
-                            "rem_name": tmpEntryName,
                             "item": tmpFileName + "",
                             "details": tmpFileName,
                             "meta": "&#160;",
-                            rem_attr: {
-                                pageaction: 'showResourceConsole',
-                                restype: tmpType.type,
-                                resname: tmpFileName
-                            },
                             "level": 1,
                             "icon": tmpType.icon,
                             "color": "purple",
