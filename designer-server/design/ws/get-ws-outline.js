@@ -78,7 +78,7 @@ module.exports.setup = function setup(scope) {
                             ".ws-outline table.outline > tbody > tr.active[type=\"app\"] > td.tbl-label {",
                             "  background-color: #2185d0;",
                             "}",
-                            ".ws-outline table.outline > tbody > tr.active[type=\"region\"] > td.tbl-label {",
+                            ".ws-outline table.outline > tbody > tr.active[type=\"resource\"] > td.tbl-label {",
                             "  background-color: #a333c8;",
                             "}"
                         ]
@@ -116,7 +116,7 @@ module.exports.setup = function setup(scope) {
                     "level": 2,
                     "icon": "globe",
                     "color": "black",
-                    "group": "ws-resources-outline",
+                    "group": "workspace-outline",
                     "content": []
                 }
 
@@ -152,10 +152,10 @@ module.exports.setup = function setup(scope) {
                     var tmpPagesNode = $.await(getPagesNode(tmpAppName + '/app/pages/'));
                     tmpApp.content.push(tmpPagesNode);
 
-                    var tmpAppRes =  $.await(getWSResourcesNode(tmpAppBase + 'catalog/'));
-                    
-                    if( tmpAppRes && tmpAppRes.content && tmpAppRes.content.length ){
-                        tmpApp.content.push(tmpAppRes);                  
+                    var tmpAppRes = $.await(getWSResourcesNode(tmpAppBase + 'catalog/'));
+
+                    if (tmpAppRes && tmpAppRes.content && tmpAppRes.content.length) {
+                        tmpApp.content.push(tmpAppRes);
                     }
 
                     tmpBase.content.push(tmpApp);
@@ -184,7 +184,7 @@ module.exports.setup = function setup(scope) {
             try {
 
 
-                var tmpTitle = "WS Page"
+                var tmpTitle = "Workspace Pages"
 
                 var tmpPagesDir = scope.locals.path.ws.pages;
                 var tmpAppsDir = scope.locals.path.ws.uiApps;
@@ -194,7 +194,7 @@ module.exports.setup = function setup(scope) {
                     tmpPagesDir = tmpAppsDir + theBaseDir
                 }
 
-            //    console.log('tmpTitle tmpPagesDir', tmpTitle, tmpPagesDir);
+                //    console.log('tmpTitle tmpPagesDir', tmpTitle, tmpPagesDir);
 
                 var tmpBase = {
                     "ctl": "tbl-ol-node",
@@ -207,7 +207,7 @@ module.exports.setup = function setup(scope) {
                     "level": 2,
                     "icon": "columns",
                     "color": "black",
-                    "group": "pages-outline",
+                    "group": "workspace-outline",
                     "content": []
                 }
 
@@ -233,16 +233,16 @@ module.exports.setup = function setup(scope) {
                         "level": 2,
                         "icon": "columns",
                         "color": "green",
-                        "group": "pages-outline",
+                        "group": "workspace-outline",
                         content: []
                     }
 
-                    var tmpPageRes =  $.await(getWSResourcesNode(tmpPageBase));
-                    
-                    if( tmpPageRes && tmpPageRes.content && tmpPageRes.content.length ){
-                        tmpPage.content.push(tmpPageRes);
+                    var tmpPageRes = $.await(getWSResourcesNode(tmpPageBase, tmpPage));
+
+                    if (tmpPageRes && tmpPageRes.content && tmpPageRes.content.length) {
+                        //tmpPage.content.push(tmpPageRes);
                     } else {
-                        tmpPage.level = 1;
+                        //tmpPage.level = 1;
                     }
                     //tmpPage.content.push();
 
@@ -267,24 +267,23 @@ module.exports.setup = function setup(scope) {
 
 
 
-    function getWSResourcesNode(theBaseDir) {
+    function getWSResourcesNode(theBaseDir, theBase) {
         var self = this;
         return new Promise($.async(function (resolve, reject) {
             try {
 
 
-                var tmpTitle = "WS Resources"
+                var tmpTitle = "Workspace Resources"
 
                 var tmpPagesDir = scope.locals.path.ws.pages;
                 var tmpAppsDir = scope.locals.path.ws.uiApps;
 
                 if (theBaseDir) {
-                    tmpTitle = '.../resources';
-                   // tmpPagesDir = theBaseDir;
+                    tmpTitle = 'Resources';
                 }
 
-               // console.log( 'theBaseDir', theBaseDir);
-                
+                // console.log( 'theBaseDir', theBaseDir);
+
                 var tmpBase = {
                     "ctl": "tbl-ol-node",
                     "type": "resources",
@@ -294,9 +293,9 @@ module.exports.setup = function setup(scope) {
                     "meta": "&#160;",
                     "classes": "ws-editor-outline",
                     "level": 2,
-                    "icon": "box",
+                    "icon": "boxes",
                     "color": "black",
-                    "group": "ws-resources-outline",
+                    "group": "workspace-outline",
                     "content": []
                 }
 
@@ -312,27 +311,25 @@ module.exports.setup = function setup(scope) {
                 for (var iType = 0; iType < tmpTypes.length; iType++) {
                     var tmpType = tmpTypes[iType];
 
-                    // var tmpTypeEntry = {
-                    //     "ctl": "tbl-ol-node",
-                    //     "type": "resource-type",
-                    //     "name": tmpType.type + "",
-                    //     "item": tmpType.type + "",
-                    //     "details": tmpType.type,
-                    //     "meta": "&#160;",
-                    //     "level": 2,
-                    //     "icon": tmpType.icon,
-                    //     "color": "black",
-                    //     "group": "ws-resources-outline",
-                    //     "content": []
-                    // }
-                    
+                    var tmpTypeEntry = {
+                        "ctl": "tbl-ol-node",
+                        "type": "resource-type",
+                        "name": tmpType.type + "",
+                        "item": tmpType.type + "",
+                        "details": tmpType.type,
+                        "meta": "&#160;",
+                        "level": 2,
+                        "icon": tmpType.icon,
+                        "color": "black",
+                        "group": "workspace-outline",
+                        "content": []
+                    }
+
                     var tmpBaseDir = tmpCatDir + 'resources/' + tmpType.dir + '/';
                     if (theBaseDir) {
                         tmpBaseDir = theBaseDir + tmpType.dir + '/';
                     }
-                    console.log( 'tmpBaseDir', tmpBaseDir);
                     var tmpFiles = $.await($.bld.getDirFiles(tmpBaseDir));
-
                     for (var index in tmpFiles) {
                         var tmpFileName = tmpFiles[index];
 
@@ -351,16 +348,33 @@ module.exports.setup = function setup(scope) {
                             "level": 1,
                             "icon": tmpType.icon,
                             "color": "purple",
-                            "group": "ws-resources-outline"
+                            "group": "workspace-outline",
                         }
-                        tmpBase.content.push(tmpEntry);
+                        if (!(theBaseDir)) {
+                            tmpTypeEntry.content.push(tmpEntry);
+                        } else {
+                            if (theBase) {
+                                theBase.content.push(tmpEntry);
+                            } else {
+                                tmpBase.content.push(tmpEntry);
+                            }
+                        }
+
                     }
 
-                   
-                   //tmpBase.content.push(tmpTypeEntry);
+                    if (!(theBaseDir)) {
+
+                        if (theBase) {
+                            theBase.content.push(tmpTypeEntry);
+                        } else {
+                            tmpBase.content.push(tmpTypeEntry);
+                        }
+                    }
+
+
                 }
 
-             
+
                 resolve(tmpBase);
 
             }
