@@ -33,11 +33,21 @@ License: MIT
 		]
 		}
 
-		var ControlCode = {};
-	var ThisControl = {specs: ControlSpecs, options: { proto: ControlCode, parent: ThisApp }};
+		var ControlCode = {
+			_onInit: _onInit
+		};
 
+		function _onInit(){
+			this.parts.workspace.subscribe('selectMe', onWsSelect.bind(this))
+		}
 
-	return ThisControl;
+		function onWsSelect(theEvent, theControl, theTarget){
+			this.publish('selected', [theControl, theTarget])
+		}
+
+		var ThisControl = {specs: ControlSpecs, options: { proto: ControlCode, parent: ThisApp }};
+
+		return ThisControl;
 
 })(ActionAppCore, $);
 

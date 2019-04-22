@@ -87,9 +87,9 @@ License: MIT
                 window.wsPage = ThisPage;
                
                 //--- Now your done - READY to do stuff the first time on your page
-                ThisPage.parts.west.parts.workspace.subscribe('selectMe', function(){
-                    console.log( 'selectMe arguments', arguments);
-                })
+
+                //--- Subscirbe to when item selected in workspace
+                ThisPage.parts.west.subscribe('selected', wsItemSelected);
 
                 //--- Do special stuff on page load here
                 //--- Then optionally call the stuff that will happen every time 
@@ -124,19 +124,23 @@ License: MIT
     
     actions.showAppConsole = showAppConsole;
     function showAppConsole(theParams, theTarget) {
+        
         var tmpParams = ThisApp.getActionParams(theParams, theTarget, ['appname', 'apptitle', 'name','title']);
         var tmpAppName = tmpParams.appname  || tmpParams.name || '';
         if (!(tmpAppName)) {
             alert("No app name provided to open");
             return;
         }
-        var tmpAppTitle = tmpParams.apptitle || tmpParams.title || '';
+        var tmpAppTitle = tmpParams.apptitle || tmpParams.title || tmpAppName;
 
         if (loadedApps[tmpAppName]) {
             var tmpTabAttr = { group: openAppGroupName, item: tmpAppName };
             ThisApp.gotoTab(tmpTabAttr);
+            console.log( 'showAppConsole  loadedApps[tmpAppName]', loadedApps[tmpAppName]);
         } else {
+
             var tmpNewApp = ThisPage.getControl('panelAppConsole').create('app-' + tmpAppName);
+            console.log( 'showAppConsole  tmpNewApp', tmpNewApp);
             tmpNewApp.setup({ appname: tmpAppName, title: tmpAppTitle });
             tmpNewApp.subscribe('update-app-setup', function(){
                 refreshWorkspace()
@@ -182,5 +186,16 @@ License: MIT
         })
     };
 
+
+    function wsItemSelected(theEvent, theControl, theTarget){
+        var tmpParams = ThisApp.getActionParams('na', theTarget, ['appname', 'source', 'type','pagename','resname','restype']);
+
+        console.log( 'wsItemSelected at page', tmpParams);
+        var tmpEl = $(theTarget);
+        if( tmpParams.type == 'app'){
+            showAppConsole('showAppConsole', theTarget);
+        }
+
+    }
 
 })(ActionAppCore, $);

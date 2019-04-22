@@ -131,7 +131,11 @@ module.exports.setup = function setup(scope) {
                     var tmpApp = {
                         "ctl": "tbl-ol-node",
                         "type": "app",
-                        "item": "ws-" + tmpAppName + "",
+                        "item": tmpAppName + "",
+                        attr: {
+                            appname: tmpAppName,
+                            source: "workspace"
+                        },
                         "details": tmpAppTitle,
                         "meta": "&#160;",
                         "level": 2,

@@ -5707,7 +5707,7 @@ License: MIT
                 }
             }
         }
-
+      
         var tmpPanels = ThisApp.getByAttr$({ ctlcomp: 'panel' }, tmpEl);
         if (tmpPanels.length) {
             for (var iControl = 0; iControl < tmpPanels.length; iControl++) {
@@ -5803,6 +5803,11 @@ License: MIT
                 if (tmpDoc) {
                     tmpThis.loadData(tmpDoc);
                 }
+                if( isFunc(tmpThis._onInit) ){
+                    console.log( 'tmpThis called', tmpThis);
+                    tmpThis._onInit();
+                }
+        
                 dfd.resolve(true);
             });
         });
@@ -7838,6 +7843,9 @@ License: MIT
                         type: theType,
                         oluse: tmpOLUse
                     };
+                    if( isObj(tmpObject.attr)){
+                        $.extend(tmpCE.attr, tmpObject.attr);
+                    }
                 } else {
                     tmpCE.attr = {
                         action:  "toggleMe",
