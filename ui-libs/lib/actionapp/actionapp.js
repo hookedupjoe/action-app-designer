@@ -5559,6 +5559,14 @@ License: MIT
         var tmpTarget = $(tmpTargetHit).closest('[name][controls]')
         var tmpParams = ThisApp.getAttrs(tmpTarget, ['name', 'controls']);
 
+        var tmpAppActionDetails = ThisApp.getActionFromObj(tmpObj, 'action');
+
+        if ((tmpAppActionDetails.hasOwnProperty('action') && tmpAppActionDetails.hasOwnProperty('el'))) {
+            
+            if( tmpAppActionDetails.action == 'selectMe'){
+                this.publish('selectMe', [this, tmpAppActionDetails.el])
+            }
+        }
 
         if (!(tmpActionDetails.hasOwnProperty('action') && tmpActionDetails.hasOwnProperty('el'))) {
             //--- Look for object spec based actions (specific to controls)
@@ -5621,6 +5629,11 @@ License: MIT
             theEvent.preventDefault();
             theEvent.stopPropagation();
             this.runAction(tmpAction, tmpObj);
+            
+            if( tmpAction == 'selectMe'){
+                this.publish('selectMe control', [this, tmpObj])
+            }
+
             return;
         }
 

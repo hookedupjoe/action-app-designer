@@ -84,7 +84,12 @@ License: MIT
         //--- This tells the page to layout the page, load templates and controls, et
         ThisPage.initOnFirstLoad().then(
             function () {
+                window.wsPage = ThisPage;
+               
                 //--- Now your done - READY to do stuff the first time on your page
+                ThisPage.parts.west.parts.workspace.subscribe('selectMe', function(){
+                    console.log( 'selectMe arguments', arguments);
+                })
 
                 //--- Do special stuff on page load here
                 //--- Then optionally call the stuff that will happen every time 

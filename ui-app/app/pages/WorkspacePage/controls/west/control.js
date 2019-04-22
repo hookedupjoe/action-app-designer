@@ -5,16 +5,10 @@ License: MIT
 (function (ActionAppCore, $) {
 
 	var ControlSpecs = {
-		"related": {
-			"workspace": {
-				 content: []
-			}
-		},
 		"options": {
 			"padding": false,
 		},
 		"content": [
-			
 			{
 				"ctl": "button",
 				pageaction: "refreshWorkspace",
@@ -25,6 +19,7 @@ License: MIT
 			{
 				"ctl": "button",
 				pageaction: "showOpenOnly",
+				hidden: true,
 				text: "Open Only",
 				color: 'blue',
 				basic: true,
