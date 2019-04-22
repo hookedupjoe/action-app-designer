@@ -2318,8 +2318,12 @@ var ActionAppCore = {};
     me.toggleMe = toggleMe;
     function toggleMe(theParams, theTarget, theOptionalParent) {
         var tmpEl = $(theTarget);
-        var tmpNext = tmpEl.parent().next(['group="' + tmpEl.attr('group') + '"']);
-        var tmpIcon = tmpEl.find('i');
+        var tmpTR = tmpEl.parent();
+        if( theTarget.tagName.toLowerCase() == 'tr'){
+            tmpTR = tmpEl;
+        }
+        var tmpNext = tmpTR.next(['group="' + tmpEl.attr('group') + '"']);
+        var tmpIcon = tmpTR.find('td:last > i');
         var tmpIsVis = tmpNext.is(":visible");
         if (tmpIsVis) {
             tmpNext.hide();
@@ -7807,20 +7811,34 @@ License: MIT
                 }
 
 
+                var tmpCE = {
+                    ctl: "tr",
+                    classes: "",                   
+                    content: tmpBodyCols
+                }
+
+                if( theItem ){
+                    tmpCE.attr = {
+                        action:  "selectMe",
+                        group: theGroup,
+                        item: theItem,
+                        type: theType,
+                        oluse: tmpOLUse
+                    };
+                } else {
+                    tmpCE.attr = {
+                        action:  "toggleMe",
+                        group: theGroup,
+                        item: "",
+                        type: theType,
+                        oluse: tmpOLUse
+                    };
+                }
+
                 var tmpFinalContent = [
-                    {
-                        ctl: "tr",
-                        classes: "",
-                        attr: {
-                            action: "selectMe",
-                            group: theGroup,
-                            item: theItem,
-                            type: theType,
-                            oluse: tmpOLUse
-                        },
-                        content: tmpBodyCols
-                    }
+                    tmpCE
                 ]
+
 
                 if (tmpHasContent) {
                     tmpFinalContent.push(tmpFinalNode)
