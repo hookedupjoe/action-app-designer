@@ -16,24 +16,24 @@ License: MIT
 		"content": [
 			{
 				"ctl": "button",
-				pageaction: "refreshPages",
+				pageaction: "refreshResources",
 				text: "Refresh",
 				basic: true,
-				"name": "refresh-pages"
+				"name": "refresh-resources"
 			},
 			{
 				"ctl": "button",
-				pageaction: "addPage",
-				text: "Add Page",
+				pageaction: "addResource",
+				text: "Add ...",
 				basic: true,
-				color: "green",
+				color: "purple",
 				icon: "plus",
-				"name": "btn-new-page"
+				"name": "btn-new-box"
 			},
 			{
 				"ctl": "panel",
-				"controlname": "design/ws/get-ws-pages",
-				"name": "pages"
+				"controlname": "design/ws/get-ws-resources",
+				"name": "resources"
 			}
 		]
 		}

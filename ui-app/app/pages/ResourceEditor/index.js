@@ -7,8 +7,8 @@ License: MIT
     var SiteMod = ActionAppCore.module("site");
 
     var thisPageSpecs = {
-        pageName: "PageEditor",
-        pageTitle: "Page Editor",
+        pageName: "ResourceEditor",
+        pageTitle: "Resource Editor",
         navOptions: {
             topLink: true,
             sideLink: true
@@ -18,18 +18,18 @@ License: MIT
     var pageBaseURL = 'app/pages/' + thisPageSpecs.pageName + '/';
 
 
-    thisPageSpecs.required = {
-        controls: {
-            map: {
-                "app/catalog/designer/controls/page-console": "codeEditor"
-            }
-        },
-        panels: {
-            map: {
-                "design/ws/frmNewPage": "frmNewPage"
-            }
-        }
-    }
+    // thisPageSpecs.required = {
+    //     controls: {
+    //         map: {
+    //             "app/catalog/designer/controls/resource-console": "resourceConsole"
+    //         }
+    //     },
+    //     panels: {
+    //         map: {
+    //             "design/ws/frmNewPage": "frmNewResource"
+    //         }
+    //     }
+    // }
 
     thisPageSpecs.layoutOptions = {
         baseURL: pageBaseURL,
@@ -43,8 +43,8 @@ License: MIT
     //--- Customize default layout configuration
     //--- See http://layout.jquery-dev.com/documentation.cfm for details
     thisPageSpecs.layoutConfig = {
-        west__size: "250"
-        , east__size: "400"
+        west__size: "350"
+        , east__size: "200"
     }
 
 
@@ -112,45 +112,18 @@ License: MIT
 
    
     
-    actions.showPageConsole = showPageConsole;
-    function showPageConsole(theParams, theTarget) {
-        var tmpParams = ThisApp.getActionParams(theParams, theTarget, ['appname', 'apptitle', 'name','title']);
-        var tmpPageName = tmpParams.appname  || tmpParams.name || '';
-        if (!(tmpPageName)) {
-            alert("No app name provided to open");
-            return;
-        }
-        var tmpPageTitle = tmpParams.apptitle || tmpParams.title || '';
+    actions.showResourceConsole = showResourceConsole;
+    function showResourceConsole(theParams, theTarget) {        
+        var tmpParams = ThisApp.getActionParams(theParams, theTarget, ['restype','resname']);
 
-        if (loadedPages[tmpPageName]) {
-            var tmpTabAttr = { group: openPageGroupName, item: tmpPageName };
-            ThisApp.gotoTab(tmpTabAttr);
-        } else {
-            var tmpNewPage = ThisPage.getControl('codeEditor').create('page-' + tmpPageName);
-            
-            tmpNewPage.subscribe('update-app-setup', function(){
-                refreshWorkspace()
-            })
-            loadedPages[tmpPageName] = tmpNewPage;
+        console.log( 'showResourceConsole', tmpParams);
 
-            //--- For Debugging
-            window[tmpPageName] = tmpNewPage;
-
-            //--- Create a new card for this app
-            ThisPage.addToSpot('body', '<div appuse="cards" group="' + openPageGroupName + '" item="' + tmpPageName + '">TESTING</div>');
-            var tmpTabAttr = { group: openPageGroupName, item: tmpPageName };
-            //--- Find created cards jQuery element
-            var tmpNewGroup = ThisPage.getByAttr$({ group: openPageGroupName, item: tmpPageName, appuse: 'cards' });
-            //--- Load Page Console into that card
-            var tmpPageDetails = { pagename: tmpPageName, title: tmpPageTitle };
-            
-            tmpNewPage.preLoad(tmpPageDetails);
-            tmpNewPage.loadToElement(tmpNewGroup).then(function(theReply){
-                tmpNewPage.setup(tmpPageDetails);
-            });
-            //--- Go to the newly added card (to show it and hide others)
-            ThisApp.gotoTab(tmpTabAttr);
-        }
+        // var tmpPageName = tmpParams.appname  || tmpParams.name || '';
+        // if (!(tmpPageName)) {
+        //     alert("No app name provided to open");
+        //     return;
+        // }
+     
     };
 
     actions.refreshPages = refreshPages;
