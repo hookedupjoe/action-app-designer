@@ -21,12 +21,14 @@ License: MIT
     thisPageSpecs.required = {
         controls: {
             map: {
-                "app/catalog/designer/controls/app-console": "panelAppConsole"
+                "app/catalog/designer/controls/app-console": "panelAppConsole",
+                "app/catalog/designer/controls/page-console": "codeEditor"
             }
         },
         panels: {
             map: {
-                "design/ws/frmNewApp": "frmNewApp"
+                "design/ws/frmNewApp": "frmNewApp",
+                "design/ws/frmNewPage": "frmNewPage"
             }
         }
     }
@@ -59,9 +61,14 @@ License: MIT
     *    If your component need to do stuff to be availale in the background, do it here
     */
     var actions = ThisPage.pageActions;
-    var openAppGroupName = 'workspace-outline';
+    var wsOutlineName = 'workspace-outline';
     var loadedApps = {};
+    var loadedPages = {};
+
+    //--- for debug
     window.loadedApps = loadedApps;
+    window.loadedPages = loadedPages;
+
     var appSetupConfig = false;
 
     ThisPage._onPreInit = function (theApp) {
@@ -80,7 +87,7 @@ License: MIT
     *     that are needed even if the page was not activated yet
     */
     ThisPage._onFirstActivate = function (theApp) {
-        // openAppGroupName = ThisPage.ns(openAppGroupName);
+        // wsOutlineName = ThisPage.ns(wsOutlineName);
         //--- This tells the page to layout the page, load templates and controls, et
         ThisPage.initOnFirstLoad().then(
             function () {
@@ -134,7 +141,7 @@ License: MIT
         var tmpAppTitle = tmpParams.apptitle || tmpParams.title || tmpAppName;
 
         if (loadedApps[tmpAppName]) {
-            var tmpTabAttr = { group: openAppGroupName, item: tmpAppName };
+            var tmpTabAttr = { group: wsOutlineName, item: tmpAppName };
             ThisApp.gotoTab(tmpTabAttr);
             console.log( 'showAppConsole  loadedApps[tmpAppName]', loadedApps[tmpAppName]);
         } else {
@@ -151,10 +158,10 @@ License: MIT
             window[tmpAppName] = tmpNewApp;
 
             //--- Create a new card for this app
-            ThisPage.addToSpot('body', '<div appuse="cards" group="' + openAppGroupName + '" item="' + tmpAppName + '">TESTING</div>');
-            var tmpTabAttr = { group: openAppGroupName, item: tmpAppName };
+            ThisPage.addToSpot('body', '<div appuse="cards" group="' + wsOutlineName + '" item="' + tmpAppName + '">TESTING</div>');
+            var tmpTabAttr = { group: wsOutlineName, item: tmpAppName };
             //--- Find created cards jQuery element
-            var tmpNewGroup = ThisPage.getByAttr$({ group: openAppGroupName, item: tmpAppName, appuse: 'cards' });
+            var tmpNewGroup = ThisPage.getByAttr$({ group: wsOutlineName, item: tmpAppName, appuse: 'cards' });
             //--- Load App Console into that card
             tmpNewApp.loadToElement(tmpNewGroup);
             //--- Go to the newly added card (to show it and hide others)
@@ -162,6 +169,49 @@ License: MIT
         }
     };
 
+
+    
+    
+    actions.showPageConsole = showPageConsole;
+    function showPageConsole(theParams, theTarget) {
+        var tmpParams = ThisApp.getActionParams(theParams, theTarget, ['appname', 'apptitle', 'name','title']);
+        var tmpPageName = tmpParams.pagename  || tmpParams.name || '';
+        if (!(tmpPageName)) {
+            alert("No page name provided to open");
+            return;
+        }
+        var tmpPageTitle = tmpParams.apptitle || tmpParams.title || '';
+
+        if (loadedPages[tmpPageName]) {
+            var tmpTabAttr = { group: wsOutlineName, item: tmpPageName };
+            ThisApp.gotoTab(tmpTabAttr);
+        } else {
+            var tmpNewPage = ThisPage.getControl('codeEditor').create('page-' + tmpPageName);
+            
+            tmpNewPage.subscribe('update-app-setup', function(){
+                refreshWorkspace()
+            })
+            loadedPages[tmpPageName] = tmpNewPage;
+
+            //--- For Debugging
+            window[tmpPageName] = tmpNewPage;
+
+            //--- Create a new card for this app
+            ThisPage.addToSpot('body', '<div appuse="cards" group="' + wsOutlineName + '" item="' + tmpPageName + '">TESTING</div>');
+            var tmpTabAttr = { group: wsOutlineName, item: tmpPageName };
+            //--- Find created cards jQuery element
+            var tmpNewGroup = ThisPage.getByAttr$({ group: wsOutlineName, item: tmpPageName, appuse: 'cards' });
+            //--- Load Page Console into that card
+            var tmpPageDetails = { pagename: tmpPageName, title: tmpPageTitle };
+            
+            tmpNewPage.preLoad(tmpPageDetails);
+            tmpNewPage.loadToElement(tmpNewGroup).then(function(theReply){
+                tmpNewPage.setup(tmpPageDetails);
+            });
+            //--- Go to the newly added card (to show it and hide others)
+            ThisApp.gotoTab(tmpTabAttr);
+        }
+    };
 
     actions.addApp = addApp;
     function addApp(theParams, theTarget) {
@@ -194,6 +244,8 @@ License: MIT
         var tmpEl = $(theTarget);
         if( tmpParams.type == 'app'){
             showAppConsole('showAppConsole', theTarget);
+        } else if( tmpParams.type == 'page'){
+            showPageConsole(tmpParams);
         }
 
     }

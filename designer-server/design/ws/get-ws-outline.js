@@ -145,7 +145,8 @@ module.exports.setup = function setup(scope) {
                         content: []
                     }
 
-                    var tmpPagesNode = $.await(getPagesNode(tmpAppName + '/app/pages/'));
+                    // + '/app/pages/'
+                    var tmpPagesNode = $.await(getPagesNode({appname: tmpAppName}));
                     tmpApp.content.push(tmpPagesNode);
 
                     var tmpAppRes = $.await(getWSResourcesNode(tmpAppBase + 'catalog/'));
@@ -174,20 +175,27 @@ module.exports.setup = function setup(scope) {
 
     }
 
-    function getPagesNode(theBaseDir) {
-        var self = this;
+    function getPagesNode(theOptions) {
+       
+
+
         return new Promise($.async(function (resolve, reject) {
             try {
 
-                var tmpBaseDir = theBaseDir;
+                var tmpOptions = theOptions || {};
+                var tmpBaseDir = '';
+                if( tmpOptions.appname ){
+                    tmpBaseDir = tmpOptions.appname + '/app/pages/'
+                }
+
                 var tmpTitle = "Workspace Pages"
 
                 var tmpPagesDir = scope.locals.path.ws.pages;
                 var tmpAppsDir = scope.locals.path.ws.uiApps;
 
-                if (theBaseDir) {
+                if (tmpBaseDir) {
                     tmpTitle = '.../pages';
-                    tmpPagesDir = tmpAppsDir + theBaseDir
+                    tmpPagesDir = tmpAppsDir + tmpBaseDir
                 }
 
                 //    console.log('tmpTitle tmpPagesDir', tmpTitle, tmpPagesDir);
@@ -208,20 +216,30 @@ module.exports.setup = function setup(scope) {
 
                 var tmpFiles = $.await($.bld.getDirFiles(tmpPagesDir))
 
+                var tmpAppName = '';
+                if( tmpOptions.appname ){
+                    tmpAppName = tmpOptions.appname;
+                }
                 for (var index in tmpFiles) {
                     var tmpPageName = tmpFiles[index];
                     var tmpPageBase = tmpPagesDir + tmpPageName + '/';
                     var tmpPageTitle = tmpPageName;
                     var tmpEntryName = tmpPageName;
-                    if( tmpBaseDir ){
-                        tmpEntryName = tmpBaseDir + "-" + tmpEntryName
+                    if( tmpAppName ){
+                        tmpEntryName = tmpAppName + "-" + tmpEntryName
                     } else {
-                        tmpEntryName = "ws-" + tmpEntryName
+                        tmpEntryName = tmpEntryName
                     }
+
                     var tmpPage = {
                         "ctl": "tbl-ol-node",
                         "type": "page",
-                        "item": tmpPageName + "",
+                        "item": tmpEntryName + "",
+                        attr: {
+                            appname: tmpAppName,
+                            pagename: tmpPageName,
+                            source: (tmpAppName ? "app" : "workspace")
+                        },
                         "details": tmpPageTitle,
                         "meta": "&#160;",
                         "level": 2,
@@ -230,6 +248,8 @@ module.exports.setup = function setup(scope) {
                         "group": "workspace-outline",
                         content: []
                     }
+
+
 
                     var tmpPageRes = $.await(getWSResourcesNode(tmpPageBase, tmpPage));
 
