@@ -330,26 +330,36 @@ License: MIT
 		this.uniqueGroups(tmpPageName);
 	}
 	//---- Initial Setup of the control
-	function setup(theDetails) {
-		var tmpPageName = theDetails.pagename || '';
+	function setup(theOptions) {
+		var tmpOptions = theOptions || {};
+		
+		var tmpPageName = tmpOptions.pagename || '';
 		this.params = this.params || {};
 		this.params.pagename = tmpPageName;
-		var tmpTitle = theDetails.title || theDetails.pagetitle || tmpPageName;
-		// this.controlConfig.index.controls.pages.controlname += tmpPageName
-		// this.controlConfig.index.controls.setupinfo.controlname += tmpPageName
+
+		
+		var tmpTitle = tmpPageName;
+		var tmpSource = tmpOptions.source || 'ws';
+		var tmpAppName = tmpOptions.appname || '';
+
 		var tmpPageTitle = tmpPageName
-		if (tmpTitle && (tmpTitle != tmpPageName)) {
-			tmpPageTitle = '[' + tmpPageName + '] ' + tmpTitle;
+		if (tmpAppName) {
+			tmpPageTitle = '[' + tmpAppName + '] ' + tmpTitle;
 		}
 
 		this.setFieldValue('title', tmpPageTitle);
 		this.setupEditor();
 		this.details = {
 			pagename: tmpPageName,
-			name: '',
-			target: 'workspace'
+			source: tmpSource,
+			appname: tmpAppName,
+			name: ''
 		}
-		this.endpointURL = 'design/ws/page-code?run&source=workspace&pagename=' + tmpPageName;
+		this.endpointURL = 'design/ws/page-code?run&source=' + tmpSource + '&pagename=' + tmpPageName;
+		if( tmpAppName ){
+			this.endpointURL += '&appname=' + tmpAppName;
+			console.log( 'this.endpointURL', this.endpointURL);
+		}
 		this.refreshFromSource();
 
 	}
@@ -408,7 +418,8 @@ License: MIT
 		}
 		var tmpRequest = {
 			pagename: this.details.pagename,
-			target: this.details.target || 'app',
+			target: this.details.source || 'ws',
+			appname: this.details.appname || '',
 			name: this.details.name || '',
 			index: this.loaded.index,
 			parts: this.loaded.parts,

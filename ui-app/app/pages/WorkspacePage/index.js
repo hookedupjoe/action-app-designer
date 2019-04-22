@@ -143,11 +143,11 @@ License: MIT
         if (loadedApps[tmpAppName]) {
             var tmpTabAttr = { group: wsOutlineName, item: tmpAppName };
             ThisApp.gotoTab(tmpTabAttr);
-            console.log( 'showAppConsole  loadedApps[tmpAppName]', loadedApps[tmpAppName]);
+            //console.log( 'showAppConsole  loadedApps[tmpAppName]', loadedApps[tmpAppName]);
         } else {
 
             var tmpNewApp = ThisPage.getControl('panelAppConsole').create('app-' + tmpAppName);
-            console.log( 'showAppConsole  tmpNewApp', tmpNewApp);
+            //console.log( 'showAppConsole  tmpNewApp', tmpNewApp);
             tmpNewApp.setup({ appname: tmpAppName, title: tmpAppTitle });
             tmpNewApp.subscribe('update-app-setup', function(){
                 refreshWorkspace()
@@ -174,13 +174,13 @@ License: MIT
     
     actions.showPageConsole = showPageConsole;
     function showPageConsole(theParams, theTarget) {
-        var tmpParams = ThisApp.getActionParams(theParams, theTarget, ['appname', 'apptitle', 'name','title']);
+        var tmpParams = ThisApp.getActionParams(theParams, theTarget, commonParams);
         var tmpPageName = tmpParams.pagename  || tmpParams.name || '';
         if (!(tmpPageName)) {
             alert("No page name provided to open");
             return;
         }
-        var tmpPageTitle = tmpParams.apptitle || tmpParams.title || '';
+        var tmpPageTitle = tmpPageName;
 
         if (loadedPages[tmpPageName]) {
             var tmpTabAttr = { group: wsOutlineName, item: tmpPageName };
@@ -202,11 +202,10 @@ License: MIT
             //--- Find created cards jQuery element
             var tmpNewGroup = ThisPage.getByAttr$({ group: wsOutlineName, item: tmpPageName, appuse: 'cards' });
             //--- Load Page Console into that card
-            var tmpPageDetails = { pagename: tmpPageName, title: tmpPageTitle };
             
-            tmpNewPage.preLoad(tmpPageDetails);
+            tmpNewPage.preLoad(tmpParams);
             tmpNewPage.loadToElement(tmpNewGroup).then(function(theReply){
-                tmpNewPage.setup(tmpPageDetails);
+                tmpNewPage.setup(tmpParams);
             });
             //--- Go to the newly added card (to show it and hide others)
             ThisApp.gotoTab(tmpTabAttr);
@@ -236,11 +235,12 @@ License: MIT
         })
     };
 
+    var commonParams = ['appname', 'source', 'type','pagename','resname','restype'];
 
     function wsItemSelected(theEvent, theControl, theTarget){
-        var tmpParams = ThisApp.getActionParams('na', theTarget, ['appname', 'source', 'type','pagename','resname','restype']);
+        var tmpParams = ThisApp.getActionParams('na', theTarget, commonParams);
 
-        console.log( 'wsItemSelected at page', tmpParams);
+        //console.log( 'wsItemSelected at page', tmpParams);
         var tmpEl = $(theTarget);
         if( tmpParams.type == 'app'){
             showAppConsole('showAppConsole', theTarget);

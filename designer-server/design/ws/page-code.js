@@ -21,8 +21,8 @@ module.exports.setup = function setup(scope) {
             try {
                
                 var tmpReq = {
-                    source: req.query.source || 'app',
-                    name: req.query.name || req.query.appname,
+                    source: req.query.source || 'ws',
+                    appname: req.query.name || req.query.appname,
                     pagename: req.query.pagename
                 }
 
@@ -30,11 +30,14 @@ module.exports.setup = function setup(scope) {
                     throw "No page name provided";
                 }
 
-                var tmpSourceDir = scope.locals.path.ws.uiApps 
+                var tmpAppsDir = scope.locals.path.ws.uiApps; 
                 var tmpPagesDir = scope.locals.path.ws.pages;
-                if( tmpReq.source == 'workspace'){
-                    tmpSourceDir = tmpPagesDir;
+                var tmpSourceDir = tmpPagesDir;
+
+                if( tmpReq.source == 'app' && tmpReq.appname){
+                    tmpSourceDir = tmpAppsDir + tmpReq.appname + '/app/pages/';
                 }
+                console.log( 'tmpSourceDir', tmpSourceDir);
                 var tmpPageName = tmpReq.pagename;
 
                 var tmpPartsLoc = tmpSourceDir + tmpPageName;
