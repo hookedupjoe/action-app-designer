@@ -24,16 +24,15 @@ License: MIT
 			},
 			{
 				"ctl": "button",
-				pageaction: "addApp",
-				text: "New App",
+				pageaction: "showOpenOnly",
+				text: "Open Only",
 				color: 'blue',
 				basic: true,
-				icon: "plus",
-				"name": "btn-new-app"
+				"name": "btn-show-open"
 			},
 			{
 				"ctl": "panel",
-				"controlname": "design/ws/get-apps",
+				"controlname": "design/ws/get-ws-outline",
 				"name": "workspace"
 			}
 		]

@@ -43,7 +43,6 @@ module.exports.setup = function setup(scope) {
                 ]
 
                 var tmpCatDir = scope.locals.path.ws.catalog;
-            
               
                 for (var iType = 0; iType < tmpTypes.length; iType++) {
                     var tmpType = tmpTypes[iType];
@@ -61,11 +60,8 @@ module.exports.setup = function setup(scope) {
                         "group": "ws-resources-outline",
                         "content": []
                     }
-
-
-                
                     
-                    var tmpBaseDir = tmpCatDir + tmpType.dir + '/';
+                    var tmpBaseDir = tmpCatDir + 'resources/' + tmpType.dir + '/';
                     var tmpFiles = $.await($.bld.getDirFiles(tmpBaseDir));
 
                     for (var index in tmpFiles) {

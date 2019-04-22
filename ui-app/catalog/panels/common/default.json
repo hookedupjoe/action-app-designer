@@ -1,11 +1,74 @@
 {
 	"options": {
-		"padding": false
+		"padding": true
 	},
-	"content": [{
-		"ctl": "control",
-		"controlname": "app/catalog/designer/controls/page-code-editor",
-		"name": "page-editor"
-	}]
-
+	"content": [
+		{
+			"ctl": "title",
+			"name": "title",
+			"size": "large",
+			"color": "blue",
+			"icon": "box",
+			"text": "Resource Name"
+		},
+		{
+			"ctl": "tabs",
+			"name": "resourcetabs",
+			"tabs": [
+				{
+					"label": "Info",
+					"name": "resourcetabs-info",
+					"ctl": "tab",
+					"content": [
+						{
+							"ctl": "fieldrow",
+							"name": "info-row",
+							"items": [
+								{
+									"ctl": "field",
+									"name": "appname",
+									"label": "Location",
+									"readonly":true,
+									"default": "[ws]/catalog/controls",
+									"req": true
+								},
+								{
+									"ctl": "field",
+									"name": "title",
+									"readonly":true,
+									"label": "Conrol Name",
+									"default": "SearchControl",
+									"req": true
+								}
+							]
+						}
+					]
+				},
+				{
+					"label": "Content",
+					"name": "resourcetabs-content",
+					"ctl": "tab",
+					"content": [
+					
+					]
+				},
+				{
+					"label": "Options",
+					"name": "resourcetabs-options",
+					"ctl": "tab",
+					"content": [
+					
+					]
+				},
+				{
+					"label": "Code",
+					"name": "resourcetabs-code",
+					"ctl": "tab",
+					"content": [
+					
+					]
+				}
+			]
+		}
+	]
 }
