@@ -108,7 +108,7 @@ module.exports.setup = function setup(scope) {
                 var tmpBase = {
                     "ctl": "tbl-ol-node",
                     "type": "apps",
-                    "name": "apps",
+                    // "name": "apps",
                     // "item": "apps",
                     "details": "Applications",
                     "meta": "&#160;",
@@ -199,7 +199,7 @@ module.exports.setup = function setup(scope) {
                 var tmpBase = {
                     "ctl": "tbl-ol-node",
                     "type": "pages",
-                    "name": "pages",
+                    // "name": "pages",
                     // "item": "pages",
                     "details": tmpTitle,
                     "meta": "&#160;",
@@ -221,7 +221,7 @@ module.exports.setup = function setup(scope) {
 
                     var tmpPage = {
                         "ctl": "tbl-ol-node",
-                        "type": "app",
+                        "type": "page",
                         "name": tmpPageName + "",
                         "item": tmpPageName + "",
                         "details": tmpPageTitle,
@@ -287,7 +287,7 @@ module.exports.setup = function setup(scope) {
                 var tmpBase = {
                     "ctl": "tbl-ol-node",
                     "type": "resources",
-                    "name": "resources",
+                    // "name": "resources",
                     // "item": "resources",
                     "details": tmpTitle,
                     "meta": "&#160;",
@@ -314,7 +314,7 @@ module.exports.setup = function setup(scope) {
                     var tmpTypeEntry = {
                         "ctl": "tbl-ol-node",
                         "type": "resource-type",
-                        "name": tmpType.type + "",
+                        // "name": tmpType.type + "",
                         // "item": tmpType.type + "",
                         "details": tmpType.type,
                         "meta": "&#160;",
