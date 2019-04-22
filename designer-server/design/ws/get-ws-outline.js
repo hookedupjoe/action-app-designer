@@ -98,7 +98,7 @@ module.exports.setup = function setup(scope) {
         }));
     }
 
-    
+
     function getApplicationsNode() {
         var self = this;
         return new Promise($.async(function (resolve, reject) {
@@ -137,16 +137,20 @@ module.exports.setup = function setup(scope) {
                         "item": "ws-" + tmpAppName + "",
                         "details": tmpAppTitle,
                         "meta": "&#160;",
-                        attr: {
+                        rem_attr: {
                             pageaction: 'showAppConsole',
                             apptitle: tmpAppTitle,
                             appname: tmpAppName
                         },
-                        "level": 1,
+                        "level": 2,
                         "icon": "globe",
                         "color": "blue",
-                        "group": "workspace-outline"
+                        "group": "workspace-outline",
+                        content: []
                     }
+
+                    var tmpPagesNode = $.await(getPagesNode(tmpAppName + '/app/pages/'));
+                    tmpApp.content.push(tmpPagesNode);
 
                     tmpBase.content.push(tmpApp);
 
@@ -168,17 +172,30 @@ module.exports.setup = function setup(scope) {
 
     }
 
-    function getPagesNode() {
+    function getPagesNode(theBaseDir) {
         var self = this;
         return new Promise($.async(function (resolve, reject) {
             try {
+
+
+                var tmpTitle = "WS Page"
+
+                var tmpPagesDir = scope.locals.path.ws.pages;
+                var tmpAppsDir = scope.locals.path.ws.uiApps;
+
+                if (theBaseDir) {
+                    tmpTitle = '.../pages';
+                    tmpPagesDir = tmpAppsDir + theBaseDir
+                }
+
+            //    console.log('tmpTitle tmpPagesDir', tmpTitle, tmpPagesDir);
 
                 var tmpBase = {
                     "ctl": "tbl-ol-node",
                     "type": "pages",
                     "name": "pages",
                     "item": "pages",
-                    "details": "WS Pages",
+                    "details": tmpTitle,
                     "meta": "&#160;",
                     "classes": "page-editor-outline",
                     "level": 2,
@@ -188,15 +205,14 @@ module.exports.setup = function setup(scope) {
                     "content": []
                 }
 
-                var tmpPagesDir = scope.locals.path.ws.pages;
-                
+
                 var tmpFiles = $.await($.bld.getDirFiles(tmpPagesDir))
 
                 for (var index in tmpFiles) {
                     var tmpPageName = tmpFiles[index];
                     var tmpPageBase = tmpPagesDir + tmpPageName + '/';
                     var tmpPageTitle = tmpPageName;
-                    
+
                     var tmpPage = {
                         "ctl": "tbl-ol-node",
                         "type": "app",
@@ -213,7 +229,7 @@ module.exports.setup = function setup(scope) {
                         "color": "green",
                         "group": "pages-outline"
                     }
-
+                    
                     tmpBase.content.push(tmpPage);
 
                 }
