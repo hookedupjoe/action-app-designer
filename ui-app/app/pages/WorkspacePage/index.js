@@ -158,7 +158,7 @@ License: MIT
             window[tmpAppName] = tmpNewApp;
 
             //--- Create a new card for this app
-            ThisPage.addToSpot('body', '<div appuse="cards" group="' + wsOutlineName + '" item="' + tmpAppName + '">TESTING</div>');
+            ThisPage.addToSpot('body', '<div appuse="cards" group="' + wsOutlineName + '" item="' + tmpAppName + '"></div>');
             var tmpTabAttr = { group: wsOutlineName, item: tmpAppName };
             //--- Find created cards jQuery element
             var tmpNewGroup = ThisPage.getByAttr$({ group: wsOutlineName, item: tmpAppName, appuse: 'cards' });
@@ -182,25 +182,34 @@ License: MIT
         }
         var tmpPageTitle = tmpPageName;
 
-        if (loadedPages[tmpPageName]) {
-            var tmpTabAttr = { group: wsOutlineName, item: tmpPageName };
+        var tmpAppName = '';
+
+        var tmpEntryName = tmpPageName || '';
+        if( tmpParams.appname ){
+            tmpAppName = tmpParams.appname;
+            tmpEntryName = tmpParams.appname + "-" + tmpEntryName
+        }
+
+        if (loadedPages[tmpEntryName]) {
+            var tmpTabAttr = { group: wsOutlineName, item: tmpEntryName };
             ThisApp.gotoTab(tmpTabAttr);
         } else {
-            var tmpNewPage = ThisPage.getControl('codeEditor').create('page-' + tmpPageName);
+            var tmpNewPage = ThisPage.getControl('codeEditor').create(tmpEntryName);
             
             tmpNewPage.subscribe('update-app-setup', function(){
                 refreshWorkspace()
             })
-            loadedPages[tmpPageName] = tmpNewPage;
+            loadedPages[tmpEntryName] = tmpNewPage;
+            console.log( 'tmpNewPage', tmpNewPage);
 
             //--- For Debugging
-            window[tmpPageName] = tmpNewPage;
+            window[tmpEntryName] = tmpNewPage;
 
             //--- Create a new card for this app
-            ThisPage.addToSpot('body', '<div appuse="cards" group="' + wsOutlineName + '" item="' + tmpPageName + '">TESTING</div>');
-            var tmpTabAttr = { group: wsOutlineName, item: tmpPageName };
+            ThisPage.addToSpot('body', '<div appuse="cards" group="' + wsOutlineName + '" item="' + tmpEntryName + '"></div>');
+            var tmpTabAttr = { group: wsOutlineName, item: tmpEntryName };
             //--- Find created cards jQuery element
-            var tmpNewGroup = ThisPage.getByAttr$({ group: wsOutlineName, item: tmpPageName, appuse: 'cards' });
+            var tmpNewGroup = ThisPage.getByAttr$({ group: wsOutlineName, item: tmpEntryName, appuse: 'cards' });
             //--- Load Page Console into that card
             
             tmpNewPage.preLoad(tmpParams);
