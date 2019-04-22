@@ -1,8 +1,5 @@
-.select2-container--default .select2-selection--multiple .select2-selection__choice {
-  border: 1px solid #aaa;
-  padding: 5px 5px;
-  height: 32px;
-  font-size: 16px;
+.ui[class*="very compact"].table td {
+  padding: 2px 3px;
 }
 
 div#menu {

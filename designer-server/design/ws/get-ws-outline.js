@@ -152,6 +152,12 @@ module.exports.setup = function setup(scope) {
                     var tmpPagesNode = $.await(getPagesNode(tmpAppName + '/app/pages/'));
                     tmpApp.content.push(tmpPagesNode);
 
+                    var tmpAppRes =  $.await(getWSResourcesNode(tmpAppBase + 'catalog/'));
+                    
+                    if( tmpAppRes && tmpAppRes.content && tmpAppRes.content.length ){
+                        tmpApp.content.push(tmpAppRes);                  
+                    }
+
                     tmpBase.content.push(tmpApp);
 
                 }
@@ -220,16 +226,26 @@ module.exports.setup = function setup(scope) {
                         "item": tmpPageName + "",
                         "details": tmpPageTitle,
                         "meta": "&#160;",
-                        attr: {
+                        rem_attr: {
                             pageaction: 'showPageConsole',
                             pagename: tmpPageName
                         },
-                        "level": 1,
+                        "level": 2,
                         "icon": "columns",
                         "color": "green",
-                        "group": "pages-outline"
+                        "group": "pages-outline",
+                        content: []
                     }
+
+                    var tmpPageRes =  $.await(getWSResourcesNode(tmpPageBase));
                     
+                    if( tmpPageRes && tmpPageRes.content && tmpPageRes.content.length ){
+                        tmpPage.content.push(tmpPageRes);
+                    } else {
+                        tmpPage.level = 1;
+                    }
+                    //tmpPage.content.push();
+
                     tmpBase.content.push(tmpPage);
 
                 }
@@ -251,21 +267,33 @@ module.exports.setup = function setup(scope) {
 
 
 
-    function getWSResourcesNode() {
+    function getWSResourcesNode(theBaseDir) {
         var self = this;
         return new Promise($.async(function (resolve, reject) {
             try {
 
 
+                var tmpTitle = "WS Resources"
+
+                var tmpPagesDir = scope.locals.path.ws.pages;
+                var tmpAppsDir = scope.locals.path.ws.uiApps;
+
+                if (theBaseDir) {
+                    tmpTitle = '.../resources';
+                   // tmpPagesDir = theBaseDir;
+                }
+
+               // console.log( 'theBaseDir', theBaseDir);
+                
                 var tmpBase = {
                     "ctl": "tbl-ol-node",
                     "type": "resources",
                     "name": "resources",
                     "item": "resources",
-                    "details": "WS Resources",
+                    "details": tmpTitle,
                     "meta": "&#160;",
                     "classes": "ws-editor-outline",
-                    "level": 3,
+                    "level": 2,
                     "icon": "box",
                     "color": "black",
                     "group": "ws-resources-outline",
@@ -284,21 +312,25 @@ module.exports.setup = function setup(scope) {
                 for (var iType = 0; iType < tmpTypes.length; iType++) {
                     var tmpType = tmpTypes[iType];
 
-                    var tmpTypeEntry = {
-                        "ctl": "tbl-ol-node",
-                        "type": "resource-type",
-                        "name": tmpType.type + "",
-                        "item": tmpType.type + "",
-                        "details": tmpType.type,
-                        "meta": "&#160;",
-                        "level": 2,
-                        "icon": tmpType.icon,
-                        "color": "black",
-                        "group": "ws-resources-outline",
-                        "content": []
-                    }
-
+                    // var tmpTypeEntry = {
+                    //     "ctl": "tbl-ol-node",
+                    //     "type": "resource-type",
+                    //     "name": tmpType.type + "",
+                    //     "item": tmpType.type + "",
+                    //     "details": tmpType.type,
+                    //     "meta": "&#160;",
+                    //     "level": 2,
+                    //     "icon": tmpType.icon,
+                    //     "color": "black",
+                    //     "group": "ws-resources-outline",
+                    //     "content": []
+                    // }
+                    
                     var tmpBaseDir = tmpCatDir + 'resources/' + tmpType.dir + '/';
+                    if (theBaseDir) {
+                        tmpBaseDir = theBaseDir + tmpType.dir + '/';
+                    }
+                    console.log( 'tmpBaseDir', tmpBaseDir);
                     var tmpFiles = $.await($.bld.getDirFiles(tmpBaseDir));
 
                     for (var index in tmpFiles) {
@@ -311,7 +343,7 @@ module.exports.setup = function setup(scope) {
                             "item": tmpFileName + "",
                             "details": tmpFileName,
                             "meta": "&#160;",
-                            attr: {
+                            rem_attr: {
                                 pageaction: 'showResourceConsole',
                                 restype: tmpType.type,
                                 resname: tmpFileName
@@ -321,13 +353,14 @@ module.exports.setup = function setup(scope) {
                             "color": "purple",
                             "group": "ws-resources-outline"
                         }
-                        tmpTypeEntry.content.push(tmpEntry);
+                        tmpBase.content.push(tmpEntry);
                     }
-                    tmpBase.content.push(tmpTypeEntry);
+
+                   
+                   //tmpBase.content.push(tmpTypeEntry);
                 }
 
-
-
+             
                 resolve(tmpBase);
 
             }
