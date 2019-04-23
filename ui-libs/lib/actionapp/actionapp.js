@@ -4886,6 +4886,17 @@ License: MIT
         return this.parentEl
     }
 
+    meInstance.setItemDisabled = function(theEntryName, theIsDisabled){
+        var tmpEl = this.getItemEl(theEntryName) || this.getFieldEl(theEntryName);
+        var tmpHasClass = tmpEl.hasClass('disabled');
+        if( !tmpHasClass && theIsDisabled ){
+            tmpEl.addClass('disabled');
+        } else if( tmpHasClass && !theIsDisabled ){
+            tmpEl.removeClass('disabled');
+        }
+    }
+    meInstance.setFieldDisabled = meInstance.setItemDisabled;
+
     meInstance.refreshUI = function (theOptions) {
         var tmpOptions = theOptions || {};
         var tmpThis = this;
@@ -5014,6 +5025,11 @@ License: MIT
 
     meInstance.getItemEl = function (theItemName) {
         var tmpEl = this.getElByName$(theItemName, 'item')
+        if (!(tmpEl)) { return false }
+        return tmpEl;
+    }
+    meInstance.getFieldEl = function (theFieldName) {
+        var tmpEl = this.getElByName$(theFieldName, 'field')
         if (!(tmpEl)) { return false }
         return tmpEl;
     }

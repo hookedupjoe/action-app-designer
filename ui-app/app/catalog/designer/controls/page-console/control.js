@@ -23,6 +23,18 @@ License: MIT
 					"content": [
 						{
 							"ctl": "button",
+							"color": "blue",
+							"icon": "save",
+							"disabled": true,
+							"name": "btn-save-code",
+							"label": "Save Changes",
+							"onClick": {
+								"run": "action",
+								"action": "saveCode"
+							}
+						},
+						{
+							"ctl": "button",
 							"color": "black",
 							basic: true,
 							right: true,
@@ -262,7 +274,7 @@ License: MIT
 									}
 				
 								],
-								north: [
+								rem_north: [
 									{
 										"ctl": "field",
 										"name": "code-title",
@@ -272,17 +284,7 @@ License: MIT
 										"default": "Page Editor",
 										"placeholder": "",
 										"content": [
-											{
-												"ctl": "button",
-												"color": "blue",
-												"icon": "save",
-												"name": "btn-save-code",
-												"label": "Save Changes",
-												"onClick": {
-													"run": "action",
-													"action": "saveCode"
-												}
-											}
+											
 										]
 									}
 								]
@@ -387,7 +389,15 @@ License: MIT
 		this.aceEditor = ace.edit(this.aceEditorEl.get(0));
 		this.aceEditor.setTheme("ace/theme/vibrant_ink");
 		this.aceEditor.setFontSize(16);
-		ThisApp.refreshLayouts();
+
+		var tmpThis = this;
+		this.aceEditor.on('change', function(){
+
+			console.log( 'change');
+			//this.getItem('btn-save-code').removeClass('disabled');
+			tmpThis.setItemDisabled('btn-save-code', false)
+		})
+		
 	}
 
 	function refreshEditorFromCodeIndex() {
