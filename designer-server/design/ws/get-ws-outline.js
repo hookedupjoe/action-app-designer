@@ -19,6 +19,64 @@ module.exports.setup = function setup(scope) {
         var self = this;
         return new Promise($.async(function (resolve, reject) {
             try {
+                var tmpAppName = req.query.appname || '';
+                var tmpPageName = req.query.pagename || '';
+                var tmpType = req.query.type || '';
+
+                var tmpResponse = false;
+                if (tmpAppName && tmpType == 'pages') {
+
+                    var tmpBase = {
+                        "ctl": "tbl-ol-node",
+                        "type": "pages",
+                        "name": "pages",
+                        "item": "pages",
+                        "details": ".../pages",
+                        "meta": "&#160;",
+                        "classes": "ws-outline",
+                        "level": 3,
+                        "icon": "columns",
+                        "color": "black",
+                        "group": "workspace-outline",
+                        "content": []
+                    }
+                    tmpResponse = $.await(getPagesNode({ appname: tmpAppName }));
+                    console.log('tmpResponse', tmpResponse);
+                    tmpBase.content = tmpResponse.content;
+
+
+                    var tmpRet = {
+                        "options": {
+                            padding: false,
+                        },
+                        "content": [tmpBase]
+                    }
+
+                    resolve(tmpRet);
+                } else {
+                    tmpResponse = $.await(getFullWorkspace(req, res, next))
+                    resolve(tmpResponse);
+                }
+
+
+
+
+            }
+            catch (error) {
+                console.log('Err : ' + error);
+                reject(error);
+            }
+
+        }));
+    }
+
+
+    function getFullWorkspace(req, res, next) {
+        var self = this;
+        return new Promise($.async(function (resolve, reject) {
+            try {
+
+
 
                 var tmpBase = {
                     "ctl": "tbl-ol-node",
@@ -146,7 +204,7 @@ module.exports.setup = function setup(scope) {
                     }
 
                     // + '/app/pages/'
-                    var tmpPagesNode = $.await(getPagesNode({appname: tmpAppName}));
+                    var tmpPagesNode = $.await(getPagesNode({ appname: tmpAppName }));
                     tmpApp.content.push(tmpPagesNode);
 
                     var tmpAppRes = $.await(getWSResourcesNode(tmpAppBase + 'catalog/'));
@@ -176,7 +234,7 @@ module.exports.setup = function setup(scope) {
     }
 
     function getPagesNode(theOptions) {
-       
+
 
 
         return new Promise($.async(function (resolve, reject) {
@@ -184,7 +242,7 @@ module.exports.setup = function setup(scope) {
 
                 var tmpOptions = theOptions || {};
                 var tmpBaseDir = '';
-                if( tmpOptions.appname ){
+                if (tmpOptions.appname) {
                     tmpBaseDir = tmpOptions.appname + '/app/pages/'
                 }
 
@@ -217,7 +275,7 @@ module.exports.setup = function setup(scope) {
                 var tmpFiles = $.await($.bld.getDirFiles(tmpPagesDir))
 
                 var tmpAppName = '';
-                if( tmpOptions.appname ){
+                if (tmpOptions.appname) {
                     tmpAppName = tmpOptions.appname;
                 }
                 for (var index in tmpFiles) {
@@ -225,7 +283,7 @@ module.exports.setup = function setup(scope) {
                     var tmpPageBase = tmpPagesDir + tmpPageName + '/';
                     var tmpPageTitle = tmpPageName;
                     var tmpEntryName = tmpPageName;
-                    if( tmpAppName ){
+                    if (tmpAppName) {
                         tmpEntryName = tmpAppName + "-" + tmpEntryName
                     } else {
                         tmpEntryName = tmpEntryName
@@ -342,7 +400,7 @@ module.exports.setup = function setup(scope) {
                         tmpBaseDir = theBaseDir + tmpType.dir + '/';
                         tmpEntryName = tmpBaseDir + '-' + tmpBaseDir
                     }
-                    
+
 
                     var tmpFiles = $.await($.bld.getDirFiles(tmpBaseDir));
                     for (var index in tmpFiles) {

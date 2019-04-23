@@ -48,7 +48,7 @@ License: MIT
 
 											{
 												"ctl": "panel",
-												"controlname": "design/ws/get-pages?appname=",
+												"controlname": "design/ws/get-ws-outline?type=pages&appname=",
 												"name": "pages"
 											}
 										]

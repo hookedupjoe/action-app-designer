@@ -490,7 +490,7 @@ var ActionAppCore = {};
             if (!(tmpExists)) {
 
                 var tmpURL = tmpURI.uri;
-                if (!(tmpURI.uri.endsWith('/') || tmpURI.uri.endsWith('?open') || tmpURI.uri.endsWith('.xsp'))) {
+                if (!(tmpURI.uri.endsWith('/') || (tmpURI.uri.indexOf('?') > -1) || tmpURI.uri.endsWith('.xsp'))) {
                     //--- Do not add extn to flat items
                     tmpURL += me.getExtnForType(tmpURI.type);
                 }
