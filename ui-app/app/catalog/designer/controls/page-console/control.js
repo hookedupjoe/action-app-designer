@@ -316,6 +316,8 @@ License: MIT
 	var ControlCode = {
 		setup: setup,
 		preLoad: preLoad,
+		isCodeDirty: isCodeDirty,
+		markClean: markClean,
 		refreshFromSource: refreshFromSource,
 		refreshFromLoaded: refreshFromLoaded,
 		refreshEditorFromCodeIndex: refreshEditorFromCodeIndex,
@@ -392,14 +394,50 @@ License: MIT
 
 		var tmpThis = this;
 		this.aceEditor.on('change', function(){
+			console.log( 'change', arguments);
+			//--- ToDo: Check for actual changes to account for undo
+			//     and add a reset to original button for each session
 
-			console.log( 'change');
-			//this.getItem('btn-save-code').removeClass('disabled');
-			tmpThis.setItemDisabled('btn-save-code', false)
+			var tmpIsDirty = false;
+			for (var aName in tmpThis.loaded.sessions) {
+				
+				if( (tmpThis.isCodeDirty(aName)) ){
+					console.log( '- is updated', aName);
+					
+					tmpIsDirty = true;
+				}
+			}
+
+			tmpThis.setItemDisabled('btn-save-code', !tmpIsDirty)
 		})
 		
 	}
 
+	function markClean(){
+		for (var aName in this.loaded.sessions) {
+			var tmpSession = this.loaded.sessions[aName];			
+			this.loaded.codeIndex[aName] = tmpSession.getValue();
+			tmpSession.getUndoManager().markClean();
+		}
+	}
+
+	function isCodeDirty(theName){
+		var tmpSession = this.loaded.sessions[theName];
+		if( !tmpSession.getUndoManager().isClean() ){
+			 try {
+					var tmpCode = tmpSession.getValue();
+					var tmpOrig = this.loaded.codeIndex[theName];
+					if( tmpOrig == tmpCode ){
+					tmpSession.getUndoManager().markClean();
+					} else {
+						return true;
+					}
+				} catch (error) {
+					return true;
+			 }			
+		}
+		return false;
+	}
 	function refreshEditorFromCodeIndex() {
 		for (var aName in this.loaded.codeIndex) {
 			var tmpCode = this.loaded.codeIndex[aName];
@@ -421,6 +459,7 @@ License: MIT
 
 	function saveCode() {
 		console.log( 'saveCode', saveCode);
+		var tmpThis = this;
 		var tmpNewCodeIndex = {};
 		for (var aName in this.loaded.sessions) {
 			var tmpSession = this.loaded.sessions[aName];
@@ -443,6 +482,8 @@ License: MIT
 			url: '/design/ws/save-page',
 			data: tmpRequest
 		}).then(function(theReply){
+			tmpThis.setItemDisabled('btn-save-code', true);
+			tmpThis.markClean();
 			console.log( 'theReply', theReply);
 		})
 	
