@@ -22,6 +22,7 @@ License: MIT
         controls: {
             map: {
                 "app/catalog/designer/controls/app-console": "panelAppConsole",
+                "app/catalog/designer/controls/resource-editor": "resourceEditor",
                 "app/catalog/designer/controls/page-console": "codeEditor"
             }
         },
@@ -64,10 +65,12 @@ License: MIT
     var wsOutlineName = 'workspace-outline';
     var loadedApps = {};
     var loadedPages = {};
+    var loadedResources = {};
 
     //--- for debug
     window.loadedApps = loadedApps;
     window.loadedPages = loadedPages;
+    window.loadedResources = loadedResources;
 
     var appSetupConfig = false;
 
@@ -170,6 +173,61 @@ License: MIT
 
 
     
+    actions.showResourceConsole = showResourceConsole;
+    function showResourceConsole(theParams, theTarget) {
+        var tmpParams = ThisApp.getActionParams(theParams, theTarget, commonParams);
+        var tmpResourceName = tmpParams.resname  || tmpParams.name || '';
+        if (!(tmpResourceName)) {
+            alert("No resource name provided to open");
+            return;
+        }
+        var tmpResourceTitle = tmpResourceName;
+
+        var tmpAppName = '';
+        var tmpPageName = '';
+
+        var tmpEntryName = tmpResourceName || '';
+        if( (tmpParams.appname) ){
+            tmpAppName = tmpParams.appname;
+        }
+        if( (tmpParams.pagename) ){
+            tmpPageName = tmpParams.pagename;
+        }
+
+        tmpEntryName = tmpAppName + "-" + tmpPageName + "-" + tmpEntryName
+        console.log( 'tmpEntryName', tmpEntryName);
+
+        if (loadedResources[tmpEntryName]) {
+            var tmpTabAttr = { group: wsOutlineName, item: tmpEntryName };
+            ThisApp.gotoTab(tmpTabAttr);
+        } else {
+            var tmpNewResource = ThisPage.getControl('resourceEditor').create(tmpEntryName);
+            
+            tmpNewResource.subscribe('update-app-setup', function(){
+                refreshWorkspace()
+            })
+            loadedResources[tmpEntryName] = tmpNewResource;
+            
+
+            //--- For Debugging
+            window[tmpEntryName] = tmpNewResource;
+
+            //--- Create a new card for this app
+            ThisPage.addToSpot('body', '<div appuse="cards" group="' + wsOutlineName + '" item="' + tmpEntryName + '"></div>');
+            var tmpTabAttr = { group: wsOutlineName, item: tmpEntryName };
+            //--- Find created cards jQuery element
+            var tmpNewGroup = ThisPage.getByAttr$({ group: wsOutlineName, item: tmpEntryName, appuse: 'cards' });
+            //--- Load Resource Console into that card
+            
+            tmpNewResource.preLoad(tmpParams);
+            tmpNewResource.loadToElement(tmpNewGroup).then(function(theReply){
+                tmpNewResource.setup(tmpParams);
+            });
+            //--- Go to the newly added card (to show it and hide others)
+            ThisApp.gotoTab(tmpTabAttr);
+        }
+    };
+
     
     actions.showPageConsole = showPageConsole;
     function showPageConsole(theParams, theTarget) {
@@ -284,7 +342,7 @@ License: MIT
         } else if( tmpParams.type == 'page'){
             showPageConsole(tmpParams);
         } else if( tmpParams.type == 'resource'){
-
+            showResourceConsole(tmpParams);
         } else {
 
         }

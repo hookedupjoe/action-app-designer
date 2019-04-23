@@ -387,6 +387,7 @@ License: MIT
 		this.aceEditor = ace.edit(this.aceEditorEl.get(0));
 		this.aceEditor.setTheme("ace/theme/vibrant_ink");
 		this.aceEditor.setFontSize(16);
+		ThisApp.refreshLayouts();
 	}
 
 	function refreshEditorFromCodeIndex() {

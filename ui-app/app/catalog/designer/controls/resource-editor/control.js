@@ -14,219 +14,99 @@ License: MIT
 				"name": "title",
 				"size": "large",
 				"color": "blue",
-				"icon": "columns",
+				"icon": "box",
 				"text": "Resource Name"
 			},
 			{
 				"ctl": "tabs",
-				"name": "pagetabs",
+				"name": "resourcetabs",
 				"tabs": [
 					{
-						"label": "Resource Setup",
-						"name": "pagetabs-setup",
-						"ctl": "tab",
-						"content": [
-
-							{
-								"ctl": "tabs",
-								"name": "resource-setup-tabs",
-								"tabs": [
-									{
-										"label": "Resource Info",
-										"name": "resource-setup-tabs-info",
-										"ctl": "tab",
-										"content": [
-											{
-												"ctl": "field",
-												"name": "title",
-												"label": "Resource / Tab Title",
-												"req": true
-											},
-											{
-												"ctl": "radiolist",
-												"name": "where-to-show",
-												"label": "Where to show",
-												"list": "Primary|primary,Side Only|side,Hidden|hidden",
-												"req": true
-											},
-											{
-												"ctl": "hidden",
-												"name": "pagename"
-											}
-										]
-									},
-									{
-										"label": "Resource Resources",
-										"name": "resource-setup-tabs-required",
-										"ctl": "tab",
-										"content": [
-											{
-												"ctl": "textarea",
-												label: "Resources loaded when resource loads",
-												"name": "setup-required"
-											}
-										]
-									}
-				
-								]
-							}
-						]
-					},
-				
-					{
-						"label": "Layout",
-						"name": "pagetabs-layout",
+						"label": "Info",
+						"name": "resourcetabs-info",
 						"ctl": "tab",
 						"content": [
 							{
-								"ctl": "tabs",
-								"name": "resource-layout-tabs",
-								"tabs": [
+								"ctl": "fieldrow",
+								"name": "info-row",
+								"items": [
 									{
-										"label": "Regions",
-										"name": "resource-layout-tabs-regions",
-										"ctl": "tab",
-										"content": [
-											{
-												"ctl": "textarea",
-												label: "Layout Options JSON",
-												"name": "layout-options"
-											}
-										]
+										"ctl": "field",
+										"name": "appname",
+										"label": "Location",
+										"readonly":true,
+										"default": "[ws]/catalog/controls",
+										"req": true
 									},
 									{
-										"label": "Config",
-										"name": "resource-layout-tabs-config",
-										"ctl": "tab",
-										"content": [
-											{
-												"ctl": "textarea",
-												label: "Config JSON",
-												"name": "layout-config"
-											}
-										]
-									}
-				
-								]
-							}
-						]
-				
-					},
-					{
-						"label": "Events",
-						"name": "pagetabs-events",
-						"ctl": "tab",
-						"content": [
-							{
-								"ctl": "tabs",
-								"name": "resource-events-tabs",
-								"tabs": [
-									{
-										"label": "Initialize",
-										"name": "resource-events-tabs-on-init",
-										"ctl": "tab",
-										"content": [
-											{
-												"ctl": "textarea",
-												label: "Initilized when app loads",
-												"name": "on-init"
-											}
-										]
-									},
-									{
-										"label": "First Activate",
-										"name": "resource-events-tabs-on-first-init",
-										"ctl": "tab",
-										"content": [
-											{
-												"ctl": "textarea",
-												label: "First time activated - before content loads",
-												"name": "on-first-init"
-											}
-										]
-									},
-									{
-										"label": "First Load",
-										"name": "resource-events-tabs-on-first-load",
-										"ctl": "tab",
-										"content": [
-											{
-												"ctl": "textarea",
-												label: "Ready event - after content loaded",
-												"name": "on-first-load"
-											}
-										]
-									},
-									{
-										"label": "Activate",
-										"name": "resource-events-tabs-on-activate",
-										"ctl": "tab",
-										"content": [
-											{
-												"ctl": "textarea",
-												label: "Activate event - runs every time resource is activated",
-												"name": "on-activate"
-											}
-										]
-									},
-									{
-										"label": "Resize",
-										"name": "resource-events-tabs-on-resize",
-										"ctl": "tab",
-										"content": [
-											{
-												"ctl": "textarea",
-												label: "Resize event - runs when layout is resized",
-												"name": "on-resize"
-											}
-										]
+										"ctl": "field",
+										"name": "title",
+										"readonly":true,
+										"label": "Conrol Name",
+										"default": "SearchControl",
+										"req": true
 									}
 								]
 							}
 						]
-				
 					},
 					{
-						"label": "Code",
-						"name": "pagetabs-code",
+						"label": "Content",
+						"name": "resourcetabs-content-tab",
 						"ctl": "tab",
 						"content": [
 							{
-								"ctl": "textarea",
-								"label": "Resource Code",
-								"name": "resource-code"
-							}
+								"ctl": "spot",
+								"name": "ace-editor"
+							}					
 						]
 					}
-	
-					
 				]
-	
-	
 			}
-	
 		]
-	
 	}
 
 	var ControlCode = {
-		setup: setup
+		preLoad: preLoad,
+		setup: setup,
+		setupEditor: setupEditor
 	};
 
-
-	//---- Initial Setup of the control
-	function setup(theDetails) {
-		console.log( 'setup theDetails', theDetails);
-		var tmpResName = theDetails.resname || '';
-		var tmpResType = theDetails.restype || '';
-		this.params = this.params || {};
-		this.params.resname = tmpResName;
-		this.params.restype = tmpResType;
-		var tmpTitle = tmpResType + ": " + tmpResName;
-
-		this.controlConfig.index.items.title.text = tmpTitle;
 	
+	function setupEditor() {
+		if (this.editorSetup === true) {
+			return;
+		}
+		this.editorSetup = true;
+		
+		this.aceEditorEl = this.getSpot("ace-editor");
+		this.aceEditor = ace.edit(this.aceEditorEl.get(0));
+		this.aceEditor.setTheme("ace/theme/vibrant_ink");
+		this.aceEditor.setFontSize(16);
+
+		this.aceEditorEl.css('height', '100%');
+		ThisApp.refreshLayouts();
 	}
+
+		//--- Run before
+		function preLoad(theDetails) {
+			console.log( 'setup theDetails', theDetails);
+			var tmpResName = theDetails.resname || '';
+			var tmpResType = theDetails.restype || '';
+			this.params = ThisApp.clone(theDetails);
+			
+			var tmpTitle = tmpResType + ": " + tmpResName;
+
+			this.controlConfig.index.items.title.text = tmpTitle;
+		
+		}
+		//---- Initial Setup of the control
+		function setup(theDetails) {
+			this.setupEditor();
+			this.aceEditor.setValue('var test = true;')
+		}
+
+		
 
 
 

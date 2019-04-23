@@ -46,26 +46,25 @@
 				},
 				{
 					"label": "Content",
-					"name": "resourcetabs-content",
+					"name": "resourcetabs-content-tab",
 					"ctl": "tab",
 					"content": [
-					
-					]
-				},
-				{
-					"label": "Options",
-					"name": "resourcetabs-options",
-					"ctl": "tab",
-					"content": [
-					
+						{
+							"ctl": "spot",
+							"name": "resourcetabs-content",
+							"text": "Content Here"
+						}					
 					]
 				},
 				{
 					"label": "Code",
-					"name": "resourcetabs-code",
+					"name": "resourcetabs-code-tab",
 					"ctl": "tab",
 					"content": [
-					
+						{
+							"ctl": "spot",
+							"name": "resourcetabs-code"
+						}
 					]
 				}
 			]
