@@ -41,7 +41,7 @@ module.exports.setup = function setup(scope) {
                         "content": []
                     }
                     tmpResponse = $.await(getPagesNode({ appname: tmpAppName }));
-                    console.log('tmpResponse', tmpResponse);
+                    //console.log('tmpResponse', tmpResponse);
                     tmpBase.content = tmpResponse.content;
 
 
@@ -207,7 +207,7 @@ module.exports.setup = function setup(scope) {
                     var tmpPagesNode = $.await(getPagesNode({ appname: tmpAppName }));
                     tmpApp.content.push(tmpPagesNode);
 
-                    var tmpAppRes = $.await(getWSResourcesNode(tmpAppBase + 'catalog/'));
+                    var tmpAppRes = $.await(getWSResourcesNode(tmpAppBase + 'catalog/', false, tmpAppName));
 
                     if (tmpAppRes && tmpAppRes.content && tmpAppRes.content.length) {
                         tmpApp.content.push(tmpAppRes);
@@ -307,9 +307,7 @@ module.exports.setup = function setup(scope) {
                         content: []
                     }
 
-
-
-                    var tmpPageRes = $.await(getWSResourcesNode(tmpPageBase, tmpPage));
+                    var tmpPageRes = $.await(getWSResourcesNode(tmpPageBase, tmpPage, tmpAppName, tmpPageName));
 
                     if (tmpPageRes && tmpPageRes.content && tmpPageRes.content.length) {
                         //tmpPage.content.push(tmpPageRes);
@@ -339,14 +337,16 @@ module.exports.setup = function setup(scope) {
 
 
 
-    function getWSResourcesNode(theBaseDir, theBase) {
+    function getWSResourcesNode(theBaseDir, theBase, theAppName, thePageName) {
         var self = this;
         return new Promise($.async(function (resolve, reject) {
             try {
 
 
                 var tmpTitle = "Workspace Resources"
-
+                var tmpAppName = theAppName || '';
+                var tmpPageName = thePageName || '';
+                
                 var tmpPagesDir = scope.locals.path.ws.pages;
                 var tmpAppsDir = scope.locals.path.ws.uiApps;
 
@@ -409,12 +409,19 @@ module.exports.setup = function setup(scope) {
                         var tmpEntry = {
                             "ctl": "tbl-ol-node",
                             "type": "resource",
-                            "item": tmpFileName + "",
+                            "item": tmpAppName + '-' + tmpPageName + '-' + tmpFileName + "",
                             "details": tmpFileName,
                             "meta": "&#160;",
                             "level": 1,
                             "icon": tmpType.icon,
                             "color": "purple",
+                            attr: {
+                                appname: tmpAppName,
+                                pagename: tmpPageName,
+                                resname: tmpFileName,
+                                restype: tmpType.type,
+                                source: (tmpAppName ? "app" : "workspace")
+                            },
                             "group": "workspace-outline",
                         }
                         if (!(theBaseDir)) {

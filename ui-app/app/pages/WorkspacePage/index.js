@@ -277,12 +277,16 @@ License: MIT
     function wsItemSelected(theEvent, theControl, theTarget){
         var tmpParams = ThisApp.getActionParams('na', theTarget, commonParams);
 
-        //console.log( 'wsItemSelected at page', tmpParams);
+        console.log( 'wsItemSelected at page', tmpParams);
         var tmpEl = $(theTarget);
         if( tmpParams.type == 'app'){
             showAppConsole('showAppConsole', theTarget);
         } else if( tmpParams.type == 'page'){
             showPageConsole(tmpParams);
+        } else if( tmpParams.type == 'resource'){
+
+        } else {
+
         }
 
     }

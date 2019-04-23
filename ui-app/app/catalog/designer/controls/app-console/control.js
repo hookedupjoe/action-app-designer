@@ -4,6 +4,7 @@ License: MIT
 */
 (function (ActionAppCore, $) {
 
+	//~ControlSpecs//~	
 	var ControlSpecs = {
 		"options": {
 			"padding": true
@@ -188,7 +189,9 @@ License: MIT
 			}
 		]
 	}
+	//~ControlSpecs~//~
 
+	//~ControlCode//~
 	var ControlCode = {
 		_onInit: _onInit,
 		promptAppSetup: promptAppSetup,
@@ -205,7 +208,6 @@ License: MIT
 		openInCode: openInCode,
 		promptForSetupInfo: promptForSetupInfo
 	};
-
 	
 	function _onInit(){
 	
@@ -217,8 +219,6 @@ License: MIT
 		this.publish('selected', [theControl, theTarget])
 	}
 
-
-	var ThisControl = { specs: ControlSpecs, options: { proto: ControlCode, parent: ThisApp } };
 
 	function promptAppSetup(theParams, theTarget) {
 		this.promptForSetupInfo();
@@ -387,6 +387,9 @@ License: MIT
 		return this.parts.setupinfo.getData();
 	}
 
+//~ControlCode~//~
+	
+	var ThisControl = { specs: ControlSpecs, options: { proto: ControlCode, parent: ThisApp } };
 	return ThisControl;
 })(ActionAppCore, $);
 
