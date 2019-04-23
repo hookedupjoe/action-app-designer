@@ -291,14 +291,14 @@ License: MIT
 							]
 						},
 						{
-							"label": "Page Catalog",
-							"name": "pagetabs-catalog",
+							"label": "Resources",
+							"name": "pagetabs-resources",
 							"ctl": "tab",
 							"content": [
 								{
 									"ctl": "pagespot",
-									"spotname": "pagetabs-catalog",
-									"text": "Page Catalog will go here.  Controls, Panels, Templates and HTML"
+									"spotname": "pagetabs-resources",
+									"text": "Page Resources will go here.  Controls, Panels, Templates and HTML"
 								}
 							]
 						}

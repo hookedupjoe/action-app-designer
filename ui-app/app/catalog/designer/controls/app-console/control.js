@@ -54,14 +54,14 @@ License: MIT
 										]
 									},
 									{
-										"label": "App Catalog",
-										"name": "apptabs-catalog",
+										"label": "Resources",
+										"name": "apptabs-resources",
 										"ctl": "tab",
 										"content": [
 											{
 												"ctl": "pagespot",
-												"spotname": "apptabs-catalog",
-												"text": "Application Catalog will go here.  Controls, Panels, Templates and HTML"
+												"spotname": "apptabs-resources",
+												"text": "Application Resources will go here.  Controls, Panels, Templates and HTML"
 											}
 										]
 									}

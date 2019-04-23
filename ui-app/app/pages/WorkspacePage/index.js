@@ -244,6 +244,35 @@ License: MIT
         })
     };
 
+    
+    actions.addPage = addPage;
+    function addPage() {
+        var tmpThis = this;
+        
+        ThisPage.getPanel('frmNewPage').prompt(
+            {
+                isNew: true,
+                doc: { template: 'DefaultPage' }
+            }
+        ).then(function (theSubmitted, theData) {
+            if (!theSubmitted) {
+                return;
+            }
+            console.log('theData', theData);
+        
+            theData.target = 'workspace';
+            ThisApp.common.apiCall({
+                url: '/design/ws/new-page?run',
+                data: theData
+            }).then(function (theReply) {
+                console.log( '/design/ws/new-page?run Reply', theReply);
+                tmpThis.refreshWorkspace();
+            })
+            
+        })
+    };
+
+
     var commonParams = ['appname', 'source', 'type','pagename','resname','restype'];
 
     function wsItemSelected(theEvent, theControl, theTarget){
