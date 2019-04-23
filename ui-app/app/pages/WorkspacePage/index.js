@@ -143,11 +143,10 @@ License: MIT
         if (loadedApps[tmpAppName]) {
             var tmpTabAttr = { group: wsOutlineName, item: tmpAppName };
             ThisApp.gotoTab(tmpTabAttr);
-            //console.log( 'showAppConsole  loadedApps[tmpAppName]', loadedApps[tmpAppName]);
         } else {
-
             var tmpNewApp = ThisPage.getControl('panelAppConsole').create('app-' + tmpAppName);
-            //console.log( 'showAppConsole  tmpNewApp', tmpNewApp);
+            tmpNewApp.subscribe('selected', wsItemSelected);
+
             tmpNewApp.setup({ appname: tmpAppName, title: tmpAppTitle });
             tmpNewApp.subscribe('update-app-setup', function(){
                 refreshWorkspace()
@@ -287,5 +286,13 @@ License: MIT
         }
 
     }
+
+    actions.addWSResource = addWSResource;
+    function addWSResource(theParams, theTarget){
+        var tmpParams = ThisApp.getActionParams(theParams, theTarget, ['restype'])
+        var tmpType = tmpParams.restype || '';
+        console.log( 'tmpType', tmpType);
+    };
+    
 
 })(ActionAppCore, $);

@@ -1,6 +1,8 @@
-.ui[class*="very compact"].table td {
-  padding: 2px 3px;
+.ws-outline > .ui[class*="very compact"].table td {
+  padding: 0px;
+  padding-left: 3px;
 }
+
 
 div#menu {
   cursor: pointer;

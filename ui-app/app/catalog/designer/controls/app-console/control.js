@@ -190,6 +190,7 @@ License: MIT
 	}
 
 	var ControlCode = {
+		_onInit: _onInit,
 		promptAppSetup: promptAppSetup,
 		setup: setup,
 		refreshPages: refreshPages,
@@ -204,6 +205,18 @@ License: MIT
 		openInCode: openInCode,
 		promptForSetupInfo: promptForSetupInfo
 	};
+
+	
+	function _onInit(){
+	
+		this.parts.pages.subscribe('selectMe', onPageSelect.bind(this))
+	}
+
+	function onPageSelect(theEvent, theControl, theTarget){
+		console.log( 'onPageSelect pub', theTarget);
+		this.publish('selected', [theControl, theTarget])
+	}
+
 
 	var ThisControl = { specs: ControlSpecs, options: { proto: ControlCode, parent: ThisApp } };
 
