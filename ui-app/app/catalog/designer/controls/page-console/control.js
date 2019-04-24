@@ -409,18 +409,19 @@ License: MIT
 		}
 		this.refreshFromSource();
 
-		if( tmpAppName ){
-
+		if( (tmpAppName || tmpPageName) ){
 			var tmpHTML = [];
-			tmpHTML.push('<div class="pad0 ui top attached tabular menu" style="">');
-			tmpHTML.push('<a appuse="tablinks" group="workspace-outline" item="' + tmpAppName + '" appname="' + tmpAppName + '" pageaction="showAppConsole" class="item black  "><i class="icon globe blue"></i> ' + tmpAppName + '</a>');
-			tmpHTML.push('<a appuse="tablinks" group="workspace-outline" item="' + tmpAppName + '-' + tmpPageName + '" appname="' + tmpAppName + '" pagename="' + tmpPageName + '" pageaction="showPageConsole" class="item black"><i class="icon columns green"></i> ' + tmpPageName + '</a>');
+			tmpHTML.push('<div class="pad0 ui top attached tabular tab-nav menu" style="">');
+			if( tmpAppName ){
+				tmpHTML.push('<a appuse="tablinks" group="workspace-outline" item="' + tmpAppName + '" appname="' + tmpAppName + '" pageaction="showAppConsole" class="item black  "><i class="icon globe blue"></i> ' + tmpAppName + '</a>');
+			}
+			if( tmpPageName ){
+				tmpHTML.push('<a appuse="tablinks" group="workspace-outline" item="' + tmpAppName + '-' + tmpPageName + '" appname="' + tmpAppName + '" pagename="' + tmpPageName + '" pageaction="showPageConsole" class="item black"><i class="icon columns green"></i> ' + tmpPageName + '</a>');
+			}
 			tmpHTML.push('</div><div class="ui divider fitted black"></div>')
 			tmpHTML = tmpHTML.join('\n');
 			this.loadSpot('nav-tabs', tmpHTML)
-
 		}
-
 	}
 
 

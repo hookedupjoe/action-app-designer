@@ -12,4 +12,14 @@ div#menu {
   width: 200px;
 }
 
+.ui.tab-nav.menu {
+  min-height:25px;
+}
+
+.ui.tab-nav.menu > .item {
+  padding-top:2px !important;
+  padding-bottom:2px !important;
+  margin-top:0px !important;
+  margin-bottom:0px !important;
+}
 

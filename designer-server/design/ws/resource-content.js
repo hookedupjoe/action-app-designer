@@ -19,26 +19,40 @@ module.exports.setup = function setup(scope) {
         var self = this;
         return new Promise($.async(function (resolve, reject) {
             try {
-               
                 var tmpReq = req.query;
-
                 if( !(tmpReq.resname && tmpReq.restype)){
                     throw "No resource name and type provided";
                 }
-
+                
                 var tmpResName = tmpReq.resname || '';
                 var tmpResType = tmpReq.restype || '';
                 var tmpAppsDir = scope.locals.path.ws.uiApps; 
                 var tmpPagesDir = scope.locals.path.ws.pages;
                 var tmpSourceDir = tmpPagesDir;
 
-                if( tmpReq.source == 'app' && tmpReq.appname){
-                    tmpSourceDir = tmpAppsDir + tmpReq.appname + '/app/pages/';
+                if(tmpReq.appname){
+                    tmpSourceDir = tmpAppsDir + tmpReq.appname;
+                    if( tmpReq.pagename ){
+                        tmpSourceDir += '/app/pages/' + tmpReq.pagename;
+                    }
+                    if( tmpResType == 'Panel' ){
+                        tmpSourceDir += '/panels/'
+                        tmpSourceDir += tmpResName;
+                    } else if( tmpResType == 'Control' ){
+                        tmpSourceDir += '/controls/'
+                        tmpSourceDir += tmpResName + '/control.js';
+                    } else if( tmpResType == 'HTML' ){
+                        tmpSourceDir += '/html/'
+                        tmpSourceDir += tmpResName;
+                    } else if( tmpResType == 'Template' ){
+                        tmpSourceDir += '/tpl/'
+                        tmpSourceDir += tmpResName;
+                    } 
                 }
-                
-                var tmpRet = '<h2>Testing</h2><p>hello</p>';
 
-                resolve(tmpRet);
+                var tmpRet = 'Location is ' + tmpSourceDir;
+                var tmpContent = $.await($.bld.getTextFile(tmpSourceDir));
+                resolve(tmpContent);
 
             }
             catch (error) {

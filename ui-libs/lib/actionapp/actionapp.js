@@ -4069,6 +4069,35 @@ License: MIT
 
     var me = ThisPageController.prototype;
 
+    me.detailsIndex = {
+        "getDetails": function(theName){
+            return this[this.getUnifiedName(theName)];
+        },
+        "getUnifiedName": function(theName){
+            if( ! isStr(theName) ){
+                return "";
+            }
+            var tmpNameCheck = theName.toLowerCase();
+            if( tmpNameCheck == 'control' || tmpNameCheck == 'controls' ){
+                return 'Control';
+            }
+            if( tmpNameCheck == 'panel' || tmpNameCheck == 'panels' ){
+                return 'Panel';
+            }
+            if( tmpNameCheck == 'html'){
+                return 'HTML';
+            }
+            if( tmpNameCheck == 'template' || tmpNameCheck == 'templates' ){
+                return 'Template';
+            }
+
+        },
+        "Control": {category: 'Controls', dir: "controls", icon: 'newspaper', lang: 'javascript'},
+        "Panel": {category: 'Panels', dir: "panels", icon: 'newspaper outline', lang: 'javascript', type: 'json'},
+        "HTML": {category: 'Templates', dir: "tpl", icon: 'object group outline', lang: 'html'},
+        "Template": {category: 'HTML', dir: "html", icon: 'code', lang: 'html'}
+    }
+
     me.layoutCounter = 0;
     me.getNextLayoutName = function () {
         me.layoutCounter++;

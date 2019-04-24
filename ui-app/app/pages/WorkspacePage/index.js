@@ -36,7 +36,7 @@ License: MIT
 
     thisPageSpecs.layoutOptions = {
         baseURL: pageBaseURL,
-        north: { control: "north" },
+        north: false,
         east: false,
         west: { partname: "west", control: "west" },
         center: { html: "body" },

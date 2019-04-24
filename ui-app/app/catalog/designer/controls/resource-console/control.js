@@ -186,11 +186,15 @@ License: MIT
 	//---- Initial Setup of the control
 	function setup(theDetails) {
 	
+		
 		var tmpPageName = theDetails.pagename || '';
 		var tmpAppName = theDetails.appname || '';
 		var tmpResName = theDetails.resname || '';
 		var tmpResType = theDetails.restype || '';
 		
+		tmpResType = ThisApp.controls.detailsIndex.getUnifiedName(tmpResType);
+		console.log( 'tmpResType', tmpResType);
+
 		var tmpSource = tmpOptions.source || 'ws';
 
 		this.setFieldValue('title', '[' + tmpResType + '] ' + tmpResName);
@@ -213,7 +217,7 @@ License: MIT
 		
 		if( (tmpAppName || tmpPageName) && tmpResName ){
 			var tmpHTML = [];
-			tmpHTML.push('<div class="pad0 ui top attached tabular menu" style="">');
+			tmpHTML.push('<div class="pad0 ui top attached tabular tab-nav menu" style="">');
 			if( tmpAppName ){
 				tmpHTML.push('<a appuse="tablinks" group="workspace-outline" item="' + tmpAppName + '" appname="' + tmpAppName + '" pageaction="showAppConsole" class="item black  "><i class="icon globe blue"></i> ' + tmpAppName + '</a>');
 			}
@@ -290,19 +294,22 @@ License: MIT
 		if (this.editorSetup === true) {
 			return;
 		}
+		var tmpThis = this;
+
 		this.editorSetup = true;
 		
 		this.aceEditorEl = this.getSpot("ace-editor");
 		this.aceEditor = ace.edit(this.aceEditorEl.get(0));
 		this.aceEditor.setTheme("ace/theme/vibrant_ink");
 		this.aceEditor.setFontSize(16);
-
-		this.aceEditor.setOptions({
-			enableBasicAutocompletion: true,
-			enableSnippets: true,
-			enableLiveAutocompletion: false
-		});
-
+		
+		ace.config.loadModule('ace/ext/language_tools', function () {
+			tmpThis.aceEditor.setOptions({
+				enableBasicAutocompletion: true,
+				enableSnippets: true,
+				enableLiveAutocompletion: false
+			});
+	});
 		var tmpThis = this;
 		this.aceEditor.on('change', function(){
 			//--- ToDo: Check for actual changes to account for undo
