@@ -37,7 +37,7 @@ License: MIT
     thisPageSpecs.layoutOptions = {
         baseURL: pageBaseURL,
         north: { control: "north" },
-        east: { html: "east" },
+        east: false,
         west: { partname: "west", control: "west" },
         center: { html: "body" },
         south: false
@@ -46,7 +46,7 @@ License: MIT
     //--- Customize default layout configuration
     //--- See http://layout.jquery-dev.com/documentation.cfm for details
     thisPageSpecs.layoutConfig = {
-        west__size: "400"
+        west__size: "300"
         , east__size: "200"
     }
 
