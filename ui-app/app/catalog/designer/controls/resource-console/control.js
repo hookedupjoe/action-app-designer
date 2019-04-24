@@ -172,43 +172,29 @@ License: MIT
 	function preLoad(theDetails) {
 		// var tmpPageName = theDetails.pagename || '';
 		// var tmpAppName = theDetails.appname || '';
-		// this.uniqueGroups(tmpAppName + '-' + tmpPageName);
+		// var tmpResName = theDetails.resname || '';
+		// var tmpResType = theDetails.restype || '';
+		
+		//var tmpEntryName = tmpAppName + '-' + tmpPageName + '-' + tmpResName + '-' + tmpResType;
+
+		// this.uniqueGroups(tmpEntryName);
 		// var tmpCloseBtn = this.controlConfig.index.items['btn-close-page'];
 		// tmpCloseBtn.attr.appname = tmpAppName;
 		// tmpCloseBtn.attr.pagename = tmpPageName;
 
-		// var tmpServerURL = '/design/ws/get-ws-outline?type=resources&appname=' + tmpAppName;
-		// tmpServerURL += '&pagename=' + tmpPageName;
-		// this.controlConfig.index.controls.resources.controlname = tmpServerURL
-
-
 	}
 	//---- Initial Setup of the control
-	function setup(theOptions) {
-		console.log( 'setup', theOptions);
-
-		var tmpOptions = theOptions || {};
+	function setup(theDetails) {
+	
+		var tmpPageName = theDetails.pagename || '';
+		var tmpAppName = theDetails.appname || '';
+		var tmpResName = theDetails.resname || '';
+		var tmpResType = theDetails.restype || '';
 		
-		var tmpResName = tmpOptions.resname || '';
-		var tmpResType = tmpOptions.restype || '';
-
-		var tmpPageName = tmpOptions.pagename || '';
-		this.params = this.params || {};
-		this.params.pagename = tmpPageName;
-
-		
-		var tmpTitle = tmpPageName;
 		var tmpSource = tmpOptions.source || 'ws';
-		var tmpAppName = tmpOptions.appname || '';
 
-		var tmpPageTitle = tmpPageName
-		if (tmpAppName) {
-			tmpPageTitle = '[' + tmpAppName + '] ' + tmpTitle;
-		}
-
-
-		this.setFieldValue('title', tmpResName + '&#160;&#160;&#160;[' + tmpResType + ']');
-		this.setupEditor();
+		this.setFieldValue('title', '[' + tmpResType + '] ' + tmpResName);
+	
 		this.details = {
 			pagename: tmpPageName,
 			source: tmpSource,
@@ -216,6 +202,13 @@ License: MIT
 			resname: tmpResName,
 			restype: tmpResType
 		}
+
+		this.aceSessionType = "ace/mode/javascript"
+		if( tmpResType == 'HTML' || tmpResType == 'Template' || tmpResType == 'html' || tmpResType == 'Templates'){
+			this.aceSessionType = "ace/mode/html"
+		}
+		console.log( 'this.aceSessionType', this.aceSessionType);
+		this.setupEditor();
 		
 		
 		if( (tmpAppName || tmpPageName) && tmpResName ){
@@ -232,6 +225,15 @@ License: MIT
 			tmpHTML = tmpHTML.join('\n');
 			this.loadSpot('nav-tabs', tmpHTML)
 		}
+
+		this.endpointURL = 'design/ws/resource-content?run&source=' + tmpSource + '&resname=' + tmpResName + '&restype=' + tmpResType;
+		if( tmpPageName ){
+			this.endpointURL += '&pagename=' + tmpPageName;
+		}
+		if( tmpAppName ){
+			this.endpointURL += '&appname=' + tmpAppName;
+		}
+		this.refreshFromSource();
 
 
 	}
@@ -295,6 +297,12 @@ License: MIT
 		this.aceEditor.setTheme("ace/theme/vibrant_ink");
 		this.aceEditor.setFontSize(16);
 
+		this.aceEditor.setOptions({
+			enableBasicAutocompletion: true,
+			enableSnippets: true,
+			enableLiveAutocompletion: false
+		});
+
 		var tmpThis = this;
 		this.aceEditor.on('change', function(){
 			//--- ToDo: Check for actual changes to account for undo
@@ -343,11 +351,11 @@ License: MIT
 		for (var aName in this.loaded.codeIndex) {
 			var tmpCode = this.loaded.codeIndex[aName];
 			if (!(this.loaded.sessions[aName])) {
-				this.loaded.sessions[aName] = ace.createEditSession(aName, "ace/mode/javascript")
+				console.log( 'this.aceSessionType USED ', this.aceSessionType);
+				this.loaded.sessions[aName] = ace.createEditSession(aName, this.aceSessionType || "ace/mode/javascript")
 			}
 			this.loaded.sessions[aName].setValue(tmpCode);
-		}
-
+		}		
 	}
 
 	var defaultCodeName = 'thisPageSpecs'
@@ -388,7 +396,7 @@ License: MIT
 
 	}
 	function showCode(theParams) {
-		var tmpParams = theParams || {};
+		var tmpParams = theParams || 'content';
 		if (typeof (tmpParams) == 'string') {
 			tmpParams = { name: tmpParams }
 		}
@@ -400,25 +408,24 @@ License: MIT
 		var tmpThis = this;
 
 		ThisApp.apiCall(this.endpointURL).then(function (theReply) {
-			if (theReply && theReply.index && theReply.parts) {
-				var tmpIndex = theReply.index;
-				var tmpParts = theReply.parts;
-				var tmpCodeIndex = {};
+			var tmpIndex = {content:0};
+			var tmpParts = [theReply];
+			var tmpCodeIndex = {};
 
-				tmpThis.loaded = {
-					index: tmpIndex,
-					parts: tmpParts,
-					codeIndex: tmpCodeIndex,
-					sessions: {}
-				}
-
-				for (var aName in tmpIndex) {
-					var tmpCode = tmpParts[tmpIndex[aName]];
-					tmpCodeIndex[aName] = tmpCode
-				}
+			tmpThis.loaded = {
+				index: tmpIndex,
+				parts: tmpParts,
+				codeIndex: tmpCodeIndex,
+				sessions: {}
 			}
+			for (var aName in tmpIndex) {
+				var tmpCode = tmpParts[tmpIndex[aName]];
+				tmpCodeIndex[aName] = tmpCode
+			}
+			console.log( 'tmpThis.loaded', tmpThis.loaded);
+
 			tmpThis.refreshFromLoaded();
-			tmpThis.parts.resources.refreshFromURI();
+			
 
 		})
 	}

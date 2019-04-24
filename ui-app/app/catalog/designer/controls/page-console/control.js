@@ -448,6 +448,17 @@ License: MIT
 		this.aceEditor.setFontSize(16);
 
 		var tmpThis = this;
+		ace.config.loadModule('ace/ext/language_tools', function () {
+			tmpThis.aceEditor.setOptions({
+				enableBasicAutocompletion: true,
+				enableSnippets: true,
+				enableLiveAutocompletion: false
+			});
+	});
+
+	
+
+		var tmpThis = this;
 		this.aceEditor.on('change', function(){
 			//--- ToDo: Check for actual changes to account for undo
 			//     and add a reset to original button for each session
