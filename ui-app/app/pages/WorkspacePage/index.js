@@ -22,8 +22,8 @@ License: MIT
         controls: {
             map: {
                 "app/catalog/designer/controls/app-console": "panelAppConsole",
-                "app/catalog/designer/controls/resource-editor": "resourceEditor",
-                "app/catalog/designer/controls/page-console": "codeEditor"
+                "app/catalog/designer/controls/resource-console": "resourceConsole",
+                "app/catalog/designer/controls/page-console": "pageConsole"
             }
         },
         panels: {
@@ -201,7 +201,7 @@ License: MIT
             var tmpTabAttr = { group: wsOutlineName, item: tmpEntryName };
             ThisApp.gotoTab(tmpTabAttr);
         } else {
-            var tmpNewResource = ThisPage.getControl('resourceEditor').create(tmpEntryName);
+            var tmpNewResource = ThisPage.getControl('resourceConsole').create(tmpEntryName);
             
             tmpNewResource.subscribe('update-app-setup', function(){
                 refreshWorkspace()
@@ -251,7 +251,7 @@ License: MIT
             var tmpTabAttr = { group: wsOutlineName, item: tmpEntryName };
             ThisApp.gotoTab(tmpTabAttr);
         } else {
-            var tmpNewPage = ThisPage.getControl('codeEditor').create(tmpEntryName);
+            var tmpNewPage = ThisPage.getControl('pageConsole').create(tmpEntryName);
             
             tmpNewPage.subscribe('update-app-setup', function(){
                 refreshWorkspace()
