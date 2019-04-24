@@ -256,8 +256,10 @@ License: MIT
             tmpNewPage.subscribe('update-app-setup', function(){
                 refreshWorkspace()
             })
+            tmpNewPage.subscribe('selected', wsItemSelected);
+
             loadedPages[tmpEntryName] = tmpNewPage;
-            console.log( 'tmpNewPage', tmpNewPage);
+            //console.log( 'tmpNewPage', tmpNewPage);
 
             //--- For Debugging
             window[tmpEntryName] = tmpNewPage;
@@ -334,9 +336,7 @@ License: MIT
 
     function wsItemSelected(theEvent, theControl, theTarget){
         var tmpParams = ThisApp.getActionParams('na', theTarget, commonParams);
-
-        console.log( 'wsItemSelected at page', tmpParams);
-        var tmpEl = $(theTarget);
+//        var tmpEl = $(theTarget);
         if( tmpParams.type == 'app'){
             showAppConsole(tmpParams);
         } else if( tmpParams.type == 'page'){

@@ -22,6 +22,8 @@ module.exports.setup = function setup(scope) {
                 var tmpAppName = req.query.appname || '';
                 var tmpPageName = req.query.pagename || '';
                 var tmpType = req.query.type || '';
+                var tmpWSDir = scope.locals.path.ws.uiApps;
+                var tmpPagesDir = scope.locals.path.ws.pages;
 
                 var tmpResponse = false;
                 if (tmpAppName && tmpType == 'pages') {
@@ -41,7 +43,6 @@ module.exports.setup = function setup(scope) {
                         "content": []
                     }
                     tmpResponse = $.await(getPagesNode({ appname: tmpAppName }));
-                    //console.log('tmpResponse', tmpResponse);
                     tmpBase.content = tmpResponse.content;
 
 
@@ -50,6 +51,45 @@ module.exports.setup = function setup(scope) {
                             padding: false,
                         },
                         "content": [tmpBase]
+                    }
+
+                    resolve(tmpRet);
+                } else if (tmpAppName && tmpType == 'resources') {
+
+
+                    var tmpBase = {
+                        "ctl": "tbl-ol-node",
+                        "type": "resources",
+                        "name": "resources",
+                        "item": "resources",
+                        "details": ".../resources",
+                        "meta": "&#160;",
+                        "classes": "ws-outline",
+                        "level": 3,
+                        "icon": "box",
+                        "color": "black",
+                        "group": "workspace-outline",
+                        "content": []
+                    }
+
+                    var tmpRes = false;
+
+                    if( tmpPageName ){
+                        var tmpPageBase = tmpPagesDir + tmpPageName + '/';
+                        tmpRes = $.await(getWSResourcesNode({baseURL: tmpPageBase, appname: tmpAppName, pagename: tmpPageName}));
+                    }  else {
+                        var tmpAppBase = tmpWSDir + tmpAppName + '/';
+                        tmpRes = $.await(getWSResourcesNode({baseURL: tmpAppBase + 'catalog/', appname: tmpAppName}));
+                    }
+
+                    //--- To assure proper css applied to outline
+                    tmpRes.classes = "ws-outline"
+
+                    var tmpRet = {
+                        "options": {
+                            padding: false,
+                        },
+                        "content": [tmpRes]
                     }
 
                     resolve(tmpRet);
@@ -207,7 +247,7 @@ module.exports.setup = function setup(scope) {
                     var tmpPagesNode = $.await(getPagesNode({ appname: tmpAppName }));
                     tmpApp.content.push(tmpPagesNode);
 
-                    var tmpAppRes = $.await(getWSResourcesNode(tmpAppBase + 'catalog/', false, tmpAppName));
+                    var tmpAppRes = $.await(getWSResourcesNode({baseURL: tmpAppBase + 'catalog/', appname: tmpAppName}));
 
                     if (tmpAppRes && tmpAppRes.content && tmpAppRes.content.length) {
                         tmpApp.content.push(tmpAppRes);
@@ -256,7 +296,6 @@ module.exports.setup = function setup(scope) {
                     tmpPagesDir = tmpAppsDir + tmpBaseDir
                 }
 
-                //    console.log('tmpTitle tmpPagesDir', tmpTitle, tmpPagesDir);
 
                 var tmpBase = {
                     "ctl": "tbl-ol-node",
@@ -307,7 +346,8 @@ module.exports.setup = function setup(scope) {
                         content: []
                     }
 
-                    var tmpPageRes = $.await(getWSResourcesNode(tmpPageBase, tmpPage, tmpAppName, tmpPageName));
+                    //var tmpPageRes = $.await(getWSResourcesNode(tmpPageBase, tmpPage, tmpAppName, tmpPageName));
+                    var tmpPageRes = $.await(getWSResourcesNode({baseURL: tmpPageBase, appname: tmpAppName, pagename: tmpPageName, baseObject: tmpPage}));
 
                     if (tmpPageRes && tmpPageRes.content && tmpPageRes.content.length) {
                         //tmpPage.content.push(tmpPageRes);
@@ -337,24 +377,27 @@ module.exports.setup = function setup(scope) {
 
 
 
-    function getWSResourcesNode(theBaseDir, theBase, theAppName, thePageName) {
-        var self = this;
+    function getWSResourcesNode(theOptions) {
+       
+        
         return new Promise($.async(function (resolve, reject) {
             try {
 
+                var tmpOptions = theOptions || {};
+                //theBaseDir, theBase, theAppName, thePageName
 
                 var tmpTitle = "Workspace Resources"
-                var tmpAppName = theAppName || '';
-                var tmpPageName = thePageName || '';
-                
+                var tmpAppName = tmpOptions.appname || '';
+                var tmpPageName = tmpOptions.pagename || '';
+                var tmpBaseURL = tmpOptions.baseURL || '';
+                var tmpBaseObj = tmpOptions.baseObject || false;
+
                 var tmpPagesDir = scope.locals.path.ws.pages;
                 var tmpAppsDir = scope.locals.path.ws.uiApps;
 
-                if (theBaseDir) {
+                if (tmpBaseURL) {
                     tmpTitle = 'Resources';
                 }
-
-                // console.log( 'theBaseDir', theBaseDir);
 
                 var tmpBase = {
                     "ctl": "tbl-ol-node",
@@ -363,7 +406,7 @@ module.exports.setup = function setup(scope) {
                     "meta": "&#160;",
                     "classes": "ws-editor-outline",
                     "level": 2,
-                    "icon": "boxes",
+                    "icon": "box",
                     "color": "black",
                     "group": "workspace-outline",
                     "content": []
@@ -396,8 +439,8 @@ module.exports.setup = function setup(scope) {
                     var tmpEntryName = tmpFileName;
 
                     var tmpBaseDir = tmpCatDir + 'resources/' + tmpType.dir + '/';
-                    if (theBaseDir) {
-                        tmpBaseDir = theBaseDir + tmpType.dir + '/';
+                    if (tmpBaseURL) {
+                        tmpBaseDir = tmpBaseURL + tmpType.dir + '/';
                         tmpEntryName = tmpBaseDir + '-' + tmpBaseDir
                     }
 
@@ -424,11 +467,11 @@ module.exports.setup = function setup(scope) {
                             },
                             "group": "workspace-outline",
                         }
-                        if (!(theBaseDir)) {
+                        if (!(tmpBaseURL)) {
                             tmpTypeEntry.content.push(tmpEntry);
                         } else {
-                            if (theBase) {
-                                theBase.content.push(tmpEntry);
+                            if (tmpBaseObj) {
+                                tmpBaseObj.content.push(tmpEntry);
                             } else {
                                 tmpBase.content.push(tmpEntry);
                             }
@@ -436,10 +479,10 @@ module.exports.setup = function setup(scope) {
 
                     }
 
-                    if (!(theBaseDir)) {
+                    if (!(tmpBaseURL)) {
 
-                        if (theBase) {
-                            theBase.content.push(tmpTypeEntry);
+                        if (tmpBaseObj) {
+                            tmpBaseObj.content.push(tmpTypeEntry);
                         } else {
                             tmpBase.content.push(tmpTypeEntry);
                         }

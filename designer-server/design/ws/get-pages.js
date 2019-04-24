@@ -24,7 +24,6 @@ module.exports.setup = function setup(scope) {
                 var tmpAppName = req.query.appname || req.query.name || req.query.filename || '';
                 tmpAppName = tmpAppName
                     .replace('.json', '')
-                // console.log( 'tmpAppName', tmpAppName);
                 var tmpAppBase = tmpWSDir + tmpAppName + '/';
                 var tmpAppDetails = $.await($.bld.getJsonFile(tmpAppBase + 'app-info.json'))
                 var tmpAppTitle = tmpAppDetails.title || "(untitled)";

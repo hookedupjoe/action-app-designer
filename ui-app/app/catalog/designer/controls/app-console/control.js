@@ -60,9 +60,9 @@ License: MIT
 										"ctl": "tab",
 										"content": [
 											{
-												"ctl": "pagespot",
-												"spotname": "apptabs-resources",
-												"text": "Application Resources will go here.  Controls, Panels, Templates and HTML"
+												"ctl": "panel",
+												"controlname": "design/ws/get-ws-outline?type=resources&appname=",
+												"name": "resources"
 											}
 										]
 									}
@@ -210,7 +210,6 @@ License: MIT
 	};
 	
 	function _onInit(){
-	
 		this.parts.pages.subscribe('selectMe', onPageSelect.bind(this))
 	}
 
@@ -356,7 +355,10 @@ License: MIT
 		this.params = this.params || {};
 		this.params.appname = tmpAppName;
 		var tmpTitle = theDetails.title || theDetails.apptitle || tmpAppName;
+
 		this.controlConfig.index.controls.pages.controlname += tmpAppName
+		this.controlConfig.index.controls.resources.controlname += tmpAppName
+		
 		this.controlConfig.index.controls.setupinfo.controlname += tmpAppName
 		var tmpAppTitle = tmpAppName
 		if (tmpTitle) {

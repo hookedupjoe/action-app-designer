@@ -303,9 +303,9 @@ License: MIT
 							"ctl": "tab",
 							"content": [
 								{
-									"ctl": "pagespot",
-									"spotname": "pagetabs-resources",
-									"text": "Page Resources will go here.  Controls, Panels, Templates and HTML"
+									"ctl": "panel",
+									"controlname": "design/ws/get-ws-outline?type=resources&appname=app001&pagename=HomePage",
+									"name": "resources"
 								}
 							]
 						}
@@ -329,8 +329,19 @@ License: MIT
 		showCode: showCode,
 		saveCode: saveCode,
 		uniqueGroups: uniqueGroups,
-		setupEditor: setupEditor
+		setupEditor: setupEditor,
+		_onInit: _onInit
 	};
+
+
+	function _onInit(){
+		this.parts.resources.subscribe('selectMe', onResSelect.bind(this))
+	}
+
+	function onResSelect(theEvent, theControl, theTarget){
+		console.log( 'onResSelect pub', theTarget);
+		this.publish('selected', [theControl, theTarget])
+	}
 
 
 	//--- Run before
@@ -341,6 +352,12 @@ License: MIT
 		var tmpCloseBtn = this.controlConfig.index.items['btn-close-page'];
 		tmpCloseBtn.attr.appname = tmpAppName;
 		tmpCloseBtn.attr.pagename = tmpPageName;
+
+		var tmpServerURL = '/design/ws/get-ws-outline?type=resources&appname=' + tmpAppName;
+		tmpServerURL += '&pagename=' + tmpPageName;
+		console.log( 'tmpServerURL', tmpServerURL);
+		this.controlConfig.index.controls.resources.controlname = tmpServerURL
+
 
 	}
 	//---- Initial Setup of the control
@@ -373,13 +390,10 @@ License: MIT
 		this.endpointURL = 'design/ws/page-code?run&source=' + tmpSource + '&pagename=' + tmpPageName;
 		if( tmpAppName ){
 			this.endpointURL += '&appname=' + tmpAppName;
-			console.log( 'this.endpointURL', this.endpointURL);
 		}
 		this.refreshFromSource();
 
-//		this.loadSpot('nav-tabs', '<div controls="" tabs="" class="pad0 ui top attached tabular menu" style=""><a appuse="tablinks" group="layout-pagetabs" item="pagetabs-one" myaction="showSubPage" class="item black  "><i class="icon globe blue"></i> app001</a>      <a appuse="tablinks" group="layout-pagetabs" item="pagetabs-resources" myaction="showSubPage" class="item black"><i class="icon columns green"></i> Welcome</a>      <a appuse="tablinks" group="layout-pagetabs" item="pagetabs-resource" myaction="showSubPage" class="item black"><i class="icon newspaper purple"></i> SearchBar</a></div><div class="ui divider fitted black"></div>')
 		if( tmpAppName ){
-			//this.loadSpot('nav-tabs', '<div controls="" tabs="" class="pad0 ui top attached tabular menu" style=""><a appuse="tablinks" group="workspace-outline" item="' + tmpAppName + '" action="selectMe" class="item black  "><i class="icon globe blue"></i> ' + tmpAppName + '</a>      <a appuse="tablinks" group="workspace-outline" item="' + tmpAppName + '-' + tmpPageName + '" action="selectMe" class="item black"><i class="icon columns green"></i> ' + tmpPageName + '</a>      </div>     <div class="ui divider fitted black"></div>')
 
 			var tmpHTML = [];
 			tmpHTML.push('<div class="pad0 ui top attached tabular menu" style="">');
@@ -419,7 +433,6 @@ License: MIT
 
 		var tmpThis = this;
 		this.aceEditor.on('change', function(){
-			console.log( 'change', arguments);
 			//--- ToDo: Check for actual changes to account for undo
 			//     and add a reset to original button for each session
 
@@ -427,7 +440,6 @@ License: MIT
 			for (var aName in tmpThis.loaded.sessions) {
 				
 				if( (tmpThis.isCodeDirty(aName)) ){
-					console.log( '- is updated', aName);
 					
 					tmpIsDirty = true;
 				}
@@ -483,7 +495,6 @@ License: MIT
 
 
 	function saveCode() {
-		console.log( 'saveCode', saveCode);
 		var tmpThis = this;
 		var tmpNewCodeIndex = {};
 		for (var aName in this.loaded.sessions) {
@@ -501,7 +512,6 @@ License: MIT
 			code: tmpNewCodeIndex,
 			origCode: this.loaded.codeIndex
 		}
-		console.log( 'tmpRequest', tmpRequest);
 		
 		ThisApp.apiCall({
 			url: '/design/ws/save-page',
@@ -509,7 +519,6 @@ License: MIT
 		}).then(function(theReply){
 			tmpThis.setItemDisabled('btn-save-code', true);
 			tmpThis.markClean();
-			console.log( 'theReply', theReply);
 		})
 	
 
@@ -545,6 +554,8 @@ License: MIT
 				}
 			}
 			tmpThis.refreshFromLoaded();
+			//console.log( 'tmpThis.parts.resources', tmpThis.parts.resources);
+			tmpThis.parts.resources.refreshFromURI();
 
 		})
 	}

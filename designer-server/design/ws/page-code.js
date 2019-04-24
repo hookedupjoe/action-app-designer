@@ -37,7 +37,7 @@ module.exports.setup = function setup(scope) {
                 if( tmpReq.source == 'app' && tmpReq.appname){
                     tmpSourceDir = tmpAppsDir + tmpReq.appname + '/app/pages/';
                 }
-                console.log( 'tmpSourceDir', tmpSourceDir);
+                
                 var tmpPageName = tmpReq.pagename;
 
                 var tmpPartsLoc = tmpSourceDir + tmpPageName;
