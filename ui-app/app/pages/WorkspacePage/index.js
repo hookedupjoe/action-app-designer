@@ -338,7 +338,7 @@ License: MIT
         console.log( 'wsItemSelected at page', tmpParams);
         var tmpEl = $(theTarget);
         if( tmpParams.type == 'app'){
-            showAppConsole('showAppConsole', theTarget);
+            showAppConsole(tmpParams);
         } else if( tmpParams.type == 'page'){
             showPageConsole(tmpParams);
         } else if( tmpParams.type == 'resource'){
