@@ -40,6 +40,7 @@ License: MIT
 						{
 							"ctl": "button",
 							"color": "black",
+							hidden: true,
 							basic: true,
 							right: true,
 							"icon": "cancel",
