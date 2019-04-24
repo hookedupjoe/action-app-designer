@@ -50,7 +50,6 @@ License: MIT
         , east__size: "200"
     }
 
-
     //--- Start with a ase SitePage component
     var ThisPage = new SiteMod.SitePage(thisPageSpecs);
 

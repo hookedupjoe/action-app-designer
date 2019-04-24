@@ -755,7 +755,9 @@ var ActionAppCore = {};
             north__closable: false,
             north__slidable: false,
             north__togglerLength_open: 0,
-            north__spacing_open: 0
+            north__spacing_open: 0,
+            east__size: "15%",
+            west__size: "40%"
         },
         customDemo1: {
             spacing_closed: 8,
