@@ -195,7 +195,6 @@ License: MIT
         }
 
         tmpEntryName = tmpAppName + "-" + tmpPageName + "-" + tmpEntryName
-        console.log( 'tmpEntryName', tmpEntryName);
 
         if (loadedResources[tmpEntryName]) {
             var tmpTabAttr = { group: wsOutlineName, item: tmpEntryName };
@@ -259,7 +258,6 @@ License: MIT
             tmpNewPage.subscribe('selected', wsItemSelected);
 
             loadedPages[tmpEntryName] = tmpNewPage;
-            //console.log( 'tmpNewPage', tmpNewPage);
 
             //--- For Debugging
             window[tmpEntryName] = tmpNewPage;
@@ -299,7 +297,6 @@ License: MIT
                 refreshWorkspace();
                 showAppConsole(theData);
             })
-            console.log('theData', theData);
         })
     };
 
@@ -317,14 +314,12 @@ License: MIT
             if (!theSubmitted) {
                 return;
             }
-            console.log('theData', theData);
         
             theData.target = 'workspace';
             ThisApp.common.apiCall({
                 url: '/design/ws/new-page?run',
                 data: theData
             }).then(function (theReply) {
-                console.log( '/design/ws/new-page?run Reply', theReply);
                 tmpThis.refreshWorkspace();
             })
             

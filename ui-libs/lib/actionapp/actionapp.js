@@ -2050,6 +2050,7 @@ var ActionAppCore = {};
 
     me.refreshLayouts = function (theTargetEl) {
         me.siteLayout.resizeAll();
+        
 
     }
     me.resizeLayouts = function (name, $pane, paneState) {
@@ -2364,11 +2365,7 @@ var ActionAppCore = {};
             , spacing_open: 6 // ALL panes
             , spacing_closed: 8 // ALL panes
             , onready: ThisApp.resizeLayouts
-            , north__onresize: ThisApp.resizeLayouts
-            , south__onresize: ThisApp.resizeLayouts
-            , east__onresize: ThisApp.resizeLayouts
-            , west__onresize: ThisApp.resizeLayouts
-            , center__onresize: ThisApp.resizeLayouts
+            , onresize: ThisApp.resizeLayouts
         });
 
         if (theAppConfig && theAppConfig.hideHeader == true) {
@@ -2774,6 +2771,9 @@ License: MIT
     var StaticApp = SiteMod.CoreApp;
     var defaultLayoutOptions = StaticApp.layoutTemplates.defaultPage;
 
+    var ExtendMod = ActionAppCore.module("extension");
+    $.extend(SitePage.prototype, ExtendMod.PubSub)
+
     //--- Base class for application pages
     function SitePage(theOptions) {
         this.options = theOptions || {};
@@ -2783,6 +2783,8 @@ License: MIT
         this.parts = this.part //longcut - keep typing it wrong, can use either :)
         this.pageActions = {}; //--- A place for actions
         this.pageTitle = this.options.pageTitle || '';
+
+        this.initPubSub();
 
         this.res = {
             "panels": {},
@@ -2811,9 +2813,19 @@ License: MIT
 
             this.layoutConfig.onresize = (
                 function (thePane, theElement, theState, theOptions, theName) {
+                   
                     if (typeof (this._onResizeLayout) == 'function') {
                         this._onResizeLayout(thePane, theElement, theState, theOptions, theName);
                     }
+                   
+                    try {
+                        if( this.publish ){
+                            this.publish('resizeLayout', [this, thePane, theElement, theState, theOptions, theName]);
+                        }
+                    } catch (ex) {
+                        console.error( 'error on resize', ex);
+                    }
+                    return true;
                 }
             ).bind(this);
 
@@ -3439,7 +3451,6 @@ License: MIT
             if (this.layoutOptions && this.layoutConfig) {
                 this.layoutSpot = ThisApp.getByAttr$({ group: ThisApp.pagesGroup, "item": this.pageName });
                 this.layout = this.layoutSpot.layout(this.layoutConfig);
-                //Todo: On refresh, publish
             };
 
         }
@@ -4551,45 +4562,6 @@ License: MIT
         return tmpObj
     }
 
-    // meControl.getContentRequired = function () {
-    //     var tmpRet = {}
-    //     var tmpReq = this.controlConfig.index.required;
-    //     if (tmpReq) {
-    //         return tmpReq;
-    //     }
-    //     return tmpRet;
-    // }
-
-    // meControl.assureRequired = function () {
-    //     var dfd = jQuery.Deferred();
-    //     // if (this.assureRequiredRun === true) {
-    //     //     dfd.resolve(true)
-    //     //     return dfd.promise();
-    //     // }
-    //     this.assureRequiredRun = true;
-    //     this.options = this.options || {};
-    //     var tmpPromRequired = true;
-    //     var tmpPromLayoutReq = true;
-    //     var tmpLayoutReq = this.getContentRequired();
-    //     var tmpInitReq = ThisApp.loadResources.bind(this);
-
-    //     if (tmpLayoutReq) {
-    //         tmpPromLayoutReq = tmpInitReq(tmpLayoutReq, { nsParent: this.parentControl })
-    //     }
-
-    //     $.when(tmpPromRequired, tmpPromLayoutReq).then(function (theReply) {
-    //         dfd.resolve(true);
-    //     })
-
-    //     return dfd.promise();
-    // }
-
-
-    //--- ToDo: Review this, better way?  Just use prompt options?
-    //     also have options: prompt: {} in the control options JSON
-
-    //Control / Form prompting
-
     /*  
     Prompt options: 
        doc: the object that contains the data
@@ -4737,6 +4709,8 @@ License: MIT
     me.ControlInstance = ControlInstance;
     function ControlInstance(theControlSpec, theControlName, theOptions) {
         var tmpOptions = theOptions || {};
+        this.initPubSub();
+
         this.controlSpec = theControlSpec;
         var tmpConfig = this.controlSpec.controlConfig;
         tmpConfig.options = tmpConfig.options || {};
@@ -4775,6 +4749,19 @@ License: MIT
         if (this.parent && this.parent.context) {
             if (isObj(this.parent.context.page)) {
                 this.context.page = this.parent.context.page;
+                if( this.context.page.controller ){
+                    if( this.context.page.controller.subscribe ){
+                        var tmpThis = this;
+                        this.context.page.controller.subscribe('resizeLayout', function(){
+                            if( isFunc(tmpThis._onParentResize) ){
+                                tmpThis._onParentResize.call(tmpThis)
+                            }
+                            
+                        })
+                    } else {
+                        console.warn( 'this.context.page.controller no subscribe');
+                    }
+                }
             }
             if (!(ThisApp.util.isPage(this.parent))) {
                 this.context.control = this.parent.context;
@@ -4787,7 +4774,7 @@ License: MIT
             "html": {}
         };
 
-        this.initPubSub();
+        
 
         //--- Grab some common functionality from app ...
         var tmpStuffToPullIn = [
@@ -4836,11 +4823,6 @@ License: MIT
 
     meInstance.assureRequired = function () {
         var dfd = jQuery.Deferred();
-        // if (this.assureRequiredRun === true) {
-        //     dfd.resolve(true)
-        //     return dfd.promise();
-        // }
-        // this.assureRequiredRun = true;
         this.options = this.options || {};
         var tmpPromRequired = true;
         var tmpPromLayoutReq = true;
@@ -5820,7 +5802,6 @@ License: MIT
                     tmpThis.loadData(tmpDoc);
                 }
                 if( isFunc(tmpThis._onInit) ){
-                    console.log( 'tmpThis called', tmpThis);
                     tmpThis._onInit();
                 }
         

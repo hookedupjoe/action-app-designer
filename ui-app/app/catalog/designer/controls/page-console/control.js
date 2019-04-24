@@ -331,16 +331,32 @@ License: MIT
 		saveCode: saveCode,
 		uniqueGroups: uniqueGroups,
 		setupEditor: setupEditor,
-		_onInit: _onInit
+		_onInit: _onInit,
+		_onParentResize: _onParentResize
 	};
 
+	function _onParentResize(){
+		var tmpThis = this;
+		ThisApp.delay(200).then(function(theReply){
+			if( tmpThis.aceEditorEl ){
+				var tmpH = tmpThis.aceEditorEl.closest('.ui-layout-pane').height();
+				if (tmpThis.aceEditorEl && tmpThis.aceEditor) {
+					tmpThis.aceEditorEl
+								.css('height', '' + tmpH + 'px')
+								.css('position', 'relative')
+								tmpThis.aceEditor.resize(true);
+				}
+			}
+			
+		})
+	
+	}
 
 	function _onInit(){
 		this.parts.resources.subscribe('selectMe', onResSelect.bind(this))
 	}
 
 	function onResSelect(theEvent, theControl, theTarget){
-		console.log( 'onResSelect pub', theTarget);
 		this.publish('selected', [theControl, theTarget])
 	}
 
@@ -356,7 +372,6 @@ License: MIT
 
 		var tmpServerURL = '/design/ws/get-ws-outline?type=resources&appname=' + tmpAppName;
 		tmpServerURL += '&pagename=' + tmpPageName;
-		console.log( 'tmpServerURL', tmpServerURL);
 		this.controlConfig.index.controls.resources.controlname = tmpServerURL
 
 
@@ -555,7 +570,6 @@ License: MIT
 				}
 			}
 			tmpThis.refreshFromLoaded();
-			//console.log( 'tmpThis.parts.resources', tmpThis.parts.resources);
 			tmpThis.parts.resources.refreshFromURI();
 
 		})
