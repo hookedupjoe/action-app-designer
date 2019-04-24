@@ -13,6 +13,10 @@ License: MIT
 			ctl: "layout",
 			north: [
 				{
+					"ctl":"spot",
+					"name":"nav-tabs"
+				},
+				{
 					"ctl": "field",
 					"name": "title",
 					"fluid": true,
@@ -41,9 +45,10 @@ License: MIT
 							"icon": "cancel",
 							"name": "btn-close-page",
 							"label": "Close",
-							"onClick": {
-								"run": "action",
-								"action": "closePage"
+							attr: {
+								"pageaction": "closePage",
+								appname: "",
+								pagename: ""
 							}
 						}
 					]
@@ -331,7 +336,12 @@ License: MIT
 	//--- Run before
 	function preLoad(theDetails) {
 		var tmpPageName = theDetails.pagename || '';
-		this.uniqueGroups(tmpPageName);
+		var tmpAppName = theDetails.appname || '';
+		this.uniqueGroups(tmpAppName + '-' + tmpPageName);
+		var tmpCloseBtn = this.controlConfig.index.items['btn-close-page'];
+		tmpCloseBtn.attr.appname = tmpAppName;
+		tmpCloseBtn.attr.pagename = tmpPageName;
+
 	}
 	//---- Initial Setup of the control
 	function setup(theOptions) {
@@ -351,6 +361,7 @@ License: MIT
 			tmpPageTitle = '[' + tmpAppName + '] ' + tmpTitle;
 		}
 
+
 		this.setFieldValue('title', tmpPageTitle);
 		this.setupEditor();
 		this.details = {
@@ -365,6 +376,20 @@ License: MIT
 			console.log( 'this.endpointURL', this.endpointURL);
 		}
 		this.refreshFromSource();
+
+//		this.loadSpot('nav-tabs', '<div controls="" tabs="" class="pad0 ui top attached tabular menu" style=""><a appuse="tablinks" group="layout-pagetabs" item="pagetabs-one" myaction="showSubPage" class="item black  "><i class="icon globe blue"></i> app001</a>      <a appuse="tablinks" group="layout-pagetabs" item="pagetabs-resources" myaction="showSubPage" class="item black"><i class="icon columns green"></i> Welcome</a>      <a appuse="tablinks" group="layout-pagetabs" item="pagetabs-resource" myaction="showSubPage" class="item black"><i class="icon newspaper purple"></i> SearchBar</a></div><div class="ui divider fitted black"></div>')
+		if( tmpAppName ){
+			//this.loadSpot('nav-tabs', '<div controls="" tabs="" class="pad0 ui top attached tabular menu" style=""><a appuse="tablinks" group="workspace-outline" item="' + tmpAppName + '" action="selectMe" class="item black  "><i class="icon globe blue"></i> ' + tmpAppName + '</a>      <a appuse="tablinks" group="workspace-outline" item="' + tmpAppName + '-' + tmpPageName + '" action="selectMe" class="item black"><i class="icon columns green"></i> ' + tmpPageName + '</a>      </div>     <div class="ui divider fitted black"></div>')
+
+			var tmpHTML = [];
+			tmpHTML.push('<div class="pad0 ui top attached tabular menu" style="">');
+			tmpHTML.push('<a appuse="tablinks" group="workspace-outline" item="' + tmpAppName + '" appname="' + tmpAppName + '" pageaction="showAppConsole" class="item black  "><i class="icon globe blue"></i> ' + tmpAppName + '</a>');
+			tmpHTML.push('<a appuse="tablinks" group="workspace-outline" item="' + tmpAppName + '-' + tmpPageName + '" appname="' + tmpAppName + '" pagename="' + tmpPageName + '" pageaction="showPageConsole" class="item black"><i class="icon columns green"></i> ' + tmpPageName + '</a>');
+			tmpHTML.push('</div><div class="ui divider fitted black"></div>')
+			tmpHTML = tmpHTML.join('\n');
+			this.loadSpot('nav-tabs', tmpHTML)
+
+		}
 
 	}
 

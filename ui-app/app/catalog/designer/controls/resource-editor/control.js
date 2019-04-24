@@ -6,9 +6,13 @@ License: MIT
 
 	var ControlSpecs = {
 		"options": {
-			"padding": true
+			"padding": false
 		},
 		"content": [
+			{
+				"ctl":"spot",
+				"name":"nav-tabs"
+			},
 			{
 				"ctl": "title",
 				"name": "title",
@@ -104,6 +108,23 @@ License: MIT
 		function setup(theDetails) {
 			this.setupEditor();
 			this.aceEditor.setValue('var test = true;')
+			var tmpPageName = theDetails.pagename || '';
+			var tmpAppName = theDetails.appname || '';
+			var tmpResName = theDetails.resname || '';
+
+
+			if( tmpAppName && tmpPageName && tmpResName ){
+				var tmpHTML = [];
+				tmpHTML.push('<div class="pad0 ui top attached tabular menu" style="">');
+				tmpHTML.push('<a appuse="tablinks" group="workspace-outline" item="' + tmpAppName + '" appname="' + tmpAppName + '" pageaction="showAppConsole" class="item black  "><i class="icon globe blue"></i> ' + tmpAppName + '</a>');
+				tmpHTML.push('<a appuse="tablinks" group="workspace-outline" item="' + tmpAppName + '-' + tmpPageName + '" appname="' + tmpAppName + '" pagename="' + tmpPageName + '" pageaction="showPageConsole" class="item black"><i class="icon columns green"></i> ' + tmpPageName + '</a>');
+				tmpHTML.push('<a appuse="tablinks" group="workspace-outline" item="' + tmpAppName + '-' + tmpPageName + '-' + tmpResName + '" class="item black"><i class="icon box purple"></i> ' + tmpResName + '</a>')
+				tmpHTML.push('</div><div class="ui divider fitted black"></div>')
+				tmpHTML = tmpHTML.join('\n');
+				this.loadSpot('nav-tabs', tmpHTML)
+			}
+
+			
 		}
 
 		

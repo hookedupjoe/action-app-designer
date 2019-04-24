@@ -356,5 +356,11 @@ License: MIT
         console.log( 'tmpType', tmpType);
     };
     
+    actions.closePage = closePage;
+    function closePage(theParams, theTarget){
+        var tmpParams = ThisApp.getActionParams(theParams, theTarget, ['appname','pagename']);
+        console.log( 'closePage', tmpParams);
+    };
+    
 
 })(ActionAppCore, $);
