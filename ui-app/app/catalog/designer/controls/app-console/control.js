@@ -7,30 +7,38 @@ License: MIT
 	//~ControlSpecs//~	
 	var ControlSpecs = {
 		"options": {
-			"padding": true
+			"padding": false
 		},
 		"content": [
 			{
 				"ctl":"spot",
-				"name":"nav-tabs"
+				"name":"nav-tabs",
+				"text": "."
 			},
 			{
-				"ctl": "title",
-				"name": "title",
-				"size": "large",
-				"color": "blue",
-				"icon": "globe",
-				"text": "Application"
-			},
-			{
-				"ctl": "button",
-				"color": "blue",
-				"onClick": {
-					"run": "action",
-					"action": "openInCode"
-				},
-				text: "Open in VS Code",
-				"name": "open-in-vs-code"
+				ctl: "segment",
+				basic: true,
+				slim: true,
+				content: [
+					{
+						"ctl": "title",
+						"name": "title",
+						"size": "large",
+						"color": "blue",
+						"icon": "globe",
+						"text": "Application"
+					},
+					{
+						"ctl": "button",
+						"color": "blue",
+						"onClick": {
+							"run": "action",
+							"action": "openInCode"
+						},
+						text: "Open in VS Code",
+						"name": "open-in-vs-code"
+					}
+				]
 			},
 			{
 				"ctl": "tabs",
@@ -199,6 +207,7 @@ License: MIT
 	var ControlCode = {
 		_onInit: _onInit,
 		promptAppSetup: promptAppSetup,
+		preLoad: preLoad, 
 		setup: setup,
 		refreshPages: refreshPages,
 		refreshSetupInfo: refreshSetupInfo,
@@ -210,6 +219,7 @@ License: MIT
 		vscodeDeployment: vscodeDeployment,
 		rebuildApp: rebuildApp,
 		openInCode: openInCode,
+		refreshTabNav: refreshTabNav,
 		promptForSetupInfo: promptForSetupInfo
 	};
 	
@@ -353,12 +363,15 @@ License: MIT
 	};
 	
 
-	//---- Initial Setup of the control
-	function setup(theDetails) {
+	function preLoad(theDetails) {
 		var tmpAppName = theDetails.appname || '';
 		this.params = this.params || {};
 		this.params.appname = tmpAppName;
 		var tmpTitle = theDetails.title || theDetails.apptitle || tmpAppName;
+
+		this.details = {
+			appname: this.params.appname
+		}
 
 		this.controlConfig.index.controls.pages.controlname += tmpAppName
 		this.controlConfig.index.controls.resources.controlname += tmpAppName
@@ -373,7 +386,30 @@ License: MIT
 			href: "http://localhost:33461/" + tmpAppName,
 			target: "app" + tmpAppName
 		}
+	}
+		//---- Initial Setup of the control
+	function setup(theDetails) {
 	
+
+		this.refreshTabNav();
+		
+	}
+
+	function refreshTabNav() {
+		
+		this.details = this.details || {};
+		var tmpAppName = this.details.appname || '';
+	
+		var tmpHTML = [];
+		tmpHTML.push('<div class="pad0 ui top attached tabular tab-nav menu" style="">');
+		tmpHTML.push('<a appuse="tablinks" group="workspace-outline" item="workspace" action="selectMe" class="item black"><i class="icon hdd black"></i> </a>');
+		if( tmpAppName ){
+			tmpHTML.push('<a appuse="tablinks" group="workspace-outline" item="' + tmpAppName + '" appname="' + tmpAppName + '" pageaction="showAppConsole" class="item black  "><i class="icon globe blue"></i> ' + tmpAppName + '</a>');
+		}
+		tmpHTML.push('</div><div class="ui divider fitted black"></div>')
+		tmpHTML = tmpHTML.join('\n');
+		console.log( 'refreshTabNav tmpHTML' , tmpHTML);
+		this.loadSpot('nav-tabs', tmpHTML)
 	}
 
 	function promptForSetupInfo() {

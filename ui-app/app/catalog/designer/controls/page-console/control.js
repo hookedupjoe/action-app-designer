@@ -332,6 +332,7 @@ License: MIT
 		saveCode: saveCode,
 		uniqueGroups: uniqueGroups,
 		setupEditor: setupEditor,
+		refreshTabNav: refreshTabNav,
 		_onInit: _onInit,
 		_onParentResize: _onParentResize
 	};
@@ -410,6 +411,14 @@ License: MIT
 		}
 		this.refreshFromSource();
 
+		this.refreshTabNav();
+
+	}
+
+	function refreshTabNav() {
+		this.details = this.details || {};
+		var tmpAppName = this.details.appname || '';
+		var tmpPageName = this.details.pagename || '';
 		if( (tmpAppName || tmpPageName) ){
 			var tmpHTML = [];
 			tmpHTML.push('<div class="pad0 ui top attached tabular tab-nav menu" style="">');
@@ -427,8 +436,6 @@ License: MIT
 			this.loadSpot('nav-tabs', tmpHTML)
 		}
 	}
-
-
 	function uniqueGroups(theUniqueness) {
 		var tmpIndex = this.getIndex();
 		if (tmpIndex && tmpIndex.items) {

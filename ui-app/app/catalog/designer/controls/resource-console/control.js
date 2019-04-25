@@ -139,6 +139,7 @@ License: MIT
 		saveCode: saveCode,
 		uniqueGroups: uniqueGroups,
 		setupEditor: setupEditor,
+		refreshTabNav: refreshTabNav,
 		_onInit: _onInit,
 		_onParentResize: _onParentResize
 	};
@@ -215,6 +216,25 @@ License: MIT
 		console.log( 'this.aceSessionType', this.aceSessionType);
 		this.setupEditor();
 		
+		this.refreshTabNav();
+		this.endpointURL = 'design/ws/resource-content?run&source=' + tmpSource + '&resname=' + tmpResName + '&restype=' + tmpResType;
+		if( tmpPageName ){
+			this.endpointURL += '&pagename=' + tmpPageName;
+		}
+		if( tmpAppName ){
+			this.endpointURL += '&appname=' + tmpAppName;
+		}
+		this.refreshFromSource();
+
+
+	}
+
+	function refreshTabNav() {
+		this.details = this.details || {};
+		var tmpAppName = this.details.appname || '';
+		var tmpPageName = this.details.pagename || '';
+		var tmpResName = this.details.resname || '';
+		var tmpResType = this.details.restype || '';
 		
 		if( (tmpAppName || tmpPageName) && tmpResName ){
 			var tmpHTML = [];
@@ -232,18 +252,7 @@ License: MIT
 			this.loadSpot('nav-tabs', tmpHTML)
 		}
 
-		this.endpointURL = 'design/ws/resource-content?run&source=' + tmpSource + '&resname=' + tmpResName + '&restype=' + tmpResType;
-		if( tmpPageName ){
-			this.endpointURL += '&pagename=' + tmpPageName;
-		}
-		if( tmpAppName ){
-			this.endpointURL += '&appname=' + tmpAppName;
-		}
-		this.refreshFromSource();
-
-
 	}
-
 	function ORIGINAL____setup(theOptions) {
 		var tmpOptions = theOptions || {};
 		
