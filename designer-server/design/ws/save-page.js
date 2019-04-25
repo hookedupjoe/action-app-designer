@@ -28,38 +28,50 @@ module.exports.setup = function setup(scope) {
                     }
                 }
 
+               
+
                 var tmpWSDir = scope.locals.path.ws.uiApps;
                 var tmpPagesDir = scope.locals.path.ws.pages;
 
-                var tmpReq = tmpBody
+                var tmpReq = tmpBody;
 
                 var tmpAppName = tmpReq.appname || '';
-                var tmpTarget = tmpReq.target || 'app';
+                var tmpResName = tmpReq.resname || '';
+                var tmpResType = tmpReq.restype || '';
+                var tmpPageName = tmpReq.pagename || '';
 
-                var tmpPageName = tmpReq.pagename || tmpReq.name || '';
+                var tmpResDetails = {
+                    dir: ''
+                };
+                if( tmpResType ){
+                    tmpResDetails = $.bld.detailsIndex.getDetails(tmpResType);
+                }
                 if (!(tmpPageName)) {
                     throw "Page name not provided"
                 }
-                var tmpPagesBase = tmpAppBase + '/app/pages/';
+              
+                var tmpPagesBase = tmpPagesDir;
 
-                if( tmpTarget == 'workspace' ){
-                    tmpPagesBase = tmpPagesDir;
-                } else {
+                if( tmpAppName ){
                     var tmpAppBase = tmpWSDir + tmpAppName + '/';
+
                     var tmpAppDetails = $.await($.bld.getJsonFile(tmpAppBase + 'app-info.json'))
                     var tmpAppTitle = tmpAppDetails.title || '';
     
                     if (!(tmpAppTitle)) {
-                        throw ("Application " + tmpAppName + " not found");
+                        throw ("Application " + tmpAppName + " not found at " + tmpAppBase);
                     }
+
+                    tmpPagesBase = tmpAppBase + 'app/pages/';
+
+                    var tmpPages = $.await($.bld.getDirFiles(tmpPagesBase))
+
+                    if (tmpPages.indexOf(tmpPageName) == -1) {
+                        throw "Page " + tmpPageName + " does not exists"
+                    }
+
                 }
        
-                var tmpPages = $.await($.bld.getDirFiles(tmpPagesBase))
-
-                if (tmpPages.indexOf(tmpPageName) == -1) {
-                    throw "Page " + tmpPageName + " does not exists"
-                }
-
                 var tmpNewCodeIndex = tmpReq.code || [];
                 var tmpPageBase = tmpPagesBase + tmpPageName + '/';
                 

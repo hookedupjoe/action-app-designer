@@ -33,10 +33,10 @@ var detailsIndex = {
         }
   
     },
-    "Control": {category: 'Controls', dir: "controls", icon: 'newspaper', lang: 'javascript'},
-    "Panel": {category: 'Panels', dir: "panels", icon: 'newspaper outline', lang: 'javascript', type: 'json'},
-    "HTML": {category: 'HTML', dir: "html", icon: 'code', lang: 'html'},
-    "Template": {category: 'Templates', dir: "tpl", icon: 'object group outline', lang: 'html'}
+    "Control": {name: "Control", category: 'Controls', dir: "controls", icon: 'newspaper', lang: 'javascript'},
+    "Panel": {name: "Panel", category: 'Panels', dir: "panels", icon: 'newspaper outline', lang: 'javascript', type: 'json'},
+    "HTML": {name: "HTML", category: 'HTML', dir: "html", icon: 'code', lang: 'html'},
+    "Template": {name: "Template", category: 'Templates', dir: "tpl", icon: 'object group outline', lang: 'html'}
   }
 
 let utils = {

@@ -38,10 +38,6 @@ module.exports.setup = function setup(scope) {
                 var tmpResType = tmpReq.restype || '';
                 var tmpPageName = tmpReq.pagename || '';
 
-                var tmpTarget = 'workspace';
-                if( tmpAppName ){
-                    tmpTarget = 'app';
-                }
                 var tmpResDetails = {
                     dir: ''
                 };
@@ -81,6 +77,13 @@ module.exports.setup = function setup(scope) {
 
                 var tmpContentBase = tmpPageBase + '/' + tmpResDetails.dir;
                 var tmpFN = tmpContentBase + '/' + tmpResName;
+                
+                console.log( 'tmpResDetails', tmpResDetails);
+                if( tmpResDetails.name == "Control"){
+                    tmpFN += '/control.js';
+                    console.log( 'added control', tmpFN);
+                }
+
                 $.await($.fs.writeFile(tmpFN, tmpReq.content));
 
                 var tmpRet = {

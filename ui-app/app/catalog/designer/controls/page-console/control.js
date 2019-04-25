@@ -551,6 +551,7 @@ License: MIT
 			code: tmpNewCodeIndex,
 			origCode: this.loaded.codeIndex
 		}
+		console.log( 'tmpRequest', tmpRequest);
 		
 		ThisApp.apiCall({
 			url: '/design/ws/save-page',
