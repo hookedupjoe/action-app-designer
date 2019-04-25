@@ -32,17 +32,18 @@ module.exports.setup = function setup(scope) {
                         "ctl": "tbl-ol-node",
                         "type": "pages",
                         "name": "pages",
-                        "item": "pages",
+                        "item": "",
                         "details": ".../pages",
                         "meta": "&#160;",
                         "classes": "ws-outline",
-                        "level": 3,
+                        "level": 2,
                         "icon": "columns",
                         "color": "black",
                         "group": "workspace-outline",
                         "content": []
                     }
                     tmpResponse = $.await(getPagesNode({ appname: tmpAppName }));
+
                     tmpBase.content = tmpResponse.content;
 
 
