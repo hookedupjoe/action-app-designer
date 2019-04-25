@@ -8,6 +8,37 @@
 
 let $ = require("./globalUtilities").$;
 
+
+  
+var detailsIndex = {
+    "getDetails": function(theName){
+        return this[this.getUnifiedName(theName)];
+    },
+    "getUnifiedName": function(theName){
+        if( typeof(theName) != 'string'){
+            return "";
+        }
+        var tmpNameCheck = theName.toLowerCase();
+        if( tmpNameCheck == 'control' || tmpNameCheck == 'controls' ){
+            return 'Control';
+        }
+        if( tmpNameCheck == 'panel' || tmpNameCheck == 'panels' ){
+            return 'Panel';
+        }
+        if( tmpNameCheck == 'html' ){
+            return 'HTML';
+        }
+        if( tmpNameCheck == 'template' || tmpNameCheck == 'templates' ){
+            return 'Template';
+        }
+  
+    },
+    "Control": {category: 'Controls', dir: "controls", icon: 'newspaper', lang: 'javascript'},
+    "Panel": {category: 'Panels', dir: "panels", icon: 'newspaper outline', lang: 'javascript', type: 'json'},
+    "HTML": {category: 'HTML', dir: "html", icon: 'code', lang: 'html'},
+    "Template": {category: 'Templates', dir: "tpl", icon: 'object group outline', lang: 'html'}
+  }
+
 let utils = {
   getDirFiles: getDirFiles,
   getTextFile: getTextFile,
@@ -22,11 +53,13 @@ let utils = {
   replaceAll: replaceAll,
   replaceFromMap: replaceFromMap,
   replaceFile: replaceFile,
-  getIndexFromArray: getIndexFromArray
+  getIndexFromArray: getIndexFromArray,
+  detailsIndex: detailsIndex
 };
 
 module.exports = utils;
-   
+ 
+
 function restartServer(){
    var {spawn} = require('child_process');
 

@@ -2052,7 +2052,7 @@ var ActionAppCore = {};
 
     me.refreshLayouts = function (theTargetEl) {
         me.siteLayout.resizeAll();
-        
+
 
     }
     me.resizeLayouts = function (name, $pane, paneState) {
@@ -2322,7 +2322,7 @@ var ActionAppCore = {};
     function toggleMe(theParams, theTarget, theOptionalParent) {
         var tmpEl = $(theTarget);
         var tmpTR = tmpEl.parent();
-        if( theTarget.tagName.toLowerCase() == 'tr'){
+        if (theTarget.tagName.toLowerCase() == 'tr') {
             tmpTR = tmpEl;
         }
         var tmpNext = tmpTR.next(['group="' + tmpEl.attr('group') + '"']);
@@ -2815,17 +2815,17 @@ License: MIT
 
             this.layoutConfig.onresize = (
                 function (thePane, theElement, theState, theOptions, theName) {
-                   
+
                     if (typeof (this._onResizeLayout) == 'function') {
                         this._onResizeLayout(thePane, theElement, theState, theOptions, theName);
                     }
-                   
+
                     try {
-                        if( this.publish ){
+                        if (this.publish) {
                             this.publish('resizeLayout', [this, thePane, theElement, theState, theOptions, theName]);
                         }
                     } catch (ex) {
-                        console.error( 'error on resize', ex);
+                        console.error('error on resize', ex);
                     }
                     return true;
                 }
@@ -4070,32 +4070,32 @@ License: MIT
     var me = ThisPageController.prototype;
 
     me.detailsIndex = {
-        "getDetails": function(theName){
+        "getDetails": function (theName) {
             return this[this.getUnifiedName(theName)];
         },
-        "getUnifiedName": function(theName){
-            if( ! isStr(theName) ){
+        "getUnifiedName": function (theName) {
+            if (!isStr(theName)) {
                 return "";
             }
             var tmpNameCheck = theName.toLowerCase();
-            if( tmpNameCheck == 'control' || tmpNameCheck == 'controls' ){
+            if (tmpNameCheck == 'control' || tmpNameCheck == 'controls') {
                 return 'Control';
             }
-            if( tmpNameCheck == 'panel' || tmpNameCheck == 'panels' ){
+            if (tmpNameCheck == 'panel' || tmpNameCheck == 'panels') {
                 return 'Panel';
             }
-            if( tmpNameCheck == 'html'){
+            if (tmpNameCheck == 'html') {
                 return 'HTML';
             }
-            if( tmpNameCheck == 'template' || tmpNameCheck == 'templates' ){
+            if (tmpNameCheck == 'template' || tmpNameCheck == 'templates') {
                 return 'Template';
             }
 
         },
-        "Control": {category: 'Controls', dir: "controls", icon: 'newspaper', lang: 'javascript'},
-        "Panel": {category: 'Panels', dir: "panels", icon: 'newspaper outline', lang: 'javascript', type: 'json'},
-        "HTML": {category: 'Templates', dir: "tpl", icon: 'object group outline', lang: 'html'},
-        "Template": {category: 'HTML', dir: "html", icon: 'code', lang: 'html'}
+        "Control": { category: 'Controls', dir: "controls", icon: 'newspaper', lang: 'javascript' },
+        "Panel": { category: 'Panels', dir: "panels", icon: 'newspaper outline', lang: 'javascript', type: 'json' },
+        "HTML": { category: 'HTML', dir: "html", icon: 'code', lang: 'html' },
+        "Template": { category: 'Templates', dir: "tpl", icon: 'object group outline', lang: 'html' }
     }
 
     me.layoutCounter = 0;
@@ -4780,17 +4780,17 @@ License: MIT
         if (this.parent && this.parent.context) {
             if (isObj(this.parent.context.page)) {
                 this.context.page = this.parent.context.page;
-                if( this.context.page.controller ){
-                    if( this.context.page.controller.subscribe ){
+                if (this.context.page.controller) {
+                    if (this.context.page.controller.subscribe) {
                         var tmpThis = this;
-                        this.context.page.controller.subscribe('resizeLayout', function(){
-                            if( isFunc(tmpThis._onParentResize) ){
+                        this.context.page.controller.subscribe('resizeLayout', function () {
+                            if (isFunc(tmpThis._onParentResize)) {
                                 tmpThis._onParentResize.call(tmpThis)
                             }
-                            
+
                         })
                     } else {
-                        console.warn( 'this.context.page.controller no subscribe');
+                        console.warn('this.context.page.controller no subscribe');
                     }
                 }
             }
@@ -4805,7 +4805,7 @@ License: MIT
             "html": {}
         };
 
-        
+
 
         //--- Grab some common functionality from app ...
         var tmpStuffToPullIn = [
@@ -4899,12 +4899,12 @@ License: MIT
         return this.parentEl
     }
 
-    meInstance.setItemDisabled = function(theEntryName, theIsDisabled){
+    meInstance.setItemDisabled = function (theEntryName, theIsDisabled) {
         var tmpEl = this.getItemEl(theEntryName) || this.getFieldEl(theEntryName);
         var tmpHasClass = tmpEl.hasClass('disabled');
-        if( !tmpHasClass && theIsDisabled ){
+        if (!tmpHasClass && theIsDisabled) {
             tmpEl.addClass('disabled');
-        } else if( tmpHasClass && !theIsDisabled ){
+        } else if (tmpHasClass && !theIsDisabled) {
             tmpEl.removeClass('disabled');
         }
     }
@@ -5591,8 +5591,8 @@ License: MIT
         var tmpAppActionDetails = ThisApp.getActionFromObj(tmpObj, 'action');
 
         if ((tmpAppActionDetails.hasOwnProperty('action') && tmpAppActionDetails.hasOwnProperty('el'))) {
-            
-            if( tmpAppActionDetails.action == 'selectMe'){
+
+            if (tmpAppActionDetails.action == 'selectMe') {
                 this.publish('selectMe', [this, tmpAppActionDetails.el])
             }
         }
@@ -5658,8 +5658,8 @@ License: MIT
             theEvent.preventDefault();
             theEvent.stopPropagation();
             this.runAction(tmpAction, tmpObj);
-            
-            if( tmpAction == 'selectMe'){
+
+            if (tmpAction == 'selectMe') {
                 this.publish('selectMe control', [this, tmpObj])
             }
 
@@ -5736,7 +5736,7 @@ License: MIT
                 }
             }
         }
-      
+
         var tmpPanels = ThisApp.getByAttr$({ ctlcomp: 'panel' }, tmpEl);
         if (tmpPanels.length) {
             for (var iControl = 0; iControl < tmpPanels.length; iControl++) {
@@ -5832,10 +5832,10 @@ License: MIT
                 if (tmpDoc) {
                     tmpThis.loadData(tmpDoc);
                 }
-                if( isFunc(tmpThis._onInit) ){
+                if (isFunc(tmpThis._onInit)) {
                     tmpThis._onInit();
                 }
-        
+
                 dfd.resolve(true);
             });
         });
@@ -5898,10 +5898,10 @@ License: MIT
                 }
 
                 var tmpSlim = '';
-                if (tmpItem.slim === true){
+                if (tmpItem.slim === true) {
                     tmpSlim = 'slim'
                 }
-                
+
                 tmpTabsHTML.push('<div class=" ui ' + tmpTabClasses + '  " >');
                 for (var iTab = 0; iTab < tmpItem.tabs.length; iTab++) {
                     var tmpTab = tmpItem.tabs[iTab];
@@ -7069,7 +7069,7 @@ License: MIT
         },
         isField: false
     };
-    
+
     me.ControlTab = {
         getInfo: function (theControlName) {
 
@@ -7768,9 +7768,27 @@ License: MIT
 
                 var tmpOLUse = 'select';
 
+                var tmpToggleAction = 'action="outlineDisplay" select="false"';
+
+                var tmpToggleAttrs = {
+                    action: "outlineDisplay",
+                    select: "false",
+                    group: theGroup,
+                    item: "",
+                    type: theType,
+                    oluse: tmpOLUse
+                }
+
                 if (theLevel == 2) {
                     tmpColSpanDetails = "4";
-
+                    //tmpToggleAction = 'action="toggleMe"'
+                    tmpToggleAttrs = {
+                        action: "toggleMe",
+                        group: theGroup,
+                        item: "",
+                        type: theType,
+                        oluse: tmpOLUse
+                    }
                     //tmpRowAttr.oluse = "collapsable";
                     tmpOLUse = "collapsable";
                     tmpIconNode = {
@@ -7865,29 +7883,23 @@ License: MIT
 
                 var tmpCE = {
                     ctl: "tr",
-                    classes: "",                   
+                    classes: "",
                     content: tmpBodyCols
                 }
 
-                if( theItem ){
+                if (theItem) {
                     tmpCE.attr = {
-                        action:  "selectMe",
+                        action: "selectMe",
                         group: theGroup,
                         item: theItem,
                         type: theType,
                         oluse: tmpOLUse
                     };
-                    if( isObj(tmpObject.attr)){
+                    if (isObj(tmpObject.attr)) {
                         $.extend(tmpCE.attr, tmpObject.attr);
                     }
                 } else {
-                    tmpCE.attr = {
-                        action:  "toggleMe",
-                        group: theGroup,
-                        item: "",
-                        type: theType,
-                        oluse: tmpOLUse
-                    };
+                    tmpCE.attr = tmpToggleAttrs;
                 }
 
                 var tmpFinalContent = [

@@ -34,7 +34,7 @@ License: MIT
 							"label": "Save Changes",
 							"onClick": {
 								"run": "action",
-								"action": "saveCode"
+								"action": "saveContent"
 							}
 						},
 						{
@@ -136,7 +136,7 @@ License: MIT
 		refreshFromLoaded: refreshFromLoaded,
 		refreshEditorFromCodeIndex: refreshEditorFromCodeIndex,
 		showCode: showCode,
-		saveCode: saveCode,
+		saveContent: saveContent,
 		uniqueGroups: uniqueGroups,
 		setupEditor: setupEditor,
 		refreshTabNav: refreshTabNav,
@@ -253,41 +253,6 @@ License: MIT
 		}
 
 	}
-	function ORIGINAL____setup(theOptions) {
-		var tmpOptions = theOptions || {};
-		
-		var tmpPageName = tmpOptions.pagename || '';
-		this.params = this.params || {};
-		this.params.pagename = tmpPageName;
-
-		
-		var tmpTitle = tmpPageName;
-		var tmpSource = tmpOptions.source || 'ws';
-		var tmpAppName = tmpOptions.appname || '';
-
-		var tmpPageTitle = tmpPageName
-		if (tmpAppName) {
-			tmpPageTitle = '[' + tmpAppName + '] ' + tmpTitle;
-		}
-
-
-		this.setFieldValue('title', tmpPageTitle);
-		this.setupEditor();
-		this.details = {
-			pagename: tmpPageName,
-			source: tmpSource,
-			appname: tmpAppName,
-			name: ''
-		}
-		this.endpointURL = 'design/ws/res-code?run&source=' + tmpSource + '&pagename=' + tmpPageName;
-		if( tmpAppName ){
-			this.endpointURL += '&appname=' + tmpAppName;
-		}
-		this.refreshFromSource();
-
-
-	}
-
 
 	function uniqueGroups(theUniqueness) {
 		var tmpIndex = this.getIndex();
@@ -384,7 +349,7 @@ License: MIT
 
 
 
-	function saveCode() {
+	function saveContent() {
 		var tmpThis = this;
 		var tmpNewCodeIndex = {};
 		for (var aName in this.loaded.sessions) {
@@ -392,19 +357,19 @@ License: MIT
 			var tmpCode = tmpSession.getValue();
 			tmpNewCodeIndex[aName] = tmpCode;
 		}
+
+		var tmpContentText = tmpNewCodeIndex["content"];
 		var tmpRequest = {
 			pagename: this.details.pagename,
-			target: this.details.source || 'ws',
 			appname: this.details.appname || '',
-			name: this.details.name || '',
-			index: this.loaded.index,
-			parts: this.loaded.parts,
-			code: tmpNewCodeIndex,
-			origCode: this.loaded.codeIndex
+			resname: this.details.resname || '',
+			restype: this.details.restype || '',
+			content: tmpContentText,
+			origContent: 'todo'
 		}
 		
 		ThisApp.apiCall({
-			url: '/design/ws/save-page',
+			url: '/design/ws/save-resource?run',
 			data: tmpRequest
 		}).then(function(theReply){
 			tmpThis.setItemDisabled('btn-save-code', true);
@@ -440,7 +405,7 @@ License: MIT
 				var tmpCode = tmpParts[tmpIndex[aName]];
 				tmpCodeIndex[aName] = tmpCode
 			}
-			console.log( 'tmpThis.loaded', tmpThis.loaded);
+			//console.log( 'tmpThis.loaded', tmpThis.loaded);
 
 			tmpThis.refreshFromLoaded();
 			

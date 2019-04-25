@@ -38,11 +38,11 @@ License: MIT
         baseURL: pageBaseURL,
         north: false,
         east: false,
-        west: false,
+        west: { partname: "west", control: "west" },
         center: { partname: "center", control: "center" },
         south: false
     }
-    //{ partname: "west", control: "west" }
+    //
 
     //--- Customize default layout configuration
     //--- See http://layout.jquery-dev.com/documentation.cfm for details
@@ -99,9 +99,10 @@ License: MIT
                 //--- Now your done - READY to do stuff the first time on your page
 
                 //--- Subscirbe to when item selected in workspace
-                //ThisPage.parts.west.subscribe('selected', wsItemSelected);
+                ThisPage.parts.west.subscribe('selected', wsItemSelected);
                 ThisPage.parts.center.subscribe('selected', wsItemSelected);
 
+                ThisPage.layout.toggle("west");
                 refreshTabNav();
                 //--- Do special stuff on page load here
                 //--- Then optionally call the stuff that will happen every time 
@@ -130,6 +131,7 @@ License: MIT
 
     actions.refreshWorkspace = refreshWorkspace;
     function refreshWorkspace() {
+        ThisPage.parts.west.parts.workspace.refreshFromURI();
         ThisPage.parts.center.parts.workspace.refreshFromURI();
     };
 

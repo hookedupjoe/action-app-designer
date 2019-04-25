@@ -123,7 +123,7 @@ module.exports.setup = function setup(scope) {
                     "ctl": "tbl-ol-node",
                     "type": "workspace",
                     "name": "workspace",
-                    "item": "workspace",
+                    "item": "",
                     "details": "Workspace",
                     "meta": "&#160;",
                     "classes": "ws-outline",
