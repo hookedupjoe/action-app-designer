@@ -11,6 +11,10 @@ License: MIT
 		},
 		"content": [
 			{
+				"ctl":"spot",
+				"name":"nav-tabs"
+			},
+			{
 				"ctl": "title",
 				"name": "title",
 				"size": "large",

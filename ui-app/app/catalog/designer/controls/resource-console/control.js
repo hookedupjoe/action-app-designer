@@ -60,6 +60,7 @@ License: MIT
 					"ctl": "tabs",
 					"name": "pagetabs",
 					"layout": true,
+					slim: true,
 					"tabs": [
 						{
 							"label": "Content",
@@ -218,6 +219,7 @@ License: MIT
 		if( (tmpAppName || tmpPageName) && tmpResName ){
 			var tmpHTML = [];
 			tmpHTML.push('<div class="pad0 ui top attached tabular tab-nav menu" style="">');
+			tmpHTML.push('<a appuse="tablinks" group="workspace-outline" item="workspace" action="selectMe" class="item black"><i class="icon hdd black"></i> </a>');
 			if( tmpAppName ){
 				tmpHTML.push('<a appuse="tablinks" group="workspace-outline" item="' + tmpAppName + '" appname="' + tmpAppName + '" pageaction="showAppConsole" class="item black  "><i class="icon globe blue"></i> ' + tmpAppName + '</a>');
 			}

@@ -5896,6 +5896,12 @@ License: MIT
                 if (tmpUseLayout) {
                     tmpTabClasses = tmpColor;
                 }
+
+                var tmpSlim = '';
+                if (tmpItem.slim === true){
+                    tmpSlim = 'slim'
+                }
+                
                 tmpTabsHTML.push('<div class=" ui ' + tmpTabClasses + '  " >');
                 for (var iTab = 0; iTab < tmpItem.tabs.length; iTab++) {
                     var tmpTab = tmpItem.tabs[iTab];
@@ -5914,7 +5920,7 @@ License: MIT
                 tmpTabsHTML.push('</div>');
                 tmpTabs = tmpTabs.join('');
                 if (tmpTabs) {
-                    tmpTabs = '<div controls tabs class="pad0 ui top attached tabular menu" style="">' + tmpTabs + '</div>';
+                    tmpTabs = '<div controls tabs class="pad0 ui top attached tabular menu ' + tmpSlim + '" style="">' + tmpTabs + '</div>';
                     if (tmpUseLayout) {
                         tmpTabs = '<div ctlcomp="layout"><div class="ui-layout-north">' + tmpTabs + '</div>';
                     }

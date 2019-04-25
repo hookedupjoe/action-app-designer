@@ -16,6 +16,19 @@ html, body {
   overflow: hidden;
 }
 
+
+.ui.slim.menu {
+  min-height:25px;
+}
+
+.ui.slim.menu > .item {
+  padding-top:2px !important;
+  padding-bottom:2px !important;
+  margin-top:0px !important;
+  margin-bottom:0px !important;
+}
+
+
 .full.ui.disabled.dropdown, .full.ui.dropdown .menu>.disabled.item {
   opacity: .95;
 }
