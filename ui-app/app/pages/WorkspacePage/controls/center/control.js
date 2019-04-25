@@ -6,39 +6,47 @@ License: MIT
 
 	var ControlSpecs = {
 		"options": {
-			padding: true
+			padding: false
 		},
 		"content": [
 			{
-				ctl: "title",
-				size: "large",
-				text: "Testing Drop Down Menu"
-			},
-			{
-				ctl: "dropmenu",
-				icon: "sidebar",
-				text: "Select Person",
+				ctl: "div",
+				attr: {
+					pagespot: "body"
+				},
 				content: [
 					{
-						ctl: "item",
-						classes: 'fluid',
+						ctl: "div",
 						attr: {
-							pageaction: 'runTest1'
+							appuse: "cards",
+							group: "workspace-outline",
+							item: "workspace"
 						},
-						text: "Run Test 1"
-					},
-					{
-						ctl: "item",						
-						classes: 'fluid',
-						attr: {
-							pageaction: 'runTest2'
-						},
-						text: "Run Test 2"
+						content: [
+							{
+								ctl: "pagespot",
+								name: "nav-tabs",
+								text: "TEST"
+							},
+							{
+								ctl: "segment",
+								basic: true,
+								slim: true,
+								content: [
+									{
+										ctl: "title",
+										icon: "hdd",
+										color: "black",
+										size: "large",
+										text: "Designer Workspace"
+									}
+								]
+							}
+						]
 					}
 				]
 			}
 		]
-
 	}
 
 	var ControlCode = {};

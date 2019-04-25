@@ -39,7 +39,7 @@ License: MIT
         north: false,
         east: false,
         west: { partname: "west", control: "west" },
-        center: { html: "body" },
+        center: { control: "center" },
         south: false
     }
 
