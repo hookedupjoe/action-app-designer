@@ -127,7 +127,22 @@ License: MIT
     }
 
     //=== Page Stuff
+/*
+    ThisPage.selectedFieldName = '';
+    ThisPage.activeControlName = ThisPage.ns("resource-preview");
 
+    ThisPage.frmPreview$ = ThisPage.spot$('preview-area')
+    ThisPage.frmPreview$.on('change', frmPreviewChange)
+    ThisPage.frmPreview$.get(0).addEventListener('focus', frmPreviewFocusChange, true)
+
+    function frmPreviewChange(theEvent) {
+        var tmpTarget = getTarget(theEvent);
+        var tmpFN = tmpTarget.name;
+        console.log( 'tmpFN', tmpFN);
+        //setSelectedField(tmpFN);
+    };
+
+    */
 
     actions.refreshWorkspace = refreshWorkspace;
     function refreshWorkspace() {

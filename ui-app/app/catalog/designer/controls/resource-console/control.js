@@ -9,119 +9,132 @@ License: MIT
 			"padding": false
 		},
 		"content": [
-		{
-			ctl: "layout",
-			north: [
-				{
-					"ctl":"spot",
-					"name":"nav-tabs"
-				},
-				{
-					"ctl": "field",
-					"name": "title",
-					"fluid": true,
-					"readonly": true,
-					"inputClasses": "title",
-					"default": "Resource",
-					"placeholder": "",
-					"content": [
-						{
-							"ctl": "button",
-							"color": "blue",
-							"icon": "save",
-							"disabled": true,
-							"name": "btn-save-code",
-							"label": "Save Changes",
-							"onClick": {
-								"run": "action",
-								"action": "saveContent"
+			{
+				ctl: "layout",
+				north: [
+					{
+						"ctl": "spot",
+						"name": "nav-tabs"
+					},
+					{
+						"ctl": "field",
+						"name": "title",
+						"fluid": true,
+						"readonly": true,
+						"inputClasses": "title",
+						"default": "Resource",
+						"placeholder": "",
+						"content": [
+							{
+								"ctl": "button",
+								"color": "blue",
+								"icon": "save",
+								"disabled": true,
+								"name": "btn-save-code",
+								"label": "Save Changes",
+								"onClick": {
+									"run": "action",
+									"action": "saveContent"
+								}
+							},
+							{
+								"ctl": "button",
+								"color": "orange",
+								basic: true,
+								right: true,
+								"icon": "down arrow",
+								"name": "btn-refresh-page",
+								"label": "Refresh",				
+								"onClick": {
+									"run": "action",
+									"action": "refreshControlDisplay"
+								}								
+							},
+							{
+								"ctl": "button",
+								"color": "black",
+								hidden: true,
+								basic: true,
+								right: true,
+								"icon": "cancel",
+								"name": "btn-close-page",
+								"label": "Close",
+								attr: {
+									"pageaction": "closePage",
+									appname: "",
+									pagename: ""
+								}
 							}
-						},
-						{
-							"ctl": "button",
-							"color": "black",
-							hidden: true,
-							basic: true,
-							right: true,
-							"icon": "cancel",
-							"name": "btn-close-page",
-							"label": "Close",
-							attr: {
-								"pageaction": "closePage",
-								appname: "",
-								pagename: ""
-							}
-						}
-					]
-				}
-			],
-			center: [
-				{
-					"ctl": "tabs",
-					"name": "pagetabs",
-					"layout": true,
-					slim: true,
-					"tabs": [
-						{
-							"label": "Content",
-							"name": "pagetabs-one",
-							"ctl": "tab",
-							"content": [
+						]
+					}
+				],
+				center: [
+					{
+						"ctl": "tabs",
+						"name": "pagetabs",
+						"layout": true,
+						slim: true,
+						"tabs": [
+							{
+								"label": "Content",
+								"name": "pagetabs-one",
+								"ctl": "tab",
+								"content": [
 									{
-								ctl: "layout",
-								name: "layout",
-								center: [
-									{
-										ctl: "spot",
-										name: "preview-area",
-										text: "Preview"
-									}
-								],
-								east: [
-									{
-										ctl: "spot",
-										name: "controls-area",
-										text: "Controls"
-									}
-								],
-								west: [
-									{
-										ctl: "spot",
-										name: "ace-editor",
-										text: ""
-									}
-				
-								],
-								rem_north: [
-									{
-										"ctl": "field",
-										"name": "code-title",
-										"fluid": true,
-										"readonly": true,
-										"inputClasses": "title",
-										"default": "Resource Editor",
-										"placeholder": "",
-										"content": [
-											
+										ctl: "layout",
+										name: "layout",
+										center: [
+											{
+												ctl: "spot",
+												name: "preview-area",
+												text: "Preview"
+											}
+										],
+										east: [
+											{
+												ctl: "spot",
+												name: "controls-area",
+												text: "Controls"
+											}
+										],
+										west: [
+											{
+												ctl: "spot",
+												name: "ace-editor",
+												text: ""
+											}
+
+										],
+										rem_north: [
+											{
+												"ctl": "field",
+												"name": "code-title",
+												"fluid": true,
+												"readonly": true,
+												"inputClasses": "title",
+												"default": "Resource Editor",
+												"placeholder": "",
+												"content": [
+
+												]
+											}
 										]
+
 									}
 								]
-								
+							},
+							{
+								"label": "Info",
+								"name": "pagetabs-info",
+								"ctl": "tab",
+								"content": [
+
+								]
 							}
-							]
-						},
-						{
-							"label": "Info",
-							"name": "pagetabs-info",
-							"ctl": "tab",
-							"content": [
-								
-							]
-						}
-					]
-				}
-			]
-		}
+						]
+					}
+				]
+			}
 
 		]
 
@@ -144,28 +157,28 @@ License: MIT
 		_onParentResize: _onParentResize
 	};
 
-	function _onParentResize(){
+	function _onParentResize() {
 		var tmpThis = this;
-		ThisApp.delay(200).then(function(theReply){
-			if( tmpThis.aceEditorEl ){
+		ThisApp.delay(200).then(function (theReply) {
+			if (tmpThis.aceEditorEl) {
 				var tmpH = tmpThis.aceEditorEl.closest('.ui-layout-pane').height();
 				if (tmpThis.aceEditorEl && tmpThis.aceEditor) {
 					tmpThis.aceEditorEl
-								.css('height', '' + tmpH + 'px')
-								.css('position', 'relative')
-								tmpThis.aceEditor.resize(true);
+						.css('height', '' + tmpH + 'px')
+						.css('position', 'relative')
+					tmpThis.aceEditor.resize(true);
 				}
 			}
-			
+
 		})
-	
+
 	}
 
-	function _onInit(){
+	function _onInit() {
 		//this.parts.resources.subscribe('selectMe', onResSelect.bind(this))
 	}
 
-	function onResSelect(theEvent, theControl, theTarget){
+	function onResSelect(theEvent, theControl, theTarget) {
 		this.publish('selected', [theControl, theTarget])
 	}
 
@@ -176,7 +189,7 @@ License: MIT
 		// var tmpAppName = theDetails.appname || '';
 		// var tmpResName = theDetails.resname || '';
 		// var tmpResType = theDetails.restype || '';
-		
+
 		//var tmpEntryName = tmpAppName + '-' + tmpPageName + '-' + tmpResName + '-' + tmpResType;
 
 		// this.uniqueGroups(tmpEntryName);
@@ -187,20 +200,20 @@ License: MIT
 	}
 	//---- Initial Setup of the control
 	function setup(theDetails) {
-	
-		
+
+
 		var tmpPageName = theDetails.pagename || '';
 		var tmpAppName = theDetails.appname || '';
 		var tmpResName = theDetails.resname || '';
 		var tmpResType = theDetails.restype || '';
-		
+
 		tmpResType = ThisApp.controls.detailsIndex.getUnifiedName(tmpResType);
-		console.log( 'tmpResType', tmpResType);
+		console.log('tmpResType', tmpResType);
 
 		var tmpSource = tmpOptions.source || 'ws';
 
 		this.setFieldValue('title', '[' + tmpResType + '] ' + tmpResName);
-	
+
 		this.details = {
 			pagename: tmpPageName,
 			source: tmpSource,
@@ -210,21 +223,23 @@ License: MIT
 		}
 
 		this.aceSessionType = "ace/mode/javascript"
-		if( tmpResType == 'HTML' || tmpResType == 'Template' || tmpResType == 'html' || tmpResType == 'Templates'){
+		if (tmpResType == 'HTML' || tmpResType == 'Template' || tmpResType == 'html' || tmpResType == 'Templates') {
 			this.aceSessionType = "ace/mode/html"
 		}
-		console.log( 'this.aceSessionType', this.aceSessionType);
+		console.log('this.aceSessionType', this.aceSessionType);
 		this.setupEditor();
-		
+
 		this.refreshTabNav();
 		this.endpointURL = 'design/ws/resource-content?run&source=' + tmpSource + '&resname=' + tmpResName + '&restype=' + tmpResType;
-		if( tmpPageName ){
+		if (tmpPageName) {
 			this.endpointURL += '&pagename=' + tmpPageName;
 		}
-		if( tmpAppName ){
+		if (tmpAppName) {
 			this.endpointURL += '&appname=' + tmpAppName;
 		}
 		this.refreshFromSource();
+
+
 
 
 	}
@@ -235,15 +250,15 @@ License: MIT
 		var tmpPageName = this.details.pagename || '';
 		var tmpResName = this.details.resname || '';
 		var tmpResType = this.details.restype || '';
-		
-		if( (tmpAppName || tmpPageName) && tmpResName ){
+
+		if ((tmpAppName || tmpPageName) && tmpResName) {
 			var tmpHTML = [];
 			tmpHTML.push('<div class="pad0 ui top attached tabular tab-nav menu" style="">');
 			tmpHTML.push('<a appuse="tablinks" group="workspace-outline" item="workspace" action="selectMe" class="item black"><i class="icon hdd black"></i> </a>');
-			if( tmpAppName ){
+			if (tmpAppName) {
 				tmpHTML.push('<a appuse="tablinks" group="workspace-outline" item="' + tmpAppName + '" appname="' + tmpAppName + '" pageaction="showAppConsole" class="item black  "><i class="icon globe blue"></i> ' + tmpAppName + '</a>');
 			}
-			if( tmpPageName ){
+			if (tmpPageName) {
 				tmpHTML.push('<a appuse="tablinks" group="workspace-outline" item="' + tmpAppName + '-' + tmpPageName + '" appname="' + tmpAppName + '" pagename="' + tmpPageName + '" pageaction="showPageConsole" class="item black"><i class="icon columns green"></i> ' + tmpPageName + '</a>');
 			}
 			tmpHTML.push('<a appuse="tablinks" group="workspace-outline" item="' + tmpAppName + '-' + tmpPageName + '-' + tmpResName + '" class="item black"><i class="icon box purple"></i> ' + tmpResName + '</a>')
@@ -273,60 +288,60 @@ License: MIT
 		var tmpThis = this;
 
 		this.editorSetup = true;
-		
+
 		this.aceEditorEl = this.getSpot("ace-editor");
 		this.aceEditor = ace.edit(this.aceEditorEl.get(0));
 		this.aceEditor.setTheme("ace/theme/vibrant_ink");
 		this.aceEditor.setFontSize(16);
-		
+
 		ace.config.loadModule('ace/ext/language_tools', function () {
 			tmpThis.aceEditor.setOptions({
 				enableBasicAutocompletion: true,
 				enableSnippets: true,
 				enableLiveAutocompletion: false
 			});
-	});
+		});
 		var tmpThis = this;
-		this.aceEditor.on('change', function(){
+		this.aceEditor.on('change', function () {
 			//--- ToDo: Check for actual changes to account for undo
 			//     and add a reset to original button for each session
 
 			var tmpIsDirty = false;
 			for (var aName in tmpThis.loaded.sessions) {
-				
-				if( (tmpThis.isCodeDirty(aName)) ){
-					
+
+				if ((tmpThis.isCodeDirty(aName))) {
+
 					tmpIsDirty = true;
 				}
 			}
 
 			tmpThis.setItemDisabled('btn-save-code', !tmpIsDirty)
 		})
-		
+
 	}
 
-	function markClean(){
+	function markClean() {
 		for (var aName in this.loaded.sessions) {
-			var tmpSession = this.loaded.sessions[aName];			
+			var tmpSession = this.loaded.sessions[aName];
 			this.loaded.codeIndex[aName] = tmpSession.getValue();
 			tmpSession.getUndoManager().markClean();
 		}
 	}
 
-	function isCodeDirty(theName){
+	function isCodeDirty(theName) {
 		var tmpSession = this.loaded.sessions[theName];
-		if( !tmpSession.getUndoManager().isClean() ){
-			 try {
-					var tmpCode = tmpSession.getValue();
-					var tmpOrig = this.loaded.codeIndex[theName];
-					if( tmpOrig == tmpCode ){
+		if (!tmpSession.getUndoManager().isClean()) {
+			try {
+				var tmpCode = tmpSession.getValue();
+				var tmpOrig = this.loaded.codeIndex[theName];
+				if (tmpOrig == tmpCode) {
 					tmpSession.getUndoManager().markClean();
-					} else {
-						return true;
-					}
-				} catch (error) {
+				} else {
 					return true;
-			 }			
+				}
+			} catch (error) {
+				return true;
+			}
 		}
 		return false;
 	}
@@ -334,17 +349,18 @@ License: MIT
 		for (var aName in this.loaded.codeIndex) {
 			var tmpCode = this.loaded.codeIndex[aName];
 			if (!(this.loaded.sessions[aName])) {
-				console.log( 'this.aceSessionType USED ', this.aceSessionType);
+				console.log('this.aceSessionType USED ', this.aceSessionType);
 				this.loaded.sessions[aName] = ace.createEditSession(aName, this.aceSessionType || "ace/mode/javascript")
 			}
 			this.loaded.sessions[aName].setValue(tmpCode);
-		}		
+		}
 	}
 
 	var defaultCodeName = 'thisPageSpecs'
 	function refreshFromLoaded() {
 		this.refreshEditorFromCodeIndex();
 		this.showCode();
+		this.refreshControlDisplay();
 	}
 
 
@@ -367,15 +383,15 @@ License: MIT
 			content: tmpContentText,
 			origContent: 'todo'
 		}
-		
+
 		ThisApp.apiCall({
 			url: '/design/ws/save-resource?run',
 			data: tmpRequest
-		}).then(function(theReply){
+		}).then(function (theReply) {
 			tmpThis.setItemDisabled('btn-save-code', true);
 			tmpThis.markClean();
 		})
-	
+
 
 	}
 	function showCode(theParams) {
@@ -391,7 +407,7 @@ License: MIT
 		var tmpThis = this;
 
 		ThisApp.apiCall(this.endpointURL).then(function (theReply) {
-			var tmpIndex = {content:0};
+			var tmpIndex = { content: 0 };
 			var tmpParts = [theReply];
 			var tmpCodeIndex = {};
 
@@ -408,10 +424,227 @@ License: MIT
 			//console.log( 'tmpThis.loaded', tmpThis.loaded);
 
 			tmpThis.refreshFromLoaded();
-			
+
 
 		})
 	}
+
+
+
+
+
+
+
+
+	//======
+
+
+	//======
+
+
+	/**
+	 */
+
+	ControlCode.showControl = showControl;
+	function showControl(theControlSpec) {
+
+		if (this.activeControl) {
+			delete (this.activeControl)
+		}
+		//-- ToDo: If active control, destroy it
+		this.activeControl = this.activeControlSpec.create(this.activeControlName);
+		this.activeControl.loadToElement(this.spot$('preview-area'))
+
+		//--- allow console access for testing
+		window.activeControl = this.activeControl;
+
+		//this.loadFieldList()
+	}
+
+	ControlCode.showControlDetails = showControlDetails;
+	function showControlDetails() {
+		var tmpDetails = activeControl.getControlDetails()
+		this.aceEditor.setValue(ThisApp.json(tmpDetails.data));
+		this.aceEditor.clearSelection();
+	};
+
+
+	function showDetailsJson(theObject) {
+		this.aceEditor.setValue(ThisApp.json(theObject, true));
+		this.aceEditor.clearSelection();
+	}
+
+	ControlCode.showControlSpecConfig = showControlSpecConfig;
+	function showControlSpecConfig() {
+		showDetailsJson(this.loadedControlSpec.controlConfig);
+	};
+
+	function getTarget(theEvent) {
+		var tmpEl = theEvent.target || theEvent.currentTarget || theEvent.delegetTarget || false;
+		if (tmpEl) {
+			tmpEl = $(tmpEl);
+			var tmpName = tmpEl.attr('name');
+			if (!(tmpName)) { return false; };
+			return { name: tmpName, el: tmpEl };
+		}
+		return false;
+	}
+
+	function frmPreviewFocusChange(theEvent) {
+		if (theEvent && theEvent.target) {
+			var tmpTarget = $(theEvent.target);
+			var tmpFN = tmpTarget.attr('name');
+			setSelectedField(tmpFN);
+		}
+	}
+	function frmPreviewChange(theEvent) {
+		var tmpTarget = getTarget(theEvent);
+		var tmpFN = tmpTarget.name;
+		setSelectedField(tmpFN);
+	};
+
+	ControlCode.fieldToggleDisplay = fieldToggleDisplay;
+	function fieldToggleDisplay() {
+		var tmpFN = getSelectedField();
+		if (!tmpFN) {
+			return alert("Select a field");
+		}
+		var tmpIsVis = activeControl.getFieldDisplay(tmpFN);
+		activeControl.setFieldDisplay(tmpFN, !tmpIsVis)
+	};
+
+	ControlCode.fieldSetValue = fieldSetValue;
+	function fieldSetValue() {
+		var tmpFN = getSelectedField() || '';
+		this.fieldSelect.focus();
+		if (!tmpFN) { return alert("Select a field to set first") }
+
+		var tmpDefault = activeControl.getFieldValue(tmpFN);
+
+		ThisApp.input("Enter a new value", "New Value", "Set field value", tmpDefault).then(function (theValue) {
+			if (!(theValue)) { return };
+			activeControl.setFieldValue(tmpFN, theValue);
+
+		})
+
+	};
+
+	ControlCode.fieldShowSpecs = fieldShowSpecs;
+	function fieldShowSpecs() {
+		var tmpFN = getSelectedField() || '';
+		if (!tmpFN) { return alert("Select a Field") }
+		var tmpSpecs = activeControl.getFieldSpecs(tmpFN);
+		var tmpCtlName = tmpSpecs.ctl || 'field';
+
+		var tmpCtl = ThisApp.controls.webControls.get(tmpCtlName);
+		if (tmpCtl && tmpCtl.getInfo) {
+			var tmpInfo = tmpCtl.getInfo(tmpCtlName);
+		} else {
+			alert("Not found " + tmpCtlName)
+		}
+
+		tmpSpecs.controlDetails = tmpInfo;
+
+		showDetailsJson(tmpSpecs);
+	};
+
+	ControlCode.fieldGoto = fieldGoto;
+	function fieldGoto() {
+		var tmpFN = getSelectedField() || '';
+		if (!tmpFN) { return alert("Select a Field") }
+		activeControl.gotoField(tmpFN);
+	};
+
+	function setSelectedField(theFieldName) {
+		ControlCode.fieldSelectEl.dropdown('set exactly', [theFieldName]);
+	}
+	function getSelectedField() {
+		var tmpVal = this.fieldSelectEl.dropdown('get value');
+		return tmpVal
+	}
+
+	ControlCode.loadFieldList = loadFieldList;
+	function loadFieldList() {
+		var tmpConfig = activeControl.getConfig();
+		if (!tmpConfig && tmpConfig.index && tmpConfig.index.fields) {
+			return alert("No tmpField found in form config index")
+		}
+		var tmpFieldList = [];
+		var tmpFields = tmpConfig.index.fields;
+		for (var aField in tmpFields) {
+			var tmpField = tmpFields[aField];
+			tmpFieldList.push({
+				name: tmpField.label || aField,
+				value: aField
+			});
+		}
+
+		this.fieldSelect.dropdown('change values', tmpFieldList)
+		this.selectedFieldName = '';
+	};
+
+
+	ControlCode.showFieldInfo = showFieldInfo;
+	function showFieldInfo(theFieldName) {
+		var tmpFN = theFieldName || '';
+		if (!tmpFN) {
+			return alert("No field name")
+		}
+		var tmpConfig = activeControl.getConfig();
+		if (!tmpConfig && tmpConfig.index && tmpConfig.index.fields) {
+			return alert("No tmpField found in form config index")
+		}
+		var tmpFields = tmpConfig.index.fields;
+		var tmpFieldInfo = tmpFields[tmpFN];
+		if (!tmpFieldInfo) {
+			return alert("No field details")
+		}
+
+		showDetailsJson(tmpFieldInfo);
+
+	};
+
+	ControlCode.toggleTitle = toggleTitle;
+	function toggleTitle() {
+
+		var tmpIsVis = activeControl.getItemDisplay('title');
+		activeControl.setItemDisplay('title', !tmpIsVis)
+
+		tmpIsVis = activeControl.getItemDisplay('options-row');
+		activeControl.setItemDisplay('options-row', !tmpIsVis)
+
+		var tmpTopicAvail = activeControl.getFieldDisplay('topic');
+		console.log('Is the topic field available on the form?', tmpTopicAvail);
+		var tmpTopicVis = activeControl.getFieldVisibility('topic');
+		console.log('Can you see the topic?', tmpTopicVis);
+
+	};
+
+	ControlCode.validateActiveControl = validateActiveControl;
+	function validateActiveControl() {
+		var tmpValidation = activeControl.validate();
+		if (!tmpValidation.isValid) {
+			//Message shows automatically
+			//alert("Not valid, see form for deatils", "Did not pass validation", "i");
+		} else {
+			alert("Your good", "Passed Validation", "c")
+		}
+	};
+
+
+
+	ControlCode.refreshControlDisplay = refreshControlDisplay;
+	function refreshControlDisplay() {
+		var tmpObject = this.aceEditor.getValue();
+		tmpObject = ThisApp.json(tmpObject);
+		this.activeControlSpec = ThisApp.controls.newControl(tmpObject, { parent: this });
+		this.showControl()
+	};
+
+
+
+
+	//==== END
 
 
 
