@@ -34,9 +34,6 @@ module.exports.setup = function setup(scope) {
                 var tmpReq = tmpBody
 
                 var tmpAppName = tmpReq.appname || '';
-                if( tmpAppName ){
-                    tmpTarget = 'app';
-                }
                 var tmpTemplate = tmpReq.template || '';
 
                 var tmpPageName = tmpReq.pagename || tmpReq.name || '';

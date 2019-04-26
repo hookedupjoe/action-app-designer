@@ -265,7 +265,6 @@ License: MIT
 	}
 
 	function addPage() {
-		console.log( 'addPage', this);
 		var tmpThis = this;
 		var tmpAppName = this.details.appname || '';
 
