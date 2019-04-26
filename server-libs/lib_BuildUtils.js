@@ -9,450 +9,511 @@
 let $ = require("./globalUtilities").$;
 
 
-  
+
 var detailsIndex = {
-    "getDetails": function(theName){
+    "getDetails": function (theName) {
         return this[this.getUnifiedName(theName)];
     },
-    "getUnifiedName": function(theName){
-        if( typeof(theName) != 'string'){
+    "getUnifiedName": function (theName) {
+        if (typeof (theName) != 'string') {
             return "";
         }
         var tmpNameCheck = theName.toLowerCase();
-        if( tmpNameCheck == 'control' || tmpNameCheck == 'controls' ){
+        if (tmpNameCheck == 'control' || tmpNameCheck == 'controls') {
             return 'Control';
         }
-        if( tmpNameCheck == 'panel' || tmpNameCheck == 'panels' ){
+        if (tmpNameCheck == 'panel' || tmpNameCheck == 'panels') {
             return 'Panel';
         }
-        if( tmpNameCheck == 'html' ){
+        if (tmpNameCheck == 'html') {
             return 'HTML';
         }
-        if( tmpNameCheck == 'template' || tmpNameCheck == 'templates' ){
+        if (tmpNameCheck == 'template' || tmpNameCheck == 'templates') {
             return 'Template';
         }
-  
+
     },
-    "Control": {name: "Control", category: 'Controls', dir: "controls", icon: 'newspaper', lang: 'javascript'},
-    "Panel": {name: "Panel", category: 'Panels', dir: "panels", icon: 'newspaper outline', lang: 'javascript', type: 'json'},
-    "HTML": {name: "HTML", category: 'HTML', dir: "html", icon: 'code', lang: 'html'},
-    "Template": {name: "Template", category: 'Templates', dir: "tpl", icon: 'object group outline', lang: 'html'}
-  }
+    "Control": { name: "Control", category: 'Controls', dir: "controls", icon: 'newspaper', lang: 'javascript' },
+    "Panel": { name: "Panel", category: 'Panels', dir: "panels", icon: 'newspaper outline', lang: 'javascript', type: 'json' },
+    "HTML": { name: "HTML", category: 'HTML', dir: "html", icon: 'code', lang: 'html' },
+    "Template": { name: "Template", category: 'Templates', dir: "tpl", icon: 'object group outline', lang: 'html' }
+}
 
 let utils = {
-  getDirFiles: getDirFiles,
-  getTextFile: getTextFile,
-  getJsonFile: getJsonFile,
-  saveJsonFile: saveJsonFile,
-  writeJsonFile: saveJsonFile,
-  settingsHome: settingsHome,
-  buildApp: buildApp,
-  updateAppSetup: updateAppSetup,
-  getBuildConfigJson: getBuildConfigJson,
-  restartServer: restartServer,
-  replaceAll: replaceAll,
-  replaceFromMap: replaceFromMap,
-  replaceFile: replaceFile,
-  getIndexFromArray: getIndexFromArray,
-  detailsIndex: detailsIndex
+    getDirFiles: getDirFiles,
+    getTextFile: getTextFile,
+    getJsonFile: getJsonFile,
+    saveJsonFile: saveJsonFile,
+    writeJsonFile: saveJsonFile,
+    settingsHome: settingsHome,
+    buildApp: buildApp,
+    updateAppSetup: updateAppSetup,
+    getBuildConfigJson: getBuildConfigJson,
+    restartServer: restartServer,
+    replaceAll: replaceAll,
+    replaceFromMap: replaceFromMap,
+    replaceFile: replaceFile,
+    getIndexFromArray: getIndexFromArray,
+    detailsIndex: detailsIndex,
+    getDefaultContentForResource: getDefaultContentForResource,
 };
 
 module.exports = utils;
- 
 
-function restartServer(){
-   var {spawn} = require('child_process');
+function getDefaultContentForResource(theType) {
+    if (!(theType)) {
+        return "";
+    }
+    var tmpType = detailsIndex.getUnifiedName(theType);
+    if (tmpType == 'HMTL' || tmpType == 'Template') {
+        return "";
+    }
+
+    //ToDo:  Use a file template?  Lazy Load It?
+    if (tmpType == 'Control') {
+
+        var tmpHTML = [];
+        tmpHTML.push('(function (ActionAppCore, $) {')
+        tmpHTML.push('')
+        tmpHTML.push('	var ControlSpecs = { ')
+        tmpHTML.push('		options: {')
+        tmpHTML.push('			padding: true')
+        tmpHTML.push('		},')
+        tmpHTML.push('		content: [')
+        tmpHTML.push('		{')
+        tmpHTML.push('			ctl: "pagespot",')
+        tmpHTML.push('			name: "body",')
+        tmpHTML.push('			text: "Content goes here"')
+        tmpHTML.push('		}')
+        tmpHTML.push('		]')
+        tmpHTML.push('	}')
+        tmpHTML.push('')
+        tmpHTML.push('	var ControlCode = {};')
+        tmpHTML.push('')
+        tmpHTML.push('    ControlCode.setup = setup;')
+        tmpHTML.push('    function setup(){')
+        tmpHTML.push('        console.log("Ran setup")')
+        tmpHTML.push('    }')
+        tmpHTML.push('')
+        tmpHTML.push('	var ThisControl = {specs: ControlSpecs, options: { proto: ControlCode, parent: ThisApp }};')
+        tmpHTML.push('	return ThisControl;')
+        tmpHTML.push('})(ActionAppCore, $);')
+
+        return tmpHTML.join('\n');
+    } else if (tmpType == 'Panel') {
+        var tmpHTML = [];
+        tmpHTML.push('{')
+        tmpHTML.push('    "options":{')
+        tmpHTML.push('        "padding": true')
+        tmpHTML.push('    },')
+        tmpHTML.push('	"content": [')
+        tmpHTML.push('	')
+        tmpHTML.push('		{')
+        tmpHTML.push('			"ctl": "title",')
+        tmpHTML.push('			"name": "title",')
+        tmpHTML.push('		    "text": "Page Title"')
+        tmpHTML.push('		}')
+        tmpHTML.push('	]')
+        tmpHTML.push('}')
+        return tmpHTML.join('\n');
+    }
 
 
-   var logfile = 'restart.log';
-   var out = $.fs.openSync(logfile, 'a');
-   var err = $.fs.openSync(logfile, 'a');
-   var subprocess = spawn('restart.bat', [], {detached: true, stdio: ['ignore', out, err]});
+}
+
+function restartServer() {
+    var { spawn } = require('child_process');
+
+
+    var logfile = 'restart.log';
+    var out = $.fs.openSync(logfile, 'a');
+    var err = $.fs.openSync(logfile, 'a');
+    var subprocess = spawn('restart.bat', [], { detached: true, stdio: ['ignore', out, err] });
 
     subprocess.unref();
-    
+
     process.exit();
-  }
+}
 
-function getDirApps(){
-    
-}  
+function getDirApps() {
+
+}
 function updateAppSetup(theAppName, theSetupDetails, scope) {
- // console.log( 'updateAppSetup', theAppName, theSetupDetails);
-  var self = this;
-  return new Promise($.async(function (resolve, reject) {
-      try {
-          var bld = $.bld;
-          var tmpAppName = theAppName || '';
-          if(!(tmpAppName) ){
-              throw "Application name not provided"
-          }
+    // console.log( 'updateAppSetup', theAppName, theSetupDetails);
+    var self = this;
+    return new Promise($.async(function (resolve, reject) {
+        try {
+            var bld = $.bld;
+            var tmpAppName = theAppName || '';
+            if (!(tmpAppName)) {
+                throw "Application name not provided"
+            }
 
-          var tmpWSDir = scope.locals.path.ws.uiApps;
-          
-          var tmpAppBase = tmpWSDir + tmpAppName + '/';
-          // console.log( 'Saving to ', tmpAppBase, theSetupDetails);
-          $.await(utils.saveJsonFile(tmpAppBase + 'app-info.json',theSetupDetails))
-          $.await(buildApp(tmpAppName, scope));
+            var tmpWSDir = scope.locals.path.ws.uiApps;
 
-          var tmpRet = {
-              status: true,
-              refresh: true
-          }
+            var tmpAppBase = tmpWSDir + tmpAppName + '/';
+            // console.log( 'Saving to ', tmpAppBase, theSetupDetails);
+            $.await(utils.saveJsonFile(tmpAppBase + 'app-info.json', theSetupDetails))
+            $.await(buildApp(tmpAppName, scope));
 
-          resolve(tmpRet);
+            var tmpRet = {
+                status: true,
+                refresh: true
+            }
 
-      }
-      catch (error) {
-          console.log('Err : ' + error);
-          reject(error);
-      }
+            resolve(tmpRet);
 
-  }));
+        }
+        catch (error) {
+            console.log('Err : ' + error);
+            reject(error);
+        }
+
+    }));
 
 
 
 }
 
 function buildApp(theAppName, scope, theOptions) {
-  var self = this;
-  return new Promise($.async(function (resolve, reject) {
-      try {
-          var tmpOptions = theOptions || {};
-          
-          var bld = $.bld;
-          var tmpAppName = theAppName || '';
-          if(!(tmpAppName) ){
-              throw "Application name not provided"
-          }
+    var self = this;
+    return new Promise($.async(function (resolve, reject) {
+        try {
+            var tmpOptions = theOptions || {};
 
-          var tmpWSDir = scope.locals.path.ws.uiApps;
-          var tmpDeployDir = scope.locals.path.ws.deploy;
-          
-          var tmpAppBase = tmpWSDir + tmpAppName + '/';
-          var tmpAppDetails = $.await(utils.getJsonFile(tmpAppBase + 'app-info.json'))
-          tmpDeployDir += tmpAppName + '/ui-app/';
+            var bld = $.bld;
+            var tmpAppName = theAppName || '';
+            if (!(tmpAppName)) {
+                throw "Application name not provided"
+            }
 
-          var tmpBuildCfg = $.await(utils.getBuildConfigJson(scope));
+            var tmpWSDir = scope.locals.path.ws.uiApps;
+            var tmpDeployDir = scope.locals.path.ws.deploy;
 
-          if( typeof(tmpOptions.cdn) === 'string'){
-            tmpAppDetails.cdn = tmpOptions.cdn;
-          }
-          if( tmpOptions.deploy === true){
-            tmpAppBase = tmpDeployDir;
-          }
+            var tmpAppBase = tmpWSDir + tmpAppName + '/';
+            var tmpAppDetails = $.await(utils.getJsonFile(tmpAppBase + 'app-info.json'))
+            tmpDeployDir += tmpAppName + '/ui-app/';
 
-          var tmpPartsLoc = scope.locals.path.designer + '/build/tpl-parts/';
-          var tmpIndex = $.await(utils.getTextFile(tmpPartsLoc + 'tpl-index.html'))
-          var tmpApp = $.await(utils.getTextFile(tmpPartsLoc + 'tpl-app-js.txt'))
+            var tmpBuildCfg = $.await(utils.getBuildConfigJson(scope));
 
-          var tmpLibLocs = utils.getIndexFromArray(tmpBuildCfg.libraryLocations, 'name');
-          var tmpLibLoc = tmpLibLocs[tmpAppDetails.cdn] || 'local';
-          var tmpOptLibCSS = '';
-          var tmpOptLibJS = '';
-          var tmpPluginsText = '';
+            if (typeof (tmpOptions.cdn) === 'string') {
+                tmpAppDetails.cdn = tmpOptions.cdn;
+            }
+            if (tmpOptions.deploy === true) {
+                tmpAppBase = tmpDeployDir;
+            }
 
-          var tmpPIConfig = tmpAppDetails.plugins || false;
-          if( tmpPIConfig && tmpPIConfig.length ){
-              var tmpPIs = utils.getIndexFromArray(tmpBuildCfg.plugins, 'name');
-              for( var aIndex in tmpPIConfig){
-                  var tmpPIDetails = tmpPIConfig[aIndex];
-                  tmpPIDetails = tmpPIs[tmpPIDetails];
-                  if( tmpPIDetails && tmpPIDetails.css){
-                      var tmpCSSs = tmpPIDetails.css;
-                      if( typeof(tmpCSSs) == 'string' ){
-                          tmpCSSs = [tmpCSSs];
-                      }
-                      for( var iCSS in tmpCSSs ){
-                          var tmpCSS = tmpCSSs[iCSS];
-                          if (tmpPICSS){
-                              tmpPICSS += '\n\t'
-                          }
-                          tmpPICSS += tmpCSS;
-                      }
-                      
-                  }
-                  if( tmpPIDetails && tmpPIDetails.js){
-                      var tmpJSs = tmpPIDetails.js;
-                      if( typeof(tmpJSs) == 'string' ){
-                          tmpJSs = [tmpJSs];
-                      }
-                      for( var iJS in tmpJSs ){
-                          var tmpJS = tmpJSs[iJS];
-                          if (tmpPluginsText){
-                              tmpPluginsText += '\n\t'
-                          }
-                          tmpPluginsText += tmpJS;
-                      }
-                      
-                  }
-              }
-          }
+            var tmpPartsLoc = scope.locals.path.designer + '/build/tpl-parts/';
+            var tmpIndex = $.await(utils.getTextFile(tmpPartsLoc + 'tpl-index.html'))
+            var tmpApp = $.await(utils.getTextFile(tmpPartsLoc + 'tpl-app-js.txt'))
 
-          var tmpOptCSS = '';
-          if (tmpAppDetails && tmpAppDetails.hasAppCSS){
-              tmpOptCSS = "<link rel=\"stylesheet\" href=\"/app/css/app.css\">"
-          }
-          var tmpLibsConfig = tmpAppDetails.libraries || false;
-          if( tmpLibsConfig && tmpLibsConfig.length ){
-              var tmpLibs = utils.getIndexFromArray(tmpBuildCfg.libraries, 'name');
-              for( var aIndex in tmpLibsConfig){
-                  var tmpLibDetails = tmpLibsConfig[aIndex];
-                  tmpLibDetails = tmpLibs[tmpLibDetails];
-                  if( tmpLibDetails && tmpLibDetails.css){
-                      var tmpCSSs = tmpLibDetails.css;
-                      if( typeof(tmpCSSs) == 'string' ){
-                          tmpCSSs = [tmpCSSs];
-                      }
-                      for( var iCSS in tmpCSSs ){
-                          var tmpCSS = tmpCSSs[iCSS];
-                          if (tmpOptLibCSS){
-                              tmpOptLibCSS += '\n\t'
-                          }
-                          tmpOptLibCSS += tmpCSS;
-                      }
-                      
-                  }
-                  if( tmpLibDetails && tmpLibDetails.js){
-                      var tmpJSs = tmpLibDetails.js;
-                      if( typeof(tmpJSs) == 'string' ){
-                          tmpJSs = [tmpJSs];
-                      }
-                      for( var iJS in tmpJSs ){
-                          var tmpJS = tmpJSs[iJS];
-                          if (tmpOptLibJS){
-                              tmpOptLibJS += '\n\t'
-                          }
-                          tmpOptLibJS += tmpJS;
-                      }
-                      
-                  }
-              }
-          }
+            var tmpLibLocs = utils.getIndexFromArray(tmpBuildCfg.libraryLocations, 'name');
+            var tmpLibLoc = tmpLibLocs[tmpAppDetails.cdn] || 'local';
+            var tmpOptLibCSS = '';
+            var tmpOptLibJS = '';
+            var tmpPluginsText = '';
 
-          var tmpTitle = tmpAppDetails.title || 'Action App';
+            var tmpPIConfig = tmpAppDetails.plugins || false;
+            if (tmpPIConfig && tmpPIConfig.length) {
+                var tmpPIs = utils.getIndexFromArray(tmpBuildCfg.plugins, 'name');
+                for (var aIndex in tmpPIConfig) {
+                    var tmpPIDetails = tmpPIConfig[aIndex];
+                    tmpPIDetails = tmpPIs[tmpPIDetails];
+                    if (tmpPIDetails && tmpPIDetails.css) {
+                        var tmpCSSs = tmpPIDetails.css;
+                        if (typeof (tmpCSSs) == 'string') {
+                            tmpCSSs = [tmpCSSs];
+                        }
+                        for (var iCSS in tmpCSSs) {
+                            var tmpCSS = tmpCSSs[iCSS];
+                            if (tmpPICSS) {
+                                tmpPICSS += '\n\t'
+                            }
+                            tmpPICSS += tmpCSS;
+                        }
 
-          var tmpPagesText = '[]';
-          if( tmpAppDetails.pages ){
-              if( typeof(tmpAppDetails.pages) == 'string'){
-                  tmpPagesText = tmpAppDetails.pages;
-              } else {
-                  tmpPagesText = JSON.stringify(tmpAppDetails.pages);
-              }
-          }
-         
+                    }
+                    if (tmpPIDetails && tmpPIDetails.js) {
+                        var tmpJSs = tmpPIDetails.js;
+                        if (typeof (tmpJSs) == 'string') {
+                            tmpJSs = [tmpJSs];
+                        }
+                        for (var iJS in tmpJSs) {
+                            var tmpJS = tmpJSs[iJS];
+                            if (tmpPluginsText) {
+                                tmpPluginsText += '\n\t'
+                            }
+                            tmpPluginsText += tmpJS;
+                        }
 
-          var tmpPagesText = '[]';
-          if( tmpAppDetails.pages ){
-              if( typeof(tmpAppDetails.pages) == 'string'){
-                  tmpPagesText = tmpAppDetails.pages;
-              } else {
-                  tmpPagesText = JSON.stringify(tmpAppDetails.pages);
-              }
-          }
-         
-          var tmpPluginsAppText = '[]';
-          if( tmpAppDetails.plugins ){
-              if( typeof(tmpAppDetails.plugins) == 'string'){
-                  tmpPluginsAppText = tmpAppDetails.plugins;
-              } else {
-                  tmpPluginsAppText = JSON.stringify(tmpAppDetails.plugins);
-              }
-          }
+                    }
+                }
+            }
 
-          
-          var tmpReqAppText = '{}';
-          if( tmpAppDetails.required ){
-              if( typeof(tmpAppDetails.required) == 'string'){
-                  tmpReqAppText = tmpAppDetails.required;
-              } else {
-                  tmpReqAppText = JSON.stringify(tmpAppDetails.required);
-              }
-          }
+            var tmpOptCSS = '';
+            if (tmpAppDetails && tmpAppDetails.hasAppCSS) {
+                tmpOptCSS = "<link rel=\"stylesheet\" href=\"/app/css/app.css\">"
+            }
+            var tmpLibsConfig = tmpAppDetails.libraries || false;
+            if (tmpLibsConfig && tmpLibsConfig.length) {
+                var tmpLibs = utils.getIndexFromArray(tmpBuildCfg.libraries, 'name');
+                for (var aIndex in tmpLibsConfig) {
+                    var tmpLibDetails = tmpLibsConfig[aIndex];
+                    tmpLibDetails = tmpLibs[tmpLibDetails];
+                    if (tmpLibDetails && tmpLibDetails.css) {
+                        var tmpCSSs = tmpLibDetails.css;
+                        if (typeof (tmpCSSs) == 'string') {
+                            tmpCSSs = [tmpCSSs];
+                        }
+                        for (var iCSS in tmpCSSs) {
+                            var tmpCSS = tmpCSSs[iCSS];
+                            if (tmpOptLibCSS) {
+                                tmpOptLibCSS += '\n\t'
+                            }
+                            tmpOptLibCSS += tmpCSS;
+                        }
 
-          var tmpExtendAppText = '{}';
-          if( tmpAppDetails.extend ){
-              if( typeof(tmpAppDetails.extend) == 'string'){
-                  tmpExtendAppText = tmpAppDetails.extend;
-              } else {
-                  tmpExtendAppText = JSON.stringify(tmpAppDetails.extend);
-              }
-          }
-          tmpOptCSS = bld.replaceAll(tmpOptCSS, "{{LIBRARY-LOCATION}}", (tmpLibLoc.prefix || ''));
-          tmpOptLibJS = bld.replaceAll(tmpOptLibJS, "{{LIBRARY-LOCATION}}", (tmpLibLoc.prefix || ''));
-          tmpOptLibCSS = bld.replaceAll(tmpOptLibCSS, "{{LIBRARY-LOCATION}}", (tmpLibLoc.prefix || ''));
-          tmpPluginsText = bld.replaceAll(tmpPluginsText, "{{LIBRARY-LOCATION}}", (tmpLibLoc.prefix || ''));
-          
-          var tmpIndexMap = {
-              "{{LIBRARY-LOCATION}}": tmpLibLoc.prefix || '',
-              "{{OPTIONAL-LIB-CSS}}": tmpOptLibCSS,
-              "{{OPTIONAL-CSS}}": tmpOptCSS,
-              "{{PAGE-TITLE}}": tmpTitle,
-              "{{APP-TITLE}}": tmpTitle,
-              "{{OPTIONAL-PLUGINS}}": tmpPluginsText,
-              "{{OPTIONAL-LIB-JS}}": tmpOptLibJS
-          }
+                    }
+                    if (tmpLibDetails && tmpLibDetails.js) {
+                        var tmpJSs = tmpLibDetails.js;
+                        if (typeof (tmpJSs) == 'string') {
+                            tmpJSs = [tmpJSs];
+                        }
+                        for (var iJS in tmpJSs) {
+                            var tmpJS = tmpJSs[iJS];
+                            if (tmpOptLibJS) {
+                                tmpOptLibJS += '\n\t'
+                            }
+                            tmpOptLibJS += tmpJS;
+                        }
 
-          var tmpAppMap = {
-              "{{PAGES-ARRAY}}": tmpPagesText,
-              "{{PLUGINS-ARRAY}}": tmpPluginsAppText,
-              "{{REQUIRED-OBJECT}}": tmpReqAppText,
-              "{{EXTEND-OBJECT}}": tmpExtendAppText,
-              "{{OPTIONAL-APP-CODE}}": ""
-          }
+                    }
+                }
+            }
 
-         tmpIndex = utils.replaceFromMap(tmpIndex,tmpIndexMap);
-         $.await(utils.replaceFile(tmpAppBase + 'index.html', tmpIndex))
+            var tmpTitle = tmpAppDetails.title || 'Action App';
 
-         tmpApp = utils.replaceFromMap(tmpApp,tmpAppMap);
-         $.await(utils.replaceFile(tmpAppBase + 'app/app.js', tmpApp))
+            var tmpPagesText = '[]';
+            if (tmpAppDetails.pages) {
+                if (typeof (tmpAppDetails.pages) == 'string') {
+                    tmpPagesText = tmpAppDetails.pages;
+                } else {
+                    tmpPagesText = JSON.stringify(tmpAppDetails.pages);
+                }
+            }
 
-          var tmpRet = {
-              status: true,
-              refresh: true
-          }
 
-          resolve(tmpRet);
+            var tmpPagesText = '[]';
+            if (tmpAppDetails.pages) {
+                if (typeof (tmpAppDetails.pages) == 'string') {
+                    tmpPagesText = tmpAppDetails.pages;
+                } else {
+                    tmpPagesText = JSON.stringify(tmpAppDetails.pages);
+                }
+            }
 
-      }
-      catch (error) {
-          console.log('Err : ' + error);
-          reject(error);
-      }
+            var tmpPluginsAppText = '[]';
+            if (tmpAppDetails.plugins) {
+                if (typeof (tmpAppDetails.plugins) == 'string') {
+                    tmpPluginsAppText = tmpAppDetails.plugins;
+                } else {
+                    tmpPluginsAppText = JSON.stringify(tmpAppDetails.plugins);
+                }
+            }
 
-  }));
+
+            var tmpReqAppText = '{}';
+            if (tmpAppDetails.required) {
+                if (typeof (tmpAppDetails.required) == 'string') {
+                    tmpReqAppText = tmpAppDetails.required;
+                } else {
+                    tmpReqAppText = JSON.stringify(tmpAppDetails.required);
+                }
+            }
+
+            var tmpExtendAppText = '{}';
+            if (tmpAppDetails.extend) {
+                if (typeof (tmpAppDetails.extend) == 'string') {
+                    tmpExtendAppText = tmpAppDetails.extend;
+                } else {
+                    tmpExtendAppText = JSON.stringify(tmpAppDetails.extend);
+                }
+            }
+            tmpOptCSS = bld.replaceAll(tmpOptCSS, "{{LIBRARY-LOCATION}}", (tmpLibLoc.prefix || ''));
+            tmpOptLibJS = bld.replaceAll(tmpOptLibJS, "{{LIBRARY-LOCATION}}", (tmpLibLoc.prefix || ''));
+            tmpOptLibCSS = bld.replaceAll(tmpOptLibCSS, "{{LIBRARY-LOCATION}}", (tmpLibLoc.prefix || ''));
+            tmpPluginsText = bld.replaceAll(tmpPluginsText, "{{LIBRARY-LOCATION}}", (tmpLibLoc.prefix || ''));
+
+            var tmpIndexMap = {
+                "{{LIBRARY-LOCATION}}": tmpLibLoc.prefix || '',
+                "{{OPTIONAL-LIB-CSS}}": tmpOptLibCSS,
+                "{{OPTIONAL-CSS}}": tmpOptCSS,
+                "{{PAGE-TITLE}}": tmpTitle,
+                "{{APP-TITLE}}": tmpTitle,
+                "{{OPTIONAL-PLUGINS}}": tmpPluginsText,
+                "{{OPTIONAL-LIB-JS}}": tmpOptLibJS
+            }
+
+            var tmpAppMap = {
+                "{{PAGES-ARRAY}}": tmpPagesText,
+                "{{PLUGINS-ARRAY}}": tmpPluginsAppText,
+                "{{REQUIRED-OBJECT}}": tmpReqAppText,
+                "{{EXTEND-OBJECT}}": tmpExtendAppText,
+                "{{OPTIONAL-APP-CODE}}": ""
+            }
+
+            tmpIndex = utils.replaceFromMap(tmpIndex, tmpIndexMap);
+            $.await(utils.replaceFile(tmpAppBase + 'index.html', tmpIndex))
+
+            tmpApp = utils.replaceFromMap(tmpApp, tmpAppMap);
+            $.await(utils.replaceFile(tmpAppBase + 'app/app.js', tmpApp))
+
+            var tmpRet = {
+                status: true,
+                refresh: true
+            }
+
+            resolve(tmpRet);
+
+        }
+        catch (error) {
+            console.log('Err : ' + error);
+            reject(error);
+        }
+
+    }));
 
 
 
 }
 
 
-function replaceAll(str,replaceWhat,replaceTo){
-  var re = new RegExp(replaceWhat, 'g');
-  return str.replace(re,replaceTo);
+function replaceAll(str, replaceWhat, replaceTo) {
+    var re = new RegExp(replaceWhat, 'g');
+    return str.replace(re, replaceTo);
 }
 
-function getIndexFromArray(theArray,theKeyField){
-  var tmpRet = {};
-  for( var aIndex in theArray){
-    var tmpEntry = theArray[aIndex];
-    var tmpKey = tmpEntry[(theKeyField || 'id')];
-    tmpRet[tmpKey] = tmpEntry;
-  }
-  return tmpRet;
-}
-function replaceFromMap(theString, theMap){
-  var tmpRet = '' + theString;
-  for( var aName in theMap ){
-    var tmpValue = theMap[aName];
-    if( typeof(tmpValue) == 'function' ){
-      tmpValue = tmpValue(aName);
+function getIndexFromArray(theArray, theKeyField) {
+    var tmpRet = {};
+    for (var aIndex in theArray) {
+        var tmpEntry = theArray[aIndex];
+        var tmpKey = tmpEntry[(theKeyField || 'id')];
+        tmpRet[tmpKey] = tmpEntry;
     }
-    tmpRet = replaceAll(tmpRet,aName,tmpValue)
-  }
-  return tmpRet;
+    return tmpRet;
+}
+function replaceFromMap(theString, theMap) {
+    var tmpRet = '' + theString;
+    for (var aName in theMap) {
+        var tmpValue = theMap[aName];
+        if (typeof (tmpValue) == 'function') {
+            tmpValue = tmpValue(aName);
+        }
+        tmpRet = replaceAll(tmpRet, aName, tmpValue)
+    }
+    return tmpRet;
 }
 
 
 function settingsHome() {
-  const tmpHomeDir = $.os.homedir();
-  return tmpHomeDir + '/.actapp/';
+    const tmpHomeDir = $.os.homedir();
+    return tmpHomeDir + '/.actapp/';
 }
 
-function getBuildConfigJson(scope){
-  return utils.getJsonFile(scope.locals.path.designer + '/build/app-build-config.json');
+function getBuildConfigJson(scope) {
+    return utils.getJsonFile(scope.locals.path.designer + '/build/app-build-config.json');
 }
 
 
 
 
 //--- Replace File
-function replaceFile(theFilename, theValue){
-  return new Promise($.async(function (resolve, reject) {
-    try {
-        $.fs.writeFile(theFilename, theValue, 'utf8', function (err, theContent) {
-            if (err) {
-              resolve(false)
-            } else {
-              resolve(true);
-            }
-        });
-    }
-    catch (error) {
-        resolve(false)
-    }
-  
-  }));
+function replaceFile(theFilename, theValue) {
+    return new Promise($.async(function (resolve, reject) {
+        try {
+            $.fs.writeFile(theFilename, theValue, 'utf8', function (err, theContent) {
+                if (err) {
+                    resolve(false)
+                } else {
+                    resolve(true);
+                }
+            });
+        }
+        catch (error) {
+            resolve(false)
+        }
+
+    }));
 }
 
 //--- Like readFile but returns "" if not there
-function getTextFile(theFilename){
-  return new Promise($.async(function (resolve, reject) {
-    try {
-        $.fs.readFile(theFilename, 'utf8', function (err, theContent) {
-            if (err) {
-              resolve("")
-            } else {
-              resolve(theContent);
-            }
-        });
-    }
-    catch (error) {
-        resolve("")
-    }
-  
-  }));
+function getTextFile(theFilename) {
+    return new Promise($.async(function (resolve, reject) {
+        try {
+            $.fs.readFile(theFilename, 'utf8', function (err, theContent) {
+                if (err) {
+                    resolve("")
+                } else {
+                    resolve(theContent);
+                }
+            });
+        }
+        catch (error) {
+            resolve("")
+        }
+
+    }));
 }
 
 //--- Like readJson but returns {} if not there
-function getJsonFile(theFilename){
-  return new Promise($.async(function (resolve, reject) {
-    try {
-        $.fs.readJson(theFilename, function (err, theObj) {
-            if (err) {
-              resolve({})
-            } else {
-              resolve(theObj);
-            }
-        });
-    }
-    catch (error) {
-        resolve({})
-    }
-  
-  }));
+function getJsonFile(theFilename) {
+    return new Promise($.async(function (resolve, reject) {
+        try {
+            $.fs.readJson(theFilename, function (err, theObj) {
+                if (err) {
+                    resolve({})
+                } else {
+                    resolve(theObj);
+                }
+            });
+        }
+        catch (error) {
+            resolve({})
+        }
+
+    }));
 }
 
 
 //--- Like readJson but returns {} if not there
-function saveJsonFile(theFilename, theObject){
-  
-  var tmpObject = theObject || {};
-  if( typeof(tmpObject) == 'string'){
-    tmpObject = JSON.parse(tmpObject);
-  }
-  return $.fs.writeJson(theFilename, tmpObject)
+function saveJsonFile(theFilename, theObject) {
+
+    var tmpObject = theObject || {};
+    if (typeof (tmpObject) == 'string') {
+        tmpObject = JSON.parse(tmpObject);
+    }
+    return $.fs.writeJson(theFilename, tmpObject)
 }
 
 //--- Like readJson but returns [] if not there
-function getDirFiles(theDirectory){
-  return new Promise($.async(function (resolve, reject) {
-    try {
-        $.fs.readdir(theDirectory, function (err, files) {
-            if (err) {
-                resolve([])
-            }
-            resolve(files);
-        });
-    }
-    catch (error) {
-      resolve([])
-    }
-  }));
+function getDirFiles(theDirectory) {
+    return new Promise($.async(function (resolve, reject) {
+        try {
+            $.fs.readdir(theDirectory, function (err, files) {
+                if (err) {
+                    resolve([])
+                }
+                resolve(files);
+            });
+        }
+        catch (error) {
+            resolve([])
+        }
+    }));
 
-  
 
- 
+
+
 
 }
 

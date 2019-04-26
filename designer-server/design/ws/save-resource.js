@@ -76,7 +76,7 @@ module.exports.setup = function setup(scope) {
                 var tmpPageBase = tmpPagesBase + tmpPageName ;
 
                 var tmpContentBase = tmpPageBase + '/' + tmpResDetails.dir;
-                console.log( 'tmpContentBase', tmpContentBase);
+
                 $.await($.fs.ensureDir(tmpContentBase + '/'));
 
                 var tmpFN = tmpContentBase + '/' + tmpResName;
@@ -85,10 +85,21 @@ module.exports.setup = function setup(scope) {
                     $.await($.fs.ensureDir(tmpFN + '/'));
                 }
 
-                if( tmpResDetails.name == "Control" && !(tmpResDetails.name.endsWith('.js'))){
-                    tmpFN += '/control.js';
+                if( tmpResDetails.name == "Control"){
+                    if(!tmpFN.endsWith('.js')){
+                        tmpFN += '/control.js';
+                    }
+                } else if( tmpResDetails.name == "Panel"){
+                    if(!tmpFN.endsWith('.json')){
+                        tmpFN += '.json';
+                    }
+                } else if( !(tmpFN.endsWith('.html'))){
+                    tmpFN += '.html';
                 }
 
+                if( !(tmpReq.content) ){
+                    tmpReq.content = $.bld.getDefaultContentForResource(tmpResDetails.name);
+                }
                 $.await($.fs.writeFile(tmpFN, tmpReq.content));
 
                 var tmpRet = {

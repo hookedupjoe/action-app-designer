@@ -428,9 +428,6 @@ License: MIT
 		ThisApp.input("Enter HTML name", "HTML Name", "Create HTML Resource", "")
 			.then(function (theValue) {
 				if (!(theValue)) { return };
-				if( !theValue.endsWith('.html')){
-					theValue += '.html';
-				}
 				var tmpRequest = {
 					pagename: tmpThis.details.pagename || '',
 					appname: tmpThis.details.appname || '',
@@ -458,9 +455,6 @@ License: MIT
 		ThisApp.input("Enter template name", "Template Name", "Create Template Resource", "")
 			.then(function (theValue) {
 				if (!(theValue)) { return };
-				if( !theValue.endsWith('.html')){
-					theValue += '.html';
-				}
 				var tmpRequest = {
 					pagename: tmpThis.details.pagename || '',
 					appname: tmpThis.details.appname || '',
@@ -486,9 +480,6 @@ License: MIT
 		ThisApp.input("Enter control name", "Control Name", "Create Control Resource", "")
 			.then(function (theValue) {
 				if (!(theValue)) { return };
-				if( !theValue.endsWith('.js')){
-					theValue += '/control.js';
-				}
 				var tmpRequest = {
 					pagename: tmpThis.details.pagename || '',
 					appname: tmpThis.details.appname || '',
@@ -515,9 +506,6 @@ License: MIT
 		ThisApp.input("Enter panel name", "Panel Name", "Create Panel Resource", "")
 			.then(function (theValue) {
 				if (!(theValue)) { return };
-				if( !theValue.endsWith('.json')){
-					theValue += '.json';
-				}
 				var tmpRequest = {
 					pagename: tmpThis.details.pagename || '',
 					appname: tmpThis.details.appname || '',

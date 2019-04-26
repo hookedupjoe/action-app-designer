@@ -50,6 +50,19 @@ License: MIT
 										"content": [
 											{
 												"ctl": "button",
+												"size": "small",
+												compact: true,
+												"onClick": {
+													"run": "action",
+													"action": "refreshPages"
+												},
+												"basic": true,
+												"icon": "recycle",
+												"name": "btn-refresh-pages",
+												"text": "Refresh"
+											},
+											{
+												"ctl": "button",
 												"color": "blue",
 												"size": "small",
 												compact: true,
@@ -63,19 +76,7 @@ License: MIT
 												"name": "btn-add-page",
 												"text": "Add Page"
 											},
-											{
-												"ctl": "button",
-												"size": "small",
-												compact: true,
-												"onClick": {
-													"run": "action",
-													"action": "refreshPages"
-												},
-												"basic": true,
-												"icon": "recycle",
-												"name": "btn-refresh-pages",
-												"text": "Refresh"
-											},
+											
 											{
 												"ctl": "divider",
 												"fitted": true,
