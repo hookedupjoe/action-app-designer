@@ -78,6 +78,7 @@ module.exports.setup = function setup(scope) {
                     if( tmpPageName ){
                         var tmpPageBase = tmpPagesDir + tmpPageName + '/';
                         tmpRes = $.await(getWSResourcesNode({baseURL: tmpPageBase, appname: tmpAppName, pagename: tmpPageName}));
+                      
                     }  else {
                         var tmpAppBase = tmpWSDir + tmpAppName + '/';
                         tmpRes = $.await(getWSResourcesNode({baseURL: tmpAppBase + 'catalog/', appname: tmpAppName}));
@@ -440,16 +441,18 @@ module.exports.setup = function setup(scope) {
                     var tmpEntryName = tmpFileName;
 
                     var tmpBaseDir = tmpCatDir + 'resources/' + tmpType.dir + '/';
+
                     if (tmpBaseURL) {
                         tmpBaseDir = tmpBaseURL + tmpType.dir + '/';
                         tmpEntryName = tmpBaseDir + '-' + tmpBaseDir
                     }
-
+                    if( tmpAppName && tmpPageName ){
+                        tmpBaseDir = tmpAppsDir + '/' + tmpAppName + '/app/pages/' + tmpPageName + '/' + tmpType.dir + '/';
+                    }
 
                     var tmpFiles = $.await($.bld.getDirFiles(tmpBaseDir));
                     for (var index in tmpFiles) {
                         var tmpFileName = tmpFiles[index];
-
                         var tmpEntry = {
                             "ctl": "tbl-ol-node",
                             "type": "resource",

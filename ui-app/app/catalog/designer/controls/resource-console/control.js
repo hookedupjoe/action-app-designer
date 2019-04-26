@@ -642,7 +642,6 @@ License: MIT
 		
 		if (tmpResType == 'HTML' || tmpResType == 'Template' || tmpResType == 'html' || tmpResType == 'Templates') {
 			var tmpContent = this.aceEditor.getValue();
-			console.log( 'tmpResType tmpContent', tmpResType, tmpContent);
 			this.loadSpot('preview-area',tmpContent);
 		} else if( tmpResType == 'Panel' ){
 			var tmpObject = this.aceEditor.getValue();
@@ -656,7 +655,6 @@ License: MIT
 			this.activeControlSpec = ThisApp.controls.newControl(this.activeControlSpec.specs, this.activeControlSpec.options || {})
 			this.activeControlSpec.parent = this;
 			this.showControl()	
-			console.log( 'this.activeControlSpec', this.activeControlSpec);
 		} else {
 			console.error("Unknown resource type " + tmpResType)
 		}
