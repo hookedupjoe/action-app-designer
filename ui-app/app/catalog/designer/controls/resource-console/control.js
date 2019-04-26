@@ -635,10 +635,30 @@ License: MIT
 
 	ControlCode.refreshControlDisplay = refreshControlDisplay;
 	function refreshControlDisplay() {
-		var tmpObject = this.aceEditor.getValue();
-		tmpObject = ThisApp.json(tmpObject);
-		this.activeControlSpec = ThisApp.controls.newControl(tmpObject, { parent: this });
-		this.showControl()
+		
+
+		var tmpResType = this.details.restype;
+	
+		
+		if (tmpResType == 'HTML' || tmpResType == 'Template' || tmpResType == 'html' || tmpResType == 'Templates') {
+			var tmpContent = this.aceEditor.getValue();
+			console.log( 'tmpResType tmpContent', tmpResType, tmpContent);
+		} else if( tmpResType == 'Panel' ){
+			var tmpObject = this.aceEditor.getValue();
+			tmpObject = ThisApp.json(tmpObject);
+			this.activeControlSpec = ThisApp.controls.newControl(tmpObject, { parent: this });
+			this.activeControlSpec.parent = this;
+			this.showControl()	
+		} else if( tmpResType == 'Control' ){
+			var tmpCode = this.aceEditor.getValue();
+			this.activeControlSpec = eval(tmpCode);
+			this.activeControlSpec = ThisApp.controls.newControl(this.activeControlSpec.specs, this.activeControlSpec.options || {})
+			this.activeControlSpec.parent = this;
+			this.showControl()	
+			console.log( 'this.activeControlSpec', this.activeControlSpec);
+		} else {
+			console.error("Unknown resource type " + tmpResType)
+		}
 	};
 
 
