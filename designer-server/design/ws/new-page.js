@@ -34,7 +34,9 @@ module.exports.setup = function setup(scope) {
                 var tmpReq = tmpBody
 
                 var tmpAppName = tmpReq.appname || '';
-                var tmpTarget = tmpReq.target || 'app';
+                if( tmpAppName ){
+                    tmpTarget = 'app';
+                }
                 var tmpTemplate = tmpReq.template || '';
 
                 var tmpPageName = tmpReq.pagename || tmpReq.name || '';
@@ -54,35 +56,38 @@ module.exports.setup = function setup(scope) {
                 }
 
                 var tmpThisPageSpecsText = 'var thisPageSpecs = ' + JSON.stringify(tmpSpecs, null, '\t');
-                var tmpPagesBase = tmpAppBase + '/app/pages/';
+                var tmpPagesBase = tmpPagesDir;
 
-                if( tmpTarget == 'workspace' ){
-                    tmpPagesBase = tmpPagesDir;
-                } else {
+                if( tmpAppName ){
                     var tmpAppBase = tmpWSDir + tmpAppName + '/';
+
                     var tmpAppDetails = $.await($.bld.getJsonFile(tmpAppBase + 'app-info.json'))
                     var tmpAppTitle = tmpAppDetails.title || '';
     
                     if (!(tmpAppTitle)) {
-                        throw ("Application " + tmpAppName + " not found");
+                        throw ("Application " + tmpAppName + " not found at " + tmpAppBase);
                     }
-                }
-       
-                var tmpPages = $.await($.bld.getDirFiles(tmpPagesBase))
 
+                    tmpPagesBase = tmpAppBase + 'app/pages/';
+
+                    var tmpPages = $.await($.bld.getDirFiles(tmpPagesBase))
+
+                   
                 if (tmpPages.indexOf(tmpPageName) > -1) {
                     throw "Page " + tmpPageName + " already exists"
                 }
 
+                }
+
                 var tmpPageBase = tmpPagesBase + tmpPageName + '/';
-                
+              
 
 
                 var tmpTemplateSource = '';
                 if( tmpTemplate ){
                     var tmpPagesLoc = scope.locals.path.designer + '/build/tpl-pages/';
                     tmpTemplateSource = tmpPagesLoc + tmpTemplate + '/';
-                    $.await($.fs.ensureDir(tmpPageBase));
+                    $.await($.fs.ensureDir(tmpPageBase));  
                     $.await($.fs.copy(tmpTemplateSource, tmpPageBase));
                     
                 }

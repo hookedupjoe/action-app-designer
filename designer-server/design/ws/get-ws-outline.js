@@ -36,7 +36,7 @@ module.exports.setup = function setup(scope) {
                         "details": ".../pages",
                         "meta": "&#160;",
                         "classes": "ws-outline",
-                        "level": 2,
+                        "level": 3,
                         "icon": "columns",
                         "color": "black",
                         "group": "workspace-outline",

@@ -27,16 +27,6 @@ License: MIT
 						"color": "blue",
 						"icon": "globe",
 						"text": "Application"
-					},
-					{
-						"ctl": "button",
-						"color": "blue",
-						"onClick": {
-							"run": "action",
-							"action": "openInCode"
-						},
-						text: "Open in VS Code",
-						"name": "open-in-vs-code"
 					}
 				]
 			},
@@ -58,7 +48,39 @@ License: MIT
 										"name": "apptabs-pages",
 										"ctl": "tab",
 										"content": [
-
+											{
+												"ctl": "button",
+												"color": "blue",
+												"size": "small",
+												compact: true,
+												"onClick": {
+													"run": "action",
+													"action": "addPage"
+												},
+												"labeled": true,
+												"right": true,
+												"icon": "plus",
+												"name": "btn-add-page",
+												"text": "Add Page"
+											},
+											{
+												"ctl": "button",
+												"size": "small",
+												compact: true,
+												"onClick": {
+													"run": "action",
+													"action": "refreshPages"
+												},
+												"basic": true,
+												"icon": "recycle",
+												"name": "btn-refresh-pages",
+												"text": "Refresh"
+											},
+											{
+												"ctl": "divider",
+												"fitted": true,
+												"clearing": true
+											},
 											{
 												"ctl": "panel",
 												"controlname": "design/ws/get-ws-outline?type=pages&appname=",
@@ -183,6 +205,16 @@ License: MIT
 								"name": "save-app-setup"
 							},
 							{
+								"ctl": "button",
+								"color": "blue",								
+								"onClick": {
+									"run": "action",
+									"action": "openInCode"
+								},
+								text: "Open in VS Code",
+								"name": "open-in-vs-code"
+							},							
+							{
 								"ctl": "divider",
 								"color": "blue",
 								"size": "medium",
@@ -220,6 +252,7 @@ License: MIT
 		rebuildApp: rebuildApp,
 		openInCode: openInCode,
 		refreshTabNav: refreshTabNav,
+		addPage, addPage,
 		promptForSetupInfo: promptForSetupInfo
 	};
 	
@@ -231,6 +264,35 @@ License: MIT
 		this.publish('selected', [theControl, theTarget])
 	}
 
+	function addPage() {
+		console.log( 'addPage', this);
+		var tmpThis = this;
+		var tmpAppName = this.details.appname || '';
+
+		var tmpPage = this.context.page.controller;
+		tmpPage.getPanel('frmNewPage').prompt(
+			{
+					isNew: true,
+					doc: { template: 'DefaultPage' }
+			}
+	).then(function (theSubmitted, theData) {
+			if (!theSubmitted) {
+					return;
+			}
+
+			theData.target = 'app';
+			theData.appname = tmpAppName;
+			console.log( 'theData', theData);
+			ThisApp.common.apiCall({
+					url: '/design/ws/new-page?run',
+					data: theData
+			}).then(function (theReply) {
+					tmpThis.refreshPages();
+			})
+
+	})
+
+	}
 
 	function promptAppSetup(theParams, theTarget) {
 		this.promptForSetupInfo();
@@ -417,6 +479,7 @@ License: MIT
 	}
 
 	function refreshPages() {
+		console.log( 'refreshPages', this);
 		this.parts.pages.refreshFromURI();
 	}
 
