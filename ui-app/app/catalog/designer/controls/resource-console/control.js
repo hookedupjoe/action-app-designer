@@ -643,6 +643,7 @@ License: MIT
 		if (tmpResType == 'HTML' || tmpResType == 'Template' || tmpResType == 'html' || tmpResType == 'Templates') {
 			var tmpContent = this.aceEditor.getValue();
 			console.log( 'tmpResType tmpContent', tmpResType, tmpContent);
+			this.loadSpot('preview-area',tmpContent);
 		} else if( tmpResType == 'Panel' ){
 			var tmpObject = this.aceEditor.getValue();
 			tmpObject = ThisApp.json(tmpObject);
