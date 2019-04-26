@@ -228,7 +228,6 @@ License: MIT
 	}
 
 	function onPageSelect(theEvent, theControl, theTarget){
-		console.log( 'onPageSelect pub', theTarget);
 		this.publish('selected', [theControl, theTarget])
 	}
 
@@ -408,7 +407,6 @@ License: MIT
 		}
 		tmpHTML.push('</div><div class="ui divider fitted black"></div>')
 		tmpHTML = tmpHTML.join('\n');
-		console.log( 'refreshTabNav tmpHTML' , tmpHTML);
 		this.loadSpot('nav-tabs', tmpHTML)
 	}
 

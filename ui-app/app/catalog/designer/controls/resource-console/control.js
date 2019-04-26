@@ -208,7 +208,6 @@ License: MIT
 		var tmpResType = theDetails.restype || '';
 
 		tmpResType = ThisApp.controls.detailsIndex.getUnifiedName(tmpResType);
-		console.log('tmpResType', tmpResType);
 
 		var tmpSource = tmpOptions.source || 'ws';
 
@@ -226,7 +225,6 @@ License: MIT
 		if (tmpResType == 'HTML' || tmpResType == 'Template' || tmpResType == 'html' || tmpResType == 'Templates') {
 			this.aceSessionType = "ace/mode/html"
 		}
-		console.log('this.aceSessionType', this.aceSessionType);
 		this.setupEditor();
 
 		this.refreshTabNav();
@@ -349,7 +347,6 @@ License: MIT
 		for (var aName in this.loaded.codeIndex) {
 			var tmpCode = this.loaded.codeIndex[aName];
 			if (!(this.loaded.sessions[aName])) {
-				console.log('this.aceSessionType USED ', this.aceSessionType);
 				this.loaded.sessions[aName] = ace.createEditSession(aName, this.aceSessionType || "ace/mode/javascript")
 			}
 			this.loaded.sessions[aName].setValue(tmpCode);
