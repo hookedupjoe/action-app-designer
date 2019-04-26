@@ -1,0 +1,185 @@
+{
+	"Console('clipboard',clipboard)": {
+		"scope": "javascript,typescript",
+		"prefix": "_conclip",
+		"body": [
+			"console.log( '$CLIPBOARD'$0, $CLIPBOARD);"
+		],
+		"description": "Log output to console"
+	},
+	
+	"Function normal": {
+		"scope": "javascript,typescript",
+		"prefix": "_func",
+		"body": [
+			"function ${1:runTest}(${2:theName}){",
+			"\t$0",
+			"}"
+
+		],
+		"description": ""
+	},	
+	"_for": {
+		"scope": "javascript,typescript",
+		"prefix": "_for",
+		"body": [
+			"for (var i${1:Item} = 0; i${1:Item} < tmp${1:Item}s.length; i${1:Item}++) {",
+				"\tvar tmp${1:Item} = tmp${1:Item}s[i${1:Item}];",
+				"\t$0",
+				"}"
+
+		],
+		"description": ""
+	},
+	"tmpHTML new": {
+		"scope": "javascript,typescript",
+		"prefix": "_htnew",
+		"body": [
+			"var tmpHTML = [];",
+			"$0",
+			"return tmpHTML.join('');;"
+		],
+		"description": ""
+	},
+	"tmpHTML push": {
+		"scope": "javascript,typescript",
+		"prefix": "_htmpush",
+		"body": [
+			"tmpHTML.push('$0')",
+		],
+		"description": ""
+	},
+	"_into": {
+		"scope": "javascript,typescript",
+		"prefix": "_into",
+		"body": [
+			"' + $0 + '",
+		],
+		"description": ""
+	},
+	"_reto": {
+		"scope": "javascript,typescript",
+		"prefix": "_reto",
+		"body": [
+			"var tmpRet = {}",
+			"$0",
+			"return tmpRet;"
+		],
+		"description": ""
+	},
+	"_rets": {
+		"scope": "javascript,typescript",
+		"prefix": "_rets",
+		"body": [
+			"var tmpRet = ''",
+			"$0",
+			"return tmpRet;"
+		],
+		"description": ""
+	},
+	"_reth": {
+		"scope": "javascript,typescript",
+		"prefix": "_reth",
+		"body": [
+			"var tmpHTML = [];",
+			"$0",
+			"return tmpHTML.join('');;"
+		],
+		"description": ""
+	},
+	"tmpOptions from the": {
+		"scope": "javascript,typescript",
+		"prefix": "_options",
+		"body": [
+			"var $0tmpOptions = theOptions || {};",
+			""
+		],
+		"description": ""
+	},
+	"_dfd": {
+		"scope": "javascript,typescript",
+		"prefix": "_dfd",
+		"body": [
+			"var dfd = jQuery.Deferred();",
+			"",
+			"$0dfd.resolve(true)",
+			"",
+			"return dfd.promise();"
+		],
+		"description": ""
+	},
+	
+	"_action": {
+		"scope": "javascript,typescript",
+		"prefix": "_action",
+		"body": [
+			"actions.${1:name} = ${1:name};",
+			"function ${1:name}(theParams, theTarget){",
+			"\tvar tmpParams = ThisApp.getActionParams(theParams, theTarget, [$0])",
+			"};\n"
+		],
+		"description": ""
+	},
+	"Confirm prompt": {
+		"scope": "javascript,typescript",
+		"prefix": "_confirm",
+		"body": [
+			"ThisPage.confirm(${1:tmpText},${2:tmpTitle}).then(function(theIsYes){;",
+			"if( !(theIsYes) ){return};",
+			"\t$0",
+			"});\n"
+		],
+		"description": ""
+	},
+	"obj create content node": {
+		"scope": "javascript,typescript",
+		"prefix": "_jcontent",
+		"body": [
+			"content: [",
+			"\t{",
+			"\t\tctl: \"$0\"",
+			"\t}",
+			"]"
+		],
+		"description": ""
+	},
+	"Promise then function": {
+		"scope": "javascript,typescript",
+		"prefix": "_thendo",
+		"body": [
+			".then(function($0theReply){",
+			"\t",
+			"})",
+		],
+		"description": ""
+	},
+	"setTimeout Function": {
+		"scope": "javascript,typescript",
+		"prefix": "_timeout",
+		"body": [
+			"setTimeout(function(){\n$0\n}, 500)\n\n"
+		],
+		"description": ""
+	},
+	"theTarget to el": {
+		"scope": "javascript,typescript",
+		"prefix": "_target",
+		"body": [
+			"if( theTarget ){",
+			"\tvar tmpEl = $(theTarget)",
+			"}"
+		],
+		"description": ""
+	},
+	"theTarget to el with attrib": {
+		"scope": "javascript,typescript",
+		"prefix": "_targettoel",
+		"body": [
+			"if( theTarget ){",
+			"\tvar tmpEl = $(theTarget)",
+			"}",
+			"var tmp${1:name} = tmpEl.attr('${2:attr}');"
+		],
+		"description": ""
+	}
+}

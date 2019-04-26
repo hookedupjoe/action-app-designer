@@ -653,11 +653,13 @@ License: MIT
 
 		var tmpThis = this;
 		ace.config.loadModule('ace/ext/language_tools', function () {
+
 			tmpThis.aceEditor.setOptions({
 				enableBasicAutocompletion: true,
 				enableSnippets: true,
 				enableLiveAutocompletion: false
 			});
+
 		});
 
 
