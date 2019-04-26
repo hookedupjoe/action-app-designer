@@ -19,9 +19,9 @@
 			"details": "General starting point for a page"
 		},
 		{
-			"name": "JsonHelperPage",
-			"title": "JSON Usage Starting Point",
-			"details": "Starting point for a page that is uses JSON"
+			"name": "HTMLStarter",
+			"title": "Starting Point with HTML content",
+			"details": "Starting point for a page that is uses HTML"
 		}
 	],
 	"libraryLocations": [

@@ -91,8 +91,10 @@ module.exports.setup = function setup(scope) {
 
 
 
-                var tmpPartsLoc = scope.locals.path.designer + '/build/tpl-page/';
-                var tmpTpl = $.await($.bld.getTextFile(tmpPartsLoc + 'tpl-index.js'))
+                //var tmpPartsLoc = scope.locals.path.designer + '/build/tpl-page/';
+                
+                var tmpPartsLoc = tmpPageBase;
+                var tmpTpl = $.await($.bld.getTextFile(tmpPageBase + 'index.js'))
 
                 var tmpTplParts = tmpTpl.split("//~");
                 var tmpTplIndex = {
