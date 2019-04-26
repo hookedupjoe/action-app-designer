@@ -137,10 +137,10 @@ module.exports.setup = function setup(scope) {
 
                 var tmpAppsNode = $.await(getApplicationsNode());
                 tmpBase.content.push(tmpAppsNode);
-                var tmpWSNode = $.await(getWSResourcesNode());
-                tmpBase.content.push(tmpWSNode);
-                var tmpPagesNode = $.await(getPagesNode());
-                tmpBase.content.push(tmpPagesNode);
+                // var tmpWSNode = $.await(getWSResourcesNode());
+                // tmpBase.content.push(tmpWSNode);
+                // var tmpPagesNode = $.await(getPagesNode());
+                // tmpBase.content.push(tmpPagesNode);
 
                 var tmpRet = {
                     "options": {
