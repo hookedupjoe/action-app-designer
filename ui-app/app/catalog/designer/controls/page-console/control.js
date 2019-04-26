@@ -79,6 +79,16 @@ License: MIT
 										],
 										west: [
 											{
+												"ctl": "button",
+												"color": "orange",
+												"name": "btn-format-code",
+												"label": "Format",
+												"onClick": {
+													"run": "action",
+													"action": "formatCode"
+												}
+											},
+											{
 												"ctl": "tbl-ol-node",
 												"name": "page-code",
 												"type": "page",
@@ -414,7 +424,8 @@ License: MIT
 		addPageHTML: addPageHTML,
 		addPageTemplate: addPageTemplate,
 		addPageControl: addPageControl,
-		addPagePanel: addPagePanel
+		addPagePanel: addPagePanel,
+		formatCode: formatCode
 	};
 
 	function refreshResources() {
@@ -652,8 +663,10 @@ License: MIT
 		this.aceEditor.setFontSize(16);
 
 		var tmpThis = this;
-		ace.config.loadModule('ace/ext/language_tools', function () {
+		ace.config.loadModule('ace/ext/beautify', function (theResults) {
+			tmpThis.beautify = theResults;
 
+//				console.log('beautify', theResults.beautify);
 			tmpThis.aceEditor.setOptions({
 				enableBasicAutocompletion: true,
 				enableSnippets: true,
@@ -661,8 +674,6 @@ License: MIT
 			});
 
 		});
-
-
 
 		var tmpThis = this;
 		this.aceEditor.on('change', function () {
@@ -712,6 +723,7 @@ License: MIT
 		for (var aName in this.loaded.codeIndex) {
 			var tmpCode = this.loaded.codeIndex[aName];
 			if (!(this.loaded.sessions[aName])) {
+				
 				this.loaded.sessions[aName] = ace.createEditSession(aName, "ace/mode/javascript")
 			}
 			this.loaded.sessions[aName].setValue(tmpCode);
@@ -792,7 +804,27 @@ License: MIT
 		})
 	}
 
+	function formatCode() {
+		this.beautify.beautify(this.aceEditor.session);
+		var tmpValue = this.aceEditor.session.getValue();
+		tmpValue = '\n\n' + tmpValue + '\n\n';
+		this.aceEditor.session.setValue(tmpValue);
+	}
 
+	
+	ControlCode.beatifyCode = beatifyCode;
+	function beatifyCode(theSession) {
+    var val = theSession.getValue();
+  //Remove leading spaces
+    var array = val.split(/\n/);
+    array[0] = array[0].trim();
+    val = array.join("\n"); 
+	//Actual beautify (prettify) 
+    val = this.beautify.beautify(theSession);
+		
+		//Change current text to formatted text
+	theSession.setValue(val);
+}
 
 	var ThisControl = { specs: ControlSpecs, options: { proto: ControlCode, parent: ThisApp } };
 
