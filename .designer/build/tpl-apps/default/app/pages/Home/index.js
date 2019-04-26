@@ -5,8 +5,8 @@
     //~thisPageSpecs//~
 
 var thisPageSpecs = {
-	"pageName": "DefaultPage",
-	"pageTitle": "Default",
+	"pageName": "Home",
+	"pageTitle": "Home",
 	"navOptions": {
 		"topLink": true,
 		"sideLink": true

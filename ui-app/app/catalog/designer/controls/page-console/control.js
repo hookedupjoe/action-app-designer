@@ -9,340 +9,387 @@ License: MIT
 			"padding": false
 		},
 		"content": [
-		{
-			ctl: "layout",
-			north: [
-				{
-					"ctl":"spot",
-					"name":"nav-tabs"
-				},
-				{
-					"ctl": "field",
-					"name": "title",
-					"fluid": true,
-					"readonly": true,
-					"inputClasses": "title",
-					"default": "Page",
-					"placeholder": "",
-					"content": [
-						{
-							"ctl": "button",
-							"color": "blue",
-							"icon": "save",
-							"disabled": true,
-							"name": "btn-save-code",
-							"label": "Save Changes",
-							"onClick": {
-								"run": "action",
-								"action": "saveCode"
+			{
+				ctl: "layout",
+				north: [
+					{
+						"ctl": "spot",
+						"name": "nav-tabs"
+					},
+					{
+						"ctl": "field",
+						"name": "title",
+						"fluid": true,
+						"readonly": true,
+						"inputClasses": "title",
+						"default": "Page",
+						"placeholder": "",
+						"content": [
+							{
+								"ctl": "button",
+								"color": "blue",
+								"icon": "save",
+								"disabled": true,
+								"name": "btn-save-code",
+								"label": "Save Changes",
+								"onClick": {
+									"run": "action",
+									"action": "saveCode"
+								}
+							},
+							{
+								"ctl": "button",
+								"color": "black",
+								hidden: true,
+								basic: true,
+								right: true,
+								"icon": "cancel",
+								"name": "btn-close-page",
+								"label": "Close",
+								attr: {
+									"pageaction": "closePage",
+									appname: "",
+									pagename: ""
+								}
 							}
-						},
-						{
-							"ctl": "button",
-							"color": "black",
-							hidden: true,
-							basic: true,
-							right: true,
-							"icon": "cancel",
-							"name": "btn-close-page",
-							"label": "Close",
-							attr: {
-								"pageaction": "closePage",
-								appname: "",
-								pagename: ""
-							}
-						}
-					]
-				}
-			],
-			center: [
-				{
-					"ctl": "tabs",
-					"name": "pagetabs",
-					"layout": true,
-					slim: true,
-					"tabs": [
-						{
-							"label": "Code",
-							"name": "pagetabs-one",
-							"ctl": "tab",
-							"content": [
+						]
+					}
+				],
+				center: [
+					{
+						"ctl": "tabs",
+						"name": "pagetabs",
+						"layout": true,
+						slim: true,
+						"tabs": [
+							{
+								"label": "Code",
+								"name": "pagetabs-one",
+								"ctl": "tab",
+								"content": [
 									{
-								ctl: "layout",
-								name: "layout",
-								center: [
-									{
-										ctl: "spot",
-										name: "ace-editor",
-										text: ""
-									}
-								],
-								west: [
-									{
-										"ctl": "tbl-ol-node",
-										"name": "page-code",
-										"type": "page",
-										"details": "Code Outline",
-										"meta": "&#160;",
-										"classes": "page-code-table",
-										"level": 1,
-										"group": "page-code-outline",
-										"item": "page",
-										"icon": "columns",
-										"color": "green",
-										"content": [
+										ctl: "layout",
+										name: "layout",
+										center: [
+											{
+												ctl: "spot",
+												name: "ace-editor",
+												text: ""
+											}
+										],
+										west: [
 											{
 												"ctl": "tbl-ol-node",
-												"type": "setup",
-												"name": "Setup",
-												"details": "Page",
+												"name": "page-code",
+												"type": "page",
+												"details": "Code Outline",
 												"meta": "&#160;",
-												"level": 2,
-												"icon": "certificate",
+												"classes": "page-code-table",
+												"level": 1,
+												"group": "page-code-outline",
+												"item": "page",
+												"icon": "columns",
 												"color": "green",
 												"content": [
 													{
 														"ctl": "tbl-ol-node",
-														"name": "setup-pageinfo",
-														"details": "Page Info",
+														"type": "setup",
+														"name": "Setup",
+														"details": "Page",
 														"meta": "&#160;",
-														"group": "page-code-outline",
-														"item": "setup-pageinfo",
-														"onClick": {
-															"run": "action",
-															"action": "showCode",
-															"name": "thisPageSpecs"
-														},
-														"icon": "file code outline",
-														"color": "blue"
+														"level": 2,
+														"icon": "certificate",
+														"color": "green",
+														"content": [
+															{
+																"ctl": "tbl-ol-node",
+																"name": "setup-pageinfo",
+																"details": "Page Info",
+																"meta": "&#160;",
+																"group": "page-code-outline",
+																"item": "setup-pageinfo",
+																"onClick": {
+																	"run": "action",
+																	"action": "showCode",
+																	"name": "thisPageSpecs"
+																},
+																"icon": "file code outline",
+																"color": "blue"
+															},
+															{
+																"ctl": "tbl-ol-node",
+																"name": "setup-resources",
+																"details": "Resources",
+																"meta": "&#160;",
+																"group": "page-code-outline",
+																"item": "setup-resources",
+																"onClick": {
+																	"run": "action",
+																	"action": "showCode",
+																	"name": "required"
+																},
+																"icon": "file code outline",
+																"color": "blue"
+															},
+															{
+																"ctl": "tbl-ol-node",
+																"name": "setup-pagecode",
+																"details": "Page Code",
+																"meta": "&#160;",
+																"group": "page-code-outline",
+																"item": "setup-pagecode",
+																"onClick": {
+																	"run": "action",
+																	"action": "showCode",
+																	"name": "YourPageCode"
+																},
+																"icon": "file code outline",
+																"color": "blue"
+															}
+														]
 													},
 													{
 														"ctl": "tbl-ol-node",
-														"name": "setup-resources",
-														"details": "Resources",
+														"type": "layout",
+														"name": "Layout",
+														"details": "Layout",
 														"meta": "&#160;",
-														"group": "page-code-outline",
-														"item": "setup-resources",
-														"onClick": {
-															"run": "action",
-															"action": "showCode",
-															"name": "required"
-														},
-														"icon": "file code outline",
-														"color": "blue"
+														"level": 2,
+														"icon": "calculator",
+														"color": "orange",
+														"content": [
+															{
+																"ctl": "tbl-ol-node",
+																"name": "layout-regions",
+																"details": "Regions",
+																"meta": "&#160;",
+																"group": "page-code-outline",
+																"item": "layout-regions",
+																"onClick": {
+																	"run": "action",
+																	"action": "showCode",
+																	"name": "layoutOptions"
+																},
+																"icon": "file code outline",
+																"color": "blue"
+															},
+															{
+																"ctl": "tbl-ol-node",
+																"name": "layout-config",
+																"details": "Config",
+																"meta": "&#160;",
+																"group": "page-code-outline",
+																"item": "layout-config",
+																"onClick": {
+																	"run": "action",
+																	"action": "showCode",
+																	"name": "layoutConfig"
+																},
+																"icon": "file code outline",
+																"color": "blue"
+															}
+														]
 													},
 													{
 														"ctl": "tbl-ol-node",
-														"name": "setup-pagecode",
-														"details": "Page Code",
+														"type": "events",
+														"name": "Events",
+														"details": "Events",
 														"meta": "&#160;",
-														"group": "page-code-outline",
-														"item": "setup-pagecode",
-														"onClick": {
-															"run": "action",
-															"action": "showCode",
-															"name": "YourPageCode"
-														},
-														"icon": "file code outline",
-														"color": "blue"
-													}
-												]
-											},
-											{
-												"ctl": "tbl-ol-node",
-												"type": "layout",
-												"name": "Layout",
-												"details": "Layout",
-												"meta": "&#160;",
-												"level": 2,
-												"icon": "calculator",
-												"color": "orange",
-												"content": [
-													{
-														"ctl": "tbl-ol-node",
-														"name": "layout-regions",
-														"details": "Regions",
-														"meta": "&#160;",
-														"group": "page-code-outline",
-														"item": "layout-regions",
-														"onClick": {
-															"run": "action",
-															"action": "showCode",
-															"name": "layoutOptions"
-														},
-														"icon": "file code outline",
-														"color": "blue"
-													},
-													{
-														"ctl": "tbl-ol-node",
-														"name": "layout-config",
-														"details": "Config",
-														"meta": "&#160;",
-														"group": "page-code-outline",
-														"item": "layout-config",
-														"onClick": {
-															"run": "action",
-															"action": "showCode",
-															"name": "layoutConfig"
-														},
-														"icon": "file code outline",
-														"color": "blue"
-													}
-												]
-											},
-											{
-												"ctl": "tbl-ol-node",
-												"type": "events",
-												"name": "Events",
-												"details": "Events",
-												"meta": "&#160;",
-												"level": 2,
-												"icon": "recycle",
-												"color": "black",
-												"content": [
-													{
-														"ctl": "tbl-ol-node",
-														"name": "events-pre-init",
-														"details": "Pre Init",
-														"meta": "&#160;",
-														"group": "page-code-outline",
-														"item": "events-pre-init",
-														"onClick": {
-															"run": "action",
-															"action": "showCode",
-															"name": "_onPreInit"
-														},
-														"icon": "file code outline",
-														"color": "blue"
-													},
-													{
-														"ctl": "tbl-ol-node",
-														"name": "events-init",
-														"details": "Initialize",
-														"meta": "&#160;",
-														"group": "page-code-outline",
-														"item": "events-init",
-														"onClick": {
-															"run": "action",
-															"action": "showCode",
-															"name": "_onInit"
-														},
-														"icon": "file code outline",
-														"color": "blue"
-													},
-													{
-														"ctl": "tbl-ol-node",
-														"name": "events-preload",
-														"details": "Pre Load",
-														"meta": "&#160;",
-														"group": "page-code-outline",
-														"item": "events-preload",
-														"onClick": {
-															"run": "action",
-															"action": "showCode",
-															"name": "_onFirstActivate"
-														},
-														"icon": "file code outline",
-														"color": "blue"
-													},
-													{
-														"ctl": "tbl-ol-node",
-														"name": "events-load",
-														"details": "Initial Load",
-														"meta": "&#160;",
-														"group": "page-code-outline",
-														"item": "events-load",
-														"onClick": {
-															"run": "action",
-															"action": "showCode",
-															"name": "_onFirstLoad"
-														},
-														"icon": "file code outline",
-														"color": "blue"
-													},
-													{
-														"ctl": "tbl-ol-node",
-														"name": "events-resize",
-														"details": "Resized",
-														"meta": "&#160;",
-														"group": "page-code-outline",
-														"item": "events-resize",
-														"onClick": {
-															"run": "action",
-															"action": "showCode",
-															"name": "_onResizeLayout"
-														},
-														"icon": "file code outline",
-														"color": "blue"
+														"level": 2,
+														"icon": "recycle",
+														"color": "black",
+														"content": [
+															{
+																"ctl": "tbl-ol-node",
+																"name": "events-pre-init",
+																"details": "Pre Init",
+																"meta": "&#160;",
+																"group": "page-code-outline",
+																"item": "events-pre-init",
+																"onClick": {
+																	"run": "action",
+																	"action": "showCode",
+																	"name": "_onPreInit"
+																},
+																"icon": "file code outline",
+																"color": "blue"
+															},
+															{
+																"ctl": "tbl-ol-node",
+																"name": "events-init",
+																"details": "Initialize",
+																"meta": "&#160;",
+																"group": "page-code-outline",
+																"item": "events-init",
+																"onClick": {
+																	"run": "action",
+																	"action": "showCode",
+																	"name": "_onInit"
+																},
+																"icon": "file code outline",
+																"color": "blue"
+															},
+															{
+																"ctl": "tbl-ol-node",
+																"name": "events-preload",
+																"details": "Pre Load",
+																"meta": "&#160;",
+																"group": "page-code-outline",
+																"item": "events-preload",
+																"onClick": {
+																	"run": "action",
+																	"action": "showCode",
+																	"name": "_onFirstActivate"
+																},
+																"icon": "file code outline",
+																"color": "blue"
+															},
+															{
+																"ctl": "tbl-ol-node",
+																"name": "events-load",
+																"details": "Initial Load",
+																"meta": "&#160;",
+																"group": "page-code-outline",
+																"item": "events-load",
+																"onClick": {
+																	"run": "action",
+																	"action": "showCode",
+																	"name": "_onFirstLoad"
+																},
+																"icon": "file code outline",
+																"color": "blue"
+															},
+															{
+																"ctl": "tbl-ol-node",
+																"name": "events-resize",
+																"details": "Resized",
+																"meta": "&#160;",
+																"group": "page-code-outline",
+																"item": "events-resize",
+																"onClick": {
+																	"run": "action",
+																	"action": "showCode",
+																	"name": "_onResizeLayout"
+																},
+																"icon": "file code outline",
+																"color": "blue"
+															}
+														]
 													}
 												]
 											}
+
+										],
+										rem_north: [
+											{
+												"ctl": "field",
+												"name": "code-title",
+												"fluid": true,
+												"readonly": true,
+												"inputClasses": "title",
+												"default": "Page Editor",
+												"placeholder": "",
+												"content": [
+
+												]
+											}
 										]
-									}
-				
-								],
-								rem_north: [
-									{
-										"ctl": "field",
-										"name": "code-title",
-										"fluid": true,
-										"readonly": true,
-										"inputClasses": "title",
-										"default": "Page Editor",
-										"placeholder": "",
-										"content": [
-											
-										]
+
 									}
 								]
-								
+							},
+							{
+								"label": "Resources",
+								"name": "pagetabs-resources",
+								"ctl": "tab",
+								"content": [
+									{
+										"ctl": "button",
+										"size": "small",
+										compact: true,
+										"onClick": {
+											"run": "action",
+											"action": "refreshResources"
+										},
+										"basic": true,
+										"icon": "recycle",
+										"name": "btn-refresh-pages",
+										"text": "Refresh"
+									},
+									{
+										"ctl": "button",
+										"color": "purple",
+										"size": "small",
+										compact: true,
+										"onClick": {
+											"run": "action",
+											"action": "addPageControl"
+										},
+										"labeled": true,
+										"right": true,
+										"icon": "newspaper",
+										"name": "btn-add-control",
+										"text": "Add Control"
+									},
+									{
+										"ctl": "button",
+										"color": "purple",
+										"size": "small",
+										compact: true,
+										"onClick": {
+											"run": "action",
+											"action": "addPagePanel"
+										},
+										"labeled": true,
+										"right": true,
+										"icon": "newspaper outline",
+										"name": "btn-add-panel",
+										"text": "Add Panel"
+									},
+									{
+										"ctl": "button",
+										"color": "purple",
+										"size": "small",
+										compact: true,
+										"onClick": {
+											"run": "action",
+											"action": "addPageTemplate"
+										},
+										"labeled": true,
+										"right": true,
+										"icon": {
+											"[computed]": "context.app.controller.controls.detailsIndex.getDetails('Template').icon"
+										},
+										"name": "btn-add-template",
+										"text": "Add Template"
+									},
+									{
+										"ctl": "button",
+										"color": "purple",
+										"size": "small",
+										compact: true,
+										"onClick": {
+											"run": "action",
+											"action": "addPageHTML"
+										},
+										"labeled": true,
+										"right": true,
+										"icon": "code",
+										"name": "btn-add-resource",
+										"text": "Add HTML"
+									},
+									{
+										"ctl": "panel",
+										"controlname": "design/ws/get-ws-outline?type=resources&appname=app001&pagename=HomePage",
+										"name": "resources"
+									}
+								]
 							}
-							]
-						},
-						{
-							"label": "Resources",
-							"name": "pagetabs-resources",
-							"ctl": "tab",
-							"content": [
-								{
-									"ctl": "button",
-									"color": "blue",
-									"size": "small",
-									compact: true,
-									"onClick": {
-										"run": "action",
-										"action": "addPageResource"
-									},
-									"labeled": true,
-									"right": true,
-									"icon": "plus",
-									"name": "btn-add-resource",
-									"text": "Add Resource"
-								},
-								{
-									"ctl": "button",
-									"size": "small",
-									compact: true,
-									"onClick": {
-										"run": "action",
-										"action": "refreshResources"
-									},
-									"basic": true,
-									"icon": "recycle",
-									"name": "btn-refresh-pages",
-									"text": "Refresh"
-								},
-								{
-									"ctl": "panel",
-									"controlname": "design/ws/get-ws-outline?type=resources&appname=app001&pagename=HomePage",
-									"name": "resources"
-								}
-							]
-						}
-					]
-				}
-			]
-		}
+						]
+					}
+				]
+			}
 
 		]
 
@@ -364,38 +411,158 @@ License: MIT
 		_onInit: _onInit,
 		_onParentResize: _onParentResize,
 		refreshResources: refreshResources,
-		addPageResource: addPageResource
+		addPageHTML: addPageHTML,
+		addPageTemplate: addPageTemplate,
+		addPageControl: addPageControl,
+		addPagePanel: addPagePanel
 	};
 
 	function refreshResources() {
 		this.parts.resources.refreshFromURI();
 	}
-	function addPageResource() {
-		console.log( 'addPageResource');
-	}
+
 	
-	function _onParentResize(){
+	function addPageHTML() {
 		var tmpThis = this;
-		ThisApp.delay(200).then(function(theReply){
-			if( tmpThis.aceEditorEl ){
+
+		ThisApp.input("Enter HTML name", "HTML Name", "Create HTML Resource", "")
+			.then(function (theValue) {
+				if (!(theValue)) { return };
+				if( !theValue.endsWith('.html')){
+					theValue += '.html';
+				}
+				var tmpRequest = {
+					pagename: tmpThis.details.pagename || '',
+					appname: tmpThis.details.appname || '',
+					resname: theValue,
+					restype: 'HTML',
+					content: ""
+				}
+
+				ThisApp.apiCall({
+					url: '/design/ws/save-resource?run',
+					data: tmpRequest
+				}).then(function (theReply) {
+					tmpThis.refreshResources();
+				})
+
+			})
+
+
+
+	}
+
+	function addPageTemplate() {
+		var tmpThis = this;
+
+		ThisApp.input("Enter template name", "Template Name", "Create Template Resource", "")
+			.then(function (theValue) {
+				if (!(theValue)) { return };
+				if( !theValue.endsWith('.html')){
+					theValue += '.html';
+				}
+				var tmpRequest = {
+					pagename: tmpThis.details.pagename || '',
+					appname: tmpThis.details.appname || '',
+					resname: theValue,
+					restype: 'Template',
+					content: ""
+				}
+
+				ThisApp.apiCall({
+					url: '/design/ws/save-resource?run',
+					data: tmpRequest
+				}).then(function (theReply) {
+					tmpThis.refreshResources();
+				})
+
+			})
+
+	}
+
+	function addPageControl() {
+		var tmpThis = this;
+
+		ThisApp.input("Enter control name", "Control Name", "Create Control Resource", "")
+			.then(function (theValue) {
+				if (!(theValue)) { return };
+				if( !theValue.endsWith('.js')){
+					theValue += '/control.js';
+				}
+				var tmpRequest = {
+					pagename: tmpThis.details.pagename || '',
+					appname: tmpThis.details.appname || '',
+					resname: theValue,
+					restype: 'Control',
+					content: ""
+				}
+
+				ThisApp.apiCall({
+					url: '/design/ws/save-resource?run',
+					data: tmpRequest
+				}).then(function (theReply) {
+					tmpThis.refreshResources();
+				})
+
+			})
+
+
+
+	}
+
+	function addPagePanel() {
+		var tmpThis = this;
+		ThisApp.input("Enter panel name", "Panel Name", "Create Panel Resource", "")
+			.then(function (theValue) {
+				if (!(theValue)) { return };
+				if( !theValue.endsWith('.json')){
+					theValue += '.json';
+				}
+				var tmpRequest = {
+					pagename: tmpThis.details.pagename || '',
+					appname: tmpThis.details.appname || '',
+					resname: theValue,
+					restype: 'Panel',
+					content: ""
+				}
+
+				ThisApp.apiCall({
+					url: '/design/ws/save-resource?run',
+					data: tmpRequest
+				}).then(function (theReply) {
+					tmpThis.refreshResources();
+				})
+
+			})
+
+
+
+
+	}
+
+
+	function _onParentResize() {
+		var tmpThis = this;
+		ThisApp.delay(200).then(function (theReply) {
+			if (tmpThis.aceEditorEl) {
 				var tmpH = tmpThis.aceEditorEl.closest('.ui-layout-pane').height();
 				if (tmpThis.aceEditorEl && tmpThis.aceEditor) {
 					tmpThis.aceEditorEl
-								.css('height', '' + tmpH + 'px')
-								.css('position', 'relative')
-								tmpThis.aceEditor.resize(true);
+						.css('height', '' + tmpH + 'px')
+						.css('position', 'relative')
+					tmpThis.aceEditor.resize(true);
 				}
 			}
-			
+
 		})
-	
+
 	}
 
-	function _onInit(){
+	function _onInit() {
 		this.parts.resources.subscribe('selectMe', onResSelect.bind(this))
 	}
 
-	function onResSelect(theEvent, theControl, theTarget){
+	function onResSelect(theEvent, theControl, theTarget) {
 		this.publish('selected', [theControl, theTarget])
 	}
 
@@ -418,12 +585,12 @@ License: MIT
 	//---- Initial Setup of the control
 	function setup(theOptions) {
 		var tmpOptions = theOptions || {};
-		
+
 		var tmpPageName = tmpOptions.pagename || '';
 		this.params = this.params || {};
 		this.params.pagename = tmpPageName;
 
-		
+
 		var tmpTitle = tmpPageName;
 		var tmpSource = tmpOptions.source || 'ws';
 		var tmpAppName = tmpOptions.appname || '';
@@ -443,7 +610,7 @@ License: MIT
 			name: ''
 		}
 		this.endpointURL = 'design/ws/page-code?run&source=' + tmpSource + '&pagename=' + tmpPageName;
-		if( tmpAppName ){
+		if (tmpAppName) {
 			this.endpointURL += '&appname=' + tmpAppName;
 		}
 		this.refreshFromSource();
@@ -456,16 +623,16 @@ License: MIT
 		this.details = this.details || {};
 		var tmpAppName = this.details.appname || '';
 		var tmpPageName = this.details.pagename || '';
-		if( (tmpAppName || tmpPageName) ){
+		if ((tmpAppName || tmpPageName)) {
 			var tmpHTML = [];
 			tmpHTML.push('<div class="pad0 ui top attached tabular tab-nav menu" style="">');
-			
+
 			tmpHTML.push('<a appuse="tablinks" group="workspace-outline" item="workspace" action="selectMe" class="item black"><i class="icon hdd black"></i> </a>');
 
-			if( tmpAppName ){
+			if (tmpAppName) {
 				tmpHTML.push('<a appuse="tablinks" group="workspace-outline" item="' + tmpAppName + '" appname="' + tmpAppName + '" pageaction="showAppConsole" class="item black  "><i class="icon globe blue"></i> ' + tmpAppName + '</a>');
 			}
-			if( tmpPageName ){
+			if (tmpPageName) {
 				tmpHTML.push('<a appuse="tablinks" group="workspace-outline" item="' + tmpAppName + '-' + tmpPageName + '" appname="' + tmpAppName + '" pagename="' + tmpPageName + '" pageaction="showPageConsole" class="item black"><i class="icon columns green"></i> ' + tmpPageName + '</a>');
 			}
 			tmpHTML.push('</div><div class="ui divider fitted black"></div>')
@@ -490,7 +657,7 @@ License: MIT
 			return;
 		}
 		this.editorSetup = true;
-		
+
 		this.aceEditorEl = this.getSpot("ace-editor");
 		this.aceEditor = ace.edit(this.aceEditorEl.get(0));
 		this.aceEditor.setTheme("ace/theme/vibrant_ink");
@@ -503,51 +670,51 @@ License: MIT
 				enableSnippets: true,
 				enableLiveAutocompletion: false
 			});
-	});
+		});
 
-	
+
 
 		var tmpThis = this;
-		this.aceEditor.on('change', function(){
+		this.aceEditor.on('change', function () {
 			//--- ToDo: Check for actual changes to account for undo
 			//     and add a reset to original button for each session
 
 			var tmpIsDirty = false;
 			for (var aName in tmpThis.loaded.sessions) {
-				
-				if( (tmpThis.isCodeDirty(aName)) ){
-					
+
+				if ((tmpThis.isCodeDirty(aName))) {
+
 					tmpIsDirty = true;
 				}
 			}
 
 			tmpThis.setItemDisabled('btn-save-code', !tmpIsDirty)
 		})
-		
+
 	}
 
-	function markClean(){
+	function markClean() {
 		for (var aName in this.loaded.sessions) {
-			var tmpSession = this.loaded.sessions[aName];			
+			var tmpSession = this.loaded.sessions[aName];
 			this.loaded.codeIndex[aName] = tmpSession.getValue();
 			tmpSession.getUndoManager().markClean();
 		}
 	}
 
-	function isCodeDirty(theName){
+	function isCodeDirty(theName) {
 		var tmpSession = this.loaded.sessions[theName];
-		if( !tmpSession.getUndoManager().isClean() ){
-			 try {
-					var tmpCode = tmpSession.getValue();
-					var tmpOrig = this.loaded.codeIndex[theName];
-					if( tmpOrig == tmpCode ){
+		if (!tmpSession.getUndoManager().isClean()) {
+			try {
+				var tmpCode = tmpSession.getValue();
+				var tmpOrig = this.loaded.codeIndex[theName];
+				if (tmpOrig == tmpCode) {
 					tmpSession.getUndoManager().markClean();
-					} else {
-						return true;
-					}
-				} catch (error) {
+				} else {
 					return true;
-			 }			
+				}
+			} catch (error) {
+				return true;
+			}
 		}
 		return false;
 	}
@@ -588,15 +755,15 @@ License: MIT
 			code: tmpNewCodeIndex,
 			origCode: this.loaded.codeIndex
 		}
-		
+
 		ThisApp.apiCall({
 			url: '/design/ws/save-page',
 			data: tmpRequest
-		}).then(function(theReply){
+		}).then(function (theReply) {
 			tmpThis.setItemDisabled('btn-save-code', true);
 			tmpThis.markClean();
 		})
-	
+
 
 	}
 	function showCode(theParams) {

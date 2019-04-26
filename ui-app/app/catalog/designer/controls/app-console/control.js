@@ -11,8 +11,8 @@ License: MIT
 		},
 		"content": [
 			{
-				"ctl":"spot",
-				"name":"nav-tabs",
+				"ctl": "spot",
+				"name": "nav-tabs",
 				"text": "."
 			},
 			{
@@ -206,14 +206,24 @@ License: MIT
 							},
 							{
 								"ctl": "button",
-								"color": "blue",								
+								"color": "blue",
 								"onClick": {
 									"run": "action",
 									"action": "openInCode"
 								},
 								text: "Open in VS Code",
 								"name": "open-in-vs-code"
-							},							
+							},
+							{
+								"ctl": "button",
+								"color": "blue",
+								"onClick": {
+									"run": "action",
+									"action": "refreshSetupInfo"
+								},
+								text: "Refresh",
+								"name": "btn-refresh-setup"
+							},
 							{
 								"ctl": "divider",
 								"color": "blue",
@@ -239,7 +249,7 @@ License: MIT
 	var ControlCode = {
 		_onInit: _onInit,
 		promptAppSetup: promptAppSetup,
-		preLoad: preLoad, 
+		preLoad: preLoad,
 		setup: setup,
 		refreshPages: refreshPages,
 		refreshSetupInfo: refreshSetupInfo,
@@ -255,12 +265,12 @@ License: MIT
 		addPage, addPage,
 		promptForSetupInfo: promptForSetupInfo
 	};
-	
-	function _onInit(){
+
+	function _onInit() {
 		this.parts.pages.subscribe('selectMe', onPageSelect.bind(this))
 	}
 
-	function onPageSelect(theEvent, theControl, theTarget){
+	function onPageSelect(theEvent, theControl, theTarget) {
 		this.publish('selected', [theControl, theTarget])
 	}
 
@@ -271,26 +281,32 @@ License: MIT
 		var tmpPage = this.context.page.controller;
 		tmpPage.getPanel('frmNewPage').prompt(
 			{
-					isNew: true,
-					doc: { template: 'DefaultPage' }
+				isNew: true,
+				doc: { template: 'DefaultPage' }
 			}
-	).then(function (theSubmitted, theData) {
+		).then(function (theSubmitted, theData) {
 			if (!theSubmitted) {
-					return;
+				return;
 			}
 
 			theData.target = 'app';
 			theData.appname = tmpAppName;
-			console.log( 'theData', theData);
+			console.log('theData', theData);
 			ThisApp.common.apiCall({
-					url: '/design/ws/new-page?run',
-					data: theData
+				url: '/design/ws/new-page?run',
+				data: theData
 			}).then(function (theReply) {
-					tmpThis.refreshPages();
+				tmpThis.refreshAll();
 			})
 
-	})
+		})
 
+	}
+
+	ControlCode.refreshAll = refreshAll;
+	function refreshAll() {
+		this.refreshPages();
+		this.refreshSetupInfo();
 	}
 
 	function promptAppSetup(theParams, theTarget) {
@@ -408,20 +424,20 @@ License: MIT
 	};
 
 
-	
-	function openInCode(){
+
+	function openInCode() {
 		var tmpAppName = this.params.appname || ''
 		if (!(tmpAppName)) {
 			alert("No app to open");
 			return;
 		}
-			if( !(tmpAppName) ){
-					alert("No app to open");
-					return;
-			}
-			ThisApp.apiCall({url: '/design/ws/launch-app?appname=' + tmpAppName})
+		if (!(tmpAppName)) {
+			alert("No app to open");
+			return;
+		}
+		ThisApp.apiCall({ url: '/design/ws/launch-app?appname=' + tmpAppName })
 	};
-	
+
 
 	function preLoad(theDetails) {
 		var tmpAppName = theDetails.appname || '';
@@ -435,7 +451,7 @@ License: MIT
 
 		this.controlConfig.index.controls.pages.controlname += tmpAppName
 		this.controlConfig.index.controls.resources.controlname += tmpAppName
-		
+
 		this.controlConfig.index.controls.setupinfo.controlname += tmpAppName
 		var tmpAppTitle = tmpAppName
 		if (tmpTitle) {
@@ -447,23 +463,22 @@ License: MIT
 			target: "app" + tmpAppName
 		}
 	}
-		//---- Initial Setup of the control
+	//---- Initial Setup of the control
 	function setup(theDetails) {
-	
 
 		this.refreshTabNav();
-		
+
 	}
 
 	function refreshTabNav() {
-		
+
 		this.details = this.details || {};
 		var tmpAppName = this.details.appname || '';
-	
+
 		var tmpHTML = [];
 		tmpHTML.push('<div class="pad0 ui top attached tabular tab-nav menu" style="">');
 		tmpHTML.push('<a appuse="tablinks" group="workspace-outline" item="workspace" action="selectMe" class="item black"><i class="icon hdd black"></i> </a>');
-		if( tmpAppName ){
+		if (tmpAppName) {
 			tmpHTML.push('<a appuse="tablinks" group="workspace-outline" item="' + tmpAppName + '" appname="' + tmpAppName + '" pageaction="showAppConsole" class="item black  "><i class="icon globe blue"></i> ' + tmpAppName + '</a>');
 		}
 		tmpHTML.push('</div><div class="ui divider fitted black"></div>')
@@ -478,7 +493,7 @@ License: MIT
 	}
 
 	function refreshPages() {
-		console.log( 'refreshPages', this);
+		console.log('refreshPages', this);
 		this.parts.pages.refreshFromURI();
 	}
 
@@ -489,8 +504,8 @@ License: MIT
 		return this.parts.setupinfo.getData();
 	}
 
-//~ControlCode~//~
-	
+	//~ControlCode~//~
+
 	var ThisControl = { specs: ControlSpecs, options: { proto: ControlCode, parent: ThisApp } };
 	return ThisControl;
 })(ActionAppCore, $);

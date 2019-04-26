@@ -1,18 +1,16 @@
 {
-	"name": "default",
-	"title": "Default Application",
-	"pages": [
-		"HomePage",
-		"LogsPage"
-	],
-	"plugins": [
-		"DataTables"
-	],
-	"cdn": "local",
-	"libraries": [
-		"DataTables",
-		"Ace"
-	],
-	"required": {},
-	"extend": {}
+  "pages": [
+    "Home"
+  ],
+  "title": "Default Application",
+  "prefix": "",
+  "name": "default",
+  "cdn": "local",
+  "libraries": [
+    "DataTables",
+    "Ace"
+  ],
+  "plugins": [
+    "DataTables"
+  ]
 }

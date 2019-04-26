@@ -76,12 +76,17 @@ module.exports.setup = function setup(scope) {
                 var tmpPageBase = tmpPagesBase + tmpPageName ;
 
                 var tmpContentBase = tmpPageBase + '/' + tmpResDetails.dir;
+                console.log( 'tmpContentBase', tmpContentBase);
+                $.await($.fs.ensureDir(tmpContentBase + '/'));
+
                 var tmpFN = tmpContentBase + '/' + tmpResName;
-                
-                console.log( 'tmpResDetails', tmpResDetails);
-                if( tmpResDetails.name == "Control"){
+
+                if( tmpResDetails.name == "Control" ){
+                    $.await($.fs.ensureDir(tmpFN + '/'));
+                }
+
+                if( tmpResDetails.name == "Control" && !(tmpResDetails.name.endsWith('.js'))){
                     tmpFN += '/control.js';
-                    console.log( 'added control', tmpFN);
                 }
 
                 $.await($.fs.writeFile(tmpFN, tmpReq.content));

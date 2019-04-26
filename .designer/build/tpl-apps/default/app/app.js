@@ -2,7 +2,7 @@
 
   ThisApp = null;
 
-  var tmpPageNames = ["HomePage","LogsPage"];
+  var tmpPageNames = ["Home"];
 
   var tmpPluginNames = ["DataTables"];
 
