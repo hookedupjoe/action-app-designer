@@ -70,72 +70,34 @@ License: MIT
 				],
 				center: [
 					{
-						"ctl": "tabs",
-						"name": "pagetabs",
-						"layout": true,
-						slim: true,
-						"tabs": [
+						ctl: "layout",
+						name: "layout",
+						center: [
 							{
-								"label": "Content",
-								"name": "pagetabs-one",
-								"ctl": "tab",
-								"content": [
-									{
-										ctl: "layout",
-										name: "layout",
-										center: [
-											{
-												ctl: "spot",
-												name: "preview-area",
-												text: "Preview"
-											}
-										],
-										east: [
-											{
-												ctl: "spot",
-												name: "controls-area",
-												text: "Controls"
-											}
-										],
-										west: [
-											{
-												ctl: "spot",
-												name: "ace-editor",
-												text: ""
-											}
-
-										],
-										rem_north: [
-											{
-												"ctl": "field",
-												"name": "code-title",
-												"fluid": true,
-												"readonly": true,
-												"inputClasses": "title",
-												"default": "Resource Editor",
-												"placeholder": "",
-												"content": [
-
-												]
-											}
-										]
-
-									}
-								]
-							},
-							{
-								"label": "Info",
-								"name": "pagetabs-info",
-								"ctl": "tab",
-								"content": [
-
-								]
+								ctl: "spot",
+								name: "preview-area",
+								text: "Preview"
 							}
+						],
+						east: [
+							{
+								ctl: "spot",
+								name: "controls-area",
+								text: "Controls"
+							}
+						],
+						west: [
+							{
+								ctl: "spot",
+								name: "ace-editor",
+								text: ""
+							}
+
 						]
+
 					}
 				]
 			}
-
 		]
 
 	}

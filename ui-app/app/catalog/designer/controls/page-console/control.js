@@ -305,6 +305,34 @@ License: MIT
 							"ctl": "tab",
 							"content": [
 								{
+									"ctl": "button",
+									"color": "blue",
+									"size": "small",
+									compact: true,
+									"onClick": {
+										"run": "action",
+										"action": "addPageResource"
+									},
+									"labeled": true,
+									"right": true,
+									"icon": "plus",
+									"name": "btn-add-resource",
+									"text": "Add Resource"
+								},
+								{
+									"ctl": "button",
+									"size": "small",
+									compact: true,
+									"onClick": {
+										"run": "action",
+										"action": "refreshResources"
+									},
+									"basic": true,
+									"icon": "recycle",
+									"name": "btn-refresh-pages",
+									"text": "Refresh"
+								},
+								{
 									"ctl": "panel",
 									"controlname": "design/ws/get-ws-outline?type=resources&appname=app001&pagename=HomePage",
 									"name": "resources"
@@ -334,9 +362,18 @@ License: MIT
 		setupEditor: setupEditor,
 		refreshTabNav: refreshTabNav,
 		_onInit: _onInit,
-		_onParentResize: _onParentResize
+		_onParentResize: _onParentResize,
+		refreshResources: refreshResources,
+		addPageResource: addPageResource
 	};
 
+	function refreshResources() {
+		this.parts.resources.refreshFromURI();
+	}
+	function addPageResource() {
+		console.log( 'addPageResource');
+	}
+	
 	function _onParentResize(){
 		var tmpThis = this;
 		ThisApp.delay(200).then(function(theReply){
