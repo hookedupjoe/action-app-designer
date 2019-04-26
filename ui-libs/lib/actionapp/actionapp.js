@@ -7758,7 +7758,7 @@ License: MIT
             var tmpObject = theObject || {};
             var tmpNewContent = [];
 
-            var tmpFuncGetHeaderAndContent = function (theType, theDetails, theMeta, theContent, theLevel, theGroup, theItem, theIcon, theColor) {
+          var tmpFuncGetHeaderAndContent = function (theType, theDetails, theMeta, theContent, theLevel, theGroup, theItem, theIcon, theColor) {
                 var tmpIconNode = false;
                 var tmpColSpanDetails = "3";
                 var tmpHasContent = true;
@@ -7768,27 +7768,9 @@ License: MIT
 
                 var tmpOLUse = 'select';
 
-                var tmpToggleAction = 'action="outlineDisplay" select="false"';
-
-                var tmpToggleAttrs = {
-                    action: "outlineDisplay",
-                    select: "false",
-                    group: theGroup,
-                    item: "",
-                    type: theType,
-                    oluse: tmpOLUse
-                }
-
                 if (theLevel == 2) {
                     tmpColSpanDetails = "4";
-                    //tmpToggleAction = 'action="toggleMe"'
-                    tmpToggleAttrs = {
-                        action: "toggleMe",
-                        group: theGroup,
-                        item: "",
-                        type: theType,
-                        oluse: tmpOLUse
-                    }
+
                     //tmpRowAttr.oluse = "collapsable";
                     tmpOLUse = "collapsable";
                     tmpIconNode = {
@@ -7880,33 +7862,29 @@ License: MIT
 
                 }
 
-
-                var tmpCE = {
-                    ctl: "tr",
-                    classes: "",
-                    content: tmpBodyCols
-                }
-
-                if (theItem) {
-                    tmpCE.attr = {
-                        action: "selectMe",
-                        group: theGroup,
-                        item: theItem,
-                        type: theType,
-                        oluse: tmpOLUse
-                    };
-                    if (isObj(tmpObject.attr)) {
-                        $.extend(tmpCE.attr, tmpObject.attr);
+                var tmpAttrAction = 'selectMe';
+                if( !theItem ){
+                    tmpAttrAction = 'toggleMe';
+                    if( theLevel == 3 ){
+                        tmpAttrAction = 'outlineDisplay';
                     }
-                } else {
-                    tmpCE.attr = tmpToggleAttrs;
                 }
-
                 var tmpFinalContent = [
-                    tmpCE
+                    {
+                        ctl: "tr",
+                        classes: "",
+                        attr: $.extend({
+                            action: tmpAttrAction,
+                            select: "false",
+                            group: theGroup,
+                            item: theItem,
+                            type: theType,
+                            oluse: tmpOLUse
+                        }, (tmpObject.attr || {})),
+                        content: tmpBodyCols
+                    }
                 ]
-
-
+               
                 if (tmpHasContent) {
                     tmpFinalContent.push(tmpFinalNode)
                 }
@@ -7924,6 +7902,7 @@ License: MIT
 
                 return tmpHeaderAndContent;
             }
+
 
 
             tmpNewContent.push(tmpFuncGetHeaderAndContent(
