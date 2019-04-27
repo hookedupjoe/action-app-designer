@@ -622,6 +622,14 @@ License: MIT
 			this.loadSpot('nav-tabs', tmpHTML.join(''))
 		}
 	}
+
+	
+	ControlCode.refreshOnActivate = refreshOnActivate;
+	function refreshOnActivate() {
+		this.refreshTabNav();
+	}
+
+	
 	function uniqueGroups(theUniqueness) {
 		var tmpIndex = this.getIndex();
 		if (tmpIndex && tmpIndex.items) {

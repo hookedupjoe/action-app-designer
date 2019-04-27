@@ -265,6 +265,7 @@ License: MIT
 
         if (loadedPages[tmpEntryName]) {
             var tmpTabAttr = { group: wsOutlineName, item: tmpEntryName };
+            loadedPages[tmpEntryName].refreshOnActivate();
             ThisApp.gotoTab(tmpTabAttr);
         } else {
             var tmpNewPage = ThisPage.getControl('pageConsole').create(tmpEntryName);
@@ -439,7 +440,7 @@ License: MIT
                 }
                 var tmpPageFN = tmpAppName + '-' + tmpPageName;
                 if (!(tmpAppsIndex[tmpPageFN]) && tmpForAppName == tmpAppName) {
-                    if( !(tmpForPageName) || tmpPageName ){
+                    if( !(tmpForPageName) || (tmpForPageName && (tmpPageName == tmpForPageName) ) ){
                         tmpHTML.push('<a appuse="tablinks" group="workspace-outline" item="' + tmpAppName + '-' + tmpPageName + '" appname="' + tmpAppName + '" pagename="' + tmpPageName + '" pageaction="showPageConsole" class="item black"><i class="icon columns green"></i> ' + tmpPageName + '</a>');
                         tmpAppsIndex[tmpPageFN] = true;
                     }
@@ -467,7 +468,7 @@ License: MIT
                 }
                 var tmpPageFN = tmpAppName + '-' + tmpPageName;
                 if (!(tmpAppsIndex[tmpPageFN]) && tmpForAppName == tmpAppName) {
-                    if( !(tmpForPageName) || tmpPageName ){
+                    if( !(tmpForPageName) || (tmpForPageName && (tmpPageName == tmpForPageName) ) ){
                         tmpHTML.push('<a appuse="tablinks" group="workspace-outline" item="' + tmpAppName + '-' + tmpPageName + '" appname="' + tmpAppName + '" pagename="' + tmpPageName + '" pageaction="showPageConsole" class="item black"><i class="icon columns green"></i> ' + tmpPageName + '</a>');
                         tmpAppsIndex[tmpPageFN] = true;
                     }
