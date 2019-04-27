@@ -216,6 +216,8 @@ License: MIT
 
 		if ((tmpAppName || tmpPageName) && tmpResName) {
 			var tmpHTML = [];
+			var tmpIcon = ThisApp.controls.detailsIndex.getDetails(tmpResType).icon;
+
 			tmpHTML.push('<div class="pad0 ui top attached tabular tab-nav menu" style="">');
 			if (tmpAppName) {
 				tmpHTML.push('<a appuse="tablinks" group="workspace-outline" item="' + tmpAppName + '" appname="' + tmpAppName + '" pageaction="showAppConsole" class="item black  "><i class="icon globe blue"></i> ' + tmpAppName + '</a>');
@@ -223,7 +225,7 @@ License: MIT
 			if (tmpPageName) {
 				tmpHTML.push('<a appuse="tablinks" group="workspace-outline" item="' + tmpAppName + '-' + tmpPageName + '" appname="' + tmpAppName + '" pagename="' + tmpPageName + '" pageaction="showPageConsole" class="item black"><i class="icon columns green"></i> ' + tmpPageName + '</a>');
 			}
-			tmpHTML.push('<a appuse="tablinks" group="workspace-outline" item="' + tmpAppName + '-' + tmpPageName + '-' + tmpResName + '" class="item black"><i class="icon box purple"></i> ' + tmpResName + '</a>')
+			tmpHTML.push('<a appuse="tablinks" group="workspace-outline" item="' + tmpAppName + '-' + tmpPageName + '-' + tmpResName + '" class="item black"><i class="icon ' + tmpIcon + ' purple"></i> ' + tmpResName + '</a>')
 			tmpHTML.push('</div><div class="ui divider fitted black"></div>')
 			tmpHTML = tmpHTML.join('\n');
 			this.loadSpot('nav-tabs', tmpHTML)

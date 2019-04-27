@@ -478,11 +478,14 @@ License: MIT
                 //--- If this is showing nav for the page, show resources
                 if (tmpForPageName) {
                     var tmpResName = tmpRes.details.resname;
+                    var tmpResType = tmpRes.details.restype;
                     var tmpResFN = tmpAppName + '-' + tmpPageName + '-' + tmpResName;
 
                     if (!(tmpAppsIndex[tmpResFN]) && (tmpForAppName == tmpAppName)) {
                         if (tmpPageName == tmpForPageName) {
-                            tmpHTML.push('<a appuse="tablinks" group="workspace-outline" item="' + tmpAppName + '-' + tmpPageName + '-' + tmpResName + '" appname="' + tmpAppName + '" pagename="' + tmpPageName + '"  resname="' + tmpResName + '" pageaction="showResourceConsole"    class="item black"><i class="icon box purple"></i> ' + tmpResName + '</a>')
+                            var tmpIcon = ThisApp.controls.detailsIndex.getDetails(tmpResType).icon;
+
+                            tmpHTML.push('<a appuse="tablinks" group="workspace-outline" item="' + tmpAppName + '-' + tmpPageName + '-' + tmpResName + '" appname="' + tmpAppName + '" pagename="' + tmpPageName + '"  resname="' + tmpResName + '" pageaction="showResourceConsole"    class="item black"><i class="icon ' + tmpIcon + ' purple"></i> ' + tmpResName + '</a>')
                             tmpAppsIndex[tmpResFN] = true;
                         }
                     }
