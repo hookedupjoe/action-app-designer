@@ -440,7 +440,7 @@ License: MIT
                 }
                 var tmpPageFN = tmpAppName + '-' + tmpPageName;
                 if (!(tmpAppsIndex[tmpPageFN]) && tmpForAppName == tmpAppName) {
-                    if( !(tmpForPageName) || (tmpForPageName && (tmpPageName == tmpForPageName) ) ){
+                    if (!(tmpForPageName) || (tmpForPageName && (tmpPageName == tmpForPageName))) {
                         tmpHTML.push('<a appuse="tablinks" group="workspace-outline" item="' + tmpAppName + '-' + tmpPageName + '" appname="' + tmpAppName + '" pagename="' + tmpPageName + '" pageaction="showPageConsole" class="item black"><i class="icon columns green"></i> ' + tmpPageName + '</a>');
                         tmpAppsIndex[tmpPageFN] = true;
                     }
@@ -467,12 +467,27 @@ License: MIT
                     tmpPageName = tmpRes.details.pagename
                 }
                 var tmpPageFN = tmpAppName + '-' + tmpPageName;
+
                 if (!(tmpAppsIndex[tmpPageFN]) && tmpForAppName == tmpAppName) {
-                    if( !(tmpForPageName) || (tmpForPageName && (tmpPageName == tmpForPageName) ) ){
+                    if (!(tmpForPageName) || (tmpForPageName && (tmpPageName == tmpForPageName))) {
                         tmpHTML.push('<a appuse="tablinks" group="workspace-outline" item="' + tmpAppName + '-' + tmpPageName + '" appname="' + tmpAppName + '" pagename="' + tmpPageName + '" pageaction="showPageConsole" class="item black"><i class="icon columns green"></i> ' + tmpPageName + '</a>');
                         tmpAppsIndex[tmpPageFN] = true;
                     }
                 }
+
+                //--- If this is showing nav for the page, show resources
+                if (tmpForPageName) {
+                    var tmpResName = tmpRes.details.resname;
+                    var tmpResFN = tmpAppName + '-' + tmpPageName + '-' + tmpResName;
+
+                    if (!(tmpAppsIndex[tmpResFN]) && (tmpForAppName == tmpAppName)) {
+                        if (tmpPageName == tmpForPageName) {
+                            tmpHTML.push('<a appuse="tablinks" group="workspace-outline" item="' + tmpAppName + '-' + tmpPageName + '-' + tmpResName + '" appname="' + tmpAppName + '" pagename="' + tmpPageName + '"  resname="' + tmpResName + '" pageaction="showResourceConsole"    class="item black"><i class="icon box purple"></i> ' + tmpResName + '</a>')
+                            tmpAppsIndex[tmpResFN] = true;
+                        }
+                    }
+                }
+
 
             }
 
