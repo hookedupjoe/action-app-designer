@@ -15,18 +15,6 @@ License: MIT
 					{
 						"ctl": "spot",
 						"name": "nav-tabs"
-					},
-					{
-						"ctl": "field",
-						"name": "title",
-						"fluid": true,
-						"readonly": true,
-						"inputClasses": "title",
-						"default": "Page",
-						"placeholder": "",
-						"content": [
-							
-						]
 					}
 				],
 				center: [

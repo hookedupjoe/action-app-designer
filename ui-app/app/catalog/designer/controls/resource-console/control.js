@@ -73,7 +73,8 @@ License: MIT
 							},
 							{
 								ctl: "divider",
-								fitted: true
+								fitted: true,
+								clearing: true
 							},
 							{
 								ctl: "spot",

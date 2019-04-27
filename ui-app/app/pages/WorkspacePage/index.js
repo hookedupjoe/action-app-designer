@@ -136,6 +136,7 @@ License: MIT
     function refreshWorkspace() {
         ThisPage.parts.west.parts.workspace.refreshFromURI();
         ThisPage.parts.center.parts.workspace.refreshFromURI();
+        ThisPage.refreshNavTabs();
     };
 
 
@@ -236,6 +237,7 @@ License: MIT
             tmpNewResource.preLoad(tmpParams);
             tmpNewResource.loadToElement(tmpNewGroup).then(function (theReply) {
                 tmpNewResource.setup(tmpParams);
+                ThisPage.refreshNavTabs();
             });
             //--- Go to the newly added card (to show it and hide others)
             ThisApp.gotoTab(tmpTabAttr);
@@ -287,6 +289,7 @@ License: MIT
             tmpNewPage.preLoad(tmpParams);
             tmpNewPage.loadToElement(tmpNewGroup).then(function (theReply) {
                 tmpNewPage.setup(tmpParams);
+                ThisPage.refreshNavTabs();
             });
             //--- Go to the newly added card (to show it and hide others)
             ThisApp.gotoTab(tmpTabAttr);
@@ -398,6 +401,7 @@ License: MIT
         tmpHTML.push('<div class="pad0 ui top attached tabular tab-nav menu" style="">');
         tmpHTML.push('<a appuse="tablinks" group="workspace-outline" item="workspace" action="selectMe" class="item black"><i class="icon hdd black"></i> </a>');
 
+        var tmpAppsIndex = {}
         if (ThisApp.util.isObj(theDetails)) {
             console.log('theDetails', theDetails);
         } else {
@@ -410,6 +414,30 @@ License: MIT
                 if (tmpApp.details && tmpApp.details.appname) {
                     tmpAppName = tmpApp.details.appname;
                     tmpHTML.push('<a appuse="tablinks" group="workspace-outline" item="' + tmpAppName + '" appname="' + tmpAppName + '" pageaction="showAppConsole" class="item black  "><i class="icon globe blue"></i> ' + tmpAppName + '</a>');
+                    tmpAppsIndex[tmpAppName] = true;
+                }
+            }
+            for (var iPos in loadedPages) {
+                var tmpPage = loadedPages[iPos]
+                var tmpAppName = '';
+                if (tmpPage.details && tmpPage.details.appname) {
+                    tmpAppName = tmpPage.details.appname;
+                    if( !(tmpAppsIndex[tmpAppName])){
+                        tmpHTML.push('<a appuse="tablinks" group="workspace-outline" item="' + tmpAppName + '" appname="' + tmpAppName + '" pageaction="showAppConsole" class="item black  "><i class="icon globe blue"></i> ' + tmpAppName + '</a>');
+                        tmpAppsIndex[tmpAppName] = true;
+                    }
+                }
+            }
+            for (var iPos in loadedResources) {
+                var tmpRes = loadedResources[iPos]
+                console.log('tmpRes', tmpRes);
+                var tmpAppName = '';
+                if (tmpRes.details && tmpRes.details.appname) {
+                    tmpAppName = tmpRes.details.appname;
+                    if( !(tmpAppsIndex[tmpAppName])){
+                        tmpHTML.push('<a appuse="tablinks" group="workspace-outline" item="' + tmpAppName + '" appname="' + tmpAppName + '" pageaction="showAppConsole" class="item black  "><i class="icon globe blue"></i> ' + tmpAppName + '</a>');
+                        tmpAppsIndex[tmpAppName] = true;
+                    }
                 }
             }
         }
