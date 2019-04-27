@@ -9,71 +9,78 @@ License: MIT
 			padding: false
 		},
 		"content": [
-			{
+		{
+			ctl: "layout",
+			name: "layout",
+			north: [{
 				ctl: "div",
 				attr: {
 					pagespot: "nav-tabs",
 					text: ""
 				}
-			},
-			{
-				ctl: "div",
-				attr: {
-					pagespot: "body"
-				},
-				content: [
-					{
-						ctl: "div",
-						attr: {
-							appuse: "cards",
-							group: "workspace-outline",
-							item: "workspace"
-						},
-						content: [
-							{
-								ctl: "segment",
-								basic: true,
-								slim: true,
-								content: [
-								
-									{
-										ctl: "title",
-										icon: "hdd",
-										color: "black",
-										size: "large",
-										text: "Designer Workspace"
-									},
-									{
-										ctl: "segment",
-										basic: true,
-										slim: true,
-										content: [
-											{
-												"ctl": "button",
-												"color": "blue",
-												"size": "large",
-												"pageaction": "addApp",
-												"labeled": true,
-												"right": true,
-												"icon": "globe",
-												"name": "btn-new-app",
-												"text": "New Application"
-											},
-											{
-												"ctl": "panel",
-												"controlname": "design/ws/get-ws-outline",
-												"name": "workspace"
-											}
-
-										]
-									}
-
-								]
-							}
-						]
-					}
-				]
-			}
+			}],
+			center: [
+				
+				{
+					ctl: "div",
+					attr: {
+						pagespot: "body"
+					},
+					content: [
+						{
+							ctl: "div",
+							attr: {
+								appuse: "cards",
+								group: "workspace-outline",
+								item: "workspace"
+							},
+							content: [
+								{
+									ctl: "segment",
+									basic: true,
+									slim: true,
+									content: [
+									
+										{
+											ctl: "title",
+											icon: "hdd",
+											color: "black",
+											size: "large",
+											text: "Designer Workspace"
+										},
+										{
+											ctl: "segment",
+											basic: true,
+											slim: true,
+											content: [
+												{
+													"ctl": "button",
+													"color": "blue",
+													"size": "large",
+													"pageaction": "addApp",
+													"labeled": true,
+													"right": true,
+													"icon": "globe",
+													"name": "btn-new-app",
+													"text": "New Application"
+												},
+												{
+													"ctl": "panel",
+													"controlname": "design/ws/get-ws-outline",
+													"name": "workspace"
+												}
+	
+											]
+										}
+	
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		}
 		]
 	}
 
