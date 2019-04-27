@@ -149,11 +149,11 @@ License: MIT
             alert("No app name provided to open");
             return;
         }
-        console.log( 'tmpParams', tmpParams);
         var tmpAppTitle = tmpParams.apptitle || tmpParams.title || tmpAppName;
 
         if (loadedApps[tmpAppName]) {
             var tmpTabAttr = { group: wsOutlineName, item: tmpAppName };
+            loadedApps[tmpAppName].refreshOnActivate();
             ThisApp.gotoTab(tmpTabAttr);
         } else {
             var tmpNewApp = ThisPage.getControl('panelAppConsole').create('app-' + tmpAppName);
@@ -366,13 +366,13 @@ License: MIT
     function addWSResource(theParams, theTarget) {
         var tmpParams = ThisApp.getActionParams(theParams, theTarget, ['restype'])
         var tmpType = tmpParams.restype || '';
-        console.log('tmpType', tmpType);
+        console.log('Not het implemented', tmpType);
     };
 
     actions.closePage = closePage;
     function closePage(theParams, theTarget) {
         var tmpParams = ThisApp.getActionParams(theParams, theTarget, ['appname', 'pagename']);
-        console.log('closePage', tmpParams);
+        console.log('closePage - Not het implemented', tmpParams);
     };
 
 
@@ -388,64 +388,147 @@ License: MIT
             return;
         }
         if (tmpItem == 'workspace') {
-            refreshNavTabs();
+            ThisPage.refreshNavTabs();
         }
-        console.log('tmpItem', tmpItem);
-
     }
 
     ThisPage.refreshNavTabs = refreshNavTabs
     function refreshNavTabs(theDetails) {
 
+        var tmpHTML = this.getNavTabs(theDetails);
+        tmpHTML = tmpHTML.join('\n');
+        ThisPage.loadSpot('nav-tabs', tmpHTML)
+    }
+
+
+    ThisPage.getSubNavTabs = getSubNavTabs
+    function getSubNavTabs(theDetails) {
+        var tmpAppsIndex = {};
         var tmpHTML = [];
         tmpHTML.push('<div class="pad0 ui top attached tabular tab-nav menu" style="">');
-        tmpHTML.push('<a appuse="tablinks" group="workspace-outline" item="workspace" action="selectMe" class="item black"><i class="icon hdd black"></i> </a>');
+
+        var tmpForAppName = theDetails.appname || '';
+        var tmpForPageName = theDetails.pagename || '';
+
+        for (var iPos in loadedApps) {
+            var tmpApp = loadedApps[iPos]
+            var tmpAppName = '';
+            if (tmpApp.details && tmpApp.details.appname) {
+                tmpAppName = tmpApp.details.appname;
+                if (!(tmpAppsIndex[tmpForAppName]) && tmpForAppName == tmpAppName) {
+                    tmpHTML.push('<a appuse="tablinks" group="workspace-outline" item="' + tmpAppName + '" appname="' + tmpAppName + '" pageaction="showAppConsole" class="item black  "><i class="icon globe blue"></i> ' + tmpAppName + '</a>');
+                }
+                tmpAppsIndex[tmpAppName] = true;
+            }
+        }
+        for (var iPos in loadedPages) {
+            var tmpPage = loadedPages[iPos]
+            var tmpAppName = '';
+            if (tmpPage.details && tmpPage.details.appname) {
+                tmpAppName = tmpPage.details.appname
+            }
+            if (!(tmpAppsIndex[tmpAppName]) && tmpForAppName == tmpAppName) {
+                tmpHTML.push('<a appuse="tablinks" group="workspace-outline" item="' + tmpAppName + '" appname="' + tmpAppName + '" pageaction="showAppConsole" class="item black  "><i class="icon globe blue"></i> ' + tmpAppName + '</a>');
+                tmpAppsIndex[tmpAppName] = true;
+            }
+
+            if (tmpAppName) {
+                var tmpPageName = '';
+                if (tmpPage.details && tmpPage.details.pagename) {
+                    tmpPageName = tmpPage.details.pagename
+                }
+                var tmpPageFN = tmpAppName + '-' + tmpPageName;
+                if (!(tmpAppsIndex[tmpPageFN]) && tmpForAppName == tmpAppName) {
+                    if( !(tmpForPageName) || tmpPageName ){
+                        tmpHTML.push('<a appuse="tablinks" group="workspace-outline" item="' + tmpAppName + '-' + tmpPageName + '" appname="' + tmpAppName + '" pagename="' + tmpPageName + '" pageaction="showPageConsole" class="item black"><i class="icon columns green"></i> ' + tmpPageName + '</a>');
+                        tmpAppsIndex[tmpPageFN] = true;
+                    }
+                }
+
+            }
+
+
+        }
+        for (var iPos in loadedResources) {
+            var tmpRes = loadedResources[iPos]
+            var tmpAppName = '';
+            if (tmpRes.details && tmpRes.details.appname) {
+                tmpAppName = tmpRes.details.appname
+            }
+            if (!(tmpAppsIndex[tmpAppName]) && tmpForAppName == tmpAppName) {
+                tmpHTML.push('<a appuse="tablinks" group="workspace-outline" item="' + tmpAppName + '" appname="' + tmpAppName + '" pageaction="showAppConsole" class="item black  "><i class="icon globe blue"></i> ' + tmpAppName + '</a>');
+                tmpAppsIndex[tmpAppName] = true;
+            }
+
+            if (tmpAppName) {
+                var tmpPageName = '';
+                if (tmpRes.details && tmpRes.details.pagename) {
+                    tmpPageName = tmpRes.details.pagename
+                }
+                var tmpPageFN = tmpAppName + '-' + tmpPageName;
+                if (!(tmpAppsIndex[tmpPageFN]) && tmpForAppName == tmpAppName) {
+                    if( !(tmpForPageName) || tmpPageName ){
+                        tmpHTML.push('<a appuse="tablinks" group="workspace-outline" item="' + tmpAppName + '-' + tmpPageName + '" appname="' + tmpAppName + '" pagename="' + tmpPageName + '" pageaction="showPageConsole" class="item black"><i class="icon columns green"></i> ' + tmpPageName + '</a>');
+                        tmpAppsIndex[tmpPageFN] = true;
+                    }
+                }
+
+            }
+
+        }
+
+        tmpHTML.push('</div><div class="ui divider fitted black"></div>')
+
+
+        return tmpHTML
+    }
+
+
+    ThisPage.getNavTabs = getNavTabs
+    function getNavTabs() {
+
+        var tmpHTML = [];
+        tmpHTML.push('<div class="pad0 ui top attached tabular tab-nav menu" style="">');
 
         var tmpAppsIndex = {}
-        if (ThisApp.util.isObj(theDetails)) {
-            console.log('theDetails', theDetails);
-        } else {
-            //---- Show Open Apps as tabs
-            console.log('openapps', loadedApps);
-            for (var iPos in loadedApps) {
-                var tmpApp = loadedApps[iPos]
-                console.log('tmpApp', tmpApp);
-                var tmpAppName = '';
-                if (tmpApp.details && tmpApp.details.appname) {
-                    tmpAppName = tmpApp.details.appname;
+        tmpHTML.push('<a appuse="tablinks" group="workspace-outline" item="workspace" action="selectMe" class="item black"><i class="icon hdd black"></i> </a>');
+
+        for (var iPos in loadedApps) {
+            var tmpApp = loadedApps[iPos]
+            var tmpAppName = '';
+            if (tmpApp.details && tmpApp.details.appname) {
+                tmpAppName = tmpApp.details.appname;
+                tmpHTML.push('<a appuse="tablinks" group="workspace-outline" item="' + tmpAppName + '" appname="' + tmpAppName + '" pageaction="showAppConsole" class="item black  "><i class="icon globe blue"></i> ' + tmpAppName + '</a>');
+                tmpAppsIndex[tmpAppName] = true;
+            }
+        }
+        for (var iPos in loadedPages) {
+            var tmpPage = loadedPages[iPos]
+            var tmpAppName = '';
+            if (tmpPage.details && tmpPage.details.appname) {
+                tmpAppName = tmpPage.details.appname;
+                if (!(tmpAppsIndex[tmpAppName])) {
                     tmpHTML.push('<a appuse="tablinks" group="workspace-outline" item="' + tmpAppName + '" appname="' + tmpAppName + '" pageaction="showAppConsole" class="item black  "><i class="icon globe blue"></i> ' + tmpAppName + '</a>');
                     tmpAppsIndex[tmpAppName] = true;
                 }
             }
-            for (var iPos in loadedPages) {
-                var tmpPage = loadedPages[iPos]
-                var tmpAppName = '';
-                if (tmpPage.details && tmpPage.details.appname) {
-                    tmpAppName = tmpPage.details.appname;
-                    if( !(tmpAppsIndex[tmpAppName])){
-                        tmpHTML.push('<a appuse="tablinks" group="workspace-outline" item="' + tmpAppName + '" appname="' + tmpAppName + '" pageaction="showAppConsole" class="item black  "><i class="icon globe blue"></i> ' + tmpAppName + '</a>');
-                        tmpAppsIndex[tmpAppName] = true;
-                    }
-                }
-            }
-            for (var iPos in loadedResources) {
-                var tmpRes = loadedResources[iPos]
-                console.log('tmpRes', tmpRes);
-                var tmpAppName = '';
-                if (tmpRes.details && tmpRes.details.appname) {
-                    tmpAppName = tmpRes.details.appname;
-                    if( !(tmpAppsIndex[tmpAppName])){
-                        tmpHTML.push('<a appuse="tablinks" group="workspace-outline" item="' + tmpAppName + '" appname="' + tmpAppName + '" pageaction="showAppConsole" class="item black  "><i class="icon globe blue"></i> ' + tmpAppName + '</a>');
-                        tmpAppsIndex[tmpAppName] = true;
-                    }
+        }
+        for (var iPos in loadedResources) {
+            var tmpRes = loadedResources[iPos]
+            var tmpAppName = '';
+            if (tmpRes.details && tmpRes.details.appname) {
+                tmpAppName = tmpRes.details.appname;
+                if (!(tmpAppsIndex[tmpAppName])) {
+                    tmpHTML.push('<a appuse="tablinks" group="workspace-outline" item="' + tmpAppName + '" appname="' + tmpAppName + '" pageaction="showAppConsole" class="item black  "><i class="icon globe blue"></i> ' + tmpAppName + '</a>');
+                    tmpAppsIndex[tmpAppName] = true;
                 }
             }
         }
 
         tmpHTML.push('</div><div class="ui divider fitted black"></div>')
-        tmpHTML = tmpHTML.join('\n');
-        ThisPage.loadSpot('nav-tabs', tmpHTML)
-    }
 
+
+        return tmpHTML
+    }
 
 })(ActionAppCore, $);

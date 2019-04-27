@@ -477,19 +477,17 @@ License: MIT
 	}
 
 	function refreshTabNav() {
-
-		this.details = this.details || {};
-		var tmpAppName = this.details.appname || '';
-
-		var tmpHTML = [];
-		tmpHTML.push('<div class="pad0 ui top attached tabular tab-nav menu" style="">');
-		tmpHTML.push('<a appuse="tablinks" group="workspace-outline" item="workspace" action="selectMe" class="item black"><i class="icon hdd black"></i> </a>');
-		if (tmpAppName) {
-			tmpHTML.push('<a appuse="tablinks" group="workspace-outline" item="' + tmpAppName + '" appname="' + tmpAppName + '" pageaction="showAppConsole" class="item black  "><i class="icon globe blue"></i> ' + tmpAppName + '</a>');
+		var tmpHTML = this.context.page.controller.getSubNavTabs(this.details);
+		if ((tmpHTML)) {
+			console.log( 'tmpHTML', tmpHTML.join(''));
+			this.loadSpot('nav-tabs', tmpHTML.join(''))
 		}
-		tmpHTML.push('</div><div class="ui divider fitted black"></div>')
-		tmpHTML = tmpHTML.join('\n');
-		this.loadSpot('nav-tabs', tmpHTML)
+
+	}
+
+	ControlCode.refreshOnActivate = refreshOnActivate;
+	function refreshOnActivate() {
+		this.refreshTabNav();
 	}
 
 	function promptForSetupInfo() {

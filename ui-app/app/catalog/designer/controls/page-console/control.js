@@ -616,23 +616,10 @@ License: MIT
 
 	function refreshTabNav() {
 		this.details = this.details || {};
-		var tmpAppName = this.details.appname || '';
-		var tmpPageName = this.details.pagename || '';
-		if ((tmpAppName || tmpPageName)) {
-			var tmpHTML = [];
-			tmpHTML.push('<div class="pad0 ui top attached tabular tab-nav menu" style="">');
-
-			tmpHTML.push('<a appuse="tablinks" group="workspace-outline" item="workspace" action="selectMe" class="item black"><i class="icon hdd black"></i> </a>');
-
-			if (tmpAppName) {
-				tmpHTML.push('<a appuse="tablinks" group="workspace-outline" item="' + tmpAppName + '" appname="' + tmpAppName + '" pageaction="showAppConsole" class="item black  "><i class="icon globe blue"></i> ' + tmpAppName + '</a>');
-			}
-			if (tmpPageName) {
-				tmpHTML.push('<a appuse="tablinks" group="workspace-outline" item="' + tmpAppName + '-' + tmpPageName + '" appname="' + tmpAppName + '" pagename="' + tmpPageName + '" pageaction="showPageConsole" class="item black"><i class="icon columns green"></i> ' + tmpPageName + '</a>');
-			}
-			tmpHTML.push('</div><div class="ui divider fitted black"></div>')
-			tmpHTML = tmpHTML.join('\n');
-			this.loadSpot('nav-tabs', tmpHTML)
+	
+		var tmpHTML = this.context.page.controller.getSubNavTabs(this.details);
+		if ((tmpHTML)) {
+			this.loadSpot('nav-tabs', tmpHTML.join(''))
 		}
 	}
 	function uniqueGroups(theUniqueness) {
