@@ -132,23 +132,6 @@ License: MIT
 
     //=== Page Stuff
 
-    /*
-        ThisPage.selectedFieldName = '';
-        ThisPage.activeControlName = ThisPage.ns("resource-preview");
-    
-        ThisPage.frmPreview$ = ThisPage.spot$('preview-area')
-        ThisPage.frmPreview$.on('change', frmPreviewChange)
-        ThisPage.frmPreview$.get(0).addEventListener('focus', frmPreviewFocusChange, true)
-    
-        function frmPreviewChange(theEvent) {
-            var tmpTarget = getTarget(theEvent);
-            var tmpFN = tmpTarget.name;
-            console.log( 'tmpFN', tmpFN);
-            //setSelectedField(tmpFN);
-        };
-    
-        */
-
     actions.refreshWorkspace = refreshWorkspace;
     function refreshWorkspace() {
         ThisPage.parts.west.parts.workspace.refreshFromURI();
@@ -198,6 +181,7 @@ License: MIT
                 //--- Go to the newly added card (to show it and hide others)
                 tmpNewApp.setup(tmpSetupDetails);
                 ThisApp.gotoTab(tmpTabAttr);
+                ThisPage.refreshNavTabs();
             });
         }
     };
@@ -299,7 +283,7 @@ License: MIT
             //--- Find created cards jQuery element
             var tmpNewGroup = ThisPage.getByAttr$({ group: wsOutlineName, item: tmpEntryName, appuse: 'cards' });
             //--- Load Page Console into that card
-console.log( 'tmpParams', tmpParams);
+
             tmpNewPage.preLoad(tmpParams);
             tmpNewPage.loadToElement(tmpNewGroup).then(function (theReply) {
                 tmpNewPage.setup(tmpParams);

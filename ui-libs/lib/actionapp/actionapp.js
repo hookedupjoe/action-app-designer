@@ -6570,13 +6570,11 @@ License: MIT
             var tmpClasses = ''
             tmpClasses += getValueIfTrue(theObject, ['basic', 'compact', 'fluid', 'right', 'labeled', 'circular', 'disabled']);
             tmpClasses += getValueIfThere(theObject, ['color', 'size', 'floated']);
-
-            if (tmpObject.toright === true) {
+            if ((tmpObject.toright || tmpObject.toRight) === true) {
                 tmpClasses += ' right floated'
-            } else if (tmpObject.toleft === true) {
+            } else if ((tmpObject.toleft || tmpObject.toLeft) === true) {
                 tmpClasses += ' left floated'
             }
-
 
             if (tmpObject.icon || tmpObject.labeled) {
                 tmpClasses += ' icon ';

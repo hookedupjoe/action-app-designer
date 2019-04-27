@@ -25,33 +25,7 @@ License: MIT
 						"default": "Page",
 						"placeholder": "",
 						"content": [
-							{
-								"ctl": "button",
-								"color": "blue",
-								"icon": "save",
-								"disabled": true,
-								"name": "btn-save-code",
-								"label": "Save Changes",
-								"onClick": {
-									"run": "action",
-									"action": "saveCode"
-								}
-							},
-							{
-								"ctl": "button",
-								"color": "black",
-								hidden: true,
-								basic: true,
-								right: true,
-								"icon": "cancel",
-								"name": "btn-close-page",
-								"label": "Close",
-								attr: {
-									"pageaction": "closePage",
-									appname: "",
-									pagename: ""
-								}
-							}
+							
 						]
 					}
 				],
@@ -80,14 +54,49 @@ License: MIT
 										west: [
 											{
 												"ctl": "button",
-												"color": "orange",
+												"color": "black",
+												basic: true,
 												"name": "btn-format-code",
-												"label": "Format",
+												"label": "Format Showing",
 												"onClick": {
 													"run": "action",
 													"action": "formatCode"
+												},
+											},											
+											{
+												"ctl": "button",
+												"toRight": true,
+												"color": "blue",
+												"icon": "save",
+												"disabled": true,
+												"name": "btn-save-code",
+												"label": "Save Page",
+												"onClick": {
+													"run": "action",
+													"action": "saveCode"
 												}
 											},
+											{
+												"ctl": "button",
+												"color": "black",
+												hidden: true,
+												basic: true,
+												right: true,
+												"icon": "cancel",
+												"name": "btn-close-page",
+												"label": "Close",
+												attr: {
+													"pageaction": "closePage",
+													appname: "",
+													pagename: ""
+												}
+											},
+											{
+												ctl: 'divider',
+												fitted: true,
+												clearing: true
+											}
+											,
 											{
 												"ctl": "tbl-ol-node",
 												"name": "page-code",
