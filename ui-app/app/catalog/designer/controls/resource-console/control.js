@@ -59,7 +59,7 @@ License: MIT
 					{
 						ctl: "layout",
 						name: "layout",
-						center: [
+						east: [
 							{
 								"ctl": "button",
 								"color": "orange",
@@ -89,7 +89,7 @@ License: MIT
 						// 		text: "Controls"
 						// 	}
 						// ],
-						west: [
+						center: [
 							{
 								ctl: "spot",
 								name: "ace-editor",

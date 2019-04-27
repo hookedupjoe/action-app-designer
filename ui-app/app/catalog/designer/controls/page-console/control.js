@@ -45,10 +45,20 @@ License: MIT
 												"color": "black",
 												basic: true,
 												"name": "btn-format-code",
-												"label": "Format Showing",
+												"label": "Format",
 												"onClick": {
 													"run": "action",
 													"action": "formatCode"
+												},
+											},	{
+												"ctl": "button",
+												"color": "black",
+												basic: true,
+												"name": "btn-format-page-code",
+												"label": "Format Page",
+												"onClick": {
+													"run": "action",
+													"action": "formatPageCode"
 												},
 											},											
 											{
@@ -58,7 +68,7 @@ License: MIT
 												"icon": "save",
 												"disabled": true,
 												"name": "btn-save-code",
-												"label": "Save Page",
+												"label": "Save",
 												"onClick": {
 													"run": "action",
 													"action": "saveCode"
