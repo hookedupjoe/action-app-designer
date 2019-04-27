@@ -94,7 +94,10 @@ License: MIT
         //--- This tells the page to layout the page, load templates and controls, et
         ThisPage.initOnFirstLoad().then(
             function () {
+                //--- For debugging
                 window.wsPage = ThisPage;
+
+                ThisPage.subscribe('selectMe', ThisPage.pageTabSelected)
 
                 //--- Now your done - READY to do stuff the first time on your page
 
@@ -103,7 +106,7 @@ License: MIT
                 ThisPage.parts.center.subscribe('selected', wsItemSelected);
 
                 ThisPage.layout.toggle("west");
-                refreshTabNav();
+                ThisPage.refreshNavTabs();
                 //--- Do special stuff on page load here
                 //--- Then optionally call the stuff that will happen every time 
                 //      the page is activated if not already called by above code
@@ -127,22 +130,23 @@ License: MIT
     }
 
     //=== Page Stuff
-/*
-    ThisPage.selectedFieldName = '';
-    ThisPage.activeControlName = ThisPage.ns("resource-preview");
 
-    ThisPage.frmPreview$ = ThisPage.spot$('preview-area')
-    ThisPage.frmPreview$.on('change', frmPreviewChange)
-    ThisPage.frmPreview$.get(0).addEventListener('focus', frmPreviewFocusChange, true)
-
-    function frmPreviewChange(theEvent) {
-        var tmpTarget = getTarget(theEvent);
-        var tmpFN = tmpTarget.name;
-        console.log( 'tmpFN', tmpFN);
-        //setSelectedField(tmpFN);
-    };
-
-    */
+    /*
+        ThisPage.selectedFieldName = '';
+        ThisPage.activeControlName = ThisPage.ns("resource-preview");
+    
+        ThisPage.frmPreview$ = ThisPage.spot$('preview-area')
+        ThisPage.frmPreview$.on('change', frmPreviewChange)
+        ThisPage.frmPreview$.get(0).addEventListener('focus', frmPreviewFocusChange, true)
+    
+        function frmPreviewChange(theEvent) {
+            var tmpTarget = getTarget(theEvent);
+            var tmpFN = tmpTarget.name;
+            console.log( 'tmpFN', tmpFN);
+            //setSelectedField(tmpFN);
+        };
+    
+        */
 
     actions.refreshWorkspace = refreshWorkspace;
     function refreshWorkspace() {
@@ -160,6 +164,7 @@ License: MIT
             alert("No app name provided to open");
             return;
         }
+        console.log( 'tmpParams', tmpParams);
         var tmpAppTitle = tmpParams.apptitle || tmpParams.title || tmpAppName;
 
         if (loadedApps[tmpAppName]) {
@@ -352,7 +357,7 @@ License: MIT
     };
 
 
-    var commonParams = ['appname', 'source', 'type', 'pagename', 'resname', 'restype'];
+    var commonParams = ['appname', 'apptitle', 'titie', 'source', 'type', 'pagename', 'resname', 'restype'];
 
     function wsItemSelected(theEvent, theControl, theTarget) {
         var tmpParams = ThisApp.getActionParams('na', theTarget, commonParams);
@@ -383,11 +388,47 @@ License: MIT
     };
 
 
-    function refreshTabNav() {
+    ThisPage.pageTabSelected = pageTabSelected;
+    function pageTabSelected(theEvent, theControl, theTarget) {
+        var tmpDetails = ThisApp.getAttrs(theTarget, ['item', 'group']);
+        //console.log( 'pageTabSelected', tmpDetails);
+        if (tmpDetails.group != 'workspace-outline') {
+            return;
+        }
+        var tmpItem = tmpDetails.item || '';
+        if (!tmpItem) {
+            return;
+        }
+        if (tmpItem == 'workspace') {
+            refreshNavTabs();
+        }
+        console.log('tmpItem', tmpItem);
+
+    }
+
+    ThisPage.refreshNavTabs = refreshNavTabs
+    function refreshNavTabs(theDetails) {
 
         var tmpHTML = [];
         tmpHTML.push('<div class="pad0 ui top attached tabular tab-nav menu" style="">');
         tmpHTML.push('<a appuse="tablinks" group="workspace-outline" item="workspace" action="selectMe" class="item black"><i class="icon hdd black"></i> </a>');
+
+        if (ThisApp.util.isObj(theDetails)) {
+            console.log('theDetails', theDetails);
+        } else {
+            //---- Show Open Apps as tabs
+            console.log('openapps', loadedApps);
+            for (var iPos in loadedApps) {
+                var tmpApp = loadedApps[iPos]
+                console.log('tmpApp', tmpApp);
+                var tmpAppName = '';
+                if (tmpApp.details && tmpApp.details.appname) {
+                    tmpAppName = tmpApp.details.appname;
+                    tmpHTML.push('<a appuse="tablinks" group="workspace-outline" item="' + tmpAppName + '" appname="' + tmpAppName + '" pageaction="showAppConsole" class="item black  "><i class="icon globe blue"></i> ' + tmpAppName + '</a>');
+                }
+            }
+        }
+
         tmpHTML.push('</div><div class="ui divider fitted black"></div>')
         tmpHTML = tmpHTML.join('\n');
         ThisPage.loadSpot('nav-tabs', tmpHTML)

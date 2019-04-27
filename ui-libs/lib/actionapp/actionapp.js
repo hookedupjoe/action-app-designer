@@ -1198,9 +1198,16 @@ var ActionAppCore = {};
         if (!theEl) {
             return tmpRet;
         }
-        var tmpAttrList = theAttrList || {};
+        var tmpAttrList = theAttrList || [];
         if (typeof (tmpAttrList) == 'string') {
             tmpAttrList = [tmpAttrList];
+        }
+        if( isObj(tmpAttrList) && !Array.isArray(tmpAttrList)){
+            var tmpNewList = [];
+            for( var aName in tmpAttrList){
+                tmpNewList.push(aName);
+            }
+            tmpAttrList = tmpNewList;
         }
         var tmpEl = $(theEl);
         for (aAttrPos in tmpAttrList) {
@@ -3463,6 +3470,14 @@ License: MIT
         var tmpActionDetails = ThisApp.getActionFromObj(tmpObj, 'pageaction');
         if (!(tmpActionDetails.hasOwnProperty('action') && tmpActionDetails.hasOwnProperty('el'))) {
             //--- OK, just clicked somewhere with nothing to catch it, but not an action
+            //--- but check to see if we have a regularlaction
+            var tmpAppActionDetails = ThisApp.getActionFromObj(tmpObj, 'action');
+            if ((tmpAppActionDetails.hasOwnProperty('action') && tmpAppActionDetails.hasOwnProperty('el'))) {
+                if (tmpAppActionDetails.action == 'selectMe') {
+                    this.publish('selectMe', [this, tmpAppActionDetails.el])
+                }
+            }
+    
             return;
         }
         var tmpAction = tmpActionDetails.action;
@@ -3471,10 +3486,14 @@ License: MIT
         //--- ToDo: May want fly-over to stay open for multi-click options
         ThisApp.clearFlyover();
 
+
         if (tmpAction) {
             theEvent.preventDefault();
             theEvent.stopPropagation();
             this.runAction(tmpAction, tmpObj);
+            if ( tmpAction == 'selectMe' ) {
+                this.publish('selectMe', [this, tmpObj])
+            }
         }
         return false;
 
@@ -5591,7 +5610,6 @@ License: MIT
         var tmpAppActionDetails = ThisApp.getActionFromObj(tmpObj, 'action');
 
         if ((tmpAppActionDetails.hasOwnProperty('action') && tmpAppActionDetails.hasOwnProperty('el'))) {
-
             if (tmpAppActionDetails.action == 'selectMe') {
                 this.publish('selectMe', [this, tmpAppActionDetails.el])
             }
@@ -5658,14 +5676,11 @@ License: MIT
             theEvent.preventDefault();
             theEvent.stopPropagation();
             this.runAction(tmpAction, tmpObj);
-
             if (tmpAction == 'selectMe') {
-                this.publish('selectMe control', [this, tmpObj])
+                this.publish('selectMe', [this, tmpObj])
             }
-
             return;
         }
-
         return;
     }
 

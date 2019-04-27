@@ -234,9 +234,10 @@ module.exports.setup = function setup(scope) {
                         "item": tmpAppName + "",
                         attr: {
                             appname: tmpAppName,
+                            apptitle: tmpAppTitle,
                             source: "workspace"
                         },
-                        "details": tmpAppTitle,
+                        "details": '[' + tmpAppName + '] ' + tmpAppTitle,
                         "meta": "&#160;",
                         "level": 2,
                         "icon": "globe",

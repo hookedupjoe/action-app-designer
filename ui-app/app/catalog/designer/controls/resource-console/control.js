@@ -64,9 +64,6 @@ License: MIT
 								"ctl": "button",
 								"color": "orange",
 								toLeft: true,
-								basic: true,
-								right: true,
-								"icon": "eye",
 								"name": "btn-refresh-page",
 								"label": "Refresh",				
 								"onClick": {

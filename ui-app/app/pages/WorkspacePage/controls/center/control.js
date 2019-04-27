@@ -9,7 +9,13 @@ License: MIT
 			padding: false
 		},
 		"content": [
-			
+			{
+				ctl: "div",
+				attr: {
+					pagespot: "nav-tabs",
+					text: ""
+				}
+			},
 			{
 				ctl: "div",
 				attr: {
@@ -24,11 +30,6 @@ License: MIT
 							item: "workspace"
 						},
 						content: [
-							{
-								ctl: "pagespot",
-								name: "nav-tabs",
-								hidden: true
-							},
 							{
 								ctl: "segment",
 								basic: true,
@@ -84,6 +85,7 @@ License: MIT
 
 	function _onInit(){
 		this.parts.workspace.subscribe('selectMe', onWsSelect.bind(this))
+		
 	}
 
 	function onWsSelect(theEvent, theControl, theTarget){

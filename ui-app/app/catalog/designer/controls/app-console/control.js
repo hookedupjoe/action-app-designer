@@ -444,25 +444,32 @@ License: MIT
 		var tmpAppName = theDetails.appname || '';
 		this.params = this.params || {};
 		this.params.appname = tmpAppName;
-		var tmpTitle = theDetails.title || theDetails.apptitle || tmpAppName;
+		var tmpAppTitle = theDetails.title || theDetails.apptitle || tmpAppName;
+		console.log( 'tmpAppTitle', tmpAppTitle);
 
 		this.details = {
-			appname: this.params.appname
+			appname: tmpAppName,
+			title: tmpAppTitle
 		}
 
 		this.controlConfig.index.controls.pages.controlname += tmpAppName
 		this.controlConfig.index.controls.resources.controlname += tmpAppName
 
 		this.controlConfig.index.controls.setupinfo.controlname += tmpAppName
-		var tmpAppTitle = tmpAppName
-		if (tmpTitle) {
-			tmpAppTitle = '[' + tmpAppName + '] ' + tmpTitle;
+	
+		var tmpTitle = tmpAppName;
+		if (tmpAppTitle) {
+			tmpTitle = '[' + tmpAppName + '] ' + tmpAppTitle;
 		}
-		this.controlConfig.index.items.title.text = tmpAppTitle;
+		//--- Set Title
+		this.controlConfig.index.items.title.text = tmpTitle;
+
+		//--- Set Preview Link
 		this.controlConfig.index.items["preview-link"].attr = {
 			href: "http://localhost:33461/" + tmpAppName,
 			target: "app" + tmpAppName
 		}
+
 	}
 	//---- Initial Setup of the control
 	function setup(theDetails) {
