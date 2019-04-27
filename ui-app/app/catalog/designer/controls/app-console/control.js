@@ -292,7 +292,6 @@ License: MIT
 
 			theData.target = 'app';
 			theData.appname = tmpAppName;
-			console.log('theData', theData);
 			ThisApp.common.apiCall({
 				url: '/design/ws/new-page?run',
 				data: theData
@@ -445,7 +444,6 @@ License: MIT
 		this.params = this.params || {};
 		this.params.appname = tmpAppName;
 		var tmpAppTitle = theDetails.title || theDetails.apptitle || tmpAppName;
-		console.log( 'tmpAppTitle', tmpAppTitle);
 
 		this.details = {
 			appname: tmpAppName,

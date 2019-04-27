@@ -584,21 +584,20 @@ License: MIT
 	//---- Initial Setup of the control
 	function setup(theOptions) {
 		var tmpOptions = theOptions || {};
-
 		var tmpPageName = tmpOptions.pagename || '';
 		this.params = this.params || {};
 		this.params.pagename = tmpPageName;
 
 
 		var tmpTitle = tmpPageName;
-		var tmpSource = tmpOptions.source || 'ws';
+		var tmpSource = tmpOptions.source || 'workspace';
 		var tmpAppName = tmpOptions.appname || '';
 
 		var tmpPageTitle = tmpPageName
 		if (tmpAppName) {
 			tmpPageTitle = '[' + tmpAppName + '] ' + tmpTitle;
+			tmpSource = 'app';
 		}
-
 
 		this.setFieldValue('title', tmpPageTitle);
 		this.setupEditor();
@@ -666,7 +665,6 @@ License: MIT
 		ace.config.loadModule('ace/ext/beautify', function (theResults) {
 			tmpThis.beautify = theResults;
 
-//				console.log('beautify', theResults.beautify);
 			tmpThis.aceEditor.setOptions({
 				enableBasicAutocompletion: true,
 				enableSnippets: true,

@@ -382,7 +382,6 @@ License: MIT
 				var tmpCode = tmpParts[tmpIndex[aName]];
 				tmpCodeIndex[aName] = tmpCode
 			}
-			//console.log( 'tmpThis.loaded', tmpThis.loaded);
 
 			tmpThis.refreshFromLoaded();
 
@@ -562,22 +561,6 @@ License: MIT
 		}
 
 		showDetailsJson(tmpFieldInfo);
-
-	};
-
-	ControlCode.toggleTitle = toggleTitle;
-	function toggleTitle() {
-
-		var tmpIsVis = activeControl.getItemDisplay('title');
-		activeControl.setItemDisplay('title', !tmpIsVis)
-
-		tmpIsVis = activeControl.getItemDisplay('options-row');
-		activeControl.setItemDisplay('options-row', !tmpIsVis)
-
-		var tmpTopicAvail = activeControl.getFieldDisplay('topic');
-		console.log('Is the topic field available on the form?', tmpTopicAvail);
-		var tmpTopicVis = activeControl.getFieldVisibility('topic');
-		console.log('Can you see the topic?', tmpTopicVis);
 
 	};
 

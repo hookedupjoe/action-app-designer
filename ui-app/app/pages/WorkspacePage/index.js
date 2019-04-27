@@ -66,6 +66,7 @@ License: MIT
     var loadedApps = {};
     var loadedPages = {};
     var loadedResources = {};
+    // var loadedOutline = {};
 
     //--- for debug
     window.loadedApps = loadedApps;
@@ -298,7 +299,7 @@ License: MIT
             //--- Find created cards jQuery element
             var tmpNewGroup = ThisPage.getByAttr$({ group: wsOutlineName, item: tmpEntryName, appuse: 'cards' });
             //--- Load Page Console into that card
-
+console.log( 'tmpParams', tmpParams);
             tmpNewPage.preLoad(tmpParams);
             tmpNewPage.loadToElement(tmpNewGroup).then(function (theReply) {
                 tmpNewPage.setup(tmpParams);
