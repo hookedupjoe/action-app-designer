@@ -4795,7 +4795,7 @@ License: MIT
                 }
             }
             if (!(ThisApp.util.isPage(this.parent))) {
-                this.context.control = this.parent.context;
+                this.context.control = {context: this.parent.context};
             }
         }
 
@@ -5825,16 +5825,27 @@ License: MIT
         tmpThis.parentEl.on('change', tmpThis.onFieldChange.bind(this));
         tmpThis.parentEl.on('click', tmpThis.onItemClick.bind(this));
         tmpThis.getConfig().options = tmpThis.getConfig().options || {};
+        if (isFunc(tmpThis._onPreInit)) {
+            tmpThis._onPreInit();
+        }
+        
+        
         this.assureRequired().then(function () {
             tmpThis.initControlComponents().then(function (theReply) {
+
+                if (isFunc(tmpThis._onInit)) {
+                    tmpThis._onInit();
+                }
+                
                 tmpThis.refreshControl();
                 var tmpDoc = tmpOptions.doc || tmpThis.getConfig().options.doc || false;
                 if (tmpDoc) {
                     tmpThis.loadData(tmpDoc);
                 }
-                if (isFunc(tmpThis._onInit)) {
-                    tmpThis._onInit();
+                if (isFunc(tmpThis._onLoad)) {
+                    tmpThis._onLoad();
                 }
+
 
                 dfd.resolve(true);
             });
