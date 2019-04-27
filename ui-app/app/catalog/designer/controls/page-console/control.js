@@ -54,6 +54,7 @@ License: MIT
 												"ctl": "button",
 												"color": "black",
 												basic: true,
+												hidden: true,
 												"name": "btn-format-page-code",
 												"label": "Format Page",
 												"onClick": {
