@@ -807,7 +807,7 @@ License: MIT
 	function formatCode() {
 		this.beautify.beautify(this.aceEditor.session);
 		var tmpValue = this.aceEditor.session.getValue();
-		tmpValue = '\n\n' + tmpValue + '\n\n';
+		tmpValue = '\n' + tmpValue + '\n';
 		this.aceEditor.session.setValue(tmpValue);
 	}
 
