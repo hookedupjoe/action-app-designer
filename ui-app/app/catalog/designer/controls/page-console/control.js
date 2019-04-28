@@ -751,7 +751,7 @@ License: MIT
 		for (var aName in this.loaded.sessions) {
 			var tmpSession = this.loaded.sessions[aName];
 			var tmpCode = tmpSession.getValue();
-			tmpNewCodeIndex[aName] = tmpCode;
+			tmpNewCodeIndex[aName] = padValue(tmpCode);
 		}
 		var tmpRequest = {
 			pagename: this.details.pagename,
@@ -760,8 +760,7 @@ License: MIT
 			name: this.details.name || '',
 			index: this.loaded.index,
 			parts: this.loaded.parts,
-			code: tmpNewCodeIndex,
-			origCode: this.loaded.codeIndex
+			code: tmpNewCodeIndex
 		}
 
 		ThisApp.apiCall({
@@ -810,27 +809,22 @@ License: MIT
 		})
 	}
 
+	function padValue(theValue){
+		return '\n' + theValue.trim() + '\n';
+	}
+
 	function formatCode() {
 		this.beautify.beautify(this.aceEditor.session);
 		var tmpValue = this.aceEditor.session.getValue();
-		tmpValue = '\n' + tmpValue + '\n';
-		this.aceEditor.session.setValue(tmpValue);
+		this.aceEditor.session.setValue(padValue(tmpValue));
 	}
 
 	
-	ControlCode.beatifyCode = beatifyCode;
-	function beatifyCode(theSession) {
-    var val = theSession.getValue();
-  //Remove leading spaces
-    var array = val.split(/\n/);
-    array[0] = array[0].trim();
-    val = array.join("\n"); 
-	//Actual beautify (prettify) 
-    val = this.beautify.beautify(theSession);
-		
-		//Change current text to formatted text
-	theSession.setValue(val);
-}
+// 	ControlCode.beatifyCode = beatifyCode;
+// 	function beatifyCode(theSession) {
+//     var val = this.beautify.beautify(theSession);
+// 	  theSession.setValue(padValue(val));
+// }
 
 	var ThisControl = { specs: ControlSpecs, options: { proto: ControlCode, parent: ThisApp } };
 
