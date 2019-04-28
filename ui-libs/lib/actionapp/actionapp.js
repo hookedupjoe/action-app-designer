@@ -3493,10 +3493,10 @@ License: MIT
             var tmpAppActionDetails = ThisApp.getActionFromObj(tmpObj, 'action');
             if ((tmpAppActionDetails.hasOwnProperty('action') && tmpAppActionDetails.hasOwnProperty('el'))) {
                 if (tmpAppActionDetails.action == 'selectMe') {
+                    //--- ToDo: Revisit how this works, make generic, etc
                     this.publish('selectMe', [this, tmpAppActionDetails.el])
                 }
             }
-    
             return;
         }
         var tmpAction = tmpActionDetails.action;
@@ -3522,13 +3522,12 @@ License: MIT
         var tmpAction = theAction || '';
         tmpAction = tmpAction.replace((this.pageNamespace + ":"), '');
         var tmpMyActions = this.pageActions || {};
-
         if (typeof (tmpMyActions[tmpAction]) == 'function') {
-            tmpMyActions[tmpAction](tmpAction, theSourceObject);
+            (tmpMyActions[tmpAction]).call(this, tmpAction, theSourceObject);
         } else if (typeof (this[tmpAction]) == 'function') {
-            this[tmpAction](tmpAction, theSourceObject);
+            (this[tmpAction]).call(this, tmpAction, theSourceObject);
         } else if (typeof (me[tmpAction]) == 'function') {
-            me[tmpAction](tmpAction, theSourceObject);
+            (me[tmpAction]).call(this, tmpAction, theSourceObject);
         }
     }
 
@@ -3630,10 +3629,10 @@ License: MIT
 
     function runAction(theAction, theSourceObject) {
         if (typeof (act[theAction]) == 'function') {
-            act[theAction](theAction, theSourceObject);
+            (act[theAction]).call(this,theAction, theSourceObject);
         }
         if (typeof (me[theAction]) == 'function') {
-            me[theAction](theAction, theSourceObject);
+            (me[theAction]).call(this,theAction, theSourceObject);
         }
     }
 
@@ -4148,10 +4147,10 @@ License: MIT
 
     function runAction(theAction, theSourceObject) {
         if (typeof (act[theAction]) == 'function') {
-            act[theAction](theAction, theSourceObject);
+            (act[theAction]).call(this, theAction, theSourceObject);
         }
         if (typeof (me[theAction]) == 'function') {
-            me[theAction](theAction, theSourceObject);
+            (me[theAction]).call(this, theAction, theSourceObject);
         }
     }
 
@@ -5659,8 +5658,18 @@ License: MIT
                             this.publish(tmpEvent, [this, tmpPubParams, tmpTarget, theEvent])
                         }
                     } else if (tmpToRun == 'action') {
-                        var tmpAction = tmpOnClick.action || 'click';
+                        var tmpAction = tmpOnClick.action || '';
+                        var tmpPageAction = tmpOnClick.pageaction || '';
+                        var tmpAppAction = tmpOnClick.appaction || '';
+
                         var tmpSource = tmpOnClick.source || "control";
+                        if( tmpPageAction ){
+                            tmpSource = 'page'
+                        };
+                        if( tmpSource == 'app' && !tmpAppAction ){
+                            tmpAppAction = tmpAction;
+                        }
+
                         //Note: Can use tmpOnClick.source, "page","app", "control"
                         //       default is "control" if not provided
 
@@ -5675,6 +5684,9 @@ License: MIT
                                 //---  run in a way that it binds to this control when run
                                 return tmpToRun.apply(this, [tmpActParams]);
                             } else {
+                                //--- Automatically run up the chain to find action
+                                ThisApp.runAction
+                                xxx
                                 console.warn("Action not found for " + tmpAction)
                             }
                         } else {
