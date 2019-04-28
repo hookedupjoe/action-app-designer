@@ -5685,8 +5685,6 @@ License: MIT
                                 return tmpToRun.apply(this, [tmpActParams]);
                             } else {
                                 //--- Automatically run up the chain to find action
-                                ThisApp.runAction
-                                xxx
                                 console.warn("Action not found for " + tmpAction)
                             }
                         } else {
