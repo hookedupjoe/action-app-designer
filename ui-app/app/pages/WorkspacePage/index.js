@@ -93,6 +93,8 @@ License: MIT
     ThisPage._onFirstActivate = function (theApp) {
         // wsOutlineName = ThisPage.ns(wsOutlineName);
         //--- This tells the page to layout the page, load templates and controls, et
+        ThisPage.loadWorkspaceState();
+
         ThisPage.initOnFirstLoad().then(
             function () {
                 //--- For debugging
@@ -106,6 +108,7 @@ License: MIT
                 ThisPage.parts.west.subscribe('selected', wsItemSelected);
                 ThisPage.parts.center.subscribe('selected', wsItemSelected);
 
+                
                 ThisPage.layout.toggle("west");
                 ThisPage.refreshNavTabs();
                 //--- Do special stuff on page load here
@@ -131,6 +134,46 @@ License: MIT
     }
 
     //=== Page Stuff
+
+    var dsNameWorkspaceState ='ws-page-state';
+
+
+    
+
+ThisPage.loadWorkspaceState = loadWorkspaceState;
+function loadWorkspaceState() {
+    var dfd = jQuery.Deferred();
+    
+    
+    ThisPage.contextData.jsonClipboardIndex = {};
+    
+    ThisApp.om.getObject(dsNameWorkspaceState, 'ws-state').then(function(theReply){
+        //ToDo: Use State
+        dfd.resolve(true)    
+    });
+    
+    
+    return dfd.promise();
+}
+
+ThisPage.saveWorkspaceState = saveWorkspaceState;
+function saveWorkspaceState() {
+    ThisPage.fullOpenIndex = {
+        test: true
+    };
+    /*
+    loadedApps: ThisApp.json(ThisApp.json(loadedApps,true),true),
+        loadedPages: ThisApp.json(ThisApp.json(loadedPages,true),true), 
+        loadedResources: ThisApp.json(ThisApp.json(loadedResources,true),true)
+    */
+   var tmpStateName = 'ws-state';
+
+    ThisApp.om.putObject(dsNameWorkspaceState,tmpStateName,ThisPage.fullOpenIndex).then(function(theReply){
+        //--- saved
+    })
+        
+}
+
 
     actions.refreshWorkspace = refreshWorkspace;
     function refreshWorkspace() {
@@ -183,6 +226,7 @@ License: MIT
                 tmpNewApp.setup(tmpSetupDetails);
                 ThisApp.gotoTab(tmpTabAttr);
                 ThisPage.refreshNavTabs();
+                ThisPage.saveWorkspaceState();
             });
         }
     };
@@ -238,6 +282,7 @@ License: MIT
             tmpNewResource.loadToElement(tmpNewGroup).then(function (theReply) {
                 tmpNewResource.setup(tmpParams);
                 ThisPage.refreshNavTabs();
+                ThisPage.saveWorkspaceState();
             });
             //--- Go to the newly added card (to show it and hide others)
             ThisApp.gotoTab(tmpTabAttr);
@@ -291,6 +336,7 @@ License: MIT
             tmpNewPage.loadToElement(tmpNewGroup).then(function (theReply) {
                 tmpNewPage.setup(tmpParams);
                 ThisPage.refreshNavTabs();
+                ThisPage.saveWorkspaceState();
             });
             //--- Go to the newly added card (to show it and hide others)
             ThisApp.gotoTab(tmpTabAttr);
@@ -380,7 +426,6 @@ License: MIT
     ThisPage.pageTabSelected = pageTabSelected;
     function pageTabSelected(theEvent, theControl, theTarget) {
         var tmpDetails = ThisApp.getAttrs(theTarget, ['item', 'group']);
-        //console.log( 'pageTabSelected', tmpDetails);
         if (tmpDetails.group != 'workspace-outline') {
             return;
         }
@@ -395,10 +440,9 @@ License: MIT
 
     ThisPage.refreshNavTabs = refreshNavTabs
     function refreshNavTabs(theDetails) {
-
         var tmpHTML = this.getNavTabs(theDetails);
         tmpHTML = tmpHTML.join('\n');
-        ThisPage.loadSpot('nav-tabs', tmpHTML)
+        ThisPage.loadSpot('nav-tabs', tmpHTML);
     }
 
 

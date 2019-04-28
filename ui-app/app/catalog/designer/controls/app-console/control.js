@@ -479,7 +479,6 @@ License: MIT
 	function refreshTabNav() {
 		var tmpHTML = this.context.page.controller.getSubNavTabs(this.details);
 		if ((tmpHTML)) {
-			console.log( 'tmpHTML', tmpHTML.join(''));
 			this.loadSpot('nav-tabs', tmpHTML.join(''))
 		}
 
@@ -497,7 +496,6 @@ License: MIT
 	}
 
 	function refreshPages() {
-		console.log('refreshPages', this);
 		this.parts.pages.refreshFromURI();
 	}
 

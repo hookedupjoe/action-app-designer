@@ -325,6 +325,7 @@ License: MIT
 									{
 										"ctl": "button",
 										"size": "small",
+										basic: true,
 										compact: true,
 										"onClick": {
 											"run": "action",
@@ -339,6 +340,7 @@ License: MIT
 										"ctl": "button",
 										"color": "purple",
 										"size": "small",
+										basic: true,
 										compact: true,
 										"onClick": {
 											"run": "action",
@@ -354,6 +356,7 @@ License: MIT
 										"ctl": "button",
 										"color": "purple",
 										"size": "small",
+										basic: true,
 										compact: true,
 										"onClick": {
 											"run": "action",
@@ -369,6 +372,7 @@ License: MIT
 										"ctl": "button",
 										"color": "purple",
 										"size": "small",
+										basic: true,
 										compact: true,
 										"onClick": {
 											"run": "action",

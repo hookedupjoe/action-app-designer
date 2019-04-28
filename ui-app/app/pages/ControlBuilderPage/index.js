@@ -107,7 +107,6 @@ License: MIT
                 //     ;
 
                 ThisPage.detailsEditorEl = ThisPage.getSpot$('details-editor')
-                console.log('ThisPage.detailsEditorEl', ThisPage.detailsEditorEl);
 
                 ThisPage.detailsEditor = ace.edit(ThisPage.detailsEditorEl.get(0));
                 ThisPage.detailsEditor.setTheme("ace/theme/vibrant_ink");
@@ -188,22 +187,18 @@ License: MIT
 
 
     function detailsEditorSelectionChange(theEvent) {
-        //console.log( 'detailsEditorSelectionChange', theEvent);
         var tmpSelected = ThisPage.detailsEditor.getSelectedText();
         if (tmpSelected) {
             var tmpLen = tmpSelected.length;
 
             if (tmpLen > 3 && tmpLen < 200) {
-                // console.log( 'tmpLen', tmpLen);
                 var tmpItems = tmpSelected.split(':');
                 if (tmpItems.length == 2) {
                     tmpSelected = tmpSelected.replace(',', '');
                     try {
                         tmpSelected = ThisApp.json('{' + tmpSelected + '}');
-                        // console.log( 'tmpSelected', tmpSelected);
                         if (tmpSelected.ctl) {
                             var tmpCtl = ThisApp.controls.catalog.get(tmpSelected.ctl);
-                            // console.log( 'tmpCtl', tmpCtl);
                             if (tmpCtl && tmpCtl.getInfo) {
                                 var tmpControlInfo = tmpCtl.getInfo(tmpSelected.ctl);
                                 console.log('tmpControlInfo', tmpControlInfo);
@@ -331,8 +326,6 @@ License: MIT
         activeControl.subscribe('ctl-event', onControlEvent)
 
         function onControlEvent(theEvent, theControl, theParams, theTarget, theOriginalEvent) {
-            console.log("'ctl-event' received in app.  Control is", theControl);
-            console.log('arguments', arguments);
             showDetailsJson(theControl.getData())
         }
         activeControl.loadToElement(ThisPage.spot$('preview-area'))
@@ -353,7 +346,6 @@ License: MIT
         var tmpDetails = activeControl.getControlDetails()
         ThisPage.detailsEditor.setValue(ThisApp.json(tmpDetails.data));
         ThisPage.detailsEditor.clearSelection();
-        console.log("Full Details", tmpDetails)
     };
 
 
@@ -425,10 +417,9 @@ License: MIT
         var tmpCtlName = tmpSpecs.ctl || 'field';
 
         var tmpCtl = ThisApp.controls.webControls.get(tmpCtlName);
-        console.log('tmpCtl', tmpCtl);
         if (tmpCtl && tmpCtl.getInfo) {
             var tmpInfo = tmpCtl.getInfo(tmpCtlName);
-            console.log('tmpInfo', tmpInfo);
+            console.info('info', tmpInfo);
         } else {
             alert("Not found " + tmpCtlName)
         }
