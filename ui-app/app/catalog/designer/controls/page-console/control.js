@@ -390,6 +390,7 @@ License: MIT
 										"ctl": "button",
 										"color": "purple",
 										"size": "small",
+										basic: true,
 										compact: true,
 										"onClick": {
 											"run": "action",
