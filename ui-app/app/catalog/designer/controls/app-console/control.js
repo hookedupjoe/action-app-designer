@@ -269,6 +269,13 @@ License: MIT
 
 	function _onInit() {
 		this.parts.pages.subscribe('selectMe', onPageSelect.bind(this))
+		var tmpSetupInfo = this.getSetupInfo();
+		this.details.apptitle = tmpSetupInfo.title || this.details.appname;
+		var tmpTitle = this.details.appname;
+		if (this.details.apptitle) {
+			tmpTitle = '[' + this.details.appname + '] ' + this.details.apptitle;
+		}
+		this.getItemEl('title').html(tmpTitle)
 	}
 
 	function onPageSelect(theEvent, theControl, theTarget) {
@@ -444,7 +451,6 @@ License: MIT
 		this.params = this.params || {};
 		this.params.appname = tmpAppName;
 		var tmpAppTitle = theDetails.title || theDetails.apptitle || tmpAppName;
-
 		this.details = {
 			appname: tmpAppName,
 			title: tmpAppTitle
@@ -455,12 +461,8 @@ License: MIT
 
 		this.controlConfig.index.controls.setupinfo.controlname += tmpAppName
 	
-		var tmpTitle = tmpAppName;
-		if (tmpAppTitle) {
-			tmpTitle = '[' + tmpAppName + '] ' + tmpAppTitle;
-		}
 		//--- Set Title
-		this.controlConfig.index.items.title.text = tmpTitle;
+		this.controlConfig.index.items.title.text = 'Loading ...';
 
 		//--- Set Preview Link
 		this.controlConfig.index.items["preview-link"].attr = {
