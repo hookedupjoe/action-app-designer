@@ -27,20 +27,7 @@ License: MIT
 						"content": [
 							{
 								"ctl": "button",
-								"color": "blue",
-								"icon": "save",
-								"disabled": true,
-								"name": "btn-save-code",
-								"label": "Save Changes",
-								"onClick": {
-									"run": "action",
-									"action": "saveContent"
-								}
-							},
-							{
-								"ctl": "button",
 								"color": "black",
-								hidden: true,
 								basic: true,
 								right: true,
 								"icon": "cancel",
@@ -89,6 +76,31 @@ License: MIT
 						// 		text: "Controls"
 						// 	}
 						// ],
+						north: [
+							{
+								"ctl": "button",
+								"color": "blue",
+								"icon": "save",
+								"disabled": true,
+								"name": "btn-save-code",
+								"label": "Save",
+								"onClick": {
+									"run": "action",
+									"action": "saveContent"
+								}
+							},
+							{
+								"ctl": "button",
+								"color": "black",
+								basic: true,
+								"name": "btn-format",
+								"label": "Format",
+								"onClick": {
+									"run": "action",
+									"action": "formatCode"
+								},
+							}
+						],
 						center: [
 							{
 								ctl: "spot",

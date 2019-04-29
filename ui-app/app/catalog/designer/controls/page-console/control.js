@@ -15,7 +15,35 @@ License: MIT
 					{
 						"ctl": "spot",
 						"name": "nav-tabs"
+					},
+					{
+						"ctl": "field",
+						"name": "title",
+						"fluid": true,
+						"readonly": true,
+						"inputClasses": "title",
+						"default": "Page",
+						"placeholder": "",
+						"content": [
+							{
+								"ctl": "button",
+								"color": "black",
+								hidden: false,
+								basic: true,
+								right: true,
+								toRight: true,
+								"icon": "cancel",
+								"name": "btn-close-page",
+								"label": "Close",
+								attr: {
+									"pageaction": "closePage",
+									appname: "",
+									pagename: ""
+								}
+							}
+						]
 					}
+					
 				],
 				center: [
 					{
@@ -32,6 +60,9 @@ License: MIT
 									{
 										ctl: "layout",
 										name: "layout",
+										north: [
+											
+										],
 										center: [
 											{
 												ctl: "spot",
@@ -50,7 +81,8 @@ License: MIT
 													"run": "action",
 													"action": "formatCode"
 												},
-											},	{
+											},
+											{
 												"ctl": "button",
 												"color": "black",
 												basic: true,
@@ -64,7 +96,7 @@ License: MIT
 											},											
 											{
 												"ctl": "button",
-												"toRight": true,
+												"toLeft": true,
 												"color": "blue",
 												"icon": "save",
 												"disabled": true,
@@ -74,22 +106,7 @@ License: MIT
 													"run": "action",
 													"action": "saveCode"
 												}
-											},
-											{
-												"ctl": "button",
-												"color": "black",
-												hidden: true,
-												basic: true,
-												right: true,
-												"icon": "cancel",
-												"name": "btn-close-page",
-												"label": "Close",
-												attr: {
-													"pageaction": "closePage",
-													appname: "",
-													pagename: ""
-												}
-											},
+											},											
 											{
 												ctl: 'divider',
 												fitted: true,
