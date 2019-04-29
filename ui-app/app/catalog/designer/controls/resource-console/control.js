@@ -270,19 +270,30 @@ License: MIT
 		this.aceEditor.setTheme("ace/theme/tomorrow_night_bright");
 		this.aceEditor.setFontSize(16);
 
-		ace.config.loadModule('ace/ext/language_tools', function () {
+		ace.config.loadModule('ace/ext/beautify', function (theResults) {
+			tmpThis.beautify = theResults;
+
 			tmpThis.aceEditor.setOptions({
 				enableBasicAutocompletion: true,
 				enableSnippets: true,
 				enableLiveAutocompletion: false
 			});
+
 		});
+		
 		var tmpThis = this;
 		this.aceEditor.on('change', function () {
 			//--- ToDo: Check for actual changes to account for undo
 			//     and add a reset to original button for each session
+		  tmpThis.refreshButtonStatus();		
+		})
 
-			var tmpIsDirty = false;
+	}
+
+	ControlCode.refreshButtonStatus = refreshButtonStatus;
+	function refreshButtonStatus(){
+		var tmpThis = this;
+		var tmpIsDirty = false;
 			for (var aName in tmpThis.loaded.sessions) {
 
 				if ((tmpThis.isCodeDirty(aName))) {
@@ -292,8 +303,6 @@ License: MIT
 			}
 
 			tmpThis.setItemDisabled('btn-save-code', !tmpIsDirty)
-		})
-
 	}
 
 	function markClean() {
@@ -306,18 +315,17 @@ License: MIT
 
 	function isCodeDirty(theName) {
 		var tmpSession = this.loaded.sessions[theName];
-		if (!tmpSession.getUndoManager().isClean()) {
-			try {
-				var tmpCode = tmpSession.getValue();
-				var tmpOrig = this.loaded.codeIndex[theName];
-				if (tmpOrig == tmpCode) {
-					tmpSession.getUndoManager().markClean();
-				} else {
-					return true;
-				}
-			} catch (error) {
+	
+		try {
+			var tmpCode = tmpSession.getValue();
+			var tmpOrig = this.loaded.codeIndex[theName];
+			if (tmpOrig == tmpCode) {
+				tmpSession.getUndoManager().markClean();
+			} else {
 				return true;
 			}
+		} catch (error) {
+			return true;
 		}
 		return false;
 	}
@@ -643,7 +651,17 @@ License: MIT
 		}
 	};
 
+	ControlCode.formatCode = formatCode;
+	function formatCode() {
+		this.beautify.beautify(this.aceEditor.session);
+		var tmpValue = this.aceEditor.session.getValue();
+		this.aceEditor.session.setValue(padValue(tmpValue));
+		this.refreshButtonStatus();
+	}
 
+	function padValue(theValue){
+		return '\n' + theValue.trim() + '\n';
+	}
 
 
 	//==== END

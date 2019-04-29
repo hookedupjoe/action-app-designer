@@ -699,11 +699,19 @@ License: MIT
 		});
 
 		var tmpThis = this;
+		var tmpThis = this;
 		this.aceEditor.on('change', function () {
 			//--- ToDo: Check for actual changes to account for undo
 			//     and add a reset to original button for each session
+		  tmpThis.refreshButtonStatus();		
+		})
 
-			var tmpIsDirty = false;
+	}
+
+	ControlCode.refreshButtonStatus = refreshButtonStatus;
+	function refreshButtonStatus(){
+		var tmpThis = this;
+		var tmpIsDirty = false;
 			for (var aName in tmpThis.loaded.sessions) {
 
 				if ((tmpThis.isCodeDirty(aName))) {
@@ -713,9 +721,8 @@ License: MIT
 			}
 
 			tmpThis.setItemDisabled('btn-save-code', !tmpIsDirty)
-		})
-
 	}
+
 
 	function markClean() {
 		for (var aName in this.loaded.sessions) {
@@ -727,18 +734,17 @@ License: MIT
 
 	function isCodeDirty(theName) {
 		var tmpSession = this.loaded.sessions[theName];
-		if (!tmpSession.getUndoManager().isClean()) {
-			try {
-				var tmpCode = tmpSession.getValue();
-				var tmpOrig = this.loaded.codeIndex[theName];
-				if (tmpOrig == tmpCode) {
-					tmpSession.getUndoManager().markClean();
-				} else {
-					return true;
-				}
-			} catch (error) {
+	
+		try {
+			var tmpCode = tmpSession.getValue();
+			var tmpOrig = this.loaded.codeIndex[theName];
+			if (tmpOrig == tmpCode) {
+				tmpSession.getUndoManager().markClean();
+			} else {
 				return true;
 			}
+		} catch (error) {
+			return true;
 		}
 		return false;
 	}
