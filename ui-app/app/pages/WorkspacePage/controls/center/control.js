@@ -24,7 +24,7 @@ License: MIT
 				{
 					ctl: "div",
 					attr: {
-						pagespot: "body"
+						pagespot: "ws-work-area"
 					},
 					content: [
 						{

@@ -212,7 +212,7 @@ function saveWorkspaceState() {
             window[tmpAppName] = tmpNewApp;
 
             //--- Create a new card for this app
-            ThisPage.addToSpot('body', '<div appuse="cards" group="' + wsOutlineName + '" item="' + tmpAppName + '"></div>');
+            ThisPage.addToSpot('ws-work-area', '<div appuse="cards" group="' + wsOutlineName + '" item="' + tmpAppName + '"></div>');
             var tmpTabAttr = { group: wsOutlineName, item: tmpAppName };
             //--- Find created cards jQuery element
             var tmpNewGroup = ThisPage.getByAttr$({ group: wsOutlineName, item: tmpAppName, appuse: 'cards' });
@@ -272,7 +272,7 @@ function saveWorkspaceState() {
             window[tmpEntryName] = tmpNewResource;
 
             //--- Create a new card for this app
-            ThisPage.addToSpot('body', '<div appuse="cards" group="' + wsOutlineName + '" item="' + tmpEntryName + '"></div>');
+            ThisPage.addToSpot('ws-work-area', '<div appuse="cards" group="' + wsOutlineName + '" item="' + tmpEntryName + '"></div>');
             var tmpTabAttr = { group: wsOutlineName, item: tmpEntryName };
             //--- Find created cards jQuery element
             var tmpNewGroup = ThisPage.getByAttr$({ group: wsOutlineName, item: tmpEntryName, appuse: 'cards' });
@@ -326,7 +326,7 @@ function saveWorkspaceState() {
             window[tmpEntryName] = tmpNewPage;
 
             //--- Create a new card for this app
-            ThisPage.addToSpot('body', '<div appuse="cards" group="' + wsOutlineName + '" item="' + tmpEntryName + '"></div>');
+            ThisPage.addToSpot('ws-work-area', '<div appuse="cards" group="' + wsOutlineName + '" item="' + tmpEntryName + '"></div>');
             var tmpTabAttr = { group: wsOutlineName, item: tmpEntryName };
             //--- Find created cards jQuery element
             var tmpNewGroup = ThisPage.getByAttr$({ group: wsOutlineName, item: tmpEntryName, appuse: 'cards' });
