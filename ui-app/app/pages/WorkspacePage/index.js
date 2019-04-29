@@ -94,7 +94,10 @@ License: MIT
         // wsOutlineName = ThisPage.ns(wsOutlineName);
         //--- This tells the page to layout the page, load templates and controls, et
         ThisPage.loadWorkspaceState();
-
+        window.onbeforeunload = function(){
+            return 'Are you sure you want to leave?';
+          };
+          
         ThisPage.initOnFirstLoad().then(
             function () {
                 //--- For debugging
