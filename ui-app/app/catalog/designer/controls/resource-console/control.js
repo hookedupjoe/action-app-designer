@@ -309,11 +309,15 @@ License: MIT
 		}
 		return false;
 	}
+	function initSession(theSession){
+		theSession.setTabSize(2);
+	}
 	function refreshEditorFromCodeIndex() {
 		for (var aName in this.loaded.codeIndex) {
 			var tmpCode = this.loaded.codeIndex[aName];
 			if (!(this.loaded.sessions[aName])) {
 				this.loaded.sessions[aName] = ace.createEditSession(aName, this.aceSessionType || "ace/mode/javascript")
+				initSession(this.loaded.sessions[aName]);
 			}
 			this.loaded.sessions[aName].setValue(tmpCode);
 		}
