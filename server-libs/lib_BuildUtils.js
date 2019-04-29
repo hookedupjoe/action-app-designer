@@ -65,7 +65,7 @@ function getDefaultContentForResource(theType) {
         return "";
     }
     var tmpType = detailsIndex.getUnifiedName(theType);
-    if (tmpType == 'HMTL' || tmpType == 'Template') {
+    if (tmpType == 'HTML' || tmpType == 'Template') {
         return "";
     }
 
@@ -118,6 +118,7 @@ function getDefaultContentForResource(theType) {
         return tmpHTML.join('\n');
     }
 
+    return "";
 
 }
 
