@@ -97,6 +97,14 @@ License: MIT
         window.onbeforeunload = function(){
             return 'Are you sure you want to leave?';
           };
+
+          $(document).bind('keydown', function(e) {
+            if(e.ctrlKey && (e.which == 83)) {
+              e.preventDefault();
+              ThisApp.publish('saveRequested')
+              return false;
+            }
+          });
           
         ThisPage.initOnFirstLoad().then(
             function () {

@@ -153,6 +153,14 @@ License: MIT
 
 	function _onInit() {
 		//this.parts.resources.subscribe('selectMe', onResSelect.bind(this))
+		var tmpThis = this;
+		ThisApp.subscribe('saveRequested', function(){
+			var tmpIsDirty = tmpThis.refreshButtonStatus();
+			if( tmpIsDirty ){
+				tmpThis.saveContent();
+			}
+		})
+
 	}
 
 	function onResSelect(theEvent, theControl, theTarget) {
@@ -299,10 +307,12 @@ License: MIT
 				if ((tmpThis.isCodeDirty(aName))) {
 
 					tmpIsDirty = true;
+					break;
 				}
 			}
 
 			tmpThis.setItemDisabled('btn-save-code', !tmpIsDirty)
+			return tmpIsDirty;
 	}
 
 	function markClean() {
