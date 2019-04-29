@@ -17,16 +17,28 @@ html, body {
 }
 
 
-.ui.slim.menu {
+.ui.tight.menu {
   min-height:25px;
 }
 
-.ui.slim.menu > .item {
+.ui.tight.menu > .item {
   padding-top:2px !important;
   padding-bottom:2px !important;
   padding-right:5px !important;
   padding-left:5px !important;
 }
+
+.ui.slim.menu {
+  min-height:35px;
+}
+
+.ui.slim.menu > .item {
+  padding-top:8px !important;
+  padding-bottom:8px !important;
+  padding-right:8px !important;
+  padding-left:8px !important;
+}
+
 
 
 .full.ui.disabled.dropdown, .full.ui.dropdown .menu>.disabled.item {
