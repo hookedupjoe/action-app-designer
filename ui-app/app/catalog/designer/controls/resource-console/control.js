@@ -198,9 +198,14 @@ License: MIT
 
 		this.setFieldValue('title', '[' + tmpResType + '] ' + tmpResName);
 
+		var tmpShowName = tmpResName.replace('.html','')
+			.replace('.json','')
+			.replace('.js','')
+
 		this.details = {
 			pagename: tmpPageName,
 			source: tmpSource,
+			title: tmpShowName,
 			appname: tmpAppName,
 			resname: tmpResName,
 			restype: tmpResType
@@ -370,6 +375,8 @@ License: MIT
 		}
 
 		var tmpContentText = tmpNewCodeIndex["content"];
+		
+
 		var tmpRequest = {
 			pagename: this.details.pagename,
 			appname: this.details.appname || '',

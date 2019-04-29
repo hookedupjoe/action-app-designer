@@ -454,11 +454,16 @@ module.exports.setup = function setup(scope) {
                     var tmpFiles = $.await($.bld.getDirFiles(tmpBaseDir));
                     for (var index in tmpFiles) {
                         var tmpFileName = tmpFiles[index];
+                        var tmpShowName = tmpFileName
+                            .replace('.html','')
+                            .replace('.json','')
+                            .replace('.js','')
+
                         var tmpEntry = {
                             "ctl": "tbl-ol-node",
                             "type": "resource",
                             "item": tmpAppName + '-' + tmpPageName + '-' + tmpFileName + "",
-                            "details": tmpFileName,
+                            "details": tmpShowName,
                             "meta": "&#160;",
                             "level": 1,
                             "icon": tmpType.icon,

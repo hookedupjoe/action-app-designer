@@ -536,6 +536,8 @@ function saveWorkspaceState() {
                 //--- If this is showing nav for the page, show resources
                 if (tmpForPageName) {
                     var tmpResName = tmpRes.details.resname;
+                    var tmpResTitle = tmpRes.details.title || tmpRes.details.resname;
+                    
                     var tmpResType = tmpRes.details.restype;
                     var tmpResFN = tmpAppName + '-' + tmpPageName + '-' + tmpResName;
 
@@ -543,7 +545,7 @@ function saveWorkspaceState() {
                         if (tmpPageName == tmpForPageName) {
                             var tmpIcon = ThisApp.controls.detailsIndex.getDetails(tmpResType).icon;
 
-                            tmpHTML.push('<a appuse="tablinks" group="workspace-outline" item="' + tmpAppName + '-' + tmpPageName + '-' + tmpResName + '" appname="' + tmpAppName + '" pagename="' + tmpPageName + '"  resname="' + tmpResName + '" pageaction="showResourceConsole"    class="item black"><i class="icon ' + tmpIcon + ' purple"></i> ' + tmpResName + '</a>')
+                            tmpHTML.push('<a appuse="tablinks" group="workspace-outline" item="' + tmpAppName + '-' + tmpPageName + '-' + tmpResName + '" appname="' + tmpAppName + '" pagename="' + tmpPageName + '"  resname="' + tmpResName + '" pageaction="showResourceConsole"    class="item black"><i class="icon ' + tmpIcon + ' purple"></i> ' + tmpResTitle + '</a>')
                             tmpAppsIndex[tmpResFN] = true;
                         }
                     }
