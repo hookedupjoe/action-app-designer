@@ -573,9 +573,6 @@ var ActionAppCore = {};
                     me.addCSS({css: tmpCSS, path: tmpCheckPath})                    
                 }
             }
-        } else {
-            console.log("Already loaded, no css for this one " + tmpCheckPath);
-
         }
 		
     }
@@ -587,10 +584,8 @@ var ActionAppCore = {};
             tmpCSS = tmpCSS.join('\n');
         }
         if( (tmpCSS) ){
-            console.log( 'Adding css for Path', tmpPath);
             $('head').append('<style>' + tmpCSS + '</style>');
         }
-        
     }
 
     me.addResourceFromContent = function (theType, theName, theContent, theFullPath, theOptions) {
