@@ -2902,7 +2902,7 @@ License: MIT
             //--- In this case we can just load the element control because it was required in the layout / required area
             this.loadLayoutControl = function (theRegion, theControl, theInstanceName) {
                 var tmpRegionSpotName = this.layoutOptions.spotPrefix + ":" + theRegion;
-                var tmpInstance = this.createInstance(theControl, theInstanceName);
+                var tmpInstance = this.createInstance(theControl, (theInstanceName || theRegion));
                 tmpInstance.loadToElement(tmpRegionSpotName);
             }
             this.loadRegion = function (theRegion, theContent, theOptionalTemplateName) {
