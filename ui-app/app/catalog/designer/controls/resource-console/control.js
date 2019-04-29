@@ -419,6 +419,9 @@ License: MIT
 		}
 		//-- ToDo: If active control, destroy it
 		this.activeControl = this.activeControlSpec.create(this.activeControlName);
+		var tmpCheckPath = '';		
+		ThisApp.loadWebResouces(this.activeControl, tmpCheckPath, tmpCheckPath);
+
 		this.activeControl.loadToElement(this.spot$('preview-area'))
 
 		//--- allow console access for testing

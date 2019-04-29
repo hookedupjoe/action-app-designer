@@ -294,6 +294,7 @@ License: MIT
         }
         //-- ToDo: If active control, destroy it
         activeControl = ThisPage.loadedControlSpec.create(activeControlName);
+		ThisApp.loadWebResouces(activeControl, '','');
         activeControl.subscribe('ctl-event', onControlEvent)
         
 

@@ -323,7 +323,8 @@ License: MIT
         }
         //-- ToDo: If active control, destroy it
         activeControl = ThisPage.loadedControlSpec.create(activeControlName);
-        activeControl.subscribe('ctl-event', onControlEvent)
+        activeControl.subscribe('ctl-event', onControlEvent);
+        ThisApp.loadWebResouces(activeControl, '','');
 
         function onControlEvent(theEvent, theControl, theParams, theTarget, theOriginalEvent) {
             showDetailsJson(theControl.getData())

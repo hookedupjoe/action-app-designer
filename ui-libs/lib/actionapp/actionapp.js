@@ -554,6 +554,45 @@ var ActionAppCore = {};
         "control": "controls",
         "panel": "panels"
     }
+
+    
+    me.loadWebResouces = function(theControl, thePath, theFullPath){
+        var tmpResourceData = theControl;
+        var tmpCheckPath = thePath;
+        //--- If the base element (with no params) is not loaded, get the CSS and load it
+        if (!(tmpCheckPath) || (me.resourceInitFlags[tmpCheckPath] !== true)) {
+            if( tmpCheckPath ){
+                me.resourceInitFlags[tmpCheckPath] = true;
+                if (tmpResourceData.controlConfig) {
+                    tmpResourceData.controlConfig.uri = theFullPath;
+                }
+            }
+            if (tmpResourceData.controlConfig && tmpResourceData.controlConfig.options && tmpResourceData.controlConfig.options.css) {
+                var tmpCSS = tmpResourceData.controlConfig.options.css || '';
+                if (tmpCSS) {
+                    me.addCSS({css: tmpCSS, path: tmpCheckPath})                    
+                }
+            }
+        } else {
+            console.log("Already loaded, no css for this one " + tmpCheckPath);
+
+        }
+		
+    }
+    me.addCSS = function(theOptions){
+        var tmpOptions = theOptions || {};
+        var tmpCSS = tmpOptions.css || '';
+        var tmpPath = tmpOptions.path || '';
+        if (Array.isArray(tmpCSS)) {
+            tmpCSS = tmpCSS.join('\n');
+        }
+        if( (tmpCSS) ){
+            console.log( 'Adding css for Path', tmpPath);
+            $('head').append('<style>' + tmpCSS + '</style>');
+        }
+        
+    }
+
     me.addResourceFromContent = function (theType, theName, theContent, theFullPath, theOptions) {
         var tmpOptions = theOptions || {};
         var tmpThis = this;
@@ -588,7 +627,7 @@ var ActionAppCore = {};
             }
         } else if (theType == 'panels') {
             try {
-                tmpResourceData = ThisApp.controls.newControl(tmpResourceData, {})
+                tmpResourceData = ThisApp.controls.newControl(tmpResourceData, {});
                 tmpResourceData.parent = tmpThis;
             } catch (ex) {
                 console.warn("Could not convert panel to object");
@@ -601,21 +640,9 @@ var ActionAppCore = {};
             tmpCheckPath = tmpCheckPath.substr(0, tmpCheckPos);
         }
 
-        //--- If the base element (with no params) is not loaded, get the CSS and load it
-        if (me.resourceInitFlags[tmpCheckPath] !== true) {
-            me.resourceInitFlags[tmpCheckPath] = true;
-            if (tmpResourceData.controlConfig) {
-                tmpResourceData.controlConfig.uri = theFullPath;
-            }
-            if (tmpResourceData.controlConfig && tmpResourceData.controlConfig.options && tmpResourceData.controlConfig.options.css) {
-                var tmpCSS = tmpResourceData.controlConfig.options.css || '';
-                if (tmpCSS) {
-                    if (Array.isArray(tmpCSS)) {
-                        tmpCSS = tmpCSS.join('\n');
-                    }
-                    $('head').append('<style>' + tmpCSS + '</style>');
-                }
-            }
+        //ToDo: Where to do this?  In control on create - check it?
+        if( isObj(tmpResourceData) && isObj(tmpResourceData.parent) ){
+            ThisApp.loadWebResouces(tmpResourceData, tmpCheckPath, theFullPath);
         }
 
         tmpThis.addResource(theType, tmpName, theFullPath, tmpResourceData);
