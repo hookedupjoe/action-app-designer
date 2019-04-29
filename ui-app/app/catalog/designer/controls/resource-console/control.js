@@ -255,7 +255,7 @@ License: MIT
 
 		this.aceEditorEl = this.getSpot("ace-editor");
 		this.aceEditor = ace.edit(this.aceEditorEl.get(0));
-		this.aceEditor.setTheme("ace/theme/vibrant_ink");
+		this.aceEditor.setTheme("ace/theme/tomorrow_night_bright");
 		this.aceEditor.setFontSize(16);
 
 		ace.config.loadModule('ace/ext/language_tools', function () {

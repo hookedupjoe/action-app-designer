@@ -109,7 +109,7 @@ License: MIT
                 ThisPage.detailsEditorEl = ThisPage.getSpot$('details-editor')
 
                 ThisPage.detailsEditor = ace.edit(ThisPage.detailsEditorEl.get(0));
-                ThisPage.detailsEditor.setTheme("ace/theme/vibrant_ink");
+                ThisPage.detailsEditor.setTheme("ace/theme/tomorrow_night_bright");
                 ThisPage.detailsEditor.setFontSize(16);
                 ThisPage.detailsEditor.session.setMode("ace/mode/json");
                 ThisPage.detailsEditor.session.setTabSize(2);
