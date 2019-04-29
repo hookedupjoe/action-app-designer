@@ -411,6 +411,24 @@ License: MIT
 	/**
 	 */
 
+	 
+	
+	ControlCode.refreshOnActivate = refreshOnActivate;
+	function refreshOnActivate() {
+		this.refreshTabNav();
+	}
+	
+	ControlCode.refreshTabNav = refreshTabNav;
+	function refreshTabNav() {
+		this.details = this.details || {};
+	
+		var tmpHTML = this.context.page.controller.getSubNavTabs(this.details);
+		if ((tmpHTML)) {
+			this.loadSpot('nav-tabs', tmpHTML.join(''))
+		}
+	}
+
+
 	ControlCode.showControl = showControl;
 	function showControl(theControlSpec) {
 

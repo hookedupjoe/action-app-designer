@@ -110,7 +110,8 @@ License: MIT
 
                 
                 ThisPage.layout.toggle("west");
-                
+                ThisPage.refreshWSNav();
+
                 //--- Do special stuff on page load here
                 //--- Then optionally call the stuff that will happen every time 
                 //      the page is activated if not already called by above code
@@ -121,7 +122,7 @@ License: MIT
 
     ThisPage._onActivate = function () {
         //-- Do refresh / checks here to update when page is activated
-        ThisPage.refreshNavTabs();
+        
     }
     //--- End lifecycle hooks
 
@@ -179,7 +180,7 @@ function saveWorkspaceState() {
     function refreshWorkspace() {
         ThisPage.parts.west.parts.workspace.refreshFromURI();
         ThisPage.parts.center.parts.workspace.refreshFromURI();
-        ThisPage.refreshNavTabs();
+        //ThisPage.refreshNavTabs();
     };
 
 
@@ -225,7 +226,7 @@ function saveWorkspaceState() {
                 //--- Go to the newly added card (to show it and hide others)
                 tmpNewApp.setup(tmpSetupDetails);
                 ThisApp.gotoTab(tmpTabAttr);
-                ThisPage.refreshNavTabs();
+                //ThisPage.refreshNavTabs();
                 ThisPage.saveWorkspaceState();
             });
         }
@@ -258,6 +259,7 @@ function saveWorkspaceState() {
 
         if (loadedResources[tmpEntryName]) {
             var tmpTabAttr = { group: wsOutlineName, item: tmpEntryName };
+            loadedResources[tmpEntryName].refreshOnActivate();
             ThisApp.gotoTab(tmpTabAttr);
         } else {
             var tmpNewResource = ThisPage.getControl('resourceConsole').create(tmpEntryName);
@@ -281,7 +283,7 @@ function saveWorkspaceState() {
             tmpNewResource.preLoad(tmpParams);
             tmpNewResource.loadToElement(tmpNewGroup).then(function (theReply) {
                 tmpNewResource.setup(tmpParams);
-                ThisPage.refreshNavTabs();
+                //ThisPage.refreshNavTabs();
                 ThisPage.saveWorkspaceState();
             });
             //--- Go to the newly added card (to show it and hide others)
@@ -335,7 +337,7 @@ function saveWorkspaceState() {
             tmpNewPage.preLoad(tmpParams);
             tmpNewPage.loadToElement(tmpNewGroup).then(function (theReply) {
                 tmpNewPage.setup(tmpParams);
-                ThisPage.refreshNavTabs();
+                //ThisPage.refreshNavTabs();
                 ThisPage.saveWorkspaceState();
             });
             //--- Go to the newly added card (to show it and hide others)
@@ -395,7 +397,6 @@ function saveWorkspaceState() {
     var commonParams = ['appname', 'apptitle', 'titie', 'source', 'type', 'pagename', 'resname', 'restype'];
 
     function wsItemSelected(theEvent, theControl, theTarget) {
-        console.log( 'wsItemSelected', theTarget);
         var tmpParams = ThisApp.getActionParams('na', theTarget, commonParams);
         //        var tmpEl = $(theTarget);
         if (tmpParams.type == 'app') {
@@ -410,22 +411,17 @@ function saveWorkspaceState() {
 
     }
 
-    actions.showWorkspace = showWorkspace;
-    function showWorkspace(){
-        console.log( 'showWorkspace');
-    };
-    
     actions.addWSResource = addWSResource;
     function addWSResource(theParams, theTarget) {
         var tmpParams = ThisApp.getActionParams(theParams, theTarget, ['restype'])
         var tmpType = tmpParams.restype || '';
-        console.log('Not het implemented', tmpType);
+        console.info('Not implemented', tmpType);
     };
 
     actions.closePage = closePage;
     function closePage(theParams, theTarget) {
         var tmpParams = ThisApp.getActionParams(theParams, theTarget, ['appname', 'pagename']);
-        console.log('closePage - Not het implemented', tmpParams);
+        console.info('closePage - Not implemented', tmpParams);
     };
 
 
@@ -444,14 +440,6 @@ function saveWorkspaceState() {
         }
     }
 
-    ThisPage.refreshNavTabs = refreshNavTabs
-    function refreshNavTabs(theDetails) {
-        
-        return;
-        var tmpHTML = this.getNavTabs(theDetails);
-        tmpHTML = tmpHTML.join('\n');
-        ThisPage.loadSpot('nav-tabs', tmpHTML);
-    }
     ThisPage.refreshWSNav = refreshWSNav;
     function refreshWSNav(theDetails){
         var tmpHTML = this.getNavTabs(theDetails);
@@ -462,7 +450,6 @@ function saveWorkspaceState() {
 
     ThisPage.getSubNavTabs = getSubNavTabs
     function getSubNavTabs(theDetails) {
-        console.log( 'getSubNavTabs', theDetails);
         var tmpAppsIndex = {};
         var tmpHTML = [];
         tmpHTML.push('<div class="pad0 ui top attached tabular tab-nav menu" style="">');
@@ -566,113 +553,6 @@ function saveWorkspaceState() {
         ThisPage.loadSpot('nav-tabs', tmpHTML.join(''));
 
         return []
-    }
-
-    
-    function getSubNavTabs_ORIGIINAL_DEL(theDetails) {
-        console.log( 'getSubNavTabs', theDetails);
-        var tmpAppsIndex = {};
-        var tmpHTML = [];
-        tmpHTML.push('<div class="pad0 ui top attached tabular tab-nav menu" style="">');
-
-        var tmpForAppName = theDetails.appname || '';
-        var tmpForPageName = theDetails.pagename || '';
-
-        for (var iPos in loadedApps) {
-            var tmpApp = loadedApps[iPos]
-            var tmpAppName = '';
-            if (tmpApp.details && tmpApp.details.appname) {
-                tmpAppName = tmpApp.details.appname;
-                if (!(tmpAppsIndex[tmpForAppName]) && tmpForAppName == tmpAppName) {
-                    tmpHTML.push('<a appuse="tablinks" group="workspace-outline" item="' + tmpAppName + '" appname="' + tmpAppName + '" pageaction="showAppConsole" class="item black  "><i class="icon globe blue"></i> ' + tmpAppName + '</a>');
-                }
-                tmpAppsIndex[tmpAppName] = true;
-            }
-        }
-        for (var iPos in loadedPages) {
-            var tmpPage = loadedPages[iPos]
-            var tmpAppName = '';
-            if (tmpPage.details && tmpPage.details.appname) {
-                tmpAppName = tmpPage.details.appname
-            }
-            if (!(tmpAppsIndex[tmpAppName]) && tmpForAppName == tmpAppName) {
-                tmpHTML.push('<a appuse="tablinks" group="workspace-outline" item="' + tmpAppName + '" appname="' + tmpAppName + '" pageaction="showAppConsole" class="item black  "><i class="icon globe blue"></i> ' + tmpAppName + '</a>');
-                tmpAppsIndex[tmpAppName] = true;
-            }
-
-            if (tmpAppName) {
-                var tmpPageName = '';
-                if (tmpPage.details && tmpPage.details.pagename) {
-                    tmpPageName = tmpPage.details.pagename
-                }
-                var tmpPageFN = tmpAppName + '-' + tmpPageName;
-                if (!(tmpAppsIndex[tmpPageFN]) && tmpForAppName == tmpAppName) {
-                    if (!(tmpForPageName) || (tmpForPageName && (tmpPageName == tmpForPageName))) {
-                        tmpHTML.push('<a appuse="tablinks" group="workspace-outline" item="' + tmpAppName + '-' + tmpPageName + '" appname="' + tmpAppName + '" pagename="' + tmpPageName + '" pageaction="showPageConsole" class="item black"><i class="icon columns green"></i> ' + tmpPageName + '</a>');
-                        tmpAppsIndex[tmpPageFN] = true;
-                    }
-                }
-
-            }
-
-
-        }
-        for (var iPos in loadedResources) {
-            var tmpRes = loadedResources[iPos]
-            var tmpAppName = '';
-            if (tmpRes.details && tmpRes.details.appname) {
-                tmpAppName = tmpRes.details.appname
-            }
-            if (!(tmpAppsIndex[tmpAppName]) && tmpForAppName == tmpAppName) {
-                tmpHTML.push('<a appuse="tablinks" group="workspace-outline" item="' + tmpAppName + '" appname="' + tmpAppName + '" pageaction="showAppConsole" class="item black  "><i class="icon globe blue"></i> ' + tmpAppName + '</a>');
-                tmpAppsIndex[tmpAppName] = true;
-            }
-
-            if (tmpAppName) {
-                var tmpPageName = '';
-                if (tmpRes.details && tmpRes.details.pagename) {
-                    tmpPageName = tmpRes.details.pagename
-                }
-                var tmpPageFN = tmpAppName + '-' + tmpPageName;
-
-                if (!(tmpAppsIndex[tmpPageFN]) && tmpForAppName == tmpAppName) {
-                    if (!(tmpForPageName) || (tmpForPageName && (tmpPageName == tmpForPageName))) {
-                        tmpHTML.push('<a appuse="tablinks" group="workspace-outline" item="' + tmpAppName + '-' + tmpPageName + '" appname="' + tmpAppName + '" pagename="' + tmpPageName + '" pageaction="showPageConsole" class="item black"><i class="icon columns green"></i> ' + tmpPageName + '</a>');
-                        tmpAppsIndex[tmpPageFN] = true;
-                    }
-                }
-
-                //--- If this is showing nav for the page, show resources
-                if (tmpForPageName) {
-                    var tmpResName = tmpRes.details.resname;
-                    var tmpResType = tmpRes.details.restype;
-                    var tmpResFN = tmpAppName + '-' + tmpPageName + '-' + tmpResName;
-
-                    if (!(tmpAppsIndex[tmpResFN]) && (tmpForAppName == tmpAppName)) {
-                        if (tmpPageName == tmpForPageName) {
-                            var tmpIcon = ThisApp.controls.detailsIndex.getDetails(tmpResType).icon;
-
-                            tmpHTML.push('<a appuse="tablinks" group="workspace-outline" item="' + tmpAppName + '-' + tmpPageName + '-' + tmpResName + '" appname="' + tmpAppName + '" pagename="' + tmpPageName + '"  resname="' + tmpResName + '" pageaction="showResourceConsole"    class="item black"><i class="icon ' + tmpIcon + ' purple"></i> ' + tmpResName + '</a>')
-                            tmpAppsIndex[tmpResFN] = true;
-                        }
-                    }
-                }
-
-
-            }
-
-        }
-
-        tmpHTML.push('</div><div class="ui divider fitted black"></div>')
-
-        var tmpNavHTML = [];
-        tmpNavHTML.push('<div class="pad0 ui top attached tabular tab-nav menu" style="">');
-        tmpNavHTML.push('<a appuse="tablinks" group="workspace-outline" item="workspace" action="selectMe" class="item black"><i class="icon hdd black"></i> </a>');
-        tmpNavHTML = tmpNavHTML.concat(tmpHTML);
-        tmpNavHTML.push('</div>');
-        ThisPage.loadSpot('nav-tabs', tmpNavHTML);
-
-        return tmpHTML
     }
 
     ThisPage.getNavTabs = getNavTabs
