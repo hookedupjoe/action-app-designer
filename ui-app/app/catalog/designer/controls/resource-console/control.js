@@ -360,8 +360,6 @@ License: MIT
 		this.refreshControlDisplay();
 	}
 
-
-
 	function saveContent() {
 		var tmpThis = this;
 		var tmpNewCodeIndex = {};
