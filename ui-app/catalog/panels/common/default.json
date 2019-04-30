@@ -4,70 +4,195 @@
 	},
 	"content": [
 		{
-			"ctl": "title",
-			"name": "title",
-			"size": "large",
-			"color": "blue",
-			"icon": "box",
-			"text": "Resource Name"
-		},
-		{
-			"ctl": "tabs",
-			"name": "resourcetabs",
-			"tabs": [
+			"ctl": "ui",
+			"name": "title-area",
+			"classes": "",
+			"content": [
 				{
-					"label": "Info",
-					"name": "resourcetabs-info",
-					"ctl": "tab",
-					"content": [
-						{
-							"ctl": "fieldrow",
-							"name": "info-row",
-							"items": [
-								{
-									"ctl": "field",
-									"name": "appname",
-									"label": "Location",
-									"readonly":true,
-									"default": "[ws]/catalog/controls",
-									"req": true
-								},
-								{
-									"ctl": "field",
-									"name": "title",
-									"readonly":true,
-									"label": "Conrol Name",
-									"default": "SearchControl",
-									"req": true
-								}
-							]
-						}
-					]
+					"ctl": "message",
+					"name": "title",
+					"text": "The title"
 				},
 				{
-					"label": "Content",
-					"name": "resourcetabs-content-tab",
-					"ctl": "tab",
-					"content": [
-						{
-							"ctl": "spot",
-							"name": "resourcetabs-content",
-							"text": "Content Here"
-						}					
-					]
+					"ctl": "button",
+					"basic": true,
+					"right": true,
+					"icon": "recycle",
+					"name": "btn-reload-page",
+					"label": "Reload",
+					"attr": {
+						"pageaction": "closePage",
+						"appname": "",
+						"pagename": ""
+					}
 				},
 				{
-					"label": "Code",
-					"name": "resourcetabs-code-tab",
-					"ctl": "tab",
-					"content": [
-						{
-							"ctl": "spot",
-							"name": "resourcetabs-code"
-						}
-					]
+					"ctl": "button",
+					"color": "black",
+					"hidden": false,
+					"basic": true,
+					"right": true,
+					"icon": "cancel",
+					"name": "btn-close-page",
+					"label": "Close",
+					"attr": {
+						"pageaction": "closePage",
+						"appname": "",
+						"pagename": ""
+					}
+				},
+				{
+					"ctl": "button",
+					"toLeft": true,
+					"color": "blue",
+					"icon": "save",
+					"disabled": true,
+					"name": "btn-tb-save",
+					"label": "Save",
+					"onClick": {
+						"run": "action",
+						"action": "saveCode"
+					}
 				}
 			]
 		}
-	]
+	],
+	"index": {
+		"fieldsList": [],
+		"itemsList": [
+			"title-area",
+			"title",
+			"btn-reload-page",
+			"btn-close-page",
+			"btn-tb-save"
+		],
+		"fields": {},
+		"items": {
+			"title-area": {
+				"ctl": "ui",
+				"name": "title-area",
+				"classes": "",
+				"content": [
+					{
+						"ctl": "message",
+						"name": "title",
+						"text": "Hello WOrld"
+					},
+					{
+						"ctl": "button",
+						"basic": true,
+						"right": true,
+						"icon": "recycle",
+						"name": "btn-reload-page",
+						"label": "Reload",
+						"attr": {
+							"pageaction": "closePage",
+							"appname": "",
+							"pagename": ""
+						}
+					},
+					{
+						"ctl": "button",
+						"color": "black",
+						"hidden": false,
+						"basic": true,
+						"right": true,
+						"icon": "cancel",
+						"name": "btn-close-page",
+						"label": "Close",
+						"attr": {
+							"pageaction": "closePage",
+							"appname": "",
+							"pagename": ""
+						}
+					},
+					{
+						"ctl": "button",
+						"toLeft": true,
+						"color": "blue",
+						"icon": "save",
+						"disabled": true,
+						"name": "btn-tb-save",
+						"label": "Save",
+						"onClick": {
+							"run": "action",
+							"action": "saveCode"
+						}
+					}
+				]
+			},
+			"title": {
+				"ctl": "message",
+				"name": "title",
+				"text": "Hello WOrld"
+			},
+			"btn-reload-page": {
+				"ctl": "button",
+				"basic": true,
+				"right": true,
+				"icon": "recycle",
+				"name": "btn-reload-page",
+				"label": "Reload",
+				"attr": {
+					"pageaction": "closePage",
+					"appname": "",
+					"pagename": ""
+				}
+			},
+			"btn-close-page": {
+				"ctl": "button",
+				"color": "black",
+				"hidden": false,
+				"basic": true,
+				"right": true,
+				"icon": "cancel",
+				"name": "btn-close-page",
+				"label": "Close",
+				"attr": {
+					"pageaction": "closePage",
+					"appname": "",
+					"pagename": ""
+				}
+			},
+			"btn-tb-save": {
+				"ctl": "button",
+				"toLeft": true,
+				"color": "blue",
+				"icon": "save",
+				"disabled": true,
+				"name": "btn-tb-save",
+				"label": "Save",
+				"onClick": {
+					"run": "action",
+					"action": "saveCode"
+				}
+			}
+		},
+		"controls": {},
+		"required": {},
+		"outline": [
+			{
+				"ctl": "ui",
+				"name": "title-area",
+				"children": [
+					{
+						"ctl": "message",
+						"name": "title"
+					},
+					{
+						"ctl": "button",
+						"name": "btn-reload-page"
+					},
+					{
+						"ctl": "button",
+						"name": "btn-close-page"
+					},
+					{
+						"ctl": "button",
+						"name": "btn-tb-save"
+					}
+				]
+			}
+		]
+	}
 }
