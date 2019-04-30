@@ -201,11 +201,12 @@ License: MIT
 
 		var tmpSource = tmpOptions.source || 'ws';
 
-		this.setFieldValue('title', '[' + tmpResType + '] ' + tmpResName);
 
 		var tmpShowName = tmpResName.replace('.html','')
 			.replace('.json','')
 			.replace('.js','')
+
+		this.setFieldValue('title', '[' + tmpResType + '] ' + tmpShowName);
 
 		this.details = {
 			pagename: tmpPageName,
