@@ -53,15 +53,15 @@ License: MIT
 							{
 								"ctl": "button",
 								"color": "black",
+								hidden: false,
 								basic: true,
-								right: true,
+								right: true,								
 								"icon": "cancel",
 								"name": "btn-close-page",
 								"label": "Close",
-								attr: {
-									"pageaction": "closePage",
-									appname: "",
-									pagename: ""
+								onClick: {
+									"run": "action",
+									action: "closeMe"
 								}
 							}
 						]
@@ -710,6 +710,10 @@ License: MIT
 
 	};
 
+
+	ControlCode.closeMe = function (){
+		this.context.page.controller.closeResourceConsole(this.details);
+	}
 
 	//==== END
 var ThisControl = { specs: ControlSpecs, options: { proto: ControlCode, parent: ThisApp } };

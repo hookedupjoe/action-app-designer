@@ -58,14 +58,13 @@ License: MIT
 								"color": "black",
 								hidden: false,
 								basic: true,
-								right: true,
-								
+								right: true,								
 								"icon": "cancel",
 								"name": "btn-close-page",
 								"label": "Close",
 								onClick: {
 									"run": "action",
-									action: "closePage"
+									action: "closeMe"
 								}
 							}
 						
@@ -886,7 +885,7 @@ License: MIT
 
 
 
-ControlCode.closePage = function (){
+ControlCode.closeMe = function (){
 	this.context.page.controller.closePageConsole(this.details);
 }
 

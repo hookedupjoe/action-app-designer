@@ -383,16 +383,16 @@ License: MIT
         if (loadedPages[tmpEntryName]) {
             var tmpTabAttr = { group: wsOutlineName, item: tmpEntryName };
             var tmpAll = ThisPage.getByAttr$(tmpTabAttr);
-            tmpAll.each(function(theIndex, theItem){
+            tmpAll.each(function (theIndex, theItem) {
                 var tmpItemEl = $(theItem);
-                if( !(tmpItemEl.attr('oluse')) ){
+                if (!(tmpItemEl.attr('oluse'))) {
                     tmpItemEl.remove();
                 }
             })
             delete loadedPages[tmpEntryName];
-           
+
         } else {
-          console.warn("No loaded page to close for " + tmpEntryName)
+            console.warn("No loaded page to close for " + tmpEntryName)
         }
 
         var tmpToRemove = [];
@@ -402,7 +402,7 @@ License: MIT
             if (tmpRes.details && tmpRes.details.appname) {
                 tmpResAppName = tmpRes.details.appname
             }
-           
+
             if (tmpResAppName) {
                 var tmpResPageName = '';
                 if (tmpRes.details && tmpRes.details.pagename) {
@@ -415,18 +415,18 @@ License: MIT
 
         }
 
-        for( var iPos in tmpToRemove ){
+        for (var iPos in tmpToRemove) {
             var tmpRemoveItem = tmpToRemove[iPos];
-            console.log( 'tmpRemoveItem', tmpRemoveItem);
+            console.log('tmpRemoveItem', tmpRemoveItem);
             var tmpTabAttr = { group: wsOutlineName, item: tmpRemoveItem };
             var tmpAll = ThisPage.getByAttr$(tmpTabAttr);
-            tmpAll.each(function(theIndex, theItem){
+            tmpAll.each(function (theIndex, theItem) {
                 var tmpItemEl = $(theItem);
-                if( !(tmpItemEl.attr('oluse')) ){
+                if (!(tmpItemEl.attr('oluse'))) {
                     tmpItemEl.remove();
                 }
             })
-            
+
             delete loadedResources[tmpRemoveItem];
         }
 
@@ -434,6 +434,46 @@ License: MIT
         //console.log( 'tmpToRemove', tmpToRemove);
     };
 
+
+    ThisPage.closeResourceConsole = actions.closeResourceConsole = closeResourceConsole;
+    function closeResourceConsole(theParams, theTarget) {
+
+        var tmpParams = ThisApp.getActionParams(theParams, theTarget, commonParams);
+        var tmpResourceName = tmpParams.resname || tmpParams.name || '';
+        if (!(tmpResourceName)) {
+            alert("No resource name provided to open");
+            return;
+        }
+        
+        var tmpAppName = '';
+        var tmpPageName = '';
+
+        var tmpEntryName = tmpResourceName || '';
+        if ((tmpParams.appname)) {
+            tmpAppName = tmpParams.appname;
+        }
+        if ((tmpParams.pagename)) {
+            tmpPageName = tmpParams.pagename;
+        }
+
+        tmpEntryName = tmpAppName + "-" + tmpPageName + "-" + tmpEntryName
+
+        if (loadedResources[tmpEntryName]) {
+            var tmpTabAttr = { group: wsOutlineName, item: tmpEntryName };
+            var tmpAll = ThisPage.getByAttr$(tmpTabAttr);
+            tmpAll.each(function (theIndex, theItem) {
+                var tmpItemEl = $(theItem);
+                if (!(tmpItemEl.attr('oluse'))) {
+                    tmpItemEl.remove();
+                }
+            })
+            delete loadedResources[tmpEntryName];
+            showPageConsole(tmpParams);
+        } else {
+            onsole.warn("No loaded resource to close for " + tmpEntryName)
+        }
+
+    };
     actions.addApp = addApp;
     function addApp(theParams, theTarget) {
         ThisPage.getPanel('frmNewApp').prompt(
