@@ -99,11 +99,9 @@ License: MIT
         };
 
         $(document).bind('keydown', function (e) {
-            //console.log('e.which', e.which);
             if (e.altKey && (e.which == 70)) {
                 e.preventDefault();
                 return false;
-                console.log("alt f not used")
             } else if (e.ctrlKey && (e.which == 83 || e.which == 80)) {
                 e.preventDefault();
                 if (e.which == 83) {
@@ -417,7 +415,6 @@ License: MIT
 
         for (var iPos in tmpToRemove) {
             var tmpRemoveItem = tmpToRemove[iPos];
-            console.log('tmpRemoveItem', tmpRemoveItem);
             var tmpTabAttr = { group: wsOutlineName, item: tmpRemoveItem };
             var tmpAll = ThisPage.getByAttr$(tmpTabAttr);
             tmpAll.each(function (theIndex, theItem) {
@@ -431,7 +428,6 @@ License: MIT
         }
 
         showAppConsole(tmpParams);
-        //console.log( 'tmpToRemove', tmpToRemove);
     };
 
 
@@ -444,7 +440,7 @@ License: MIT
             alert("No resource name provided to open");
             return;
         }
-        
+
         var tmpAppName = '';
         var tmpPageName = '';
 

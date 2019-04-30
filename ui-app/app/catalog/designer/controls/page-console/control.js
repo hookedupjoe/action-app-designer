@@ -22,11 +22,11 @@ License: MIT
 						"fluid": true,
 						"readonly": true,
 						"inputClasses": "title",
-					
+
 						"default": "Page",
 						"placeholder": "",
 						"content": [
-						
+
 							{
 								"ctl": "button",
 								"toLeft": true,
@@ -58,7 +58,7 @@ License: MIT
 								"color": "black",
 								hidden: false,
 								basic: true,
-								right: true,								
+								right: true,
 								"icon": "cancel",
 								"name": "btn-close-page",
 								"label": "Close",
@@ -67,10 +67,10 @@ License: MIT
 									action: "closeMe"
 								}
 							}
-						
+
 						]
 					}
-					
+
 				],
 				center: [
 					{
@@ -88,7 +88,7 @@ License: MIT
 										ctl: "layout",
 										name: "layout",
 										north: [
-											
+
 										],
 										center: [
 											{
@@ -120,8 +120,8 @@ License: MIT
 													"run": "action",
 													"action": "formatPageCode"
 												},
-											},											
-																		
+											},
+
 											{
 												ctl: 'divider',
 												fitted: true,
@@ -477,7 +477,7 @@ License: MIT
 		this.parts.resources.refreshFromURI();
 	}
 
-	
+
 	function addPageHTML() {
 		var tmpThis = this;
 
@@ -602,18 +602,18 @@ License: MIT
 
 	}
 
-	ControlCode.isActive = function(){
+	ControlCode.isActive = function () {
 		var tmpIsVis = this.getItemEl('btn-save').is(":visible");
 		return tmpIsVis;
 	}
 	function _onInit() {
 		this.parts.resources.subscribe('selectMe', onResSelect.bind(this));
 		var tmpThis = this;
-		ThisApp.subscribe('saveRequested', function(){
-			if( !tmpThis.isActive()){return}
+		ThisApp.subscribe('saveRequested', function () {
+			if (!tmpThis.isActive()) { return }
 
 			var tmpIsDirty = tmpThis.refreshButtonStatus();
-			if( tmpIsDirty ){
+			if (tmpIsDirty) {
 				tmpThis.saveCode();
 			}
 		})
@@ -674,20 +674,20 @@ License: MIT
 
 	function refreshTabNav() {
 		this.details = this.details || {};
-	
+
 		var tmpHTML = this.context.page.controller.getSubNavTabs(this.details);
 		if ((tmpHTML)) {
 			this.loadSpot('nav-tabs', tmpHTML.join(''))
 		}
 	}
 
-	
+
 	ControlCode.refreshOnActivate = refreshOnActivate;
 	function refreshOnActivate() {
 		this.refreshTabNav();
 	}
 
-	
+
 	function uniqueGroups(theUniqueness) {
 		var tmpIndex = this.getIndex();
 		if (tmpIndex && tmpIndex.items) {
@@ -728,26 +728,26 @@ License: MIT
 		this.aceEditor.on('change', function () {
 			//--- ToDo: Check for actual changes to account for undo
 			//     and add a reset to original button for each session
-		  tmpThis.refreshButtonStatus();		
+			tmpThis.refreshButtonStatus();
 		})
 
 	}
 
 	ControlCode.refreshButtonStatus = refreshButtonStatus;
-	function refreshButtonStatus(){
+	function refreshButtonStatus() {
 		var tmpThis = this;
 		var tmpIsDirty = false;
-			for (var aName in tmpThis.loaded.sessions) {
+		for (var aName in tmpThis.loaded.sessions) {
 
-				if ((tmpThis.isCodeDirty(aName))) {
+			if ((tmpThis.isCodeDirty(aName))) {
 
-					tmpIsDirty = true;
-					break;
-				}
+				tmpIsDirty = true;
+				break;
 			}
+		}
 
-			tmpThis.setItemDisabled('btn-save', !tmpIsDirty);
-			return tmpIsDirty;
+		tmpThis.setItemDisabled('btn-save', !tmpIsDirty);
+		return tmpIsDirty;
 	}
 
 
@@ -762,7 +762,7 @@ License: MIT
 
 	function isCodeDirty(theName) {
 		var tmpSession = this.loaded.sessions[theName];
-	
+
 		try {
 			var tmpCode = tmpSession.getValue();
 			var tmpOrig = this.loaded.codeIndex[theName];
@@ -776,14 +776,14 @@ License: MIT
 		}
 		return false;
 	}
-	function initSession(theSession){
+	function initSession(theSession) {
 		theSession.setTabSize(2);
 	}
 	function refreshEditorFromCodeIndex() {
 		for (var aName in this.loaded.codeIndex) {
 			var tmpCode = this.loaded.codeIndex[aName];
 			if (!(this.loaded.sessions[aName])) {
-				
+
 				this.loaded.sessions[aName] = ace.createEditSession(aName, "ace/mode/javascript")
 				initSession(this.loaded.sessions[aName]);
 
@@ -866,7 +866,7 @@ License: MIT
 		})
 	}
 
-	function padValue(theValue){
+	function padValue(theValue) {
 		return '\n' + theValue.trim() + '\n';
 	}
 
@@ -876,40 +876,31 @@ License: MIT
 		this.aceEditor.session.setValue(padValue(tmpValue));
 	}
 
-	
-// 	ControlCode.beatifyCode = beatifyCode;
-// 	function beatifyCode(theSession) {
-//     var val = this.beautify.beautify(theSession);
-// 	  theSession.setValue(padValue(val));
-// }
 
-
-
-ControlCode.closeMe = function (){
-	this.context.page.controller.closePageConsole(this.details);
-}
-
-ControlCode.reloadPage = function () {
-	console.log('reloadPage');
-	var tmpThis = this;
-	var tmpIsDirty = tmpThis.refreshButtonStatus();
-	if (tmpIsDirty) {
-		ThisApp.confirm("Are you sure you want to refresh and lost changes?", "Unsaved Changes")
-			.then(function (theIsYes) {
-				if (theIsYes) {
-					tmpThis.refreshFromSource();
-				}
-
-			})
-	} else {
-		tmpThis.refreshFromSource();
+	ControlCode.closeMe = function () {
+		this.context.page.controller.closePageConsole(this.details);
 	}
 
-};
+	ControlCode.reloadPage = function () {
+		var tmpThis = this;
+		var tmpIsDirty = tmpThis.refreshButtonStatus();
+		if (tmpIsDirty) {
+			ThisApp.confirm("Are you sure you want to refresh and lost changes?", "Unsaved Changes")
+				.then(function (theIsYes) {
+					if (theIsYes) {
+						tmpThis.refreshFromSource();
+					}
+
+				})
+		} else {
+			tmpThis.refreshFromSource();
+		}
+
+	};
 
 
 
-//=== End
+	//=== End
 	var ThisControl = { specs: ControlSpecs, options: { proto: ControlCode, parent: ThisApp } };
 
 	return ThisControl;

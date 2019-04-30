@@ -55,7 +55,7 @@ License: MIT
 								"color": "black",
 								hidden: false,
 								basic: true,
-								right: true,								
+								right: true,
 								"icon": "cancel",
 								"name": "btn-close-page",
 								"label": "Close",
@@ -689,10 +689,10 @@ License: MIT
 
 	ControlCode.formatCode = formatCode;
 	function formatCode() {
-		this.beautify.beautify(this.aceEditor.session);	
+		this.beautify.beautify(this.aceEditor.session);
 		this.refreshButtonStatus();
 	}
-	
+
 	ControlCode.reloadPage = function () {
 		var tmpThis = this;
 		var tmpIsDirty = tmpThis.refreshButtonStatus();
@@ -711,12 +711,12 @@ License: MIT
 	};
 
 
-	ControlCode.closeMe = function (){
+	ControlCode.closeMe = function () {
 		this.context.page.controller.closeResourceConsole(this.details);
 	}
 
 	//==== END
-var ThisControl = { specs: ControlSpecs, options: { proto: ControlCode, parent: ThisApp } };
+	var ThisControl = { specs: ControlSpecs, options: { proto: ControlCode, parent: ThisApp } };
 
 	return ThisControl;
 })(ActionAppCore, $);
