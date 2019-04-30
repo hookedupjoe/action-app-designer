@@ -99,9 +99,14 @@ License: MIT
           };
 
           $(document).bind('keydown', function(e) {
-            if(e.ctrlKey && (e.which == 83)) {
+            //  console.log( 'e.which', e.which);
+            if(e.ctrlKey && (e.which == 83 || e.which == 80)) {
               e.preventDefault();
-              ThisApp.publish('saveRequested')
+              if( e.which == 83 ){
+                ThisApp.publish('saveRequested'); //ctrl+s
+            } else {
+                ThisApp.publish('previewRequested'); //ctrl+p
+            }
               return false;
             }
           });
