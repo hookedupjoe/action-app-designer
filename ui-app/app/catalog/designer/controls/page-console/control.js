@@ -22,16 +22,44 @@ License: MIT
 						"fluid": true,
 						"readonly": true,
 						"inputClasses": "title",
+					
 						"default": "Page",
 						"placeholder": "",
 						"content": [
+						
+							{
+								"ctl": "button",
+								"toLeft": true,
+								"color": "blue",
+								"icon": "save",
+								"disabled": true,
+								"name": "btn-save",
+								"label": "Save",
+								"onClick": {
+									"run": "action",
+									"action": "saveCode"
+								}
+							},
+							{
+								"ctl": "button",
+								"color": "black",
+								basic: true,
+								right: true,
+								"icon": "recycle",
+								"name": "btn-reload-page",
+								"label": "Reload",
+								onClick: {
+									"run": "action",
+									action: "reloadPage"
+								}
+							},
 							{
 								"ctl": "button",
 								"color": "black",
 								hidden: false,
 								basic: true,
 								right: true,
-								toRight: true,
+								
 								"icon": "cancel",
 								"name": "btn-close-page",
 								"label": "Close",
@@ -41,6 +69,7 @@ License: MIT
 									pagename: ""
 								}
 							}
+						
 						]
 					}
 					
@@ -94,19 +123,7 @@ License: MIT
 													"action": "formatPageCode"
 												},
 											},											
-											{
-												"ctl": "button",
-												"toLeft": true,
-												"color": "blue",
-												"icon": "save",
-												"disabled": true,
-												"name": "btn-save",
-												"label": "Save",
-												"onClick": {
-													"run": "action",
-													"action": "saveCode"
-												}
-											},											
+																		
 											{
 												ctl: 'divider',
 												fitted: true,
@@ -154,7 +171,7 @@ License: MIT
 															{
 																"ctl": "tbl-ol-node",
 																"name": "setup-resources",
-																"details": "Resources",
+																"details": "Required On Load",
 																"meta": "&#160;",
 																"group": "page-code-outline",
 																"item": "setup-resources",
@@ -588,7 +605,7 @@ License: MIT
 	}
 
 	ControlCode.isActive = function(){
-		var tmpIsVis = this.getItemEl('ace-editor').is(":visible");
+		var tmpIsVis = this.getItemEl('btn-save').is(":visible");
 		return tmpIsVis;
 	}
 	function _onInit() {
@@ -745,6 +762,7 @@ License: MIT
 			this.loaded.codeIndex[aName] = tmpSession.getValue();
 			tmpSession.getUndoManager().markClean();
 		}
+		this.refreshButtonStatus();
 	}
 
 	function isCodeDirty(theName) {
@@ -784,6 +802,7 @@ License: MIT
 	function refreshFromLoaded() {
 		this.refreshEditorFromCodeIndex();
 		this.showCode();
+		this.markClean();
 	}
 
 
@@ -869,6 +888,29 @@ License: MIT
 // 	  theSession.setValue(padValue(val));
 // }
 
+
+
+ControlCode.reloadPage = function () {
+	console.log('reloadPage');
+	var tmpThis = this;
+	var tmpIsDirty = tmpThis.refreshButtonStatus();
+	if (tmpIsDirty) {
+		ThisApp.confirm("Are you sure you want to refresh and lost changes?", "Unsaved Changes")
+			.then(function (theIsYes) {
+				if (theIsYes) {
+					tmpThis.refreshFromSource();
+				}
+
+			})
+	} else {
+		tmpThis.refreshFromSource();
+	}
+
+};
+
+
+
+//=== End
 	var ThisControl = { specs: ControlSpecs, options: { proto: ControlCode, parent: ThisApp } };
 
 	return ThisControl;

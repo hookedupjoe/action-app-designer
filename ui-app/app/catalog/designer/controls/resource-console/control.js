@@ -27,6 +27,31 @@ License: MIT
 						"content": [
 							{
 								"ctl": "button",
+								"color": "blue",
+								"icon": "save",
+								"disabled": true,
+								"name": "btn-save",
+								"label": "Save",
+								"onClick": {
+									"run": "action",
+									"action": "saveContent"
+								}
+							},
+							{
+								"ctl": "button",
+								"color": "black",
+								basic: true,
+								right: true,
+								"icon": "recycle",
+								"name": "btn-reload-page",
+								"label": "Reload",
+								onClick: {
+									"run": "action",
+									action: "reloadPage"
+								}
+							},
+							{
+								"ctl": "button",
 								"color": "black",
 								basic: true,
 								right: true,
@@ -50,13 +75,13 @@ License: MIT
 							{
 								"ctl": "button",
 								"color": "purple",
-								toLeft: true,							
+								toLeft: true,
 								"name": "btn-refresh-page",
-								"label": "Refresh Preview",				
+								"label": "Refresh Preview",
 								"onClick": {
 									"run": "action",
 									"action": "refreshControlDisplay"
-								}								
+								}
 							},
 							{
 								ctl: "divider",
@@ -77,18 +102,6 @@ License: MIT
 						// 	}
 						// ],
 						north: [
-							{
-								"ctl": "button",
-								"color": "blue",
-								"icon": "save",
-								"disabled": true,
-								"name": "btn-save",
-								"label": "Save",
-								"onClick": {
-									"run": "action",
-									"action": "saveContent"
-								}
-							},
 							{
 								"ctl": "button",
 								"color": "black",
@@ -151,17 +164,17 @@ License: MIT
 
 	}
 
-	ControlCode.isActive = function(){
-		var tmpIsVis = this.getItemEl('ace-editor').is(":visible");
+	ControlCode.isActive = function () {
+		var tmpIsVis = this.getItemEl('btn-save').is(":visible");
 		return tmpIsVis;
 	}
 	function _onInit() {
 		//this.parts.resources.subscribe('selectMe', onResSelect.bind(this))
 		var tmpThis = this;
-		ThisApp.subscribe('saveRequested', function(){
-			if( !tmpThis.isActive()){return}
+		ThisApp.subscribe('saveRequested', function () {
+			if (!tmpThis.isActive()) { return }
 			var tmpIsDirty = tmpThis.refreshButtonStatus();
-			if( tmpIsDirty ){
+			if (tmpIsDirty) {
 				tmpThis.saveContent();
 			}
 		})
@@ -202,9 +215,9 @@ License: MIT
 		var tmpSource = tmpOptions.source || 'ws';
 
 
-		var tmpShowName = tmpResName.replace('.html','')
-			.replace('.json','')
-			.replace('.js','')
+		var tmpShowName = tmpResName.replace('.html', '')
+			.replace('.json', '')
+			.replace('.js', '')
 
 		this.setFieldValue('title', '[' + tmpResType + '] ' + tmpShowName);
 
@@ -299,31 +312,31 @@ License: MIT
 			});
 
 		});
-		
+
 		var tmpThis = this;
 		this.aceEditor.on('change', function () {
 			//--- ToDo: Check for actual changes to account for undo
 			//     and add a reset to original button for each session
-		  tmpThis.refreshButtonStatus();		
+			tmpThis.refreshButtonStatus();
 		})
 
 	}
 
 	ControlCode.refreshButtonStatus = refreshButtonStatus;
-	function refreshButtonStatus(){
+	function refreshButtonStatus() {
 		var tmpThis = this;
 		var tmpIsDirty = false;
-			for (var aName in tmpThis.loaded.sessions) {
+		for (var aName in tmpThis.loaded.sessions) {
 
-				if ((tmpThis.isCodeDirty(aName))) {
+			if ((tmpThis.isCodeDirty(aName))) {
 
-					tmpIsDirty = true;
-					break;
-				}
+				tmpIsDirty = true;
+				break;
 			}
+		}
 
-			tmpThis.setItemDisabled('btn-save', !tmpIsDirty)
-			return tmpIsDirty;
+		tmpThis.setItemDisabled('btn-save', !tmpIsDirty)
+		return tmpIsDirty;
 	}
 
 	function markClean() {
@@ -332,11 +345,12 @@ License: MIT
 			this.loaded.codeIndex[aName] = tmpSession.getValue();
 			tmpSession.getUndoManager().markClean();
 		}
+		this.refreshButtonStatus();
 	}
 
 	function isCodeDirty(theName) {
 		var tmpSession = this.loaded.sessions[theName];
-	
+
 		try {
 			var tmpCode = tmpSession.getValue();
 			var tmpOrig = this.loaded.codeIndex[theName];
@@ -350,7 +364,7 @@ License: MIT
 		}
 		return false;
 	}
-	function initSession(theSession){
+	function initSession(theSession) {
 		theSession.setTabSize(2);
 	}
 	function refreshEditorFromCodeIndex() {
@@ -368,6 +382,7 @@ License: MIT
 	function refreshFromLoaded() {
 		this.refreshEditorFromCodeIndex();
 		this.showCode();
+		this.markClean();
 		this.refreshControlDisplay();
 	}
 
@@ -381,7 +396,7 @@ License: MIT
 		}
 
 		var tmpContentText = tmpNewCodeIndex["content"];
-		
+
 
 		var tmpRequest = {
 			pagename: this.details.pagename,
@@ -452,17 +467,17 @@ License: MIT
 	/**
 	 */
 
-	 
-	
+
+
 	ControlCode.refreshOnActivate = refreshOnActivate;
 	function refreshOnActivate() {
 		this.refreshTabNav();
 	}
-	
+
 	ControlCode.refreshTabNav = refreshTabNav;
 	function refreshTabNav() {
 		this.details = this.details || {};
-	
+
 		var tmpHTML = this.context.page.controller.getSubNavTabs(this.details);
 		if ((tmpHTML)) {
 			this.loadSpot('nav-tabs', tmpHTML.join(''))
@@ -478,7 +493,7 @@ License: MIT
 		}
 		//-- ToDo: If active control, destroy it
 		this.activeControl = this.activeControlSpec.create(this.activeControlName);
-		var tmpCheckPath = '';		
+		var tmpCheckPath = '';
 		ThisApp.loadWebResouces(this.activeControl, tmpCheckPath, tmpCheckPath);
 
 		this.activeControl.loadToElement(this.spot$('preview-area'))
@@ -647,26 +662,26 @@ License: MIT
 
 	ControlCode.refreshControlDisplay = refreshControlDisplay;
 	function refreshControlDisplay() {
-		
+
 
 		var tmpResType = this.details.restype;
-	
-		
+
+
 		if (tmpResType == 'HTML' || tmpResType == 'Template' || tmpResType == 'html' || tmpResType == 'Templates') {
 			var tmpContent = this.aceEditor.getValue();
-			this.loadSpot('preview-area',tmpContent);
-		} else if( tmpResType == 'Panel' ){
+			this.loadSpot('preview-area', tmpContent);
+		} else if (tmpResType == 'Panel') {
 			var tmpObject = this.aceEditor.getValue();
 			tmpObject = ThisApp.json(tmpObject);
 			this.activeControlSpec = ThisApp.controls.newControl(tmpObject, { parent: this });
 			this.activeControlSpec.parent = this;
-			this.showControl()	
-		} else if( tmpResType == 'Control' ){
+			this.showControl();
+		} else if (tmpResType == 'Control') {
 			var tmpCode = this.aceEditor.getValue();
 			this.activeControlSpec = eval(tmpCode);
 			this.activeControlSpec = ThisApp.controls.newControl(this.activeControlSpec.specs, this.activeControlSpec.options || {})
 			this.activeControlSpec.parent = this;
-			this.showControl()	
+			this.showControl()
 		} else {
 			console.error("Unknown resource type " + tmpResType)
 		}
@@ -680,16 +695,34 @@ License: MIT
 		this.refreshButtonStatus();
 	}
 
-	function padValue(theValue){
+	function padValue(theValue) {
 		return '\n' + theValue.trim() + '\n';
 	}
 
 
+
+	
+	ControlCode.reloadPage = function () {
+		console.log('reloadPage');
+		var tmpThis = this;
+		var tmpIsDirty = tmpThis.refreshButtonStatus();
+		if (tmpIsDirty) {
+			ThisApp.confirm("Are you sure you want to refresh and lost changes?", "Unsaved Changes")
+				.then(function (theIsYes) {
+					if (theIsYes) {
+						tmpThis.refreshFromSource();
+					}
+
+				})
+		} else {
+			tmpThis.refreshFromSource();
+		}
+
+	};
+
+
 	//==== END
-
-
-
-	var ThisControl = { specs: ControlSpecs, options: { proto: ControlCode, parent: ThisApp } };
+var ThisControl = { specs: ControlSpecs, options: { proto: ControlCode, parent: ThisApp } };
 
 	return ThisControl;
 })(ActionAppCore, $);
