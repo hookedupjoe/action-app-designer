@@ -152,7 +152,7 @@ License: MIT
 	}
 
 	ControlCode.isActive = function(){
-		var tmpIsVis = this.getItemEl('btn-save').is(":visible");
+		var tmpIsVis = this.getItemEl('ace-editor').is(":visible");
 		return tmpIsVis;
 	}
 	function _onInit() {
