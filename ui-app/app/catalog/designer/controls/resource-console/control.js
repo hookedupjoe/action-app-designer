@@ -689,9 +689,7 @@ License: MIT
 
 	ControlCode.formatCode = formatCode;
 	function formatCode() {
-		this.beautify.beautify(this.aceEditor.session);
-		var tmpValue = this.aceEditor.session.getValue();
-		this.aceEditor.session.setValue(padValue(tmpValue));
+		this.beautify.beautify(this.aceEditor.session);	
 		this.refreshButtonStatus();
 	}
 
