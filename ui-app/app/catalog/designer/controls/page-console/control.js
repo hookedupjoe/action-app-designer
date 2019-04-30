@@ -100,7 +100,7 @@ License: MIT
 												"color": "blue",
 												"icon": "save",
 												"disabled": true,
-												"name": "btn-save-code",
+												"name": "btn-save",
 												"label": "Save",
 												"onClick": {
 													"run": "action",
@@ -587,10 +587,16 @@ License: MIT
 
 	}
 
+	ControlCode.isActive = function(){
+		var tmpIsVis = this.getItemEl('btn-save').is(":visible");
+		return tmpIsVis;
+	}
 	function _onInit() {
 		this.parts.resources.subscribe('selectMe', onResSelect.bind(this));
 		var tmpThis = this;
 		ThisApp.subscribe('saveRequested', function(){
+			if( !tmpThis.isActive()){return}
+
 			var tmpIsDirty = tmpThis.refreshButtonStatus();
 			if( tmpIsDirty ){
 				tmpThis.saveCode();
@@ -728,7 +734,7 @@ License: MIT
 				}
 			}
 
-			tmpThis.setItemDisabled('btn-save-code', !tmpIsDirty);
+			tmpThis.setItemDisabled('btn-save', !tmpIsDirty);
 			return tmpIsDirty;
 	}
 
@@ -804,7 +810,7 @@ License: MIT
 			url: '/design/ws/save-page',
 			data: tmpRequest
 		}).then(function (theReply) {
-			tmpThis.setItemDisabled('btn-save-code', true);
+			tmpThis.setItemDisabled('btn-save', true);
 			tmpThis.markClean();
 		})
 
