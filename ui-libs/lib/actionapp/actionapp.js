@@ -1344,7 +1344,7 @@ var ActionAppCore = {};
             if (isStr(theParams)) {
                 return { default: theParams }
             } else {
-                return theParams;
+                return theParams || {};
             }
         }
         var tmpRet = {};
