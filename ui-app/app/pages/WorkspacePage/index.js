@@ -94,23 +94,27 @@ License: MIT
         // wsOutlineName = ThisPage.ns(wsOutlineName);
         //--- This tells the page to layout the page, load templates and controls, et
         ThisPage.loadWorkspaceState();
-        window.onbeforeunload = function(){
+        window.onbeforeunload = function () {
             return 'Are you sure you want to leave?';
-          };
+        };
 
-          $(document).bind('keydown', function(e) {
-            //  console.log( 'e.which', e.which);
-            if(e.ctrlKey && (e.which == 83 || e.which == 80)) {
-              e.preventDefault();
-              if( e.which == 83 ){
-                ThisApp.publish('saveRequested'); //ctrl+s
-            } else {
-                ThisApp.publish('previewRequested'); //ctrl+p
+        $(document).bind('keydown', function (e) {
+            //console.log('e.which', e.which);
+            if (e.altKey && (e.which == 70)) {
+                e.preventDefault();
+                return false;
+                console.log("alt f not used")
+            } else if (e.ctrlKey && (e.which == 83 || e.which == 80)) {
+                e.preventDefault();
+                if (e.which == 83) {
+                    ThisApp.publish('saveRequested'); //ctrl+s
+                } else {
+                    ThisApp.publish('previewRequested'); //ctrl+p
+                }
+                return false;
             }
-              return false;
-            }
-          });
-          
+        });
+
         ThisPage.initOnFirstLoad().then(
             function () {
                 //--- For debugging
@@ -124,7 +128,7 @@ License: MIT
                 ThisPage.parts.west.subscribe('selected', wsItemSelected);
                 ThisPage.parts.center.subscribe('selected', wsItemSelected);
 
-                
+
                 ThisPage.layout.toggle("west");
                 ThisPage.refreshWSNav();
 
@@ -138,7 +142,7 @@ License: MIT
 
     ThisPage._onActivate = function () {
         //-- Do refresh / checks here to update when page is activated
-        
+
     }
     //--- End lifecycle hooks
 
@@ -152,44 +156,44 @@ License: MIT
 
     //=== Page Stuff
 
-    var dsNameWorkspaceState ='ws-page-state';
+    var dsNameWorkspaceState = 'ws-page-state';
 
 
-    
 
-ThisPage.loadWorkspaceState = loadWorkspaceState;
-function loadWorkspaceState() {
-    var dfd = jQuery.Deferred();
-    
-    
-    ThisPage.contextData.jsonClipboardIndex = {};
-    
-    ThisApp.om.getObject(dsNameWorkspaceState, 'ws-state').then(function(theReply){
-        //ToDo: Use State
-        dfd.resolve(true)    
-    });
-    
-    
-    return dfd.promise();
-}
 
-ThisPage.saveWorkspaceState = saveWorkspaceState;
-function saveWorkspaceState() {
-    ThisPage.fullOpenIndex = {
-        test: true
-    };
-    /*
-    loadedApps: ThisApp.json(ThisApp.json(loadedApps,true),true),
-        loadedPages: ThisApp.json(ThisApp.json(loadedPages,true),true), 
-        loadedResources: ThisApp.json(ThisApp.json(loadedResources,true),true)
-    */
-   var tmpStateName = 'ws-state';
+    ThisPage.loadWorkspaceState = loadWorkspaceState;
+    function loadWorkspaceState() {
+        var dfd = jQuery.Deferred();
 
-    ThisApp.om.putObject(dsNameWorkspaceState,tmpStateName,ThisPage.fullOpenIndex).then(function(theReply){
-        //--- saved
-    })
-        
-}
+
+        ThisPage.contextData.jsonClipboardIndex = {};
+
+        ThisApp.om.getObject(dsNameWorkspaceState, 'ws-state').then(function (theReply) {
+            //ToDo: Use State
+            dfd.resolve(true)
+        });
+
+
+        return dfd.promise();
+    }
+
+    ThisPage.saveWorkspaceState = saveWorkspaceState;
+    function saveWorkspaceState() {
+        ThisPage.fullOpenIndex = {
+            test: true
+        };
+        /*
+        loadedApps: ThisApp.json(ThisApp.json(loadedApps,true),true),
+            loadedPages: ThisApp.json(ThisApp.json(loadedPages,true),true), 
+            loadedResources: ThisApp.json(ThisApp.json(loadedResources,true),true)
+        */
+        var tmpStateName = 'ws-state';
+
+        ThisApp.om.putObject(dsNameWorkspaceState, tmpStateName, ThisPage.fullOpenIndex).then(function (theReply) {
+            //--- saved
+        })
+
+    }
 
 
     actions.refreshWorkspace = refreshWorkspace;
@@ -457,7 +461,7 @@ function saveWorkspaceState() {
     }
 
     ThisPage.refreshWSNav = refreshWSNav;
-    function refreshWSNav(theDetails){
+    function refreshWSNav(theDetails) {
         var tmpHTML = this.getNavTabs(theDetails);
         tmpHTML = tmpHTML.join('\n');
         ThisPage.loadSpot('nav-tabs', tmpHTML);
@@ -542,7 +546,7 @@ function saveWorkspaceState() {
                 if (tmpForPageName) {
                     var tmpResName = tmpRes.details.resname;
                     var tmpResTitle = tmpRes.details.title || tmpRes.details.resname;
-                    
+
                     var tmpResType = tmpRes.details.restype;
                     var tmpResFN = tmpAppName + '-' + tmpPageName + '-' + tmpResName;
 
