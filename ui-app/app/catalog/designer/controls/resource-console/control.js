@@ -49,10 +49,10 @@ License: MIT
 						east: [
 							{
 								"ctl": "button",
-								"color": "orange",
-								toLeft: true,
+								"color": "purple",
+								toLeft: true,							
 								"name": "btn-refresh-page",
-								"label": "Refresh",				
+								"label": "Refresh Preview",				
 								"onClick": {
 									"run": "action",
 									"action": "refreshControlDisplay"
