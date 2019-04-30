@@ -692,16 +692,8 @@ License: MIT
 		this.beautify.beautify(this.aceEditor.session);	
 		this.refreshButtonStatus();
 	}
-
-	function padValue(theValue) {
-		return '\n' + theValue.trim() + '\n';
-	}
-
-
-
 	
 	ControlCode.reloadPage = function () {
-		console.log('reloadPage');
 		var tmpThis = this;
 		var tmpIsDirty = tmpThis.refreshButtonStatus();
 		if (tmpIsDirty) {

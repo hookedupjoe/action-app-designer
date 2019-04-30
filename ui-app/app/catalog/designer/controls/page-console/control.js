@@ -63,10 +63,9 @@ License: MIT
 								"icon": "cancel",
 								"name": "btn-close-page",
 								"label": "Close",
-								attr: {
-									"pageaction": "closePage",
-									appname: "",
-									pagename: ""
+								onClick: {
+									"run": "action",
+									action: "closePage"
 								}
 							}
 						
@@ -631,9 +630,6 @@ License: MIT
 		var tmpPageName = theDetails.pagename || '';
 		var tmpAppName = theDetails.appname || '';
 		this.uniqueGroups(tmpAppName + '-' + tmpPageName);
-		var tmpCloseBtn = this.controlConfig.index.items['btn-close-page'];
-		tmpCloseBtn.attr.appname = tmpAppName;
-		tmpCloseBtn.attr.pagename = tmpPageName;
 
 		var tmpServerURL = '/design/ws/get-ws-outline?type=resources&appname=' + tmpAppName;
 		tmpServerURL += '&pagename=' + tmpPageName;
@@ -889,6 +885,10 @@ License: MIT
 // }
 
 
+
+ControlCode.closePage = function (){
+	this.context.page.controller.closePageConsole(this.details);
+}
 
 ControlCode.reloadPage = function () {
 	console.log('reloadPage');

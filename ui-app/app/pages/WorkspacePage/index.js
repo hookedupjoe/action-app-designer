@@ -365,6 +365,75 @@ License: MIT
         }
     };
 
+    ThisPage.closePageConsole = actions.closePageConsole = closePageConsole;
+    function closePageConsole(theParams, theTarget) {
+        var tmpParams = ThisApp.getActionParams(theParams, theTarget, commonParams);
+        var tmpPageName = tmpParams.pagename || tmpParams.name || '';
+        if (!(tmpPageName)) {
+            alert("No page name provided to open");
+            return;
+        };
+
+        var tmpEntryName = tmpPageName || '';
+        if (tmpParams.appname) {
+            tmpAppName = tmpParams.appname;
+            tmpEntryName = tmpParams.appname + "-" + tmpEntryName
+        }
+
+        if (loadedPages[tmpEntryName]) {
+            var tmpTabAttr = { group: wsOutlineName, item: tmpEntryName };
+            var tmpAll = ThisPage.getByAttr$(tmpTabAttr);
+            tmpAll.each(function(theIndex, theItem){
+                var tmpItemEl = $(theItem);
+                if( !(tmpItemEl.attr('oluse')) ){
+                    tmpItemEl.remove();
+                }
+            })
+            delete loadedPages[tmpEntryName];
+           
+        } else {
+          console.warn("No loaded page to close for " + tmpEntryName)
+        }
+
+        var tmpToRemove = [];
+        for (var aName in loadedResources) {
+            var tmpRes = loadedResources[aName]
+            var tmpResAppName = '';
+            if (tmpRes.details && tmpRes.details.appname) {
+                tmpResAppName = tmpRes.details.appname
+            }
+           
+            if (tmpResAppName) {
+                var tmpResPageName = '';
+                if (tmpRes.details && tmpRes.details.pagename) {
+                    tmpResPageName = tmpRes.details.pagename
+                }
+                if (tmpResPageName == tmpPageName && tmpResAppName == tmpAppName) {
+                    tmpToRemove.push(aName);
+                }
+            }
+
+        }
+
+        for( var iPos in tmpToRemove ){
+            var tmpRemoveItem = tmpToRemove[iPos];
+            console.log( 'tmpRemoveItem', tmpRemoveItem);
+            var tmpTabAttr = { group: wsOutlineName, item: tmpRemoveItem };
+            var tmpAll = ThisPage.getByAttr$(tmpTabAttr);
+            tmpAll.each(function(theIndex, theItem){
+                var tmpItemEl = $(theItem);
+                if( !(tmpItemEl.attr('oluse')) ){
+                    tmpItemEl.remove();
+                }
+            })
+            
+            delete loadedResources[tmpRemoveItem];
+        }
+
+        showAppConsole(tmpParams);
+        //console.log( 'tmpToRemove', tmpToRemove);
+    };
+
     actions.addApp = addApp;
     function addApp(theParams, theTarget) {
         ThisPage.getPanel('frmNewApp').prompt(
