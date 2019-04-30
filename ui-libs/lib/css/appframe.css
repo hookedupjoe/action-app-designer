@@ -1,9 +1,10 @@
 html, body {
   width:100%;
+  font-size: 14px;
   margin:0;
   padding:0;
   overflow: auto;
-  font-family: sans-serif;
+  font-family: Calibri, Tahoma, Geneva, sans-serif;
 }
 
 .ctl-layout-frame {
@@ -15,7 +16,19 @@ html, body {
 .site-layout-north {
   overflow: hidden;
 }
+.ui.grid {
 
+  margin-top: -2px; 
+  margin-bottom: -2px;
+  margin-left: -10px;
+  margin-right: -10px;
+}
+
+
+.ui.grid>.column:not(.row) {
+  padding-top: 1px;
+  padding-bottom: 1px;
+}
 
 .ui.tight.menu {
   min-height:25px;
