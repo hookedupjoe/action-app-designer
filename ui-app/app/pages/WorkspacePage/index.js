@@ -221,7 +221,7 @@ License: MIT
             var tmpNewApp = ThisPage.getControl('panelAppConsole').create('app-' + tmpAppName);
             tmpNewApp.subscribe('selected', wsItemSelected);
 
-
+            
             tmpNewApp.subscribe('update-app-setup', function () {
                 refreshWorkspace()
             })

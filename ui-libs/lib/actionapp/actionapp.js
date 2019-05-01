@@ -1070,7 +1070,24 @@ var ActionAppCore = {};
         return me.sidebarSetDisplay(true);
     }
 
+    me.getHTMLForTabs = function(theGroup, theItem, theTabText){
+        var tmpGroup = theGroup || '';
+        var tmpItem = theItem || '';
+        if( !(tmpItem && tmpGroup) ){
+            return ''
+        }
+        
+        var tmpCardHTML = '<div appuse="cards" group="' + tmpGroup + '" item="' + tmpItem+ '" class="hidden"></div>';
+        var tmpTabHTML = '<div action="selectdMe" class="item active" appuse="tablinks" group="' + tmpGroup + '" item="' + tmpItem+ '" >' + theTabText + '</div>';
 
+        var tmpRet = {
+            card: tmpCardHTML,
+            tab: tmpTabHTML
+        }
+      
+        return tmpRet;
+
+    }
 
     /**
      * gotoTab
