@@ -141,6 +141,55 @@ for( var aIndex in tmpBuildCfg.plugins){
                             "req": true
                           }
                         ]
+                      },
+                      {
+                        "label": "App Details",
+                        "name": "my-tab-3-tab-1",
+                        "ctl": "tab",
+                        "content": [
+                          {
+                              "ctl": "field",
+                              "name": "app-id",
+                              "label": "Application ID",
+                              "placeholder": "com.hookedup.hellomobile",
+                              "req": true
+                          },
+                          {
+                              "ctl": "field",
+                              "name": "app-version",
+                              "label": "Application Version",
+                              "placeholder": "1.0",
+                              "req": true
+                          },
+                          {
+                              "ctl": "field",
+                              "name": "app-titkle",
+                              "label": "Application Title",
+                              "placeholder": "My Application Title",
+                              "req": true
+                          },
+                          {
+                              "ctl": "field",
+                              "name": "app-author",
+                              "label": "Application Author",
+                              "placeholder": "Your Name",
+                              "req": true
+                          },
+                          {
+                              "ctl": "field",
+                              "name": "app-author-email",
+                              "label": "Application Author e-mail",
+                              "placeholder": "your@email.com",
+                              "req": true
+                          },
+                          {
+                              "ctl": "field",
+                              "name": "app-url",
+                              "placeholder": "http://www.hookedup.com",
+                              "label": "Application URL",
+                              "req": true
+                          }
+                        ]
                       }
                     ]
                   }]

@@ -227,9 +227,7 @@ License: MIT
 							},
 							{
 								"ctl": "divider",
-								"color": "blue",
-								"size": "medium",
-								"text": "Welcome",
+								"fitted": true,
 								"clearing": true
 							}
 							,
