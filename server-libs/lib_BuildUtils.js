@@ -204,7 +204,14 @@ function buildApp(theAppName, scope, theOptions) {
                 tmpAppBase = tmpDeployDir;
             }
 
+            if (tmpOptions.deployType === 'cordova') {
+                tmpAppBase = tmpDeployDir + '.cordova/';
+            }
+
             var tmpPartsLoc = scope.locals.path.designer + '/build/tpl-parts/';
+            if (tmpOptions.deployType === 'cordova') {
+                tmpPartsLoc += 'cordova/';
+            }
             var tmpIndex = $.await(utils.getTextFile(tmpPartsLoc + 'tpl-index.html'))
             var tmpApp = $.await(utils.getTextFile(tmpPartsLoc + 'tpl-app-js.txt'))
 

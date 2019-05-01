@@ -12,6 +12,7 @@ module.exports.setup = function (app, scope) {
     scope.locals.$.bld = require(scope.locals.path.libraries + "/lib_BuildUtils.js");
     scope.locals.path.designer = scope.locals.path.root + "/.designer"
     scope.locals.path.preview = scope.locals.path.root + "/local_preview"
+    scope.locals.path.uilibs = scope.locals.path.root + "/ui-libs"
     
     var express = require('express');
     

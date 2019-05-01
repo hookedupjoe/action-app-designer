@@ -153,7 +153,31 @@ License: MIT
 								},
 								text: "Open Deployment in Code",
 								"name": "launch-deploy-app"
+							},
+							{
+								ctl: "divider",
+								fitted: true,
+								clearing: true
+							},
+							{
+								"ctl": "button",
+								"onClick": {
+									"run": "action",
+									"action": "createCordovaDeployment"
+								},
+								text: "Build Mobile App",
+								"name": "build-deploy-cordova"
+							},
+							{
+								"ctl": "button",
+								"onClick": {
+									"run": "action",
+									"action": "vscodeDeploymentCordova"
+								},
+								text: "Open Mobile Deployment in Code",
+								"name": "launch-deploy-cordova"
 							}
+
 						]
 					},
 					{
@@ -257,6 +281,7 @@ License: MIT
 		saveAppSetup: saveAppSetup,
 		updateAppSetup: updateAppSetup,
 		createAppDeployment: createAppDeployment,
+		createCordovaDeployment: createCordovaDeployment,
 		vscodeDeployment: vscodeDeployment,
 		rebuildApp: rebuildApp,
 		openInCode: openInCode,
@@ -386,6 +411,25 @@ License: MIT
 
 
 
+	
+	function createCordovaDeployment() {
+		var tmpAppName = this.params.appname || ''
+		if (!(tmpAppName)) {
+			alert("No app to open");
+			return;
+		}
+		var tmpURL = '/design/ws/deploy-cordova?appname=' + tmpAppName
+		var tmpThis = this;
+		ThisApp.apiCall({ url: tmpURL }).then(function (theReply) {
+			ThisApp.confirm("Done, open in VS code now?", "Deployment Created").then((function (theIsYes) {
+				if (!theIsYes) {
+					return;
+				}
+				tmpThis.vscodeDeploymentCordova({ appname: tmpAppName })
+			}).bind(this))
+		})
+	};
+
 	function createAppDeployment() {
 		var tmpAppName = this.params.appname || ''
 		if (!(tmpAppName)) {
@@ -404,6 +448,18 @@ License: MIT
 		})
 	};
 
+	ControlCode.vscodeDeploymentCordova = vscodeDeploymentCordova;
+	function vscodeDeploymentCordova() {
+		var tmpAppName = this.params.appname || ''
+		if (!(tmpAppName)) {
+			alert("No app to open");
+			return;
+		}
+		var tmpURL = '/design/ws/launch-cordova-deploy?appname=' + tmpAppName
+		ThisApp.apiCall({ url: tmpURL }).then(function (theReply) {
+
+		})
+	};
 	function vscodeDeployment() {
 		var tmpAppName = this.params.appname || ''
 		if (!(tmpAppName)) {

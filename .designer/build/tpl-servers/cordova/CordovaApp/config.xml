@@ -1,11 +1,11 @@
-<?xml version='1.0' encoding='utf-8'?>
-<widget id="com.hookedup.hellomobile02" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
-    <name>Action App - Hello Mobile V2</name>
+<?xml version='{{APP-VERSION}}' encoding='utf-8'?>
+<widget id="{{APP-ID}}" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+    <name>{{APP-TITLE}}</name>
     <description>
-        Action Application Environment for Cordova Mobile Apps
+        {{APP-DESC}}
     </description>
-    <author email="hookedupjoe@gmail.com" href="http://www.hookedup.com">
-        Joseph Francis
+    <author email="{{APP-AUTHOR-EMAIL}}" href="{{APP-URL}}">
+        {{APP-AUTHOR}}
     </author>
     <content src="index.html" />
     <access origin="*" />
