@@ -91,7 +91,7 @@ module.exports.setup = function setup(scope) {
 
                 //--- Rebuild using defaults
                 //--- ToDo:   deployType: 'cordova' is new for buildApp
-                $.await($.bld.buildApp(tmpAppName,scope,{cdn:'cloud', deploy:true, deployType: 'cordova'}));
+                $.await($.bld.buildApp(tmpAppName,scope,{cdn:'app', deploy:true, deployType: 'cordova'}));
 
                 var tmpRet = {
                     status: true,

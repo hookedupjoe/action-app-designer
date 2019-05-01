@@ -193,7 +193,15 @@ function buildApp(theAppName, scope, theOptions) {
 
             var tmpAppBase = tmpWSDir + tmpAppName + '/';
             var tmpAppDetails = $.await(utils.getJsonFile(tmpAppBase + 'app-info.json'))
-            tmpDeployDir += tmpAppName + '/ui-app/';
+
+            if (tmpOptions.deployType === 'cordova') {
+                tmpDeployDir += '.cordova/';
+                tmpDeployDir += tmpAppName + '/CordovaApp/www/';
+                $.await($.fs.ensureDir(tmpDeployDir));
+            } else {
+                tmpDeployDir += tmpAppName + '/ui-app/';
+                $.await($.fs.ensureDir(tmpDeployDir));
+            }
 
             var tmpBuildCfg = $.await(utils.getBuildConfigJson(scope));
 
@@ -204,19 +212,23 @@ function buildApp(theAppName, scope, theOptions) {
                 tmpAppBase = tmpDeployDir;
             }
 
-            if (tmpOptions.deployType === 'cordova') {
-                tmpAppBase = tmpDeployDir + '.cordova/';
-            }
+           
 
             var tmpPartsLoc = scope.locals.path.designer + '/build/tpl-parts/';
             if (tmpOptions.deployType === 'cordova') {
                 tmpPartsLoc += 'cordova/';
             }
+            console.log( 'tmpPartsLoc', tmpPartsLoc);
+            console.log( 'tmpAppBase', tmpAppBase);
             var tmpIndex = $.await(utils.getTextFile(tmpPartsLoc + 'tpl-index.html'))
             var tmpApp = $.await(utils.getTextFile(tmpPartsLoc + 'tpl-app-js.txt'))
 
             var tmpLibLocs = utils.getIndexFromArray(tmpBuildCfg.libraryLocations, 'name');
             var tmpLibLoc = tmpLibLocs[tmpAppDetails.cdn] || 'local';
+            if (tmpOptions.deployType === 'cordova') {
+                //--- Always in app, but not used in template at this time
+                tmpLibLoc = tmpLibLocs.app;
+            }
             var tmpOptLibCSS = '';
             var tmpOptLibJS = '';
             var tmpPluginsText = '';
@@ -371,6 +383,7 @@ function buildApp(theAppName, scope, theOptions) {
             }
 
             tmpIndex = utils.replaceFromMap(tmpIndex, tmpIndexMap);
+            
             $.await(utils.replaceFile(tmpAppBase + 'index.html', tmpIndex))
 
             tmpApp = utils.replaceFromMap(tmpApp, tmpAppMap);
@@ -441,6 +454,7 @@ function replaceFile(theFilename, theValue) {
         try {
             $.fs.writeFile(theFilename, theValue, 'utf8', function (err, theContent) {
                 if (err) {
+                    console.error("COuld not save file",err)
                     resolve(false)
                 } else {
                     resolve(true);
