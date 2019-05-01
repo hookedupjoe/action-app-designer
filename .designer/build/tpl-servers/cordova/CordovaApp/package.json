@@ -1,0 +1,20 @@
+{
+  "name": "com.hookedup.hellomobile02",
+  "displayName": "Action App - Hello Mobile V2",
+  "version": "1.0.0",
+  "description": "Action Application Environment for Cordova Mobile Apps",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Joseph Francis",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "cordova-android": "^8.0.0",
+    "cordova-windows": "^5.0.0"
+  },
+  "cordova": {
+    "plugins": {},
+    "platforms": []
+  }
+}

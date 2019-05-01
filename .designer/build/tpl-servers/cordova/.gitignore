@@ -1,0 +1,10 @@
+data/
+node_modules/
+logs/
+npm-debug.log
+package-lock.json
+local_*/
+preview-app/
+restart.log
+CordovaApp/platforms/*
+CordovaApp/plugins/*

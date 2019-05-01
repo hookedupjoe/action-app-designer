@@ -1,0 +1,25 @@
+<?xml version='{{APP-VERSION}}' encoding='utf-8'?>
+<widget id="{{APP-ID}}" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+    <name>{{APP-TITLE}}</name>
+    <description>
+        {{APP-DESC}}
+    </description>
+    <author email="{{APP-AUTHOR-EMAIL}}" href="{{APP-URL}}">
+        {{APP-AUTHOR}}
+    </author>
+    <content src="index.html" />
+    <access origin="*" />
+    <allow-intent href="http://*/*" />
+    <allow-intent href="https://*/*" />
+    <allow-intent href="tel:*" />
+    <allow-intent href="sms:*" />
+    <allow-intent href="mailto:*" />
+    <allow-intent href="geo:*" />
+    <platform name="android">
+        <allow-intent href="market:*" />
+    </platform>
+    <platform name="ios">
+        <allow-intent href="itms:*" />
+        <allow-intent href="itms-apps:*" />
+    </platform>
+</widget>
