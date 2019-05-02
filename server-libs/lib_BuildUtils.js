@@ -195,7 +195,7 @@ function buildApp(theAppName, scope, theOptions) {
             var tmpAppDetails = $.await(utils.getJsonFile(tmpAppBase + 'app-info.json'))
 
             if (tmpOptions.deployType === 'cordova') {
-                tmpDeployDir += '.cordova/';
+                tmpDeployDir += 'cordova/';
                 tmpDeployDir += tmpAppName + '/CordovaApp/www/';
                 $.await($.fs.ensureDir(tmpDeployDir));
             } else {

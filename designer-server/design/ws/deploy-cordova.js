@@ -22,7 +22,7 @@ module.exports.setup = function setup(scope) {
             try {
                 var tmpWSDir = scope.locals.path.ws.uiApps;
                 var tmpDeployDir = scope.locals.path.ws.deploy;
-                tmpDeployDir += '.cordova/';
+                tmpDeployDir += 'cordova/';
 
                 if( !(req.query.appname) ){
                     throw "App name not provided";

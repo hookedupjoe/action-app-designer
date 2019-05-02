@@ -28,7 +28,7 @@ module.exports.setup = function setup(scope) {
                 var tmpAppName = req.query.appname || req.query.name || req.query.filename || '';
                 tmpAppName = tmpAppName.replace('.json', '')
 
-                var tmpAppBase = tmpDeployDir + '.cordova/' + tmpAppName + '/';
+                var tmpAppBase = tmpDeployDir + 'cordova/' + tmpAppName + '/';
 
                 const { spawn } = require('child_process');
                 const ls = spawn('vscode.bat', [tmpAppBase]);
