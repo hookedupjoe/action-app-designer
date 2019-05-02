@@ -293,6 +293,9 @@ License: MIT
 	function _onInit() {
 		this.parts.pages.subscribe('selectMe', onPageSelect.bind(this))
 		var tmpSetupInfo = this.getSetupInfo();
+		var tmpAppPath = this.parts.setupinfo.controlSpec.controlConfig.options.links.path;
+		console.log( 'parts.setupinfo tmpAppPath', tmpAppPath);
+		this.details.path = tmpAppPath;
 		this.details.apptitle = tmpSetupInfo.title || this.details.appname;
 		var tmpTitle = this.details.appname;
 		if (this.details.apptitle) {

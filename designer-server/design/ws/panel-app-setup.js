@@ -69,6 +69,9 @@ module.exports.setup = function setup(scope) {
           "options": {
             "readonly": true,
             "padding": false,
+            "links": {
+              "path": tmpAppBase
+            },
             "doc": tmpAppDetails
           },
           "content": [{
