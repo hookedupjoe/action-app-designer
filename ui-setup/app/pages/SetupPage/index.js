@@ -104,11 +104,11 @@ License: MIT
             url: '/design/setup/initial-setup?rootdir=' + tmpDir
         }).then(function(theReply){
             console.log( 'initial-setup Reply', theReply);
-            alert("You Did it! The Action App Designer Server is starting, this page will refresh automatically after you see flashes as the server starts up. ", "Setup Complete", "c").then(function(theReply){
-                ThisApp.apiCall({url:'/design/setup/restart-server'})
-                ThisApp.delay(8000).then(function(theReply){
-                    window.location = window.location;
-                })
+            alert("You Did it! Restart the server and reload this page.", "Setup Complete", "c").then(function(theReply){
+                // ThisApp.apiCall({url:'/design/setup/restart-server'})
+                // ThisApp.delay(8000).then(function(theReply){
+                //     window.location = window.location;
+                // })
                 
             });
         })

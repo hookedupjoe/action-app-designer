@@ -129,7 +129,7 @@ function restartServer() {
     var logfile = 'restart.log';
     var out = $.fs.openSync(logfile, 'a');
     var err = $.fs.openSync(logfile, 'a');
-    var subprocess = spawn('restart.bat', [], { detached: true, stdio: ['ignore', out, err] });
+    //var subprocess = spawn('./restart.sh', [], { detached: true, stdio: ['ignore', out, err] });
 
     subprocess.unref();
 
