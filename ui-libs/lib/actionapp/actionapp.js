@@ -46,6 +46,22 @@ var ActionAppCore = {};
     ActionAppCore.createModule("extension");
 })(ActionAppCore, $);
 
+//--- PolyFill
+(function (ActionAppCore, $) {
+  
+    if (typeof String.prototype.endsWith !== 'function') {
+        String.prototype.endsWith = function(suffix) {
+            return this.indexOf(suffix, this.length - suffix.length) !== -1;
+        };
+    }
+    if (typeof String.prototype.startsWith !== 'function') {
+        String.prototype.startsWith = function(suffix) {
+            return this.indexOf(suffix) === 0;
+        };
+    }
+
+})(ActionAppCore, $);
+
 //--- Common Functionality Extensions
 
 /**

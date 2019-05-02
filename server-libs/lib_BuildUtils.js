@@ -212,23 +212,20 @@ function buildApp(theAppName, scope, theOptions) {
                 tmpAppBase = tmpDeployDir;
             }
 
-           
-
             var tmpPartsLoc = scope.locals.path.designer + '/build/tpl-parts/';
             if (tmpOptions.deployType === 'cordova') {
                 tmpPartsLoc += 'cordova/';
             }
-            console.log( 'tmpPartsLoc', tmpPartsLoc);
-            console.log( 'tmpAppBase', tmpAppBase);
             var tmpIndex = $.await(utils.getTextFile(tmpPartsLoc + 'tpl-index.html'))
             var tmpApp = $.await(utils.getTextFile(tmpPartsLoc + 'tpl-app-js.txt'))
 
             var tmpLibLocs = utils.getIndexFromArray(tmpBuildCfg.libraryLocations, 'name');
-            var tmpLibLoc = tmpLibLocs[tmpAppDetails.cdn] || 'local';
             if (tmpOptions.deployType === 'cordova') {
-                //--- Always in app, but not used in template at this time
-                tmpLibLoc = tmpLibLocs.app;
+                tmpAppDetails.cdn = 'mobile'
             }
+
+            var tmpLibLoc = tmpLibLocs[tmpAppDetails.cdn] || 'local';
+            
             var tmpOptLibCSS = '';
             var tmpOptLibJS = '';
             var tmpPluginsText = '';

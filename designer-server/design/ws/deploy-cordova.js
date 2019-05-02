@@ -90,8 +90,7 @@ module.exports.setup = function setup(scope) {
                 //$.await($.fs.writeFile(tmpDeployBase + 'manifest.yml',tmpManifestText))
 
                 //--- Rebuild using defaults
-                //--- ToDo:   deployType: 'cordova' is new for buildApp
-                $.await($.bld.buildApp(tmpAppName,scope,{cdn:'app', deploy:true, deployType: 'cordova'}));
+                $.await($.bld.buildApp(tmpAppName,scope,{cdn:'mobile', deploy:true, deployType: 'cordova'}));
 
                 var tmpRet = {
                     status: true,

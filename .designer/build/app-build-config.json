@@ -44,6 +44,11 @@
 			"name": "app",
 			"label": "In Application",
 			"prefix": ""
+		},
+		{
+			"name": "mobile",
+			"label": "Mobile Application",
+			"prefix": "."
 		}
 	],
 	"libraries": [
