@@ -146,13 +146,14 @@ License: MIT
 								"name": "build-deploy-app"
 							},
 							{
-								"ctl": "button",
-								"onClick": {
-									"run": "action",
-									"action": "vscodeDeployment"
+								"ctl": "a",
+								"classes": "ui button basic blue",
+								"attr": {
+									href: "",
+									target: ""
 								},
-								text: "Open Deployment in Code",
-								"name": "launch-deploy-app"
+								text: "Open Deployment in VS Code",
+								"name": "deploy-in-code-link"
 							},
 							{
 								ctl: "divider",
@@ -169,13 +170,14 @@ License: MIT
 								"name": "build-deploy-cordova"
 							},
 							{
-								"ctl": "button",
-								"onClick": {
-									"run": "action",
-									"action": "vscodeDeploymentCordova"
+								"ctl": "a",
+								"classes": "ui button basic blue",
+								"attr": {
+									href: "",
+									target: ""
 								},
-								text: "Open Mobile Deployment in Code",
-								"name": "launch-deploy-cordova"
+								text: "Open Mobile Deployment in VS Code",
+								"name": "cordova-in-code-link"
 							}
 
 						]
@@ -230,14 +232,14 @@ License: MIT
 								"name": "save-app-setup"
 							},
 							{
-								"ctl": "button",
-								"color": "blue",
-								"onClick": {
-									"run": "action",
-									"action": "openInCode"
+								"ctl": "a",
+								"classes": "ui button basic blue",
+								"attr": {
+									href: "",
+									target: ""
 								},
 								text: "Open in VS Code",
-								"name": "open-in-vs-code"
+								"name": "open-in-code-link"
 							},
 							{
 								"ctl": "button",
@@ -293,15 +295,30 @@ License: MIT
 	function _onInit() {
 		this.parts.pages.subscribe('selectMe', onPageSelect.bind(this))
 		var tmpSetupInfo = this.getSetupInfo();
-		var tmpAppPath = this.parts.setupinfo.controlSpec.controlConfig.options.links.path;
-		console.log( 'parts.setupinfo tmpAppPath', tmpAppPath);
+		var tmpAppPath = this.parts.setupinfo.controlSpec.controlConfig.options.links.path;		
+		var tmpDeployPath = this.parts.setupinfo.controlSpec.controlConfig.options.links.deploy;
+		var tmpCordovaPath = this.parts.setupinfo.controlSpec.controlConfig.options.links.cordova;
 		this.details.path = tmpAppPath;
+		this.details.deploy = tmpDeployPath;
+		this.details.cordova = tmpCordovaPath;
 		this.details.apptitle = tmpSetupInfo.title || this.details.appname;
 		var tmpTitle = this.details.appname;
 		if (this.details.apptitle) {
 			tmpTitle = '[' + this.details.appname + '] ' + this.details.apptitle;
 		}
-		this.getItemEl('title').html(tmpTitle)
+		this.getItemEl('title').html(tmpTitle);
+		var tmpCodeLink = this.getItemEl('open-in-code-link');
+		tmpCodeLink.attr('href', "vscode://file/" + this.details.path);
+		tmpCodeLink.attr('target', "app-code-" + this.details.appname);
+
+		var tmpDeployLink = this.getItemEl('deploy-in-code-link');
+		tmpDeployLink.attr('href', "vscode://file/" + this.details.deploy);
+		tmpDeployLink.attr('target', "app-deploy-code-" + this.details.appname);
+
+		var tmpMobileLink = this.getItemEl('cordova-in-code-link');
+		tmpMobileLink.attr('href', "vscode://file/" + this.details.cordova);
+		tmpMobileLink.attr('target', "app-cordova-code-" + this.details.appname);
+
 	}
 
 	function onPageSelect(theEvent, theControl, theTarget) {
@@ -422,14 +439,8 @@ License: MIT
 			return;
 		}
 		var tmpURL = '/design/ws/deploy-cordova?appname=' + tmpAppName
-		var tmpThis = this;
 		ThisApp.apiCall({ url: tmpURL }).then(function (theReply) {
-			ThisApp.confirm("Done, open in VS code now?", "Deployment Created").then((function (theIsYes) {
-				if (!theIsYes) {
-					return;
-				}
-				tmpThis.vscodeDeploymentCordova({ appname: tmpAppName })
-			}).bind(this))
+			ThisApp.alert("Done, open in VS code to review and deploy.", "Deployment Created");
 		})
 	};
 
@@ -440,14 +451,8 @@ License: MIT
 			return;
 		}
 		var tmpURL = '/design/ws/deploy-app?appname=' + tmpAppName
-		var tmpThis = this;
 		ThisApp.apiCall({ url: tmpURL }).then(function (theReply) {
-			ThisApp.confirm("Done, open in VS code now?", "Deployment Created").then((function (theIsYes) {
-				if (!theIsYes) {
-					return;
-				}
-				tmpThis.vscodeDeployment({ appname: tmpAppName })
-			}).bind(this))
+			ThisApp.alert("Done, open in VS code to review and deploy.", "Deployment Created");
 		})
 	};
 
@@ -499,7 +504,8 @@ License: MIT
 			alert("No app to open");
 			return;
 		}
-		ThisApp.apiCall({ url: '/design/ws/launch-app?appname=' + tmpAppName })
+		console.log("disabled");
+		//ThisApp.apiCall({ url: '/design/ws/launch-app?appname=' + tmpAppName })
 	};
 
 
@@ -526,6 +532,8 @@ License: MIT
 			href: "http://localhost:33461/" + tmpAppName,
 			target: "app" + tmpAppName
 		}
+		
+
 
 	}
 	//---- Initial Setup of the control

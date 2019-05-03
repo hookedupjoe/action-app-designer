@@ -24,9 +24,14 @@ module.exports.setup = function setup(scope) {
 
         var tmpBuildCfg = $.await($.bld.getBuildConfigJson(scope));
         var tmpWSDir = scope.locals.path.ws.uiApps;
+        var tmpDeployDir = scope.locals.path.ws.deploy;
 
         var tmpAppName = req.query.appname || req.query.name || req.query.filename || '';
         tmpAppName = tmpAppName.replace('.json', '')
+
+        var tmpDeployDirApp = tmpDeployDir + tmpAppName + '/';
+        var tmpDeployDirCordova = tmpDeployDir + 'cordova/' + tmpAppName + '/';
+        tmpDeployDir += tmpAppName + '/';
 
         var tmpAppBase = tmpWSDir + tmpAppName + '/';
         var tmpAppDetails = $.await($.bld.getJsonFile(tmpAppBase + 'app-info.json'))
@@ -70,7 +75,9 @@ module.exports.setup = function setup(scope) {
             "readonly": true,
             "padding": false,
             "links": {
-              "path": tmpAppBase
+              "path": tmpAppBase,
+              "deploy": tmpDeployDirApp,
+              "cordova": tmpDeployDirCordova
             },
             "doc": tmpAppDetails
           },
