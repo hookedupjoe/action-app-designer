@@ -65,6 +65,19 @@
 			]
 		},
 		{
+			"name": "Monaco",
+			"label": "Monaco Editor",
+			"css": [
+				"<link data-name=\"vs/editor/editor.main\" rel=\"stylesheet\" href=\"{{LIBRARY-LOCATION}}/lib/monaco/vs/editor/editor.main.css\">"
+			],
+			"js": [
+				"<script>var require = { paths: { 'vs': '/lib/monaco/vs' } };</script>",
+				"<script src=\"{{LIBRARY-LOCATION}}/lib/monaco/vs/loader.js\"></script>",
+				"<script src=\"{{LIBRARY-LOCATION}}/lib/monaco/vs/editor/editor.main.nls.js\"></script>",
+				"<script src=\"{{LIBRARY-LOCATION}}/lib/monaco/vs/editor/editor.main.js\"></script>"
+			]
+		},
+		{
 			"name": "jsTree",
 			"label": "jsTree Outline Control",
 			"css": [
