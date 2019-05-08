@@ -489,6 +489,7 @@ License: MIT
 	function showControl(theControlSpec) {
 
 		if (this.activeControl) {
+			this.activeControl.destroy();
 			delete (this.activeControl)
 		}
 		//-- ToDo: If active control, destroy it
