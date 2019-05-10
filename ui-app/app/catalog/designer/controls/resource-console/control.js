@@ -72,17 +72,7 @@ License: MIT
 						ctl: "layout",
 						name: "layout",
 						east: [
-							{
-								"ctl": "button",
-								"color": "purple",
-								toLeft: true,
-								"name": "btn-refresh-page",
-								"label": "Refresh Preview",
-								"onClick": {
-									"run": "action",
-									"action": "refreshControlDisplay"
-								}
-							},
+							
 							{
 								ctl: "divider",
 								fitted: true,
@@ -111,7 +101,18 @@ License: MIT
 								"onClick": {
 									"run": "action",
 									"action": "formatCode"
-								},
+								}
+							},
+							{
+								"ctl": "button",
+								"color": "purple",
+								toLeft: true,
+								"name": "btn-refresh-page",
+								"label": "Refresh Preview",
+								"onClick": {
+									"run": "action",
+									"action": "refreshControlDisplay"
+								}
 							}
 						],
 						center: [
