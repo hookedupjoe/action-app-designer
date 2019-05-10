@@ -1736,7 +1736,7 @@ var ActionAppCore = {};
 
         var tmpOutHeight = tmpHeader.get(0).clientHeight + tmpFooter.get(0).clientHeight;
         tmpOutHeight = tmpOutHeight + 80;
-        var tmpWiHeight = $(window).height(); //$( window ).height();
+        var tmpWiHeight = $(window).height(); 
         var tmpBodyNewH = (tmpWiHeight - tmpOutHeight) + 'px';
         tmpBody.css({ "height": tmpBodyNewH, "overflow": "auto" });
     }
@@ -1826,6 +1826,14 @@ var ActionAppCore = {};
         }
     }
 
+
+    me.resizeToLayout = function(theEl){
+        if( !isjQuery(theEl) ){
+            theEl = $(theEl);
+        }
+        var tmpH = theEl.closest('.ui-layout-pane').height();
+        theEl.css('height', '' + tmpH + 'px');
+    }
 
     /**
     * getContext

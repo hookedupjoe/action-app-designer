@@ -2,7 +2,7 @@ html, body {
   width:100%;
   margin:0;
   padding:0;
-  overflow: auto;
+  /* overflow: auto; */
   font-family: Calibri, Tahoma, Geneva, sans-serif;
 }
 
@@ -32,6 +32,9 @@ iframe.full-frame {
   width:100% !important;
 }
 
+.ui-layout-pane .tabulator {
+  margin: 0px;
+}
 .site-layout-north {
   overflow: hidden;
 }
