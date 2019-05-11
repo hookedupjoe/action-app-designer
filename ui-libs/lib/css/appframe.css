@@ -8,7 +8,10 @@ html, body {
 
 
 .tabulator-selected i.icon.circle.select:before {
-  content: "\f058" !important; 
+  content: "\f058" !important;  
+}
+.tabulator-selected i.icon.square.select:before {
+  content:"\f14a" !important;  
 }
 
 
