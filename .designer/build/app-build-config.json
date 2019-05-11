@@ -81,12 +81,10 @@
 			"name": "Tabulator",
 			"label": "Tabulator - Light Tables",
 			"css": [
-				"<link rel=\"stylesheet\" href=\"{{LIBRARY-LOCATION}}/lib/tabulator/css/tabulator.min.css\">",
-				"<link rel=\"stylesheet\" href=\"{{LIBRARY-LOCATION}}/lib/tabulator/css/semantic-ui/tabulator_semantic-ui.min.css\">"
+				"<link rel=\"stylesheet\" href=\"{{LIBRARY-LOCATION}}/lib/tabulator/css/tabulator.min.css\">"
 			],
 			"js": [
-				"<script src=\"{{LIBRARY-LOCATION}}/lib/tabulator/js/tabulator.min.js\"></script>",
-				"<script src=\"{{LIBRARY-LOCATION}}/lib/tabulator/js/jquery_wrapper.min.js\"></script>"
+				"<script src=\"{{LIBRARY-LOCATION}}/lib/tabulator/js/tabulator.min.js\"></script>"
 			]
 		},
 		{
