@@ -7663,7 +7663,22 @@ License: MIT
             if (tmpObject.req === true) {
                 tmpReq = ' required ';
             }
-            tmpHTML.push('<div controls fieldwrap name="' + tmpObject.name + '" class="' + tmpReq + ' field">')
+
+            
+            var tmpHidden = '';
+            if (tmpObject.hidden === true || theControlName == 'hidden') {
+                tmpHidden = 'display:none;';
+            }
+            var tmpStyle = tmpObject.style || tmpObject.styles || tmpObject.css || '';
+            if (tmpHidden) {
+                tmpStyle += tmpHidden;
+            }
+            if (tmpStyle) {
+                tmpStyle = ' style="' + tmpStyle + '" '
+            }
+            
+
+            tmpHTML.push('<div controls fieldwrap name="' + tmpObject.name + '" class="' + tmpReq + ' field" ' + tmpStyle + '>')
             if (tmpObject.label) {
                 tmpHTML.push('<label>')
                 tmpHTML.push(tmpObject.label || '')
@@ -7678,7 +7693,8 @@ License: MIT
                 }
                 tmpPH = ' placeholder="' + tmpPH + ' ';
             }
-            tmpHTML.push('<textarea controls field name="' + tmpObject.name + '" ' + tmpPH + '"></textarea>')
+
+            tmpHTML.push('<textarea controls field name="' + tmpObject.name + '" ' + tmpPH + '" ></textarea>')
 
             tmpHTML.push(getNoteMarkup(theObject));
 
