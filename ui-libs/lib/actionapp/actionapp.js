@@ -7278,6 +7278,17 @@ License: MIT
             tmpClasses += getValueIfTrue(theObject, ['compact', 'fluid']);
             tmpClasses += getValueIfThere(theObject, ['color', 'size']);
 
+            var tmpHidden = '';
+            if (tmpObject.hidden === true || theControlName == 'hidden') {
+                tmpHidden = 'display:none;';
+            }
+            var tmpStyle = tmpObject.style || tmpObject.styles || tmpObject.css || '';
+            if (tmpHidden) {
+                tmpStyle += tmpHidden;
+            }
+            if (tmpStyle) {
+                tmpStyle = ' style="' + tmpStyle + '" '
+            }
 
             // theControlObj.readonly = true;
             var tmpDispOnly = (tmpObject.readonly === true);
@@ -7291,7 +7302,6 @@ License: MIT
             var tmpReadOnly = '';
             var tmpFieldType = 'text';
             if (tmpDispOnly) {
-                //tmpFieldType = 'hidden';
                 tmpReq = '';
                 tmpReadOnly = ' readonly ';
             }
@@ -7299,7 +7309,7 @@ License: MIT
                 tmpFieldType = 'hidden';
             }
 
-            tmpHTML.push('<div controls fieldwrap name="' + theObject.name + '" class="' + tmpClasses + tmpSizeName + tmpReq + ' ui ' + tmpFieldOrInput + '">');
+            tmpHTML.push('<div controls fieldwrap name="' + theObject.name + '" class="' + tmpClasses + tmpSizeName + tmpReq + ' ui ' + tmpFieldOrInput + '" ' + tmpStyle +  '>');
             if (theObject.label) {
                 tmpHTML.push('<label>');
                 tmpHTML.push(theObject.label || '');
@@ -7360,6 +7370,18 @@ License: MIT
                 tmpDispOnly = true;
             }
 
+            var tmpHidden = '';
+            if (tmpObject.hidden === true) {
+                tmpHidden = 'display:none;';
+            }
+            var tmpStyle = tmpObject.style || tmpObject.styles || tmpObject.css || '';
+            if (tmpHidden) {
+                tmpStyle += tmpHidden;
+            }
+            if (tmpStyle) {
+                tmpStyle = ' style="' + tmpStyle + '" '
+            }
+            
             var tmpDDAttr = '';
 
             if (tmpDispOnly) {
@@ -7371,7 +7393,7 @@ License: MIT
                 tmpSizeName = getNumName(tmpObject.size)
                 tmpSizeName = ' ' + tmpSizeName + ' wide ';
             }
-            tmpHTML.push('<div controls fieldwrap name="' + theObject.name + '" class="' + tmpSizeName + tmpReq + ' field">')
+            tmpHTML.push('<div controls fieldwrap name="' + theObject.name + '" class="' + tmpSizeName + tmpReq + ' field" ' + tmpStyle + '>')
             if (theObject.label) {
                 tmpHTML.push('<label>')
                 tmpHTML.push(theObject.label || '')
@@ -7559,9 +7581,20 @@ License: MIT
             tmpRadioStr = '';
         }
 
+        var tmpHidden = '';
+        if (tmpObject.hidden === true ) {
+            tmpHidden = 'display:none;';
+        }
+        var tmpStyle = tmpObject.style || tmpObject.styles || tmpObject.css || '';
+        if (tmpHidden) {
+            tmpStyle += tmpHidden;
+        }
+        if (tmpStyle) {
+            tmpStyle = ' style="' + tmpStyle + '" '
+        }
 
         tmpHTML = [];
-        tmpHTML.push('<div controls="" fieldwrap="" class="fields grouped">')
+        tmpHTML.push('<div controls="" fieldwrap="" class="fields grouped" ' + tmpStyle + '>')
 
         if (tmpObject.label) {
             tmpHTML.push('<div class="field ' + tmpReq + '"><label>')
