@@ -5944,12 +5944,12 @@ License: MIT
         var dfd = jQuery.Deferred();
         var tmpOptions = theOptions || {};
         var tmpThis = this;
+
+        var tmpDoc = tmpOptions.doc || tmpThis.getConfig().options.doc || false;
+
+
         tmpThis.parentEl = ThisApp.asSpot(theEl);
-        var tmpHTML = tmpThis.getHTML();
-        tmpThis.parentEl.html(tmpHTML);
-        tmpThis.parentEl.on('change', tmpThis.onFieldChange.bind(this));
-        tmpThis.parentEl.on('click', tmpThis.onItemClick.bind(this));
-        tmpThis.getConfig().options = tmpThis.getConfig().options || {};
+       
         if (isFunc(tmpThis._onPreInit)) {
             tmpThis._onPreInit();
         }
@@ -5958,12 +5958,17 @@ License: MIT
         this.assureRequired().then(function () {
             tmpThis.initControlComponents().then(function (theReply) {
 
+                var tmpHTML = tmpThis.getHTML();
+                tmpThis.parentEl.html(tmpHTML);
+                tmpThis.parentEl.on('change', tmpThis.onFieldChange.bind(tmpThis));
+                tmpThis.parentEl.on('click', tmpThis.onItemClick.bind(tmpThis));
+                tmpThis.getConfig().options = tmpThis.getConfig().options || {};
+
                 if (isFunc(tmpThis._onInit)) {
                     tmpThis._onInit();
                 }
                 
                 tmpThis.refreshControl();
-                var tmpDoc = tmpOptions.doc || tmpThis.getConfig().options.doc || false;
                 if (tmpDoc) {
                     tmpThis.loadData(tmpDoc);
                 }
@@ -7613,8 +7618,13 @@ License: MIT
         }
 
         if( tmpDispOnly ){
+
             tmpHTML.push('	<div class="field">')
-            tmpHTML.push(theControlObj.getFieldValue(tmpObject.name))
+            
+            var tmpValue = theControlObj.getFieldValue(tmpObject.name);
+            tmpHTML.push('<input readonly type="text" controls field ' + tmpValue + ' name="' + theObject.name + '">')
+            tmpHTML.push('</input>')
+
             tmpHTML.push('	</div>')
         } else {
             tmpHTML.push('  <div class="fields ' + tmpGorI + '">')
@@ -7702,7 +7712,9 @@ License: MIT
             }
             if( tmpDispOnly ){
                 tmpHTML.push('<field disabled readonly class="ui field">')
-                tmpHTML.push(theControlObj.getFieldValue(tmpObject.name));
+                var tmpValue = theControlObj.getFieldValue(tmpObject.name);
+                tmpHTML.push('<input readonly type="text" controls field ' + tmpValue + ' name="' + tmpObject.name + '">')
+                tmpHTML.push('</input>')
                 tmpHTML.push('</field>')
             } else {
                 var tmpPH = '';
@@ -8406,7 +8418,6 @@ License: MIT
             }
             for (var iName = 0; iName < tmpNameList.length; iName++) {
                 var tmpEntryName = tmpNameList[iName];
-                console.log( 'tmpEntryName', tmpEntryName);
                 if (tmpValuePos == iPos) {
                     
                     tmpShowIndex[tmpEntryName] = true;
