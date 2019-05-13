@@ -5210,7 +5210,9 @@ License: MIT
                 }
                 return true;
             } else {
-                if (tmpControl.setFieldValue(tmpFieldEl, theValue, tmpFieldSpecs)) {
+                var tmpThisOptions = this.getConfig().options || {};
+                var tmpIsReadOnly = tmpFieldSpecs.readonly || tmpThisOptions.readonly || false;
+                if (tmpControl.setFieldValue(tmpFieldEl, theValue, tmpFieldSpecs, tmpIsReadOnly)) {
                     if (!tmpSetOnly) {
                         tmpFieldEl.trigger('change');
                     }
@@ -5944,12 +5946,12 @@ License: MIT
         var dfd = jQuery.Deferred();
         var tmpOptions = theOptions || {};
         var tmpThis = this;
-
-        var tmpDoc = tmpOptions.doc || tmpThis.getConfig().options.doc || false;
-
-
         tmpThis.parentEl = ThisApp.asSpot(theEl);
-       
+        var tmpHTML = tmpThis.getHTML();
+        tmpThis.parentEl.html(tmpHTML);
+        tmpThis.parentEl.on('change', tmpThis.onFieldChange.bind(this));
+        tmpThis.parentEl.on('click', tmpThis.onItemClick.bind(this));
+        tmpThis.getConfig().options = tmpThis.getConfig().options || {};
         if (isFunc(tmpThis._onPreInit)) {
             tmpThis._onPreInit();
         }
@@ -5958,17 +5960,12 @@ License: MIT
         this.assureRequired().then(function () {
             tmpThis.initControlComponents().then(function (theReply) {
 
-                var tmpHTML = tmpThis.getHTML();
-                tmpThis.parentEl.html(tmpHTML);
-                tmpThis.parentEl.on('change', tmpThis.onFieldChange.bind(tmpThis));
-                tmpThis.parentEl.on('click', tmpThis.onItemClick.bind(tmpThis));
-                tmpThis.getConfig().options = tmpThis.getConfig().options || {};
-
                 if (isFunc(tmpThis._onInit)) {
                     tmpThis._onInit();
                 }
                 
                 tmpThis.refreshControl();
+                var tmpDoc = tmpOptions.doc || tmpThis.getConfig().options.doc || false;
                 if (tmpDoc) {
                     tmpThis.loadData(tmpDoc);
                 }
@@ -7498,8 +7495,12 @@ License: MIT
             };
             return tmpRet;
         },
-        setFieldValue: function (theFieldEl, theValue) {
+        setFieldValue: function (theFieldEl, theValue, theFieldSpecs, theIsReadOnly) {
             var tmpValues = theValue || '';
+            if( theIsReadOnly ){
+                theFieldEl.val(theValue);
+                return;
+            }            
             if (isStr(tmpValues)) {
                 tmpValues = tmpValues.split(",")
             }
@@ -7530,7 +7531,11 @@ License: MIT
             };
             return tmpRet;
         },
-        setFieldValue: function (theFieldEl, theValue) {
+        setFieldValue: function (theFieldEl, theValue, theFieldSpecs, theIsReadOnly) {
+            if( theIsReadOnly ){
+                theFieldEl.val(theValue);
+                return;
+            }     
             if (theFieldEl.length) {
                 for (var iPos = 0; iPos < theFieldEl.length; iPos++) {
                     var tmpEl = (theFieldEl[iPos]);
@@ -7620,9 +7625,9 @@ License: MIT
         if( tmpDispOnly ){
 
             tmpHTML.push('	<div class="field">')
-            
+
             var tmpValue = theControlObj.getFieldValue(tmpObject.name);
-            tmpHTML.push('<input readonly type="text" controls field ' + tmpValue + ' name="' + theObject.name + '">')
+            tmpHTML.push('<input readonly type="text" controls field value="' + tmpValue + '" name="' + tmpObject.name + '">')
             tmpHTML.push('</input>')
 
             tmpHTML.push('	</div>')
@@ -7713,7 +7718,7 @@ License: MIT
             if( tmpDispOnly ){
                 tmpHTML.push('<field disabled readonly class="ui field">')
                 var tmpValue = theControlObj.getFieldValue(tmpObject.name);
-                tmpHTML.push('<input readonly type="text" controls field ' + tmpValue + ' name="' + tmpObject.name + '">')
+                tmpHTML.push('<input readonly type="text" controls field value="' + tmpValue + '" name="' + tmpObject.name + '">')
                 tmpHTML.push('</input>')
                 tmpHTML.push('</field>')
             } else {
