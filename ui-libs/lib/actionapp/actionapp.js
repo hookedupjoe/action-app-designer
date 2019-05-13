@@ -8355,17 +8355,26 @@ License: MIT
         var tmpParams = theParams || {};
         var tmpNames = [];
         var tmpValues = {};
+        var tmpFieldValue = theFieldValue || '';
+        var tmpValueInList = false;
 
         var tmpValueFields = tmpParams.values || [];
         var tmpAt = 0;
         for (var aVal in tmpValueFields) {
             tmpNames.push(tmpValueFields[aVal])
             tmpValues[aVal] = tmpAt;
+            if( aVal == tmpFieldValue ){
+                tmpValueInList = true
+            }
             tmpAt++;
         }
-        var tmpValuePos = tmpValues[theFieldValue]
+        //--- Update to allow for any other value
+        if( !tmpValueInList && (tmpFieldValue) ){
+            tmpFieldValue = '*'
+        }
+        var tmpValuePos = tmpValues[tmpFieldValue]
         var tmpShowIndex = {};
-
+        
         //--- Get list of fields that should be displayed
         for (var iPos = 0; iPos < tmpNames.length; iPos++) {
             var tmpNameList = tmpNames[iPos];
@@ -8374,7 +8383,9 @@ License: MIT
             }
             for (var iName = 0; iName < tmpNameList.length; iName++) {
                 var tmpEntryName = tmpNameList[iName];
+                console.log( 'tmpEntryName', tmpEntryName);
                 if (tmpValuePos == iPos) {
+                    
                     tmpShowIndex[tmpEntryName] = true;
                 } else {
                     //--- Add field to the list, so we can make it hide
