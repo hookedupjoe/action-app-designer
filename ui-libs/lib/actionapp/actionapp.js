@@ -7592,50 +7592,60 @@ License: MIT
         if (tmpStyle) {
             tmpStyle = ' style="' + tmpStyle + '" '
         }
+        
+        var tmpDispOnly = false;
+        var tmpSpecs = theControlObj.getConfig();
+        if (tmpSpecs && tmpSpecs.options && tmpSpecs.options.readonly === true) {
+            tmpDispOnly = true;
+        }
+
 
         tmpHTML = [];
         tmpHTML.push('<div controls="" fieldwrap="" class="fields grouped" ' + tmpStyle + '>')
 
+        if( tmpDispOnly ){
+            tmpReq = '';
+        }
         if (tmpObject.label) {
             tmpHTML.push('<div class="field ' + tmpReq + '"><label>')
             tmpHTML.push(tmpObject.label || '')
             tmpHTML.push('</label></div>')
         }
 
+        if( tmpDispOnly ){
+            tmpHTML.push('	<div class="field">')
+            tmpHTML.push(theControlObj.getFieldValue(tmpObject.name))
+            tmpHTML.push('	</div>')
+        } else {
+            tmpHTML.push('  <div class="fields ' + tmpGorI + '">')
 
-        tmpHTML.push('  <div class="fields ' + tmpGorI + '">')
-
-
-
-
-        var tmpList = getListAsArrays(tmpObject.list || '');
-
-        if (tmpList && tmpList.length > 0) {
-            for (var index = 0; index < tmpList.length; index++) {
-                var tmpEntry = tmpList[index] || '';
-                if (tmpEntry) {
-                    var tmpText = tmpEntry;
-                    var tmpVal = tmpEntry;
-                    if (!isStr(tmpEntry) && tmpEntry.length == 2) {
-                        //--- This is an array, get values
-                        tmpText = tmpEntry[0]
-                        tmpVal = tmpEntry[1]
+            var tmpList = getListAsArrays(tmpObject.list || '');
+    
+            if (tmpList && tmpList.length > 0) {
+                for (var index = 0; index < tmpList.length; index++) {
+                    var tmpEntry = tmpList[index] || '';
+                    if (tmpEntry) {
+                        var tmpText = tmpEntry;
+                        var tmpVal = tmpEntry;
+                        if (!isStr(tmpEntry) && tmpEntry.length == 2) {
+                            //--- This is an array, get values
+                            tmpText = tmpEntry[0]
+                            tmpVal = tmpEntry[1]
+                        }
+                        var tmpFieldID = 'fld-cb-auto-' + (checkBoxAt++)
+                        tmpHTML.push('	<div class="field">')
+                        tmpHTML.push('	  <div class="ui ' + tmpRadioStr + tmpType + ' checkbox">')
+                        tmpHTML.push('		<input controls field id="' + tmpFieldID + '" type="' + tmpRorC + '" data-value="' + tmpVal + '" name="' + tmpObject.name + '" >')
+                        tmpHTML.push('		<label for="' + tmpFieldID + '">' + tmpText + '&nbsp;&nbsp;&nbsp;</label>')
+                        tmpHTML.push('	  </div>')
+                        tmpHTML.push('	</div>')
                     }
-                    var tmpFieldID = 'fld-cb-auto-' + (checkBoxAt++)
-                    tmpHTML.push('	<div class="field">')
-                    tmpHTML.push('	  <div class="ui ' + tmpRadioStr + tmpType + ' checkbox">')
-                    tmpHTML.push('		<input controls field id="' + tmpFieldID + '" type="' + tmpRorC + '" data-value="' + tmpVal + '" name="' + tmpObject.name + '" >')
-                    tmpHTML.push('		<label for="' + tmpFieldID + '">' + tmpText + '&nbsp;&nbsp;&nbsp;</label>')
-                    tmpHTML.push('	  </div>')
-                    tmpHTML.push('	</div>')
                 }
             }
+            tmpHTML.push('  </div>')
+            tmpHTML.push(getNoteMarkup(theObject, { isRow: (tmpGorI == 'inline') }));
         }
-
-        tmpHTML.push('  </div>')
-
-        tmpHTML.push(getNoteMarkup(theObject, { isRow: (tmpGorI == 'inline') }));
-
+       
         tmpHTML.push('</div>')
 
         tmpHTML = tmpHTML.join('');
@@ -7677,6 +7687,12 @@ License: MIT
                 tmpStyle = ' style="' + tmpStyle + '" '
             }
             
+            var tmpDispOnly = false;
+            var tmpSpecs = theControlObj.getConfig();
+            if (tmpSpecs && tmpSpecs.options && tmpSpecs.options.readonly === true) {
+                tmpDispOnly = true;
+            }
+    
 
             tmpHTML.push('<div controls fieldwrap name="' + tmpObject.name + '" class="' + tmpReq + ' field" ' + tmpStyle + '>')
             if (tmpObject.label) {
@@ -7684,19 +7700,26 @@ License: MIT
                 tmpHTML.push(tmpObject.label || '')
                 tmpHTML.push('</label>')
             }
-            var tmpPH = '';
-            if (tmpObject.placeholder !== false) {
-                tmpPH = tmpObject.label || ''
-
-                if (typeof (tmpObject.placeholder) == 'string') {
-                    tmpPH = tmpObject.placeholder;
+            if( tmpDispOnly ){
+                tmpHTML.push('<field disabled readonly class="ui field">')
+                tmpHTML.push(theControlObj.getFieldValue(tmpObject.name));
+                tmpHTML.push('</field>')
+            } else {
+                var tmpPH = '';
+                if (tmpObject.placeholder !== false) {
+                    tmpPH = tmpObject.label || ''
+    
+                    if (typeof (tmpObject.placeholder) == 'string') {
+                        tmpPH = tmpObject.placeholder;
+                    }
+                    tmpPH = ' placeholder="' + tmpPH + ' ';
                 }
-                tmpPH = ' placeholder="' + tmpPH + ' ';
+    
+                tmpHTML.push('<textarea controls field name="' + tmpObject.name + '" ' + tmpPH + '" ></textarea>')
+    
+                tmpHTML.push(getNoteMarkup(theObject));
+    
             }
-
-            tmpHTML.push('<textarea controls field name="' + tmpObject.name + '" ' + tmpPH + '" ></textarea>')
-
-            tmpHTML.push(getNoteMarkup(theObject));
 
             tmpHTML.push('</div>')
 
