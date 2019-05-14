@@ -5075,13 +5075,17 @@ License: MIT
         }
 
         var tmpThis = this;
-        ThisApp.apiCall({ url: tmpURI }).then(function (theReply) {
+        ThisApp.apiCall({ cache: false, url: tmpURI }).then(function (theReply) {
             if (theReply && Array.isArray(theReply.content)) {
                 //--- Update internal content of this instnce only
                 tmpThis.loadConfig(theReply);
                 // this.controlConfig.options = (theReply.options || {});
                 // tmpConfig.content = theReply.content;
-                tmpThis.refreshUI(tmpOptions);
+                var tmpRefreshOptions = $.extend({},tmpOptions);
+                if( theReply && theReply.options && typeof(theReply.options.doc) == 'object' ){
+                    tmpRefreshOptions.doc = theReply.options.doc;
+                }
+                tmpThis.refreshUI(tmpRefreshOptions);
                 dfd.resolve(true)
             } else {
                 dfd.resolve(false)
