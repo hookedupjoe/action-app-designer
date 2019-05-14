@@ -48,14 +48,14 @@ var ActionAppCore = {};
 
 //--- PolyFill
 (function (ActionAppCore, $) {
-  
+
     if (typeof String.prototype.endsWith !== 'function') {
-        String.prototype.endsWith = function(suffix) {
+        String.prototype.endsWith = function (suffix) {
             return this.indexOf(suffix, this.length - suffix.length) !== -1;
         };
     }
     if (typeof String.prototype.startsWith !== 'function') {
-        String.prototype.startsWith = function(suffix) {
+        String.prototype.startsWith = function (suffix) {
             return this.indexOf(suffix) === 0;
         };
     }
@@ -571,13 +571,13 @@ var ActionAppCore = {};
         "panel": "panels"
     }
 
-    
-    me.loadWebResouces = function(theControl, thePath, theFullPath){
+
+    me.loadWebResouces = function (theControl, thePath, theFullPath) {
         var tmpResourceData = theControl;
         var tmpCheckPath = thePath;
         //--- If the base element (with no params) is not loaded, get the CSS and load it
         if (!(tmpCheckPath) || (me.resourceInitFlags[tmpCheckPath] !== true)) {
-            if( tmpCheckPath ){
+            if (tmpCheckPath) {
                 me.resourceInitFlags[tmpCheckPath] = true;
                 if (tmpResourceData.controlConfig) {
                     tmpResourceData.controlConfig.uri = theFullPath;
@@ -586,20 +586,20 @@ var ActionAppCore = {};
             if (tmpResourceData.controlConfig && tmpResourceData.controlConfig.options && tmpResourceData.controlConfig.options.css) {
                 var tmpCSS = tmpResourceData.controlConfig.options.css || '';
                 if (tmpCSS) {
-                    me.addCSS({css: tmpCSS, path: tmpCheckPath})                    
+                    me.addCSS({ css: tmpCSS, path: tmpCheckPath })
                 }
             }
         }
-		
+
     }
-    me.addCSS = function(theOptions){
+    me.addCSS = function (theOptions) {
         var tmpOptions = theOptions || {};
         var tmpCSS = tmpOptions.css || '';
         var tmpPath = tmpOptions.path || '';
         if (Array.isArray(tmpCSS)) {
             tmpCSS = tmpCSS.join('\n');
         }
-        if( (tmpCSS) ){
+        if ((tmpCSS)) {
             $('head').append('<style>' + tmpCSS + '</style>');
         }
     }
@@ -652,7 +652,7 @@ var ActionAppCore = {};
         }
 
         //ToDo: Where to do this?  In control on create - check it?
-        if( isObj(tmpResourceData) && isObj(tmpResourceData.parent) ){
+        if (isObj(tmpResourceData) && isObj(tmpResourceData.parent)) {
             ThisApp.loadWebResouces(tmpResourceData, tmpCheckPath, theFullPath);
         }
 
@@ -1086,21 +1086,21 @@ var ActionAppCore = {};
         return me.sidebarSetDisplay(true);
     }
 
-    me.getHTMLForTabs = function(theGroup, theItem, theTabText){
+    me.getHTMLForTabs = function (theGroup, theItem, theTabText) {
         var tmpGroup = theGroup || '';
         var tmpItem = theItem || '';
-        if( !(tmpItem && tmpGroup) ){
+        if (!(tmpItem && tmpGroup)) {
             return ''
         }
-        
-        var tmpCardHTML = '<div appuse="cards" group="' + tmpGroup + '" item="' + tmpItem+ '" class="hidden"></div>';
-        var tmpTabHTML = '<div action="selectdMe" class="item active" appuse="tablinks" group="' + tmpGroup + '" item="' + tmpItem+ '" >' + theTabText + '</div>';
+
+        var tmpCardHTML = '<div appuse="cards" group="' + tmpGroup + '" item="' + tmpItem + '" class="hidden"></div>';
+        var tmpTabHTML = '<div action="selectdMe" class="item active" appuse="tablinks" group="' + tmpGroup + '" item="' + tmpItem + '" >' + theTabText + '</div>';
 
         var tmpRet = {
             card: tmpCardHTML,
             tab: tmpTabHTML
         }
-      
+
         return tmpRet;
 
     }
@@ -1276,9 +1276,9 @@ var ActionAppCore = {};
         if (typeof (tmpAttrList) == 'string') {
             tmpAttrList = [tmpAttrList];
         }
-        if( isObj(tmpAttrList) && !Array.isArray(tmpAttrList)){
+        if (isObj(tmpAttrList) && !Array.isArray(tmpAttrList)) {
             var tmpNewList = [];
-            for( var aName in tmpAttrList){
+            for (var aName in tmpAttrList) {
                 tmpNewList.push(aName);
             }
             tmpAttrList = tmpNewList;
@@ -1574,7 +1574,7 @@ var ActionAppCore = {};
 
 
 
-    
+
 
     /**
      * runAppAction
@@ -1736,7 +1736,7 @@ var ActionAppCore = {};
 
         var tmpOutHeight = tmpHeader.get(0).clientHeight + tmpFooter.get(0).clientHeight;
         tmpOutHeight = tmpOutHeight + 80;
-        var tmpWiHeight = $(window).height(); 
+        var tmpWiHeight = $(window).height();
         var tmpBodyNewH = (tmpWiHeight - tmpOutHeight) + 'px';
         tmpBody.css({ "height": tmpBodyNewH, "overflow": "auto" });
     }
@@ -1827,8 +1827,8 @@ var ActionAppCore = {};
     }
 
 
-    me.resizeToLayout = function(theEl){
-        if( !isjQuery(theEl) ){
+    me.resizeToLayout = function (theEl) {
+        if (!isjQuery(theEl)) {
             theEl = $(theEl);
         }
         var tmpH = theEl.closest('.ui-layout-pane').height();
@@ -2002,6 +2002,7 @@ var ActionAppCore = {};
 
 
 
+
     me.apiCall = apiCall;
     function apiCall(theOptions) {
         var dfd = $.Deferred();
@@ -2016,6 +2017,7 @@ var ActionAppCore = {};
             tmpOptions = { url: tmpOptions };
         }
 
+        var tmpAsForm = (tmpOptions.formSubmit === true);
 
         var tmpURL = tmpOptions.url;
         if (!tmpURL) {
@@ -2043,11 +2045,18 @@ var ActionAppCore = {};
 
         //--- Auto Detect data, convert data and use POST
         if (tmpOptions.data) {
-            if (typeof (tmpOptions.data) == 'object') {
-                tmpOptions.data = JSON.stringify(tmpOptions.data);
-            }
             tmpOptions.method = 'POST';
-            tmpOptions.contentType = 'application/json';
+            if (tmpAsForm) {
+                if (typeof (tmpOptions.data) == 'object') {
+                    tmpOptions.data = ThisApp.util.getObjectAsEncodedForm(tmpOptions.data);
+                }
+                tmpOptions.contentType = 'application/x-www-form-urlencoded';
+            } else {
+                if (typeof (tmpOptions.data) == 'object') {
+                    tmpOptions.data = JSON.stringify(tmpOptions.data);
+                }
+                tmpOptions.contentType = 'application/json';
+            }
         }
 
         $.ajax(tmpOptions);
@@ -2233,14 +2242,14 @@ var ActionAppCore = {};
     function runAction(theAction, theSourceObject) {
         var tmpAction = theAction || '';
         var tmpActionName = tmpAction;
-        if( ThisApp.util.isObj(tmpActionName)){
+        if (ThisApp.util.isObj(tmpActionName)) {
             tmpActionName = tmpActionName.action;
         }
 
         if (typeof (this[tmpActionName]) == 'function') {
             (this[tmpActionName]).call(this, tmpAction, theSourceObject);
         } else if (typeof (me[tmpActionName]) == 'function') {
-            (me[tmpActionName]).call(this,tmpAction, theSourceObject);
+            (me[tmpActionName]).call(this, tmpAction, theSourceObject);
         }
     }
 
@@ -2793,6 +2802,21 @@ var ActionAppCore = {};
         }
     }
 
+    function getObjectAsEncodedForm(theObject) {
+        //--- for 'application/x-www-form-urlencoded' submit
+        var tmpObject = theObject;
+        if (typeof (tmpObject) == 'string') {
+            tmpObject = JSON.parse(tmpObject);
+        }
+        var tmpEncoded = "";
+        var tmpEncodedPairs = [];
+        for (var aName in tmpObject) {
+            tmpEncodedPairs.push(encodeURIComponent(aName) + '=' + encodeURIComponent(tmpObject[aName]));
+        }
+        tmpEncoded = tmpEncodedPairs.join('&').replace(/%20/g, '+');
+        return tmpEncoded;
+    }
+
     //ThisApp.util...
     var utilFunctions = {
         isPage: isPage,
@@ -2805,6 +2829,7 @@ var ActionAppCore = {};
         resizeToParent: resizeToParent,
         stringToFunction: stringToFunction,
         functionToString: functionToString,
+        getObjectAsEncodedForm: getObjectAsEncodedForm,
         convertToJsonLive: convertToJsonLive,
         convertFromJsonLive: convertFromJsonLive,
         clone: function (theObj) {
@@ -3578,7 +3603,7 @@ License: MIT
             theEvent.preventDefault();
             theEvent.stopPropagation();
             this.runAction(tmpAction, tmpObj);
-            if ( tmpAction == 'selectMe' ) {
+            if (tmpAction == 'selectMe') {
                 this.publish('selectMe', [this, tmpObj])
             }
         }
@@ -3589,7 +3614,7 @@ License: MIT
     function runAction(theAction, theSourceObject) {
         var tmpAction = theAction || '';
         var tmpActionName = tmpAction;
-        if( ThisApp.util.isObj(tmpActionName)){
+        if (ThisApp.util.isObj(tmpActionName)) {
             tmpActionName = tmpActionName.action;
         }
         var tmpMyActions = this.pageActions || {};
@@ -3600,7 +3625,7 @@ License: MIT
         } else if (typeof (me[tmpActionName]) == 'function') {
             (me[tmpActionName]).call(this, tmpAction, theSourceObject);
         } else {
-            console.warn( 'Page Action Not Found', tmpActionName);
+            console.warn('Page Action Not Found', tmpActionName);
             ThisApp.runAction(theAction, theSourceObject);
         }
     }
@@ -3703,10 +3728,10 @@ License: MIT
 
     function runAction(theAction, theSourceObject) {
         if (typeof (act[theAction]) == 'function') {
-            (act[theAction]).call(this,theAction, theSourceObject);
+            (act[theAction]).call(this, theAction, theSourceObject);
         }
         if (typeof (me[theAction]) == 'function') {
-            (me[theAction]).call(this,theAction, theSourceObject);
+            (me[theAction]).call(this, theAction, theSourceObject);
         }
     }
 
@@ -4203,10 +4228,10 @@ License: MIT
             }
 
         },
-        "Control": {name: "Control", category: 'Controls', dir: "controls", icon: 'newspaper', lang: 'javascript'},
-        "Panel": {name: "Panel", category: 'Panels', dir: "panels", icon: 'newspaper outline', lang: 'javascript', type: 'json'},
-        "HTML": {name: "HTML", category: 'HTML', dir: "html", icon: 'code', lang: 'html'},
-        "Template": {name: "Template", category: 'Templates', dir: "tpl", icon: 'object group outline', lang: 'html'}
+        "Control": { name: "Control", category: 'Controls', dir: "controls", icon: 'newspaper', lang: 'javascript' },
+        "Panel": { name: "Panel", category: 'Panels', dir: "panels", icon: 'newspaper outline', lang: 'javascript', type: 'json' },
+        "HTML": { name: "HTML", category: 'HTML', dir: "html", icon: 'code', lang: 'html' },
+        "Template": { name: "Template", category: 'Templates', dir: "tpl", icon: 'object group outline', lang: 'html' }
     }
 
     me.layoutCounter = 0;
@@ -4906,7 +4931,7 @@ License: MIT
                 }
             }
             if (!(ThisApp.util.isPage(this.parent))) {
-                this.context.control = {context: this.parent.context};
+                this.context.control = { context: this.parent.context };
             }
         }
 
@@ -5740,10 +5765,10 @@ License: MIT
                         var tmpAppAction = tmpOnClick.appaction || '';
 
                         var tmpSource = tmpOnClick.source || "control";
-                        if( tmpPageAction ){
+                        if (tmpPageAction) {
                             tmpSource = 'page'
                         };
-                        if( tmpSource == 'app' && !tmpAppAction ){
+                        if (tmpSource == 'app' && !tmpAppAction) {
                             tmpAppAction = tmpAction;
                         }
 
@@ -5947,23 +5972,25 @@ License: MIT
         var tmpOptions = theOptions || {};
         var tmpThis = this;
         tmpThis.parentEl = ThisApp.asSpot(theEl);
+
+        if (isFunc(tmpThis._onPreInit)) {
+            tmpThis._onPreInit();
+        }
+
         var tmpHTML = tmpThis.getHTML();
         tmpThis.parentEl.html(tmpHTML);
         tmpThis.parentEl.on('change', tmpThis.onFieldChange.bind(this));
         tmpThis.parentEl.on('click', tmpThis.onItemClick.bind(this));
         tmpThis.getConfig().options = tmpThis.getConfig().options || {};
-        if (isFunc(tmpThis._onPreInit)) {
-            tmpThis._onPreInit();
-        }
-        
-        
+
+
         this.assureRequired().then(function () {
             tmpThis.initControlComponents().then(function (theReply) {
 
                 if (isFunc(tmpThis._onInit)) {
                     tmpThis._onInit();
                 }
-                
+
                 tmpThis.refreshControl();
                 var tmpDoc = tmpOptions.doc || tmpThis.getConfig().options.doc || false;
                 if (tmpDoc) {
@@ -7311,7 +7338,7 @@ License: MIT
                 tmpFieldType = 'hidden';
             }
 
-            tmpHTML.push('<div controls fieldwrap name="' + theObject.name + '" class="' + tmpClasses + tmpSizeName + tmpReq + ' ui ' + tmpFieldOrInput + '" ' + tmpStyle +  '>');
+            tmpHTML.push('<div controls fieldwrap name="' + theObject.name + '" class="' + tmpClasses + tmpSizeName + tmpReq + ' ui ' + tmpFieldOrInput + '" ' + tmpStyle + '>');
             if (theObject.label) {
                 tmpHTML.push('<label>');
                 tmpHTML.push(theObject.label || '');
@@ -7383,7 +7410,7 @@ License: MIT
             if (tmpStyle) {
                 tmpStyle = ' style="' + tmpStyle + '" '
             }
-            
+
             var tmpDDAttr = '';
 
             if (tmpDispOnly) {
@@ -7497,10 +7524,10 @@ License: MIT
         },
         setFieldValue: function (theFieldEl, theValue, theFieldSpecs, theIsReadOnly) {
             var tmpValues = theValue || '';
-            if( theIsReadOnly ){
+            if (theIsReadOnly) {
                 theFieldEl.val(theValue);
                 return;
-            }            
+            }
             if (isStr(tmpValues)) {
                 tmpValues = tmpValues.split(",")
             }
@@ -7532,10 +7559,10 @@ License: MIT
             return tmpRet;
         },
         setFieldValue: function (theFieldEl, theValue, theFieldSpecs, theIsReadOnly) {
-            if( theIsReadOnly ){
+            if (theIsReadOnly) {
                 theFieldEl.val(theValue);
                 return;
-            }     
+            }
             if (theFieldEl.length) {
                 for (var iPos = 0; iPos < theFieldEl.length; iPos++) {
                     var tmpEl = (theFieldEl[iPos]);
@@ -7592,7 +7619,7 @@ License: MIT
         }
 
         var tmpHidden = '';
-        if (tmpObject.hidden === true ) {
+        if (tmpObject.hidden === true) {
             tmpHidden = 'display:none;';
         }
         var tmpStyle = tmpObject.style || tmpObject.styles || tmpObject.css || '';
@@ -7602,7 +7629,7 @@ License: MIT
         if (tmpStyle) {
             tmpStyle = ' style="' + tmpStyle + '" '
         }
-        
+
         var tmpDispOnly = false;
         var tmpSpecs = theControlObj.getConfig();
         if (tmpSpecs && tmpSpecs.options && tmpSpecs.options.readonly === true) {
@@ -7613,7 +7640,7 @@ License: MIT
         tmpHTML = [];
         tmpHTML.push('<div controls="" fieldwrap="" class="fields grouped" ' + tmpStyle + '>')
 
-        if( tmpDispOnly ){
+        if (tmpDispOnly) {
             tmpReq = '';
         }
         if (tmpObject.label) {
@@ -7622,7 +7649,7 @@ License: MIT
             tmpHTML.push('</label></div>')
         }
 
-        if( tmpDispOnly ){
+        if (tmpDispOnly) {
 
             tmpHTML.push('	<div class="field">')
 
@@ -7635,7 +7662,7 @@ License: MIT
             tmpHTML.push('  <div class="fields ' + tmpGorI + '">')
 
             var tmpList = getListAsArrays(tmpObject.list || '');
-    
+
             if (tmpList && tmpList.length > 0) {
                 for (var index = 0; index < tmpList.length; index++) {
                     var tmpEntry = tmpList[index] || '';
@@ -7660,7 +7687,7 @@ License: MIT
             tmpHTML.push('  </div>')
             tmpHTML.push(getNoteMarkup(theObject, { isRow: (tmpGorI == 'inline') }));
         }
-       
+
         tmpHTML.push('</div>')
 
         tmpHTML = tmpHTML.join('');
@@ -7689,7 +7716,7 @@ License: MIT
                 tmpReq = ' required ';
             }
 
-            
+
             var tmpHidden = '';
             if (tmpObject.hidden === true || theControlName == 'hidden') {
                 tmpHidden = 'display:none;';
@@ -7701,13 +7728,13 @@ License: MIT
             if (tmpStyle) {
                 tmpStyle = ' style="' + tmpStyle + '" '
             }
-            
+
             var tmpDispOnly = false;
             var tmpSpecs = theControlObj.getConfig();
             if (tmpSpecs && tmpSpecs.options && tmpSpecs.options.readonly === true) {
                 tmpDispOnly = true;
             }
-    
+
 
             tmpHTML.push('<div controls fieldwrap name="' + tmpObject.name + '" class="' + tmpReq + ' field" ' + tmpStyle + '>')
             if (tmpObject.label) {
@@ -7715,7 +7742,7 @@ License: MIT
                 tmpHTML.push(tmpObject.label || '')
                 tmpHTML.push('</label>')
             }
-            if( tmpDispOnly ){
+            if (tmpDispOnly) {
                 tmpHTML.push('<field disabled readonly class="ui field">')
                 var tmpValue = theControlObj.getFieldValue(tmpObject.name);
                 tmpHTML.push('<input readonly type="text" controls field value="' + tmpValue + '" name="' + tmpObject.name + '">')
@@ -7725,17 +7752,17 @@ License: MIT
                 var tmpPH = '';
                 if (tmpObject.placeholder !== false) {
                     tmpPH = tmpObject.label || ''
-    
+
                     if (typeof (tmpObject.placeholder) == 'string') {
                         tmpPH = tmpObject.placeholder;
                     }
                     tmpPH = ' placeholder="' + tmpPH + ' ';
                 }
-    
+
                 tmpHTML.push('<textarea controls field name="' + tmpObject.name + '" ' + tmpPH + '" ></textarea>')
-    
+
                 tmpHTML.push(getNoteMarkup(theObject));
-    
+
             }
 
             tmpHTML.push('</div>')
@@ -7981,7 +8008,7 @@ License: MIT
             var tmpObject = theObject || {};
             var tmpNewContent = [];
 
-          var tmpFuncGetHeaderAndContent = function (theType, theDetails, theMeta, theContent, theLevel, theGroup, theItem, theIcon, theColor) {
+            var tmpFuncGetHeaderAndContent = function (theType, theDetails, theMeta, theContent, theLevel, theGroup, theItem, theIcon, theColor) {
                 var tmpIconNode = false;
                 var tmpColSpanDetails = "3";
                 var tmpHasContent = true;
@@ -8086,9 +8113,9 @@ License: MIT
                 }
 
                 var tmpAttrAction = 'selectMe';
-                if( !theItem ){
+                if (!theItem) {
                     tmpAttrAction = 'toggleMe';
-                    if( theLevel == 3 ){
+                    if (theLevel == 3) {
                         tmpAttrAction = 'outlineDisplay';
                     }
                 }
@@ -8107,7 +8134,7 @@ License: MIT
                         content: tmpBodyCols
                     }
                 ]
-               
+
                 if (tmpHasContent) {
                     tmpFinalContent.push(tmpFinalNode)
                 }
@@ -8403,18 +8430,18 @@ License: MIT
         for (var aVal in tmpValueFields) {
             tmpNames.push(tmpValueFields[aVal])
             tmpValues[aVal] = tmpAt;
-            if( aVal == tmpFieldValue ){
+            if (aVal == tmpFieldValue) {
                 tmpValueInList = true
             }
             tmpAt++;
         }
         //--- Update to allow for any other value
-        if( !tmpValueInList && (tmpFieldValue) ){
+        if (!tmpValueInList && (tmpFieldValue)) {
             tmpFieldValue = '*'
         }
         var tmpValuePos = tmpValues[tmpFieldValue]
         var tmpShowIndex = {};
-        
+
         //--- Get list of fields that should be displayed
         for (var iPos = 0; iPos < tmpNames.length; iPos++) {
             var tmpNameList = tmpNames[iPos];
@@ -8424,7 +8451,7 @@ License: MIT
             for (var iName = 0; iName < tmpNameList.length; iName++) {
                 var tmpEntryName = tmpNameList[iName];
                 if (tmpValuePos == iPos) {
-                    
+
                     tmpShowIndex[tmpEntryName] = true;
                 } else {
                     //--- Add field to the list, so we can make it hide
