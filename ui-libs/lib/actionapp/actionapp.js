@@ -4058,6 +4058,11 @@ License: MIT
                     var tmpFunc = tmpOptions.onBeforeLoad.bind(tmpControlObject);
                     tmpFunc(tmpControlObject, this);
                 }
+                if( typeof(tmpOptions.readonly) == 'boolean'){
+                    var tmpConfig = tmpControlObject.getConfig();
+                    tmpConfig.options = tmpConfig.options || {};
+                    tmpConfig.options.readonly = tmpOptions.readonly;
+                }
                 tmpControlObject.loadToElement(me.promptDialogText.get(0))
 
                 if (ThisApp.util.isObj(tmpOptions.doc)) {
