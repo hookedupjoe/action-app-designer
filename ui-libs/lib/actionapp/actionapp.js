@@ -7318,7 +7318,7 @@ License: MIT
 
             var tmpHidden = '';
             if (tmpObject.hidden === true || theControlName == 'hidden') {
-                tmpHidden = 'display:none;';
+                tmpHidden = ' display:none; ';
             }
             var tmpStyle = tmpObject.style || tmpObject.styles || tmpObject.css || '';
             if (tmpHidden) {
@@ -7345,8 +7345,8 @@ License: MIT
             }
             if (theControlName == 'hidden') {
                 tmpFieldType = 'hidden';
+                tmpStyle = "";
             }
-
             tmpHTML.push('<div controls fieldwrap name="' + theObject.name + '" class="' + tmpClasses + tmpSizeName + tmpReq + ' ui ' + tmpFieldOrInput + '" ' + tmpStyle + '>');
             if (theObject.label) {
                 tmpHTML.push('<label>');
@@ -7370,7 +7370,7 @@ License: MIT
         },
         isField: true
     }
-
+	
 
     me.ControlDropDown = {
         setFieldNote: commonSetFieldNote, setFieldMessage: commonSetFieldMessage,
