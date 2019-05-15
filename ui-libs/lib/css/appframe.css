@@ -262,17 +262,19 @@ background-color: transparent;
 }
 
 
-.ui.table.mobile {
+.mobile .ui.table, .ui.table.mobile {
   padding: 0;
-}
-
-.ui.table.mobile {
   width: 100%;
 }
 
-.ui.table.mobile > tbody > tr > td {
-display: block;
-width: 100% !important;
+.mobile .ui.table > tbody > tr > td, .ui.table.mobile > tbody > tr > td {
+  display: block;
+  width: 100% !important;
+}
+
+.mobile .ui.table > thead > tr > th, .ui.table.mobile > thead > tr > th {
+  display: block;
+  width: 100% !important;
 }
 
 
