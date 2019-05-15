@@ -5032,7 +5032,7 @@ License: MIT
         this.controlConfig.index = me._loadContentIndex(this.controlConfig.content)
     }
 
-    // meInstance.prompt = meControl.prompt;
+    meInstance.prompt = meControl.prompt;
 
 
     //--- Return cached control element
