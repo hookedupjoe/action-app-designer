@@ -2036,9 +2036,11 @@ var ActionAppCore = {};
         //$.extend(tmpRequest, tmpOptions);
         tmpOptions.cache = false;
         tmpOptions.success = function (theResponse) {
+            ThisApp.hideLoading();
             dfd.resolve(theResponse);
         }
         tmpOptions.error = function (theError) {
+            ThisApp.hideLoading();
             dfd.reject(theError)
         }
 
@@ -2058,7 +2060,7 @@ var ActionAppCore = {};
                 tmpOptions.contentType = 'application/json';
             }
         }
-
+        ThisApp.showLoading();
         $.ajax(tmpOptions);
         return dfd.promise();
     }
@@ -2301,6 +2303,10 @@ var ActionAppCore = {};
         var tmpDefs = [];
         var tmpThis = this;
 
+        me.headerPanel = $('.site-layout-north');
+        me.centerPanel = $('.site-layout-center');
+        me.headerPanel.addClass('ui segment nopad');
+        me.centerPanel.addClass('ui segment nopad');
 
 
         if (theAppConfig.pages && theAppConfig.pages.length) {
@@ -2325,10 +2331,10 @@ var ActionAppCore = {};
                     alert("Could not setup application, contact support")
                     dfd.resolve(false)
                 } else {
-                    tmpThis.postInit(theAppConfig)
+                    ThisApp.hideLoading();
+                    tmpThis.postInit(theAppConfig);
                     dfd.resolve(true)
                 }
-
             });
         });
 
@@ -2443,6 +2449,16 @@ var ActionAppCore = {};
 
     };
 
+    me.showLoading = function () {
+        me.headerPanel.addClass('loading');
+        me.centerPanel.addClass('loading');
+    }
+    
+    me.hideLoading = function () {
+        me.headerPanel.removeClass('loading');
+        me.centerPanel.removeClass('loading');
+    }
+
     me.postInit = postInit;
     function postInit(theAppConfig) {
 
@@ -2459,6 +2475,7 @@ var ActionAppCore = {};
 
         //--- Put your stuff here
         this.common = {};
+
 
         //--- ToDo: Support options in theAppConfig to control this        
         me.siteLayout = $('body').layout({
@@ -2480,6 +2497,8 @@ var ActionAppCore = {};
             me.getByAttr$({ semaction: "showsidebar" }).hide();
 
         }
+
+       
 
         me.config = me.config || {};
         if (theAppConfig) {
@@ -3552,7 +3571,7 @@ License: MIT
                 for (var i = 0; i < tmpAll.length; i++) {
                     var tmpArea = tmpAll[i];
                     if (this.layoutOptions[tmpArea] !== false) {
-                        tmpRet += '<div spot="' + tmpPre + ':' + tmpArea + '" class="middle-' + tmpArea + '"></div>';
+                        tmpRet += '<div spot="' + tmpPre + ':' + tmpArea + '" class="ui segment nopad middle-' + tmpArea + '"></div>';
                     }
                 }
                 return tmpRet;
@@ -3560,12 +3579,10 @@ License: MIT
 
             this.parentEl = this.app.getByAttr$({ group: "app:pages", item: this.pageName });
             this.parentEl.html(this.getLayoutHTML());
-
-
             this.parentEl.on("click", itemClicked.bind(this))
 
-
             if (typeof (this._onInit) == 'function') {
+                this.parentEl.removeClass('loading');
                 this._onInit(this.app)
             };
 
@@ -4058,7 +4075,7 @@ License: MIT
                     var tmpFunc = tmpOptions.onBeforeLoad.bind(tmpControlObject);
                     tmpFunc(tmpControlObject, this);
                 }
-                if( typeof(tmpOptions.readonly) == 'boolean'){
+                if (typeof (tmpOptions.readonly) == 'boolean') {
                     var tmpConfig = tmpControlObject.getConfig();
                     tmpConfig.options = tmpConfig.options || {};
                     tmpConfig.options.readonly = tmpOptions.readonly;
@@ -5086,8 +5103,8 @@ License: MIT
                 tmpThis.loadConfig(theReply);
                 // this.controlConfig.options = (theReply.options || {});
                 // tmpConfig.content = theReply.content;
-                var tmpRefreshOptions = $.extend({},tmpOptions);
-                if( theReply && theReply.options && typeof(theReply.options.doc) == 'object' ){
+                var tmpRefreshOptions = $.extend({}, tmpOptions);
+                if (theReply && theReply.options && typeof (theReply.options.doc) == 'object') {
                     tmpRefreshOptions.doc = theReply.options.doc;
                 }
                 tmpThis.refreshUI(tmpRefreshOptions);
@@ -6030,14 +6047,25 @@ License: MIT
         }
 
         tmpHTML.push(getContentHTML(theControlName, tmpItems, theControlObj));
-        var tmpAttr = '';
+        var tmpAttr = ' segment ';
         if (tmpSpecOptions.padding !== false) {
-            tmpAttr = ' segment basic slim ';
+            tmpAttr += '  slim ';
+        } else {
+            tmpAttr += ' nopad ';
         }
+
+        if (tmpSpecOptions.segment !== false) {
+            tmpAttr = ''
+        }
+
         var tmpForm = 'form';
         if (tmpSpecOptions.formClass === false) {
             tmpForm = ''
         }
+        if (tmpSpecOptions.initLoading === true) {
+            tmpAttr += ' loading ';
+        }
+
         tmpHTML = tmpHTML.join('');
         if (tmpHTML) {
             tmpHTML = '<div class="ui ' + tmpAttr + ' ' + tmpForm + '" controls control name="' + tmpControlName + '">' + tmpHTML + '</div>';
@@ -6556,7 +6584,7 @@ License: MIT
                 tmpHTML.push(' <i class="' + tmpIcon + ' icon"></i>')
             }
 
-            tmpHTML.push('	<div dropmenu="menu" style="display:none"><div class="menu transition fluid" tabindex="-1" style="display: block !important;">')
+            tmpHTML.push('	<div dropmenu="menu" style="display:none"><div class="menu fluid" tabindex="-1" style="display: block !important;">')
             var tmpItems = tmpObject.items || tmpObject.content || [];
             tmpHTML.push(getContentHTML(theControlName, tmpItems, theControlObj))
             tmpHTML.push('	</div></div>')
@@ -7370,7 +7398,7 @@ License: MIT
         },
         isField: true
     }
-	
+
 
     me.ControlDropDown = {
         setFieldNote: commonSetFieldNote, setFieldMessage: commonSetFieldMessage,
