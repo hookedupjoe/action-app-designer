@@ -5096,6 +5096,7 @@ License: MIT
         var tmpThis = this;
         var tmpConfig = this.controlConfig;
 
+        tmpThis.clearEvents();
         tmpConfig.options = tmpConfig.options || {};
         if (typeof (tmpOptions.readonly) === 'boolean') {
             tmpConfig.options.readonly = tmpOptions.readonly;
@@ -5912,6 +5913,7 @@ License: MIT
             }
         }
     }
+    meInstance.clearEvents = meInstance.destroy;
 
     meInstance.initControlComponents = function () {
         var dfd = jQuery.Deferred();
