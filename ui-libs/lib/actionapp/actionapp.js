@@ -2035,12 +2035,18 @@ var ActionAppCore = {};
         // };
         //$.extend(tmpRequest, tmpOptions);
         tmpOptions.cache = false;
+        var tmpLoadingEl = false;
+        if (tmpOptions.loading !== false) {
+            if (ThisApp.util.isjQuery(tmpOptions.loading))
+                tmpLoadingEl = tmpOptions.loading;
+        }
+        var tmpLoaderOptions = { el: tmpLoadingEl };
         tmpOptions.success = function (theResponse) {
-            ThisApp.hideLoading();
+            ThisApp.hideLoading(tmpLoaderOptions);
             dfd.resolve(theResponse);
         }
         tmpOptions.error = function (theError) {
-            ThisApp.hideLoading();
+            ThisApp.hideLoading(tmpLoaderOptions);
             dfd.reject(theError)
         }
 
@@ -2060,7 +2066,10 @@ var ActionAppCore = {};
                 tmpOptions.contentType = 'application/json';
             }
         }
-        ThisApp.showLoading();
+        if ((tmpOptions.loading !== false)) {
+            ThisApp.showLoading(tmpLoaderOptions);
+        }
+
         $.ajax(tmpOptions);
         return dfd.promise();
     }
@@ -2449,14 +2458,24 @@ var ActionAppCore = {};
 
     };
 
-    me.showLoading = function () {
-        me.headerPanel.addClass('loading');
-        me.centerPanel.addClass('loading');
+    me.showLoading = function (theOptions) {
+        var tmpOptions = theOptions || {};
+        if (tmpOptions.el) {
+            tmpOptions.el.addClass('loading');
+        } else {
+            me.headerPanel.addClass('loading');
+            me.centerPanel.addClass('loading');
+        }
     }
-    
-    me.hideLoading = function () {
-        me.headerPanel.removeClass('loading');
-        me.centerPanel.removeClass('loading');
+
+    me.hideLoading = function (theOptions) {
+        var tmpOptions = theOptions || {};
+        if (tmpOptions.el) {
+            tmpOptions.el.removeClass('loading');
+        } else {
+            me.headerPanel.removeClass('loading');
+            me.centerPanel.removeClass('loading');
+        }
     }
 
     me.postInit = postInit;
@@ -2498,7 +2517,7 @@ var ActionAppCore = {};
 
         }
 
-       
+
 
         me.config = me.config || {};
         if (theAppConfig) {
@@ -2955,12 +2974,16 @@ License: MIT
                 function (thePane, theElement, theState, theOptions, theName) {
 
                     if (typeof (this._onResizeLayout) == 'function') {
-                        this._onResizeLayout(thePane, theElement, theState, theOptions, theName);
+                        if (thePane == 'center') {
+                            this._onResizeLayout(thePane, theElement, theState, theOptions, theName);
+                        }
                     }
 
                     try {
                         if (this.publish) {
-                            this.publish('resizeLayout', [this, thePane, theElement, theState, theOptions, theName]);
+                            if (thePane == 'center') {
+                                this.publish('resizeLayout', [this, thePane, theElement, theState, theOptions, theName]);
+                            }
                         }
                     } catch (ex) {
                         console.error('error on resize', ex);
