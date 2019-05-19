@@ -6080,16 +6080,18 @@ License: MIT
 
         tmpHTML.push(getContentHTML(theControlName, tmpItems, theControlObj));
         var tmpAttr = ' segment ';
-        if (tmpSpecOptions.padding !== false) {
-            tmpAttr += '  slim ';
-        } else {
+        if (tmpSpecOptions.padding === false) {
             tmpAttr += ' nopad ';
+        } else {
+            tmpAttr += '  slim ';
+        }
+        if (tmpSpecOptions.basic !== false) {
+            tmpAttr += ' basic '
         }
 
-        if (tmpSpecOptions.segment !== false) {
+        if (tmpSpecOptions.segment === false) {
             tmpAttr = ''
         }
-
         var tmpForm = 'form';
         if (tmpSpecOptions.formClass === false) {
             tmpForm = ''
