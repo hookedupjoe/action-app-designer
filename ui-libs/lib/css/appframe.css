@@ -261,18 +261,18 @@ background-color: transparent;
   margin: 2px 0;
 }
 
-
-.mobile .ui.table, .ui.table.mobile {
+unstackable
+.mobile .ui.table:not(.unstackable), .ui.table.mobile:not(.unstackable) {
   padding: 0;
   width: 100%;
 }
 
-.mobile .ui.table > tbody > tr > td, .ui.table.mobile > tbody > tr > td {
+.mobile .ui.table:not(.unstackable) > tbody > tr > td, .ui.table.mobile > tbody > tr > td {
   display: block;
   width: 100% !important;
 }
 
-.mobile .ui.table > thead > tr > th, .ui.table.mobile > thead > tr > th {
+.mobile .ui.table:not(.unstackable) > thead > tr > th, .ui.table.mobile > thead > tr > th {
   display: block;
   width: 100% !important;
 }
@@ -805,6 +805,10 @@ overflow:hidden;
 
 .prettyprint {
 font-size:10px;
+}
+
+body .ui.selection.dropdown {
+  min-width: 14px;
 }
 
 .example_btn {
