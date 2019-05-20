@@ -4843,9 +4843,16 @@ License: MIT
             }
         }
 
+        var tmpCustomSize = tmpExtraOptions.size || '';
         if (tmpOptions) {
-            $.extend(tmpPromptOptions, tmpExtraOptions)
+            $.extend(tmpPromptOptions, tmpExtraOptions); // not a typo
         }
+        
+        //-- Default to large if not specified when prompting forms
+        if( !(tmpCustomSize)){
+            tmpPromptOptions.size = 'large';
+        }
+
 
         ThisApp.prompter.prompt(tmpPromptOptions).then(function (theReply, theControl) {
             var tmpData = {};
@@ -4934,6 +4941,10 @@ License: MIT
             tmpMyConfig.options = ThisApp.clone(tmpConfig.options);
             tmpMyConfig.content = ThisApp.clone(tmpConfig.content);
         }
+        if( tmpMyConfig.options.hasOwnProperty('mobileAt')){
+            this.mobileAt = tmpMyConfig.options.mobileAt;
+        }
+
         this.parent = theOptions.parent || theControlSpec.parent;
         //--- ToDo: Review need for two of these
         this.parentControl = this.parent;
@@ -4963,13 +4974,24 @@ License: MIT
                 this.context.page = this.parent.context.page;
                 if (this.context.page.controller) {
                     if (this.context.page.controller.subscribe) {
-                        var tmpThis = this;
-                        this.context.page.controller.subscribe('resizeLayout', function () {
-                            if (isFunc(tmpThis._onParentResize)) {
-                                tmpThis._onParentResize.call(tmpThis)
-                            }
+                        var tmpOnResize = (function () {
+                            var tmpEl = this.parentEl;
+                            if (isFunc(this._onParentResize)) {
+                                this._onParentResize.call(this)
+                            }                           
+                            // if( tmpEl ){
+                            //     var tmpWidth = tmpEl.width();
+                            //     if( this.mobileAt !== false){
+                            //         if (tmpWidth < (this.mobileAt || 450)) {
+                            //             tmpEl.addClass('mobile');
+                            //         } else {
+                            //             tmpEl.removeClass('mobile');
+                            //         }
+                            //     }
+                            // }
 
-                        })
+                        }).bind(this);
+                        this.context.page.controller.subscribe('resizeLayout', tmpOnResize);
                     } else {
                         console.warn('this.context.page.controller no subscribe');
                     }
@@ -7150,6 +7172,7 @@ License: MIT
 
             }
 
+
             tmpHTML.push('<div ' + getItemAttrString(theObject) + ' class="field ' + tmpReq + tmpType + '">')
 
             if (isStr(theObject.label)) {
@@ -7158,8 +7181,8 @@ License: MIT
                 tmpHTML.push('</label>')
             }
 
-
-            tmpHTML.push('  <div class="' + getNumName(tmpFieldCount) + ' ' + tmpType + ' fields">');
+//getNumName(tmpFieldCount) + 
+            tmpHTML.push('  <div class="' + ' ' + tmpType + ' fields">');
             for (var iPos = 0; iPos < tmpObject.items.length; iPos++) {
                 var tmpItem = tmpObject.items[iPos];
                 var tmpCtl = tmpItem.ctl || 'field'
@@ -7511,7 +7534,7 @@ License: MIT
             //--- Add field specific content here
 
             tmpHTML.push('\n            <div ctlcomp="dropdown" class="ui selection ' + tmpDDAttr + tmpMulti + ' dropdown">')
-            tmpHTML.push('\n                <div class="default text">Select one</div>')
+            tmpHTML.push('\n                <div class="default text">Select</div>')
             tmpHTML.push('\n                <i class="dropdown icon"></i>')
             tmpHTML.push('\n                <input controls field type="hidden" name="' + theObject.name + '" >')
             tmpHTML.push('\n                <div class="menu">')
