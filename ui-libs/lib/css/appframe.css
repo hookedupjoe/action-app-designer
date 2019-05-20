@@ -1475,6 +1475,11 @@ table th[class*="col-"] {
   float: none;
 }
 
+.ui-layout-pane .tabulator-row.tabulator-group {
+  background: white;
+}
+
+
 .input-group[class*="col-"] {
   float: none;
   padding-right: 0;
