@@ -833,7 +833,26 @@ var ActionAppCore = {};
         }
     }
 
+    me.waitForFinalEvent = (function () {
+        var timers = {};
+        return function (callback, ms, uniqueId) {
+          if (!uniqueId) {
+            uniqueId = "Don't call this twice without a uniqueId";
+          }
+          if (timers[uniqueId]) {
+            clearTimeout (timers[uniqueId]);
+          }
+          timers[uniqueId] = setTimeout(callback, ms);
+        };
+      })();
 
+      //--- Example usage
+    //   $(window).resize(function () {
+    //     ThisApp.waitForFinalEvent(function(){
+    //       console.log('Resize...');
+    //       //...
+    //     }, 500, "ThisAppResize");
+    // });
     /**
        * getUpdatedMarkupForNS
        *  - Returns HTML content that has the been prefixed with "namespace:"
@@ -2162,19 +2181,14 @@ var ActionAppCore = {};
 
     me.refreshLayouts = function (theTargetEl) {
         me.siteLayout.resizeAll();
-
-
     }
     me.resizeLayouts = function (name, $pane, paneState) {
         try {
-            var tmpIsAll = (!($pane));
-
             if (isFunc(ThisApp._onResizeLayouts)) {
                 ThisApp._onResizeLayouts(name, $pane, paneState)
             }
             var tmpH = $pane.get(0).clientHeight - $pane.get(0).offsetTop - 1;
             me.getByAttr$({ appuse: "cards", group: "app:pages", item: '' }).css("height", tmpH + "px");;
-
         } catch (ex) {
 
         }
