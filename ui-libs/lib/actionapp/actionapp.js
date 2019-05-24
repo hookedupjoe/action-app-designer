@@ -2190,10 +2190,10 @@ var ActionAppCore = {};
     me.resizeLayouts = function (name, $pane, paneState) {
         try {
             if (isFunc(ThisApp._onResizeLayouts)) {
-                ThisApp._onResizeLayouts(name, $pane, paneState)
+                ThisApp._onResizeLayouts(name, $pane, paneState);                
             }
             var tmpH = $pane.get(0).clientHeight - $pane.get(0).offsetTop - 1;
-            me.getByAttr$({ appuse: "cards", group: "app:pages", item: '' }).css("height", tmpH + "px");;
+            me.getByAttr$({ appuse: "cards", group: "app:pages", item: '' }).css("height", tmpH + "px");
         } catch (ex) {
 
         }
@@ -2510,6 +2510,9 @@ var ActionAppCore = {};
 
         //--- Register app level action handler
         this.registerActionDelegate("_app", this.runAction.bind(this));
+
+        
+
 
         //--- Put your stuff here
         this.common = {};
@@ -3157,7 +3160,10 @@ License: MIT
 
         $.when(tmpPromRequired, tmpPromLayoutReq).then(function (theReply) {
             tmpThis.initLayout();
-            tmpThis.initAppComponents();
+            tmpThis.initAppComponents();           
+            ThisApp.delay(100).then(function(theReply){
+                ThisApp.siteLayout.resizeAll();
+            }) 
             dfd.resolve(true);
         })
 
