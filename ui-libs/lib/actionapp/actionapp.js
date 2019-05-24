@@ -749,7 +749,8 @@ var ActionAppCore = {};
             north__closable: false,
             north__slidable: false,
             north__togglerLength_open: 0,
-            north__spacing_open: 0
+            north__spacing_open: 0,
+            enableCursorHotkey: false
         },
         defaultPage: {
             spacing_closed: 8,
@@ -776,7 +777,8 @@ var ActionAppCore = {};
                 resizable: true,
                 resizeWhileDragging: true,
                 slidable: true
-            }
+            },
+            enableCursorHotkey: false
         },
         defaultControl: {
             spacing_closed: 8,
@@ -795,7 +797,8 @@ var ActionAppCore = {};
             north__togglerLength_open: 0,
             north__spacing_open: 0,
             east__size: "50%",
-            west__size: "300"
+            west__size: "300",
+            enableCursorHotkey: false
         },
         bigWest: {
             spacing_closed: 8,
@@ -814,7 +817,8 @@ var ActionAppCore = {};
             north__togglerLength_open: 0,
             north__spacing_open: 0,
             east__size: "15%",
-            west__size: "40%"
+            west__size: "40%",
+            enableCursorHotkey: false
         },
         customDemo1: {
             spacing_closed: 8,
@@ -829,7 +833,8 @@ var ActionAppCore = {};
             south__spacing_open: 0,
             north__resizable: true,
             north__closable: true,
-            north__slidable: true
+            north__slidable: true,
+            enableCursorHotkey: false
         }
     }
 
@@ -2510,10 +2515,8 @@ var ActionAppCore = {};
         this.common = {};
 
 
-        //--- ToDo: Support options in theAppConfig to control this        
-        me.siteLayout = $('body').layout({
+        var tmpLOSpecs = {
             center__paneSelector: ".site-layout-center"
-            , north__paneSelector: ".site-layout-north"
             , north__spacing_open: 0
             , north__spacing_closed: 0
             , north__resizable: false
@@ -2521,7 +2524,14 @@ var ActionAppCore = {};
             , spacing_closed: 8 // ALL panes
             , onready: ThisApp.resizeLayouts
             , onresize: ThisApp.resizeLayouts
-        });
+            , enableCursorHotkey: false
+        }
+        if( theAppConfig.customHeader !== true){
+            tmpLOSpecs.north__paneSelector = ".site-layout-north";
+        }
+
+        //--- ToDo: Support options in theAppConfig to control this        
+        me.siteLayout = $('body').layout(tmpLOSpecs);
 
         if (theAppConfig && theAppConfig.hideHeader == true) {
             me.siteLayout.toggle('north');
@@ -6121,7 +6131,7 @@ License: MIT
         } else {
             tmpAttr += '  slim ';
         }
-        if (tmpSpecOptions.basic !== false) {
+        if (tmpSpecOptions.basic == true) {
             tmpAttr += ' basic '
         }
 
@@ -6546,10 +6556,6 @@ License: MIT
             var tmpObject = theObject || {};
 
             var tmpHTML = [];
-            var tmpLevel = 3;
-            if (theObject.level) {
-                tmpLevel = theObject.level
-            }
             var tmpHidden = '';
             if (tmpObject.hidden === true) {
                 tmpHidden = 'display:none;';
@@ -6561,14 +6567,8 @@ License: MIT
             if (tmpStyle) {
                 tmpStyle = ' style="' + tmpStyle + '" '
             }
-
-            var tmpIcon = 'dropdown';
-            if (isStr(tmpObject.icon)) {
-                tmpIcon = tmpObject.icon;
-            }
+        
             var tmpClasses = ''
-
-
             tmpHTML.push('<div ctlcomp="layout" ' + getItemAttrString(theObject) + ' class="' + tmpClasses + ' " ' + tmpStyle + '>')
 
             var tmpRegions = ['center', 'north', 'south', 'east', 'west'];
@@ -8100,216 +8100,6 @@ License: MIT
     }
 
 
-    
-
-    me.ControlSiteOutlineNode = {
-        getInfo: function (theControlName) {
-            var tmpProps = getCommonControlProperties(['hidden']);
-            var tmpRet = {
-                name: theControlName,
-                title: "Custom Control - Table Outline node",
-                category: "Common Web Custom Controls",
-                properties: tmpProps,
-                actions: {}
-            };
-            return tmpRet;
-        },
-        getCustomContent: function (theControlName, theObject, theControlObj) {
-            var tmpObject = theObject || {};
-            var tmpNewContent = [];
-
-            var tmpFuncGetHeaderAndContent = function (theType, theDetails, theMeta, theContent, theLevel, theGroup, theItem, theIcon, theColor) {
-                var tmpIconNode = false;
-                var tmpColSpanDetails = "3";
-                var tmpHasContent = true;
-                if (!(theContent && theContent.length > 0)) {
-                    tmpHasContent = false;
-                }
-
-                var tmpOLUse = 'select';
-
-                if (theLevel == 2) {
-                    tmpColSpanDetails = "4";
-
-                    //tmpRowAttr.oluse = "collapsable";
-                    tmpOLUse = "collapsable";
-                    tmpIconNode = {
-                        ctl: "td",
-                        classes: "tbl-icon",
-                        attr: {
-                            action: "toggleMe"
-                        },
-                        content: [
-                            {
-                                ctl: "i",
-                                classes: "icon square minus large toright"
-                            }
-                        ]
-                    }
-                } else if (theLevel == 3) {
-                    tmpColSpanDetails = "4";
-                    tmpPMIconCls = "tbl-icon2";
-                    tmpIconNode = {
-                        ctl: "td",
-                        classes: "tbl-icon2",
-                        content: [
-                            {
-                                ctl: "i",
-                                attr: {
-                                    action: "outlineDisplay",
-                                    select: "false"
-                                },
-                                classes: "icon square minus large toright"
-                            },
-                            {
-                                ctl: "i",
-                                attr: {
-                                    action: "outlineDisplay",
-                                    select: "true"
-                                },
-                                classes: "icon square plus large toright"
-                            }
-                        ]
-                    }
-                }
-
-                var tmpIconHidden = '';
-                if( !(theIcon) ){
-                    tmpIconHidden = ' hidden ';
-                }
-                var tmpBodyCols = [
-                    {
-                        ctl: "td",
-                        classes: "tbl-icon " + tmpIconHidden,
-                        content: [
-                            {
-                                ctl: "i",
-                                classes: "large " + theIcon + " " + theColor + " icon"
-                            }
-                        ]
-                    },
-                    {
-                        ctl: "td",
-                        classes: "tbl-details",
-                        text: theDetails
-                    }
-
-                ];
-                if (theMeta) {
-
-                    tmpBodyCols.push({
-                        ctl: "td",
-                        classes: "tbl-label",
-                        text: theMeta
-                    });
-                }
-                if (tmpIconNode) {
-                    tmpBodyCols.push(tmpIconNode);
-                }
-
-
-                var tmpFinalNode = {
-                    ctl: "tr",
-                    attr: {
-                        type: theType,
-                        oluse: "container"
-                    },
-                    content: [
-                        {
-                            ctl: "td",
-                            attr: {
-                                colspan: tmpColSpanDetails,
-                            },
-                            content: theContent
-                        }
-                    ]
-
-                }
-
-                var tmpAttrAction = 'selectMe';
-                if (!theItem) {
-                    tmpAttrAction = 'toggleMe';
-                    if (theLevel == 3) {
-                        tmpAttrAction = 'outlineDisplay';
-                    }
-                }
-                var tmpFinalContent = [
-                    {
-                        ctl: "tr",
-                        classes: "",
-                        attr: $.extend({
-                            action: tmpAttrAction,
-                            select: "false",
-                            group: theGroup,
-                            item: theItem,
-                            type: theType,
-                            oluse: tmpOLUse
-                        }, (tmpObject.attr || {})),
-                        content: tmpBodyCols
-                    }
-                ]
-
-                if (tmpHasContent) {
-                    tmpFinalContent.push(tmpFinalNode)
-                }
-
-                var tmpHeaderAndContent = {
-                    ctl: "table",
-                    classes: "ui very compact table selectable outline unstackable",
-                    content: [
-                        {
-                            ctl: "tbody",
-                            content: tmpFinalContent
-                        }
-                    ]
-                }
-
-                return tmpHeaderAndContent;
-            }
-
-
-
-            tmpNewContent.push(tmpFuncGetHeaderAndContent(
-                tmpObject.type, tmpObject.details, tmpObject.meta, tmpObject.content, tmpObject.level, tmpObject.group, tmpObject.item, tmpObject.icon, tmpObject.color
-            ))
-
-            return tmpNewContent;
-        },
-        getHTML: function (theControlName, theObject, theControlObj) {
-            var tmpObject = theObject || {};
-            var tmpHTML = [];
-            var tmpNewContent = this.getCustomContent(theControlName, theObject, theControlObj);
-
-            var tmpHidden = '';
-            if (tmpObject.hidden === true) {
-                tmpHidden = 'display:none;';
-            }
-            var tmpStyle = tmpObject.style || tmpObject.styles || tmpObject.css || '';
-            if (tmpHidden) {
-                tmpStyle += tmpHidden;
-            }
-            if (tmpStyle) {
-                tmpStyle = ' style="' + tmpStyle + '" '
-            }
-
-            var tmpControlClass = '';
-            var tmpClasses = tmpObject.classes || '';
-            tmpHTML = [];
-            tmpHTML.push('<div ' + getItemAttrString(tmpObject) + ' class="ui ' + tmpControlClass + ' ' + tmpClasses + '" ' + tmpStyle + '>')
-
-            tmpHTML.push(getContentHTML(theControlName, tmpNewContent, theControlObj))
-
-            tmpHTML.push('</div>')
-
-            tmpHTML = tmpHTML.join('');
-            return tmpHTML;
-
-        },
-        isField: false
-
-    }
-
-
     me.ControlTableOutlineNode = {
         getInfo: function (theControlName) {
             var tmpProps = getCommonControlProperties(['hidden']);
@@ -8674,7 +8464,6 @@ License: MIT
     //=== Common Custom Web Controls ..
     me.webControls.add('cardfull', me.ControlFullCard);
     me.webControls.add('tbl-ol-node', me.ControlTableOutlineNode);
-    me.webControls.add('site-ol-node', me.ControlSiteOutlineNode);
 
     //==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== 
     //--- Common Actions
