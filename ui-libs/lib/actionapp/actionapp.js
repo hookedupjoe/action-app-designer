@@ -1214,7 +1214,7 @@ var ActionAppCore = {};
         var tmpGroupName = tmpOptions.group || '';
         var tmpItemId = tmpOptions.item || '';
         var tmpParent = theOptions.parent || undefined;
-        var tmpAnimation = tmpOptions.animation || 'fade';
+        var tmpAnimation = tmpOptions.animation || 'silent';
         var tmpAnimDuration = tmpOptions.duration || 250;
         var tmpSelector = {
             appuse: 'cards',
@@ -1223,7 +1223,7 @@ var ActionAppCore = {};
 
         me.getByAttr$(tmpSelector, tmpParent).addClass('hidden').transition('hide', 1);
         tmpSelector.item = tmpItemId;
-        me.getByAttr$(tmpSelector, tmpParent).removeClass('hidden').transition(tmpAnimation + ' in', tmpAnimDuration);
+        me.getByAttr$(tmpSelector, tmpParent).removeClass('hidden').transition('show', 1);
         if (ThisApp.refreshLayouts) {
             ThisApp.refreshLayouts();
         }
@@ -3057,6 +3057,25 @@ License: MIT
         ThisApp.controls.addWebControl(this.ns(theControlName), theControl);
     }
 
+    me.regionNames = ['center', 'north', 'south', 'east', 'west'];
+
+    me.hideLoading = function(theOptions){
+        this.showLoading(false, theOptions);
+    }
+
+    me.showLoading = function(theDisplayFlag, theOptions){
+        var tmpOptions = theOptions || {};
+        //-- Todo: Add regions option, string or array of regions to use
+        //-- only use regions used on page when automatic?
+        for (var iPos in me.regionNames) {
+            var tmpRN = me.regionNames[iPos];
+            if( theDisplayFlag === false ){
+                ThisApp.getSpot(this.pageName + ':' + tmpRN).removeClass('loading');
+            } else {
+                ThisApp.getSpot(this.pageName + ':' + tmpRN).addClass('loading');
+            }
+        }
+    }
 
     function preProcessLayoutRegions(theLayoutOptions) {
         //--- By reference so will update original
@@ -3072,10 +3091,9 @@ License: MIT
             tmpType = 'html'
         }
 
-        var tmpRegions = ['center', 'north', 'south', 'east', 'west'];
-        for (var i = 0; i < tmpRegions.length; i++) {
+        for (var iPos in me.regionNames) {
             var tmpRegionType = tmpType;
-            var tmpRegion = tmpRegions[i];
+            var tmpRegion = me.regionNames[iPos];
             var tmpRegionInfo = tmpOpts[tmpRegion];
 
             if (tmpRegionInfo) {
