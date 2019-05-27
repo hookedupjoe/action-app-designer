@@ -841,17 +841,17 @@ var ActionAppCore = {};
     me.waitForFinalEvent = (function () {
         var timers = {};
         return function (callback, ms, uniqueId) {
-          if (!uniqueId) {
-            uniqueId = "shouldUseID";
-          }
-          if (timers[uniqueId]) {
-            clearTimeout (timers[uniqueId]);
-          }
-          timers[uniqueId] = setTimeout(callback, ms);
+            if (!uniqueId) {
+                uniqueId = "shouldUseID";
+            }
+            if (timers[uniqueId]) {
+                clearTimeout(timers[uniqueId]);
+            }
+            timers[uniqueId] = setTimeout(callback, ms);
         };
-      })();
+    })();
 
-      //--- Example usage
+    //--- Example usage
     //   $(window).resize(function () {
     //     ThisApp.waitForFinalEvent(function(){
     //       console.log('Resize...');
@@ -2190,7 +2190,7 @@ var ActionAppCore = {};
     me.resizeLayouts = function (name, $pane, paneState) {
         try {
             if (isFunc(ThisApp._onResizeLayouts)) {
-                ThisApp._onResizeLayouts(name, $pane, paneState);                
+                ThisApp._onResizeLayouts(name, $pane, paneState);
             }
             var tmpH = $pane.get(0).clientHeight - $pane.get(0).offsetTop - 1;
             me.getByAttr$({ appuse: "cards", group: "app:pages", item: '' }).css("height", tmpH + "px");
@@ -2497,6 +2497,85 @@ var ActionAppCore = {};
         }
     }
 
+    me.grid16 = {
+
+        numLookup: ["zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten", "eleven", "twelve", "thirteen", "fourteen", "fifteen", "sixteen"],
+        paramDefaults: {
+            "gs-s-at": 330,
+            "gs-m-at": 770,
+            "gs-s": 16,
+            "gs-m": 8,
+            "gs-l": 4
+        },
+        resizeGrid: function (theOptions) {
+           try {
+            var tmpOptions = theOptions || {};
+            var tmpParent = tmpOptions.parent || false;
+            //todo: use tmpParent
+            var tmpGrids = ThisApp.getByAttr$({ appuse: "grid-16" });
+
+            var tmpGridsLen = tmpGrids.length;
+            if (tmpGrids && tmpGridsLen > 0) {
+                for (var iPos = 0; iPos < tmpGridsLen; iPos++) {
+                    var tmpGridsEl = $(tmpGrids[iPos]);
+                    if (tmpGridsEl && tmpGridsEl.is(":visible")) {
+
+                        var tmpPaneEl = tmpGridsEl.first('.ui-layout-pane');
+                        var tmpIW = tmpPaneEl.innerWidth();
+                        var tmpGridParams = ThisApp.getAttrs(tmpGridsEl, ["gs-s-at", "gs-m-at", "gs-s", "gs-m", "gs-l"])
+                        for (var aName in tmpGridParams) {
+                            try {
+                                tmpGridParams[aName] = parseInt(tmpGridParams[aName]);
+                            } catch (ex) {
+    
+                            }
+                        }
+                        tmpGridParams = $.extend({}, this.paramDefaults, tmpGridParams);
+    
+                        var tmpGridSize = tmpGridParams["gs-l"];
+                        if (tmpIW <= tmpGridParams["gs-s-at"]) {
+                            tmpGridSize = tmpGridParams["gs-s"];
+                        } else if (tmpIW <= tmpGridParams["gs-m-at"]) {
+                            tmpGridSize = tmpGridParams["gs-m"];
+                        }
+
+                        
+                        var tmpGridCols = tmpGridsEl.find('[gscol]');
+                        //todo: Make generic
+                        var tmpXHead = tmpGridsEl.find('[griduse="extra-header"]');
+                        if (tmpGridSize < 16) {
+                            tmpXHead.show();
+                        } else {
+                            tmpXHead.hide();
+                        }
+                        var tmpToRemove = '';
+                        tmpGridsEl.data = tmpGridsEl.data || {};
+                        if (tmpGridsEl.data.currentCardCount) {
+                            tmpToRemove = this.numLookup[tmpGridsEl.data.currentCardCount] + " wide";
+                        }
+                        tmpGridsEl.data.currentCardCount = tmpGridSize;
+                        var tmpToAdd = this.numLookup[tmpGridsEl.data.currentCardCount] + " wide";
+
+                        if (tmpToRemove) {
+                            tmpGridCols.removeClass(tmpToRemove);
+                        }
+                        if (tmpToAdd) {
+                            tmpGridCols.addClass(tmpToAdd);
+                        }
+
+                    }
+                }
+            }
+           } catch (ex) {
+             console.warn("Error during resize ", ex.toString(), ex)  
+           }
+        }
+
+
+    }
+
+
+
     me.postInit = postInit;
     function postInit(theAppConfig) {
 
@@ -2511,7 +2590,7 @@ var ActionAppCore = {};
         //--- Register app level action handler
         this.registerActionDelegate("_app", this.runAction.bind(this));
 
-        
+
 
 
         //--- Put your stuff here
@@ -2529,7 +2608,7 @@ var ActionAppCore = {};
             , onresize: ThisApp.resizeLayouts
             , enableCursorHotkey: false
         }
-        if( theAppConfig.customHeader !== true){
+        if (theAppConfig.customHeader !== true) {
             tmpLOSpecs.north__paneSelector = ".site-layout-north";
         }
 
@@ -3059,17 +3138,17 @@ License: MIT
 
     me.regionNames = ['center', 'north', 'south', 'east', 'west'];
 
-    me.hideLoading = function(theOptions){
+    me.hideLoading = function (theOptions) {
         this.showLoading(false, theOptions);
     }
 
-    me.showLoading = function(theDisplayFlag, theOptions){
+    me.showLoading = function (theDisplayFlag, theOptions) {
         var tmpOptions = theOptions || {};
         //-- Todo: Add regions option, string or array of regions to use
         //-- only use regions used on page when automatic?
         for (var iPos in me.regionNames) {
             var tmpRN = me.regionNames[iPos];
-            if( theDisplayFlag === false ){
+            if (theDisplayFlag === false) {
                 ThisApp.getSpot(this.pageName + ':' + tmpRN).removeClass('loading');
             } else {
                 ThisApp.getSpot(this.pageName + ':' + tmpRN).addClass('loading');
@@ -3178,10 +3257,10 @@ License: MIT
 
         $.when(tmpPromRequired, tmpPromLayoutReq).then(function (theReply) {
             tmpThis.initLayout();
-            tmpThis.initAppComponents();           
-            ThisApp.delay(100).then(function(theReply){
+            tmpThis.initAppComponents();
+            ThisApp.delay(100).then(function (theReply) {
                 ThisApp.siteLayout.resizeAll();
-            }) 
+            })
             dfd.resolve(true);
         })
 
@@ -4895,9 +4974,9 @@ License: MIT
         if (tmpOptions) {
             $.extend(tmpPromptOptions, tmpExtraOptions); // not a typo
         }
-        
+
         //-- Default to large if not specified when prompting forms
-        if( !(tmpCustomSize)){
+        if (!(tmpCustomSize)) {
             tmpPromptOptions.size = 'large';
         }
 
@@ -4989,7 +5068,7 @@ License: MIT
             tmpMyConfig.options = ThisApp.clone(tmpConfig.options);
             tmpMyConfig.content = ThisApp.clone(tmpConfig.content);
         }
-        if( tmpMyConfig.options.hasOwnProperty('mobileAt')){
+        if (tmpMyConfig.options.hasOwnProperty('mobileAt')) {
             this.mobileAt = tmpMyConfig.options.mobileAt;
         }
 
@@ -5026,7 +5105,7 @@ License: MIT
                             var tmpEl = this.parentEl;
                             if (isFunc(this._onParentResize)) {
                                 this._onParentResize.call(this)
-                            }                           
+                            }
                             // if( tmpEl ){
                             //     var tmpWidth = tmpEl.width();
                             //     if( this.mobileAt !== false){
@@ -5972,7 +6051,7 @@ License: MIT
 
     meInstance.destroy = function () {
         try {
-            if( this.parentEl ){
+            if (this.parentEl) {
                 this.parentEl.off('change');
                 this.parentEl.off('click');
             }
@@ -5986,9 +6065,9 @@ License: MIT
                 }
             }
         } catch (ex) {
-            
+
         }
-       
+
     }
     meInstance.clearEvents = meInstance.destroy;
 
@@ -6591,7 +6670,7 @@ License: MIT
             if (tmpStyle) {
                 tmpStyle = ' style="' + tmpStyle + '" '
             }
-        
+
             var tmpClasses = ''
             tmpHTML.push('<div ctlcomp="layout" ' + getItemAttrString(theObject) + ' class="' + tmpClasses + ' " ' + tmpStyle + '>')
 
@@ -7219,7 +7298,7 @@ License: MIT
                 tmpHTML.push('</label>')
             }
 
-//getNumName(tmpFieldCount) + 
+            //getNumName(tmpFieldCount) + 
             tmpHTML.push('  <div class="' + ' ' + tmpType + ' fields">');
             for (var iPos = 0; iPos < tmpObject.items.length; iPos++) {
                 var tmpItem = tmpObject.items[iPos];
@@ -8196,7 +8275,7 @@ License: MIT
                 }
 
                 var tmpIconHidden = '';
-                if( !(theIcon) ){
+                if (!(theIcon)) {
                     tmpIconHidden = ' hidden ';
                 }
                 var tmpBodyCols = [
@@ -8217,7 +8296,7 @@ License: MIT
                     }
 
                 ];
-                
+
                 if ((theMeta) && !((theLevel > 1) && !(theItem))) {
 
                     tmpBodyCols.push({
@@ -8258,8 +8337,8 @@ License: MIT
                 }
 
                 var tmpTRClasses = '';
-                if( theLevel > 1 && !(theItem) ){
-                    tmpTRClasses = "ui message fluid blue";                    
+                if (theLevel > 1 && !(theItem)) {
+                    tmpTRClasses = "ui message fluid blue";
                 }
                 var tmpFinalContent = [
                     {
@@ -8282,12 +8361,12 @@ License: MIT
                 }
 
                 var tmpSelectable = '';
-                if( theDetails.selectable === true){
+                if (theDetails.selectable === true) {
                     tmpSelectable = ' selectable '
                 }
                 var tmpHeaderAndContent = {
                     ctl: "table",
-                    classes: "ui very compact table "  + tmpSelectable + " outline unstackable",
+                    classes: "ui very compact table " + tmpSelectable + " outline unstackable",
                     content: [
                         {
                             ctl: "tbody",

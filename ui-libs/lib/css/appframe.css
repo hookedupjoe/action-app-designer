@@ -186,6 +186,19 @@ input[readonly], .ui.disabled.dropdown {
   padding-left: 8px;
   border: none;
 }
+
+.ui.nopad.celled.grid>.column:not(.row), .ui.nopad.celled.grid>.row>.column {
+  padding: 0px;
+  margin: 0px;
+}
+.all0 {
+  padding: 0px !important;
+  margin: 0px !important;
+}
+
+.pad0 {
+  padding: 0px !important;
+}
 .pad1 {
   padding: 1px !important;
 }
@@ -204,12 +217,36 @@ input[readonly], .ui.disabled.dropdown {
 .pad6 {
   padding: 6px !important;
 }
+.pad7 {
+  padding: 7px !important;
+}
 .pad8 {
   padding: 8px !important;
+}
+.pad9 {
+  padding: 9px !important;
 }
 .pad10 {
   padding: 10px !important;
 }
+
+.mar0 {
+  margin: 0px !important;
+}
+.mar1 {
+  margin: 1px !important;
+}
+.mar2 {
+  margin: 2px !important;
+}
+.mar3 {
+  margin: 3px !important;
+}
+.mar4 {
+  margin: 4px !important;
+}
+
+
 
 
 .ui.selection.dropdown>.icon {
@@ -466,9 +503,14 @@ cursor: not-allowed !important;
   margin: 5px 0;
 }
 
-.slim .ui.message {
-  margin: 4px 0;
+[appuse="grid-16"] .ui.horizontal.divider.wrap {
+  white-space: normal;
 }
+
+[appuse="grid-16"] .ui.horizontal {
+  margin-top: 10px;
+}
+
 .ui.segment[group] {
   padding-top:8px;
 }
