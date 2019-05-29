@@ -118,6 +118,8 @@ License: MIT
                 //--- For debugging
                 window.wsPage = ThisPage;
 
+              
+
                 ThisPage.subscribe('selectMe', ThisPage.pageTabSelected)
 
                 //--- Now your done - READY to do stuff the first time on your page
@@ -129,11 +131,16 @@ License: MIT
 
                 //ThisPage.layout.toggle("west");
                 ThisPage.refreshWSNav();
-
+                
                 //--- Do special stuff on page load here
                 //--- Then optionally call the stuff that will happen every time 
                 //      the page is activated if not already called by above code
                 ThisPage._onActivate();
+
+                //Todo: Change to when west publishes loaded
+                ThisApp.delay(1000).then(function(){
+                    ThisPage.closeSiteMap();
+                })
             }
         );
     }
@@ -154,10 +161,17 @@ License: MIT
 
     //=== Page Stuff
 
+    ThisPage.closeSiteMap = closeSiteMap;
+    function closeSiteMap(theParams, theTarget) {
+        var tmpNav = ThisPage.parts.west;
+        var tmpWSEl = tmpNav.getItemEl('workspace');
+        ThisPage.navHead = ThisPage.navHead || tmpWSEl.find('[action="outlineDisplay"][select="false"]');
+        if (ThisPage.navHead) {
+            ThisPage.navHead.trigger('click');
+        }
+    };
+
     var dsNameWorkspaceState = 'ws-page-state';
-
-
-
 
     ThisPage.loadWorkspaceState = loadWorkspaceState;
     function loadWorkspaceState() {
