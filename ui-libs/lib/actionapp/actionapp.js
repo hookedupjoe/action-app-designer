@@ -455,12 +455,12 @@ var ActionAppCore = {};
     me.getExtnForType = function (theType) {
         var tmpType = theType.toLowerCase();
         if (tmpType == 'panels' || tmpType == 'panel') {
-            return '.json';
+            return '.json?open';
         }
         if (tmpType == 'controls' || tmpType == 'control') {
-            return '/control.js';
+            return '/control.js?open';
         }
-        return '.html';
+        return '.html?open';
     }
 
     me.loadResources = function (theSpecs, theOptions) {
@@ -1046,7 +1046,7 @@ var ActionAppCore = {};
             dfd.resolve(true)
         } else {
             //--- load it up then ... 
-            var tmpURL = './app/pages/' + tmpPageName + '/index.js'
+            var tmpURL = './app/pages/' + tmpPageName + '/index.js?open'
             $.ajax({
                 url: tmpURL,
                 dataType: "script"
@@ -2343,7 +2343,7 @@ var ActionAppCore = {};
                 var tmpPageName = tmpPageNames[iPageName];
                 var tmpPage = ThisApp.getPage(tmpPageName);
                 if (!(tmpPage)) {
-                    var tmpURL = './app/pages/' + tmpPageName + '/index.js'
+                    var tmpURL = './app/pages/' + tmpPageName + '/index.js?open'
                     tmpDefs.push($.ajax({
                         url: tmpURL,
                         dataType: "script"
