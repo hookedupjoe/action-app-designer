@@ -4,7 +4,7 @@
 
   var tmpPageNames = ["Home"];
 
-  var tmpPluginNames = ["DataTables"];
+  var tmpPluginNames = [];
 
   setup(tmpPageNames, tmpPluginNames);
 
