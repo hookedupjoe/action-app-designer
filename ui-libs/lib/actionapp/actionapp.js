@@ -5106,16 +5106,16 @@ License: MIT
                             if (isFunc(this._onParentResize)) {
                                 this._onParentResize.call(this)
                             }
-                            // if( tmpEl ){
-                            //     var tmpWidth = tmpEl.width();
-                            //     if( this.mobileAt !== false){
-                            //         if (tmpWidth < (this.mobileAt || 450)) {
-                            //             tmpEl.addClass('mobile');
-                            //         } else {
-                            //             tmpEl.removeClass('mobile');
-                            //         }
-                            //     }
-                            // }
+                            if( tmpEl ){
+                                var tmpWidth = tmpEl.width();
+                                if( this.mobileAt !== false){
+                                    if (tmpWidth < (this.mobileAt || 450)) {
+                                        tmpEl.addClass('mobile');
+                                    } else {
+                                        tmpEl.removeClass('mobile');
+                                    }
+                                }
+                            }
 
                         }).bind(this);
                         this.context.page.controller.subscribe('resizeLayout', tmpOnResize);
@@ -7298,8 +7298,8 @@ License: MIT
                 tmpHTML.push('</label>')
             }
 
-            //getNumName(tmpFieldCount) + 
-            tmpHTML.push('  <div class="' + ' ' + tmpType + ' fields">');
+            //
+            tmpHTML.push('  <div class="' + getNumName(tmpFieldCount) + ' ' + tmpType + ' fields">');
             for (var iPos = 0; iPos < tmpObject.items.length; iPos++) {
                 var tmpItem = tmpObject.items[iPos];
                 var tmpCtl = tmpItem.ctl || 'field'
