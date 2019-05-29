@@ -70,7 +70,7 @@
 
       var tmpRequired = {{REQUIRED-OBJECT}}
 
-      ThisApp.init({ pages: tmpPageNames, plugins: tmpPluginNames, required: tmpRequired }).then(function (theReply) {
+      ThisApp.init({ {{INIT_OPTIONS}} pages: tmpPageNames, plugins: tmpPluginNames, required: tmpRequired }).then(function (theReply) {
         ThisApp.getByAttr$({ appuse: "app-loader" }).remove();
 
         $.extend(ThisApp.common, {{EXTEND-OBJECT}})
