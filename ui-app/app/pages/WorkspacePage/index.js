@@ -127,7 +127,7 @@ License: MIT
                 ThisPage.parts.center.subscribe('selected', wsItemSelected);
 
 
-                ThisPage.layout.toggle("west");
+                //ThisPage.layout.toggle("west");
                 ThisPage.refreshWSNav();
 
                 //--- Do special stuff on page load here
