@@ -8082,7 +8082,16 @@ License: MIT
         getCustomContent: function (theControlName, theObject, theControlObj) {
             var tmpObject = theObject || {};
             var tmpNewContent = [];
+            var tmpCentered = '';
+            if( tmpObject.centered === true){
+                tmpCentered = ' center aligned '
+            }
 
+            var tmpClasses = '';
+            if( tmpCentered ){
+                tmpClasses += tmpCentered;
+            }
+            
             var tmpTopHeaderText = '';
             var tmpTopHeaderVis = false;
 
@@ -8098,6 +8107,7 @@ License: MIT
                     {
                         "ctl": "title",
                         "name": "topHeader",
+                        classes: tmpClasses,
                         "text": tmpTopHeaderText
 
                     }
@@ -8114,24 +8124,28 @@ License: MIT
             if (tmpHasFields) {
                 var tmpContent = {
                     "ctl": "content",
+                    classes: tmpClasses,
                     "content": []
                 }
 
                 if (tmpObject.header) {
                     tmpContent.content.push({
                         "ctl": "header",
+                        classes: tmpClasses,
                         "text": tmpObject.header
                     })
                 }
                 if (tmpObject.meta) {
                     tmpContent.content.push({
                         "ctl": "meta",
+                        classes: tmpClasses,
                         "text": tmpObject.meta
                     })
                 }
                 if (tmpObject.description) {
                     tmpContent.content.push({
                         "ctl": "description",
+                        classes: tmpClasses,
                         "text": tmpObject.description
                     })
                 }
@@ -8218,7 +8232,6 @@ License: MIT
         getCustomContent: function (theControlName, theObject, theControlObj) {
             var tmpObject = theObject || {};
             var tmpNewContent = [];
-
             var tmpFuncGetHeaderAndContent = function (theType, theDetails, theMeta, theContent, theLevel, theGroup, theItem, theIcon, theColor) {
                 var tmpIconNode = false;
                 var tmpColSpanDetails = "3";
