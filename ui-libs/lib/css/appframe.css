@@ -511,6 +511,10 @@ cursor: not-allowed !important;
   margin-top: 10px;
 }
 
+.ui.larger {
+  font-size: larger !important;
+}
+
 .ui.segment[group] {
   padding-top:8px;
 }
