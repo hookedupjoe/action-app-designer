@@ -20,7 +20,7 @@
       var tmpRequired = {{REQUIRED-OBJECT}}
 
       //--- Use tmpRequiredSpecs to preload more using that example
-      ThisApp.init({ pages: thePages, plugins: thePlugins, required: tmpRequired }).then(function (theReply) {
+      ThisApp.init({ {{INIT_OPTIONS}} pages: thePages, plugins: thePlugins, required: tmpRequired }).then(function (theReply) {
         ThisApp.getByAttr$({ appuse: "app-loader" }).remove();
 
         //--- Extend common with your app specific stuff

@@ -97,6 +97,7 @@ function setup() {
             }
             
             app.use(express.static(scope.locals.path.root + '/ui-libs'));
+            app.use(express.static(scope.locals.path.root + '/common'));
             app.use(express.static(scope.locals.path.root + tmpStaticDir));
 
             //--- Plug in application routes
@@ -149,6 +150,7 @@ function setup() {
             preview.use(cookieParser());
 
             preview.use(express.static(scope.locals.path.root + '/ui-libs'));
+            preview.use(express.static(scope.locals.path.root + '/common'));
             preview.use(express.static(tmpWSDirectory + '/ui-apps'));
 
                         //--- Plug in application routes

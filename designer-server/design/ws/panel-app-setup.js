@@ -112,6 +112,12 @@ module.exports.setup = function setup(scope) {
                     "label": "Deployment URL Prefix",
                     "req": true
                   },
+                  {
+                    "ctl": "checkboxlist",
+                    "name": "hideheader",
+                    "list": "Hide app header|y",
+                    "label": "Hide Header?"
+                  },
 
                   {
                     "ctl": "hidden",

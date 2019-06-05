@@ -3030,7 +3030,9 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 	};
 
 	RowManager.prototype.deleteRow = function (row, blockRedraw) {
-
+		if( this.table.blockRedraw === true ){
+			blockRedraw = true;
+		}
 		var allIndex = this.rows.indexOf(row),
 		    activeIndex = this.activeRows.indexOf(row);
 
@@ -3059,28 +3061,30 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 		if (!blockRedraw) {
 
 			this.reRenderInPosition();
-		}
+			this.table.options.rowDeleted.call(this.table, row.getComponent());
+			this.table.options.dataEdited.call(this.table, this.getData());
 
-		this.table.options.rowDeleted.call(this.table, row.getComponent());
+			if (this.table.options.groupBy && this.table.modExists("groupRows")) {
 
-		this.table.options.dataEdited.call(this.table, this.getData());
+				this.table.modules.groupRows.updateGroupRows(true);
 
-		if (this.table.options.groupBy && this.table.modExists("groupRows")) {
+			} else if (this.table.options.pagination && this.table.modExists("page")) {
 
-			this.table.modules.groupRows.updateGroupRows(true);
-		} else if (this.table.options.pagination && this.table.modExists("page")) {
+				this.refreshActiveData(false, false, true);
+			} else {
 
-			this.refreshActiveData(false, false, true);
-		} else {
+				if (this.table.options.pagination && this.table.modExists("page")) {
 
-			if (this.table.options.pagination && this.table.modExists("page")) {
-
-				this.refreshActiveData("page");
+					this.refreshActiveData("page");
+				}
 			}
 		}
 	};
 
 	RowManager.prototype.addRow = function (data, pos, index, blockRedraw) {
+		if( this.table.blockRedraw === true ){
+			blockRedraw = true;
+		}
 
 		var row = this.addRowActual(data, pos, index, blockRedraw);
 
@@ -3167,7 +3171,9 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 	};
 
 	RowManager.prototype.addRowActual = function (data, pos, index, blockRedraw) {
-
+		if( this.table.blockRedraw === true){
+			blockRedraw = true;
+		}
 		var row = data instanceof Row ? data : new Row(data || {}, this),
 		    top = this.findAddRowPos(pos),
 		    dispRows;
@@ -5652,7 +5658,9 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 	};
 
 	Row.prototype.deleteActual = function (blockRedraw) {
-
+		if( this.table.blockRedraw === true ){
+			blockRedraw = true;
+		}
 		var index = this.table.rowManager.getRowIndex(this);
 
 		//deselect row if it is selected

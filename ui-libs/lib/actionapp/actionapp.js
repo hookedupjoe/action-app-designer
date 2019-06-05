@@ -455,12 +455,12 @@ var ActionAppCore = {};
     me.getExtnForType = function (theType) {
         var tmpType = theType.toLowerCase();
         if (tmpType == 'panels' || tmpType == 'panel') {
-            return '.json';
+            return '.json?open';
         }
         if (tmpType == 'controls' || tmpType == 'control') {
-            return '/control.js';
+            return '/control.js?open';
         }
-        return '.html';
+        return '.html?open';
     }
 
     me.loadResources = function (theSpecs, theOptions) {
@@ -749,7 +749,8 @@ var ActionAppCore = {};
             north__closable: false,
             north__slidable: false,
             north__togglerLength_open: 0,
-            north__spacing_open: 0
+            north__spacing_open: 0,
+            enableCursorHotkey: false
         },
         defaultPage: {
             spacing_closed: 8,
@@ -776,7 +777,8 @@ var ActionAppCore = {};
                 resizable: true,
                 resizeWhileDragging: true,
                 slidable: true
-            }
+            },
+            enableCursorHotkey: false
         },
         defaultControl: {
             spacing_closed: 8,
@@ -795,7 +797,8 @@ var ActionAppCore = {};
             north__togglerLength_open: 0,
             north__spacing_open: 0,
             east__size: "50%",
-            west__size: "300"
+            west__size: "300",
+            enableCursorHotkey: false
         },
         bigWest: {
             spacing_closed: 8,
@@ -814,7 +817,8 @@ var ActionAppCore = {};
             north__togglerLength_open: 0,
             north__spacing_open: 0,
             east__size: "15%",
-            west__size: "40%"
+            west__size: "40%",
+            enableCursorHotkey: false
         },
         customDemo1: {
             spacing_closed: 8,
@@ -829,11 +833,31 @@ var ActionAppCore = {};
             south__spacing_open: 0,
             north__resizable: true,
             north__closable: true,
-            north__slidable: true
+            north__slidable: true,
+            enableCursorHotkey: false
         }
     }
 
+    me.waitForFinalEvent = (function () {
+        var timers = {};
+        return function (callback, ms, uniqueId) {
+            if (!uniqueId) {
+                uniqueId = "shouldUseID";
+            }
+            if (timers[uniqueId]) {
+                clearTimeout(timers[uniqueId]);
+            }
+            timers[uniqueId] = setTimeout(callback, ms);
+        };
+    })();
 
+    //--- Example usage
+    //   $(window).resize(function () {
+    //     ThisApp.waitForFinalEvent(function(){
+    //       console.log('Resize...');
+    //       //...
+    //     }, 500, "ThisAppResize");
+    // });
     /**
        * getUpdatedMarkupForNS
        *  - Returns HTML content that has the been prefixed with "namespace:"
@@ -1022,7 +1046,7 @@ var ActionAppCore = {};
             dfd.resolve(true)
         } else {
             //--- load it up then ... 
-            var tmpURL = './app/pages/' + tmpPageName + '/index.js'
+            var tmpURL = './app/pages/' + tmpPageName + '/index.js?open'
             $.ajax({
                 url: tmpURL,
                 dataType: "script"
@@ -1190,7 +1214,7 @@ var ActionAppCore = {};
         var tmpGroupName = tmpOptions.group || '';
         var tmpItemId = tmpOptions.item || '';
         var tmpParent = theOptions.parent || undefined;
-        var tmpAnimation = tmpOptions.animation || 'fade';
+        var tmpAnimation = tmpOptions.animation || 'silent';
         var tmpAnimDuration = tmpOptions.duration || 250;
         var tmpSelector = {
             appuse: 'cards',
@@ -1199,7 +1223,7 @@ var ActionAppCore = {};
 
         me.getByAttr$(tmpSelector, tmpParent).addClass('hidden').transition('hide', 1);
         tmpSelector.item = tmpItemId;
-        me.getByAttr$(tmpSelector, tmpParent).removeClass('hidden').transition(tmpAnimation + ' in', tmpAnimDuration);
+        me.getByAttr$(tmpSelector, tmpParent).removeClass('hidden').transition('show', 1);
         if (ThisApp.refreshLayouts) {
             ThisApp.refreshLayouts();
         }
@@ -2162,19 +2186,14 @@ var ActionAppCore = {};
 
     me.refreshLayouts = function (theTargetEl) {
         me.siteLayout.resizeAll();
-
-
     }
     me.resizeLayouts = function (name, $pane, paneState) {
         try {
-            var tmpIsAll = (!($pane));
-
             if (isFunc(ThisApp._onResizeLayouts)) {
-                ThisApp._onResizeLayouts(name, $pane, paneState)
+                ThisApp._onResizeLayouts(name, $pane, paneState);
             }
             var tmpH = $pane.get(0).clientHeight - $pane.get(0).offsetTop - 1;
-            me.getByAttr$({ appuse: "cards", group: "app:pages", item: '' }).css("height", tmpH + "px");;
-
+            me.getByAttr$({ appuse: "cards", group: "app:pages", item: '' }).css("height", tmpH + "px");
         } catch (ex) {
 
         }
@@ -2324,7 +2343,7 @@ var ActionAppCore = {};
                 var tmpPageName = tmpPageNames[iPageName];
                 var tmpPage = ThisApp.getPage(tmpPageName);
                 if (!(tmpPage)) {
-                    var tmpURL = './app/pages/' + tmpPageName + '/index.js'
+                    var tmpURL = './app/pages/' + tmpPageName + '/index.js?open'
                     tmpDefs.push($.ajax({
                         url: tmpURL,
                         dataType: "script"
@@ -2478,6 +2497,85 @@ var ActionAppCore = {};
         }
     }
 
+    me.grid16 = {
+
+        numLookup: ["zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten", "eleven", "twelve", "thirteen", "fourteen", "fifteen", "sixteen"],
+        paramDefaults: {
+            "gs-s-at": 330,
+            "gs-m-at": 770,
+            "gs-s": 16,
+            "gs-m": 8,
+            "gs-l": 4
+        },
+        resizeGrid: function (theOptions) {
+           try {
+            var tmpOptions = theOptions || {};
+            var tmpParent = tmpOptions.parent || false;
+            //todo: use tmpParent
+            var tmpGrids = ThisApp.getByAttr$({ appuse: "grid-16" });
+
+            var tmpGridsLen = tmpGrids.length;
+            if (tmpGrids && tmpGridsLen > 0) {
+                for (var iPos = 0; iPos < tmpGridsLen; iPos++) {
+                    var tmpGridsEl = $(tmpGrids[iPos]);
+                    if (tmpGridsEl && tmpGridsEl.is(":visible")) {
+
+                        var tmpPaneEl = tmpGridsEl.first('.ui-layout-pane');
+                        var tmpIW = tmpPaneEl.innerWidth();
+                        var tmpGridParams = ThisApp.getAttrs(tmpGridsEl, ["gs-s-at", "gs-m-at", "gs-s", "gs-m", "gs-l"])
+                        for (var aName in tmpGridParams) {
+                            try {
+                                tmpGridParams[aName] = parseInt(tmpGridParams[aName]);
+                            } catch (ex) {
+    
+                            }
+                        }
+                        tmpGridParams = $.extend({}, this.paramDefaults, tmpGridParams);
+    
+                        var tmpGridSize = tmpGridParams["gs-l"];
+                        if (tmpIW <= tmpGridParams["gs-s-at"]) {
+                            tmpGridSize = tmpGridParams["gs-s"];
+                        } else if (tmpIW <= tmpGridParams["gs-m-at"]) {
+                            tmpGridSize = tmpGridParams["gs-m"];
+                        }
+
+                        
+                        var tmpGridCols = tmpGridsEl.find('[gscol]');
+                        //todo: Make generic
+                        var tmpXHead = tmpGridsEl.find('[griduse="extra-header"]');
+                        if (tmpGridSize < 16) {
+                            tmpXHead.show();
+                        } else {
+                            tmpXHead.hide();
+                        }
+                        var tmpToRemove = '';
+                        tmpGridsEl.data = tmpGridsEl.data || {};
+                        if (tmpGridsEl.data.currentCardCount) {
+                            tmpToRemove = this.numLookup[tmpGridsEl.data.currentCardCount] + " wide";
+                        }
+                        tmpGridsEl.data.currentCardCount = tmpGridSize;
+                        var tmpToAdd = this.numLookup[tmpGridsEl.data.currentCardCount] + " wide";
+
+                        if (tmpToRemove) {
+                            tmpGridCols.removeClass(tmpToRemove);
+                        }
+                        if (tmpToAdd) {
+                            tmpGridCols.addClass(tmpToAdd);
+                        }
+
+                    }
+                }
+            }
+           } catch (ex) {
+             console.warn("Error during resize ", ex.toString(), ex)  
+           }
+        }
+
+
+    }
+
+
+
     me.postInit = postInit;
     function postInit(theAppConfig) {
 
@@ -2492,14 +2590,15 @@ var ActionAppCore = {};
         //--- Register app level action handler
         this.registerActionDelegate("_app", this.runAction.bind(this));
 
+
+
+
         //--- Put your stuff here
         this.common = {};
 
 
-        //--- ToDo: Support options in theAppConfig to control this        
-        me.siteLayout = $('body').layout({
+        var tmpLOSpecs = {
             center__paneSelector: ".site-layout-center"
-            , north__paneSelector: ".site-layout-north"
             , north__spacing_open: 0
             , north__spacing_closed: 0
             , north__resizable: false
@@ -2507,7 +2606,14 @@ var ActionAppCore = {};
             , spacing_closed: 8 // ALL panes
             , onready: ThisApp.resizeLayouts
             , onresize: ThisApp.resizeLayouts
-        });
+            , enableCursorHotkey: false
+        }
+        if (theAppConfig.customHeader !== true) {
+            tmpLOSpecs.north__paneSelector = ".site-layout-north";
+        }
+
+        //--- ToDo: Support options in theAppConfig to control this        
+        me.siteLayout = $('body').layout(tmpLOSpecs);
 
         if (theAppConfig && theAppConfig.hideHeader == true) {
             me.siteLayout.toggle('north');
@@ -3030,6 +3136,25 @@ License: MIT
         ThisApp.controls.addWebControl(this.ns(theControlName), theControl);
     }
 
+    me.regionNames = ['center', 'north', 'south', 'east', 'west'];
+
+    me.hideLoading = function (theOptions) {
+        this.showLoading(false, theOptions);
+    }
+
+    me.showLoading = function (theDisplayFlag, theOptions) {
+        var tmpOptions = theOptions || {};
+        //-- Todo: Add regions option, string or array of regions to use
+        //-- only use regions used on page when automatic?
+        for (var iPos in me.regionNames) {
+            var tmpRN = me.regionNames[iPos];
+            if (theDisplayFlag === false) {
+                ThisApp.getSpot(this.pageName + ':' + tmpRN).removeClass('loading');
+            } else {
+                ThisApp.getSpot(this.pageName + ':' + tmpRN).addClass('loading');
+            }
+        }
+    }
 
     function preProcessLayoutRegions(theLayoutOptions) {
         //--- By reference so will update original
@@ -3045,10 +3170,9 @@ License: MIT
             tmpType = 'html'
         }
 
-        var tmpRegions = ['center', 'north', 'south', 'east', 'west'];
-        for (var i = 0; i < tmpRegions.length; i++) {
+        for (var iPos in me.regionNames) {
             var tmpRegionType = tmpType;
-            var tmpRegion = tmpRegions[i];
+            var tmpRegion = me.regionNames[iPos];
             var tmpRegionInfo = tmpOpts[tmpRegion];
 
             if (tmpRegionInfo) {
@@ -3134,6 +3258,9 @@ License: MIT
         $.when(tmpPromRequired, tmpPromLayoutReq).then(function (theReply) {
             tmpThis.initLayout();
             tmpThis.initAppComponents();
+            ThisApp.delay(100).then(function (theReply) {
+                ThisApp.siteLayout.resizeAll();
+            })
             dfd.resolve(true);
         })
 
@@ -4847,9 +4974,9 @@ License: MIT
         if (tmpOptions) {
             $.extend(tmpPromptOptions, tmpExtraOptions); // not a typo
         }
-        
+
         //-- Default to large if not specified when prompting forms
-        if( !(tmpCustomSize)){
+        if (!(tmpCustomSize)) {
             tmpPromptOptions.size = 'large';
         }
 
@@ -4941,7 +5068,7 @@ License: MIT
             tmpMyConfig.options = ThisApp.clone(tmpConfig.options);
             tmpMyConfig.content = ThisApp.clone(tmpConfig.content);
         }
-        if( tmpMyConfig.options.hasOwnProperty('mobileAt')){
+        if (tmpMyConfig.options.hasOwnProperty('mobileAt')) {
             this.mobileAt = tmpMyConfig.options.mobileAt;
         }
 
@@ -4978,17 +5105,17 @@ License: MIT
                             var tmpEl = this.parentEl;
                             if (isFunc(this._onParentResize)) {
                                 this._onParentResize.call(this)
-                            }                           
-                            // if( tmpEl ){
-                            //     var tmpWidth = tmpEl.width();
-                            //     if( this.mobileAt !== false){
-                            //         if (tmpWidth < (this.mobileAt || 450)) {
-                            //             tmpEl.addClass('mobile');
-                            //         } else {
-                            //             tmpEl.removeClass('mobile');
-                            //         }
-                            //     }
-                            // }
+                            }
+                            if( tmpEl ){
+                                var tmpWidth = tmpEl.width();
+                                if( this.mobileAt !== false){
+                                    if (tmpWidth < (this.mobileAt || 450)) {
+                                        tmpEl.addClass('mobile');
+                                    } else {
+                                        tmpEl.removeClass('mobile');
+                                    }
+                                }
+                            }
 
                         }).bind(this);
                         this.context.page.controller.subscribe('resizeLayout', tmpOnResize);
@@ -5924,7 +6051,7 @@ License: MIT
 
     meInstance.destroy = function () {
         try {
-            if( this.parentEl ){
+            if (this.parentEl) {
                 this.parentEl.off('change');
                 this.parentEl.off('click');
             }
@@ -5938,9 +6065,9 @@ License: MIT
                 }
             }
         } catch (ex) {
-            
+
         }
-       
+
     }
     meInstance.clearEvents = meInstance.destroy;
 
@@ -6107,7 +6234,7 @@ License: MIT
         } else {
             tmpAttr += '  slim ';
         }
-        if (tmpSpecOptions.basic !== false) {
+        if (tmpSpecOptions.basic == true) {
             tmpAttr += ' basic '
         }
 
@@ -6532,10 +6659,6 @@ License: MIT
             var tmpObject = theObject || {};
 
             var tmpHTML = [];
-            var tmpLevel = 3;
-            if (theObject.level) {
-                tmpLevel = theObject.level
-            }
             var tmpHidden = '';
             if (tmpObject.hidden === true) {
                 tmpHidden = 'display:none;';
@@ -6548,13 +6671,7 @@ License: MIT
                 tmpStyle = ' style="' + tmpStyle + '" '
             }
 
-            var tmpIcon = 'dropdown';
-            if (isStr(tmpObject.icon)) {
-                tmpIcon = tmpObject.icon;
-            }
             var tmpClasses = ''
-
-
             tmpHTML.push('<div ctlcomp="layout" ' + getItemAttrString(theObject) + ' class="' + tmpClasses + ' " ' + tmpStyle + '>')
 
             var tmpRegions = ['center', 'north', 'south', 'east', 'west'];
@@ -7181,8 +7298,8 @@ License: MIT
                 tmpHTML.push('</label>')
             }
 
-//getNumName(tmpFieldCount) + 
-            tmpHTML.push('  <div class="' + ' ' + tmpType + ' fields">');
+            //
+            tmpHTML.push('  <div class="' + getNumName(tmpFieldCount) + ' ' + tmpType + ' fields">');
             for (var iPos = 0; iPos < tmpObject.items.length; iPos++) {
                 var tmpItem = tmpObject.items[iPos];
                 var tmpCtl = tmpItem.ctl || 'field'
@@ -7965,7 +8082,16 @@ License: MIT
         getCustomContent: function (theControlName, theObject, theControlObj) {
             var tmpObject = theObject || {};
             var tmpNewContent = [];
+            var tmpCentered = '';
+            if( tmpObject.centered === true){
+                tmpCentered = ' center aligned '
+            }
 
+            var tmpClasses = '';
+            if( tmpCentered ){
+                tmpClasses += tmpCentered;
+            }
+            
             var tmpTopHeaderText = '';
             var tmpTopHeaderVis = false;
 
@@ -7981,6 +8107,7 @@ License: MIT
                     {
                         "ctl": "title",
                         "name": "topHeader",
+                        classes: tmpClasses,
                         "text": tmpTopHeaderText
 
                     }
@@ -7997,24 +8124,28 @@ License: MIT
             if (tmpHasFields) {
                 var tmpContent = {
                     "ctl": "content",
+                    classes: tmpClasses,
                     "content": []
                 }
 
                 if (tmpObject.header) {
                     tmpContent.content.push({
                         "ctl": "header",
+                        classes: tmpClasses,
                         "text": tmpObject.header
                     })
                 }
                 if (tmpObject.meta) {
                     tmpContent.content.push({
                         "ctl": "meta",
+                        classes: tmpClasses,
                         "text": tmpObject.meta
                     })
                 }
                 if (tmpObject.description) {
                     tmpContent.content.push({
                         "ctl": "description",
+                        classes: tmpClasses,
                         "text": tmpObject.description
                     })
                 }
@@ -8101,7 +8232,6 @@ License: MIT
         getCustomContent: function (theControlName, theObject, theControlObj) {
             var tmpObject = theObject || {};
             var tmpNewContent = [];
-
             var tmpFuncGetHeaderAndContent = function (theType, theDetails, theMeta, theContent, theLevel, theGroup, theItem, theIcon, theColor) {
                 var tmpIconNode = false;
                 var tmpColSpanDetails = "3";
@@ -8157,10 +8287,14 @@ License: MIT
                     }
                 }
 
+                var tmpIconHidden = '';
+                if (!(theIcon)) {
+                    tmpIconHidden = ' hidden ';
+                }
                 var tmpBodyCols = [
                     {
                         ctl: "td",
-                        classes: "tbl-icon",
+                        classes: "tbl-icon " + tmpIconHidden,
                         content: [
                             {
                                 ctl: "i",
@@ -8175,7 +8309,8 @@ License: MIT
                     }
 
                 ];
-                if (theMeta) {
+
+                if ((theMeta) && !((theLevel > 1) && !(theItem))) {
 
                     tmpBodyCols.push({
                         ctl: "td",
@@ -8213,10 +8348,15 @@ License: MIT
                         tmpAttrAction = 'outlineDisplay';
                     }
                 }
+
+                var tmpTRClasses = '';
+                if (theLevel > 1 && !(theItem)) {
+                    tmpTRClasses = "ui message fluid blue";
+                }
                 var tmpFinalContent = [
                     {
                         ctl: "tr",
-                        classes: "",
+                        classes: tmpTRClasses,
                         attr: $.extend({
                             action: tmpAttrAction,
                             select: "false",
@@ -8233,9 +8373,13 @@ License: MIT
                     tmpFinalContent.push(tmpFinalNode)
                 }
 
+                var tmpSelectable = '';
+                if (theDetails.selectable === true) {
+                    tmpSelectable = ' selectable '
+                }
                 var tmpHeaderAndContent = {
                     ctl: "table",
-                    classes: "ui very compact table selectable outline unstackable",
+                    classes: "ui very compact table " + tmpSelectable + " outline unstackable",
                     content: [
                         {
                             ctl: "tbody",

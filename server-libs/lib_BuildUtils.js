@@ -308,6 +308,13 @@ function buildApp(theAppName, scope, theOptions) {
                 }
             }
 
+            var tmpHideHeader = tmpAppDetails.hideheader || false;
+            var tmpHeaderApp = '';
+            var tmpHeaderIndex = '';
+            if( tmpHideHeader == 'y'){
+                tmpHeaderApp = 'customHeader: true, ';
+                tmpHeaderIndex = 'display:none;';
+            }
             var tmpTitle = tmpAppDetails.title || 'Action App';
 
             var tmpPagesText = '[]';
@@ -368,7 +375,8 @@ function buildApp(theAppName, scope, theOptions) {
                 "{{PAGE-TITLE}}": tmpTitle,
                 "{{APP-TITLE}}": tmpTitle,
                 "{{OPTIONAL-PLUGINS}}": tmpPluginsText,
-                "{{OPTIONAL-LIB-JS}}": tmpOptLibJS
+                "{{OPTIONAL-LIB-JS}}": tmpOptLibJS,
+                "NORTH:STYLE;": tmpHeaderIndex
             }
 
             var tmpAppMap = {
@@ -376,7 +384,8 @@ function buildApp(theAppName, scope, theOptions) {
                 "{{PLUGINS-ARRAY}}": tmpPluginsAppText,
                 "{{REQUIRED-OBJECT}}": tmpReqAppText,
                 "{{EXTEND-OBJECT}}": tmpExtendAppText,
-                "{{OPTIONAL-APP-CODE}}": ""
+                "{{OPTIONAL-APP-CODE}}": "",
+                "{{INIT_OPTIONS}}": tmpHeaderApp
             }
 
             tmpIndex = utils.replaceFromMap(tmpIndex, tmpIndexMap);
