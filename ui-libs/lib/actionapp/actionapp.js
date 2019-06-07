@@ -405,9 +405,9 @@ var ActionAppCore = {};
                     var tmpOptions = {};
                     var tmpLayoutTemplateName = tmpLayoutEntry.attr('template') || '';
                     var tmpLayoutOptions = tmpOptions;
-                    if (tmpLayoutTemplateName && StaticApp.layoutTemplates[tmpLayoutTemplateName]) {
+                    if (tmpLayoutTemplateName && ThisApp.layoutTemplates[tmpLayoutTemplateName]) {
                         //--- Using custom template
-                        tmpLayoutOptions = StaticApp.layoutTemplates[tmpLayoutTemplateName];
+                        tmpLayoutOptions = ThisApp.layoutTemplates[tmpLayoutTemplateName];
                     }
 
                     tmpLayoutEntry.layout(tmpLayoutOptions);
@@ -838,6 +838,7 @@ var ActionAppCore = {};
         }
     }
 
+    me.layoutTemplates = CoreApp.layoutTemplates;
     me.waitForFinalEvent = (function () {
         var timers = {};
         return function (callback, ms, uniqueId) {
