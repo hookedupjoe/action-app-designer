@@ -6,11 +6,6 @@
   "prefix": "",
   "name": "default",
   "cdn": "local",
-  "libraries": [
-    "DataTables",
-    "Ace"
-  ],
-  "plugins": [
-    "DataTables"
-  ]
+  "libraries": [],
+  "plugins": []
 }
