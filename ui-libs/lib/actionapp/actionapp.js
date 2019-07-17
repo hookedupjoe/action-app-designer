@@ -405,9 +405,9 @@ var ActionAppCore = {};
                     var tmpOptions = {};
                     var tmpLayoutTemplateName = tmpLayoutEntry.attr('template') || '';
                     var tmpLayoutOptions = tmpOptions;
-                    if (tmpLayoutTemplateName && StaticApp.layoutTemplates[tmpLayoutTemplateName]) {
+                    if (tmpLayoutTemplateName && ThisApp.layoutTemplates[tmpLayoutTemplateName]) {
                         //--- Using custom template
-                        tmpLayoutOptions = StaticApp.layoutTemplates[tmpLayoutTemplateName];
+                        tmpLayoutOptions = ThisApp.layoutTemplates[tmpLayoutTemplateName];
                     }
 
                     tmpLayoutEntry.layout(tmpLayoutOptions);
@@ -838,6 +838,7 @@ var ActionAppCore = {};
         }
     }
 
+    me.layoutTemplates = CoreApp.layoutTemplates;
     me.waitForFinalEvent = (function () {
         var timers = {};
         return function (callback, ms, uniqueId) {
@@ -8075,6 +8076,12 @@ License: MIT
                 type: "string",
                 notes: "Extra text on the bottom, right justified"
             }
+            tmpProps.bottomContent = {
+                name: "bottomContent",
+                label: "Bottom Content",
+                type: "string",
+                notes: "Extra content of any type on the very bottom.  Test for HTML, array for structured content."
+            }
             return tmpRet;
         },
         //---ToDo: Change this to always create every element and apply hidden later
@@ -8176,6 +8183,22 @@ License: MIT
 
                 tmpNewContent.push(tmpContent);
 
+            }
+
+            var tmpBottomContent = tmpObject.bottomContent || false;
+            if (tmpBottomContent) {
+                if( Array.isArray(tmpBottomContent) ){
+                    tmpNewContent.push({
+                        "ctl": "div",
+                        "content": tmpBottomContent
+                    })
+                } else if( typeof(tmpBottomContent) == 'string'){
+                    tmpNewContent.push({
+                        "ctl": "div",
+                        "text": tmpBottomContent
+                    })
+                }
+                
             }
 
             return tmpNewContent;
