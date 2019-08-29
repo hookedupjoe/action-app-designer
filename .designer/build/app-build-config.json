@@ -38,7 +38,7 @@
 		{
 			"name": "cloud",
 			"label": "Production Cloud CDN",
-			"prefix": "//action-app-home.mybluemix.net"
+			"prefix": "//actionappweb.hookedup.com"
 		},
 		{
 			"name": "app",

@@ -5785,7 +5785,7 @@ License: MIT
             if (tmpFirstInvalid && isStr(tmpFirstInvalid)) {
                 me.gotoField(tmpControl, tmpFirstInvalid)
             }
-            alert(tmpInvalidControlMessage || tmpOptions.requiredMessage || "More information needed");
+            alert(tmpInvalidControlMessage || tmpOptions.requiredMessage || "Please complete all required fields");
         }
 
         return { isValid: tmpIsValid, fields: tmpRetFields };

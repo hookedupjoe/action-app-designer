@@ -11,7 +11,7 @@
   ];
 
   var tmpPluginNames = [
-    'DataTables'
+    
   ];
 
   setup(tmpPageNames, tmpPluginNames);
