@@ -13,7 +13,7 @@ module.exports.setup = function setup(scope) {
     var base = Route.prototype;
 
     var $ = config.locals.$;
-    var bld = require(scope.locals.path.libraries + '/lib_buildUtils.js');
+    var bld = require(scope.locals.path.libraries + '/lib_BuildUtils.js');
 
     //--- Load the prototype
     base.run = function (req, res, next) {

@@ -28,7 +28,7 @@ scope.locals.path.libraries = scope.locals.path.root + "/server-libs";
 // scope.locals.path.localSecurity = scope.locals.path.root + "/local_security";
 
 var $ = require(scope.locals.path.libraries + '/globalUtilities.js').$;
-var bld = require(scope.locals.path.libraries + '/lib_buildUtils.js');
+var bld = require(scope.locals.path.libraries + '/lib_BuildUtils.js');
 
 
 

@@ -1,6 +1,5 @@
 var express = require('express');
 var app = express();
-var chalk = require('chalk');
 var path = require('path');
 
 app.all('*', function(req, res, next) {
@@ -29,8 +28,8 @@ var server = app.listen(process.env.PORT || 33462, function () {
     var port = server.address().port;
     if( host == "::"){
         console.log( 'host', host);
-        console.log(chalk.magenta('Action App UI on port:' + port + "."));
-        console.log(chalk.blue('Launch it here'));
+        console.log('Action App UI on port:' + port + ".");
+        console.log('Launch it here');
         console.log("http://localhost:" + port);
         console.log("");
     }
