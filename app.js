@@ -9,7 +9,7 @@
 
 var path = require('path'),
     http = require('http'),
-    chalk = require('chalk'),
+//    chalk = require('chalk'),
     fs = require('fs-extra'),
     previewScope = {},
     scope = {};
@@ -126,8 +126,12 @@ function setup() {
                 return function () {
                     var address = server.address();
                     var bind = (typeof address === 'string') ? 'pipe ' + address : address.address + ':' + address.port;
-                    console.log(chalk.green('Open designer on port:' + address.port + "."));
-                    console.log(chalk.blue('Launch it here'));
+                    console.log(('Open designer on port:' + address.port + "."));
+                    //chalk.green
+
+                    console.log(('Launch it here'));
+                    //chalk.blue
+
                     console.log("http://localhost:" + address.port);
                     console.log("");
 
@@ -180,7 +184,8 @@ function setup() {
                     var address = serverPreview.address();
 
                     var bind = (typeof address === 'string') ? 'pipe ' + address : address.address + ':' + address.port;
-                    console.log(chalk.green('Preview sites on port:' + address.port + "."));
+                    console.log(('Preview sites on port:' + address.port + "."));
+                    //chalk.green
                     console.log("");
                 };
             }
