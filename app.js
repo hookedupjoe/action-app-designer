@@ -174,7 +174,7 @@ function setup() {
 
             //--- Standard Server Startup
             var serverPreview = http.createServer(preview);
-            var portPreview = 33461;
+            var portPreview = process.env.PREVIEWPORT || 33461;
             serverPreview.listen(portPreview, '0.0.0.0');
 
             //--- Show port in console
