@@ -49,6 +49,7 @@ module.exports.setup = function setup(scope) {
         for( var aPos in tmpPages){
           var tmpPN = tmpPages;
           if(!(tmpPageIndex[tmpPN])){
+            tmpPageIndex[tmpPN] = true;
             tmpPageList.push(tmpPN);
           }
         }
@@ -82,8 +83,6 @@ module.exports.setup = function setup(scope) {
           var tmpEntry = tmpBuildCfg.plugins[aIndex];
           tmpPlugins.push(tmpEntry.name)
         }
-
-
 
         var tmpRet = {
           "options": {
