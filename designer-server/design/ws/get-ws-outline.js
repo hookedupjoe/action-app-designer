@@ -25,6 +25,12 @@ module.exports.setup = function setup(scope) {
                 var tmpWSDir = scope.locals.path.ws.uiApps;
                 var tmpPagesDir = scope.locals.path.ws.pages;
 
+                //todo: scope.locals.ports.preview on init not here
+                var tmpPreviewPort = process.env.PREVIEWPORT || 33461;
+                scope.locals.ports = scope.locals.ports || {};
+                scope.locals.ports.preview = tmpPreviewPort;
+
+                  
                 var tmpResponse = false;
                 if (tmpAppName && tmpType == 'pages') {
 
@@ -49,7 +55,7 @@ module.exports.setup = function setup(scope) {
 
                     var tmpRet = {
                         "options": {
-                            padding: false,
+                            padding: false
                         },
                         "content": [tmpBase]
                     }
@@ -97,6 +103,7 @@ module.exports.setup = function setup(scope) {
                     resolve(tmpRet);
                 } else {
                     tmpResponse = $.await(getFullWorkspace(req, res, next))
+                    tmpResponse.options.extra = {previewPort:tmpPreviewPort};
                     resolve(tmpResponse);
                 }
 
