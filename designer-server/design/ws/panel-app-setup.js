@@ -37,7 +37,22 @@ module.exports.setup = function setup(scope) {
         var tmpAppDetails = $.await($.bld.getJsonFile(tmpAppBase + 'app-info.json'))
 
         var tmpPagesBase = tmpAppBase + '/app/pages/';
-        var tmpPages = $.await($.bld.getDirFiles(tmpPagesBase))
+        var tmpPages = $.await($.bld.getDirFiles(tmpPagesBase));
+        
+        var tmpPageList = [];
+        var tmpPageIndex = {};
+        for( var aPos in tmpAppDetails.pages){
+          var tmpPN = tmpAppDetails.pages[aPos];
+          tmpPageList.push(tmpPN);
+          tmpPageIndex[tmpPN] = true;
+        }
+        for( var aPos in tmpPages){
+          var tmpPN = tmpPages;
+          if(!(tmpPageIndex[tmpPN])){
+            tmpPageList.push(tmpPN);
+          }
+        }
+        
 
         // console.log( 'tmpBuildCfg', tmpBuildCfg);
 
@@ -97,7 +112,7 @@ module.exports.setup = function setup(scope) {
                     "name": "pages",
                     "label": "Pages to load",
                     "default": "local",
-                    "list": tmpPages.join(','),
+                    "list": tmpPageList.join(','),
                     "req": true
                   },
                   {
