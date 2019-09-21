@@ -1,5 +1,5 @@
 cd CordovaApp
-cordova platform add android
+cordova platform add ios
 cordova plugin add cordova-plugin-whitelist
-cordova build android
+cordova build ios
 cd ..

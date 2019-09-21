@@ -11,6 +11,9 @@ module.exports.setup = function setup(scope) {
         }        
         try {
             var tmpFilePath = './actions/' + tmpName + '.js';
+            
+            //--- For debug / updates - clear before loading to pull fresh every time
+            delete require.cache[require.resolve(tmpFilePath)];
             var tmpProcessReq = require(tmpFilePath);
             if (typeof(tmpProcessReq.setup) == 'function') {
                 var tmpToRun = tmpProcessReq.setup(scope);

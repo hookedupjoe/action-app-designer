@@ -252,8 +252,11 @@ NoSqlDatabase.prototype.getDocumentsByKeys = function (theKeys) {
 NoSqlDatabase.prototype.getDocumentsByViewKeys = function (theViewURI, theKeys) {
     let tmpConfig = $.cloneObject(this.requestConfig);
     tmpConfig.method = 'GET';
-    //tmpConfig.json = { keys: theKeys };
-    tmpConfig.uri = '/' + this.dbname + theViewURI + '?include_docs=true&keys=' + JSON.stringify(theKeys);
+    if( theKeys ){
+        tmpConfig.uri = '/' + this.dbname + theViewURI + '?include_docs=true&keys=' + JSON.stringify(theKeys);
+    } else {
+        tmpConfig.uri = '/' + this.dbname + theViewURI + '?include_docs=true';
+    }
     let self = this;
 
     return new Promise(function (resolve, reject) {
