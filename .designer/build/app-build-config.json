@@ -109,7 +109,7 @@
 			"name": "UDP",
 			"label": "Mobile UDP",
 			"js": [
-				"<script src=\"{{LIBRARY-LOCATION}}/lib/utp/udp.js\"></script>"
+				"<script src=\"{{LIBRARY-LOCATION}}/lib/udp/udp.js\"></script>"
 			]
 		}
 	],
