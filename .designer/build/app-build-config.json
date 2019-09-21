@@ -104,6 +104,13 @@
 			"js": [
 				"<script src=\"{{LIBRARY-LOCATION}}/lib/ace/ace.js\"></script>"
 			]
+		},
+		{
+			"name": "UDP",
+			"label": "Mobile UDP",
+			"js": [
+				"<script src=\"{{LIBRARY-LOCATION}}/lib/utp/udp.js\"></script>"
+			]
 		}
 	],
 	"plugins": [
