@@ -57,6 +57,12 @@ module.exports.setup = function setup(scope) {
                 $.await($.fs.ensureDir(tmpDeployBase));
 
                 var tmpServerFilesLoc = scope.locals.path.designer + '/build/tpl-servers/cordova/';
+ 
+                var tmpKeepConfigFN = tmpDeployBase + 'CordovaApp/config.xml';
+                var tmpKeepPackageFN = tmpDeployBase + 'CordovaApp/package.json';
+                var tmpKeepConfigText = $.await($.bld.getTextFile(tmpKeepConfigFN));
+                var tmpKeepPackageText = $.await($.bld.getTextFile(tmpKeepPackageFN));
+
                 $.await($.fs.copy(tmpServerFilesLoc,tmpDeployBase));
 
                 $.await($.fs.ensureDir(tmpDeployBase + '/CordovaApp/www'));
@@ -64,19 +70,38 @@ module.exports.setup = function setup(scope) {
 
                 $.await($.fs.copy(scope.locals.path.uilibs + '/',tmpDeployBase + '/CordovaApp/www'));
 
+                //--- Only do this one time or if forced
+                //Todo: force option *
                 var tmpSaveFN = tmpDeployBase + 'CordovaApp/config.xml';
-                var tmpSaveText = $.await($.bld.getTextFile(tmpSaveFN));
-                tmpSaveText = replacePlaceholders(tmpSaveText, tmpAppDetails);
+                
+                var tmpSaveText = '';
+
+                if( tmpKeepConfigText != ''){
+                    tmpSaveText = tmpKeepConfigText;
+                } else {
+                    tmpSaveText = $.await($.bld.getTextFile(tmpSaveFN));
+                    tmpSaveText = replacePlaceholders(tmpSaveText, tmpAppDetails);
+                }
+
+                //tmpSaveText = replacePlaceholders(tmpSaveText, tmpAppDetails);
+                
                 $.await($.fs.writeFile(tmpSaveFN,tmpSaveText))
 
                 tmpSaveFN = tmpDeployBase + 'CordovaApp/package.json';
-                tmpSaveText = $.await($.bld.getTextFile(tmpSaveFN));
-                tmpSaveText = replacePlaceholders(tmpSaveText, tmpAppDetails);
+                if( tmpKeepPackageText != ''){
+                    tmpSaveText = tmpKeepPackageText;
+                } else {
+                    tmpSaveText = $.await($.bld.getTextFile(tmpSaveFN));
+                    tmpSaveText = replacePlaceholders(tmpSaveText, tmpAppDetails);
+                }
                 $.await($.fs.writeFile(tmpSaveFN,tmpSaveText))
 
                 tmpSaveFN = tmpDeployBase + 'package.json';
                 tmpSaveText = $.await($.bld.getTextFile(tmpSaveFN));
                 tmpSaveText = replacePlaceholders(tmpSaveText, tmpAppDetails);
+
+                //                tmpSaveText = $.await($.bld.getTextFile(tmpSaveFN));
+                //                tmpSaveText = replacePlaceholders(tmpSaveText, tmpAppDetails);
                 $.await($.fs.writeFile(tmpSaveFN,tmpSaveText))
 
                 // var tmpSaveFN = tmpDeployBase + 'CordovaApp/config.xml';
