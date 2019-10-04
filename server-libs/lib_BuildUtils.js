@@ -363,6 +363,14 @@ function buildApp(theAppName, scope, theOptions) {
                     tmpExtendAppText = JSON.stringify(tmpAppDetails.extend);
                 }
             }
+            
+            var tmpOptionalTags = "";
+            if (tmpAppDetails.headtags) {
+                if (typeof (tmpAppDetails.headtags) == 'string') {
+                    tmpOptionalTags = tmpAppDetails.headtags;
+                }
+            }
+            
             tmpOptCSS = bld.replaceAll(tmpOptCSS, "{{LIBRARY-LOCATION}}", (tmpLibLoc.prefix || ''));
             tmpOptLibJS = bld.replaceAll(tmpOptLibJS, "{{LIBRARY-LOCATION}}", (tmpLibLoc.prefix || ''));
             tmpOptLibCSS = bld.replaceAll(tmpOptLibCSS, "{{LIBRARY-LOCATION}}", (tmpLibLoc.prefix || ''));
@@ -371,6 +379,7 @@ function buildApp(theAppName, scope, theOptions) {
             var tmpIndexMap = {
                 "{{LIBRARY-LOCATION}}": tmpLibLoc.prefix || '',
                 "{{OPTIONAL-LIB-CSS}}": tmpOptLibCSS,
+                "{{OPTIONAL-TAGS}}": tmpOptionalTags,
                 "{{OPTIONAL-CSS}}": tmpOptCSS,
                 "{{PAGE-TITLE}}": tmpTitle,
                 "{{APP-TITLE}}": tmpTitle,

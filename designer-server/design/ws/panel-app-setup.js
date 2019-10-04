@@ -226,6 +226,13 @@ module.exports.setup = function setup(scope) {
                     "placeholder": "http://www.hookedup.com",
                     "label": "Application URL",
                     "req": true
+                  },
+                  {
+                    "ctl": "field",
+                    "name": "headtags",
+                    "placeholder": "<meta .../>, etc",
+                    "label": "Header / META tags",
+                    "req": false
                   }
                 ]
               }
