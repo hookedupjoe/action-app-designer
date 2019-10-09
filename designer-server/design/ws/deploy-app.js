@@ -52,10 +52,27 @@ module.exports.setup = function setup(scope) {
                 tmpPrefix = tmpPrefix || tmpAppDetails.prefix || ('actapp-' + tmpAppName)
 
                 var tmpDeployBase = tmpDeployDir + tmpAppName + '/';
+                var tmpDeployTemp = tmpDeployDir + "temp_files" + '/';
 
                 $.await($.fs.ensureDir(tmpDeployBase));
                 $.await($.fs.ensureDir(tmpDeployBase + '/ui-app'));
-                $.await($.fs.copy(tmpAppBase,tmpDeployBase + '/ui-app'));
+
+                $.await($.fs.ensureDir(tmpDeployTemp));
+                $.await($.fs.emptyDir(tmpDeployTemp));
+                
+                //--- Copy to a TEMP location, remove the .git repo 
+                //... if present before doig the copy to deploy, 
+                //...   so it can be repo'd as well for FTP pushes, etc
+                $.await($.fs.copy(tmpAppBase,tmpDeployTemp));
+                
+                var tmpDeployGIT = tmpDeployTemp + ".git/";
+                //-- Create if does not exists, so we can clean remove it
+                $.await($.fs.ensureDir(tmpDeployGIT));
+                $.await($.fs.remove(tmpDeployGIT));
+
+                $.await($.fs.copy(tmpDeployTemp,tmpDeployBase + '/ui-app'));
+                
+                $.await($.fs.remove(tmpDeployTemp));
 
                 var tmpServerFilesLoc = scope.locals.path.designer + '/build/tpl-servers/ui-app/';
 
