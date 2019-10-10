@@ -1119,7 +1119,7 @@ var ActionAppCore = {};
         }
 
         var tmpCardHTML = '<div appuse="cards" group="' + tmpGroup + '" item="' + tmpItem + '" class="hidden"></div>';
-        var tmpTabHTML = '<div action="selectdMe" class="item active" appuse="tablinks" group="' + tmpGroup + '" item="' + tmpItem + '" >' + theTabText + '</div>';
+        var tmpTabHTML = '<div action="selectMe" class="item active" appuse="tablinks" group="' + tmpGroup + '" item="' + tmpItem + '" >' + theTabText + '</div>';
 
         var tmpRet = {
             card: tmpCardHTML,
