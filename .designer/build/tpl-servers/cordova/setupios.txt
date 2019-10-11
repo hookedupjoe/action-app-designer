@@ -1,6 +1,7 @@
 cd CordovaApp
 cordova platform add ios@5.0.1
 cordova plugin add cordova-plugin-whitelist
+cordova plugin add cordova-plugin-ionic-webview
 cordova build ios
 npm install
 cd ..
