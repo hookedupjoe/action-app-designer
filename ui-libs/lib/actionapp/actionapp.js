@@ -2126,8 +2126,9 @@ var ActionAppCore = {};
 
     function initAppActions() {
         $('body').on("click", itemClicked);
-        $('body').get(0).ontouchmove = itemClicked;
+        $('body').get(0).ontouchend = itemTouchEnd;
     }
+    
     //---- Internal: Gets the action or action from the current element or the first parent element with such an entry,
     //               ... this is needed so when a child element is clicked, the proper parent action element is used.
     me.getActionFromObj = function (theObj, theOptionalTag) {
@@ -2153,6 +2154,21 @@ var ActionAppCore = {};
         return { action: tmpAction, el: tmpObj };
     }
 
+    function inRect(theRect, theX, theY) {
+        return theRect.x <= theX && theX <= theRect.x + theRect.width &&
+        theRect.y <= theY && theY <= theRect.y + theRect.height;
+    }
+    function itemTouchEnd(theEvent) {
+        var tmpTarget = theEvent.target || theEvent.currentTarget || theEvent.delegetTarget || {};
+        var tmpBounds = tmpTarget.getBoundingClientRect();
+        if( theEvent.changedTouches && theEvent.changedTouches.length > 0){
+            var tmpTouchInfo = theEvent.changedTouches[0];
+            if( inRect(tmpBounds, tmpTouchInfo.clientX, tmpTouchInfo.clientY ) ){
+               // console.log("tmpBounds,theEvent",tmpBounds,theEvent);
+               itemClicked(theEvent);
+            }
+        }
+    }
     //---- Internal: Catch a click item to look for the action
     function itemClicked(theEvent) {
         var tmpObj = theEvent.target || theEvent.currentTarget || theEvent.delegetTarget || {};
@@ -3731,7 +3747,7 @@ License: MIT
             this.parentEl = this.app.getByAttr$({ group: "app:pages", item: this.pageName });
             this.parentEl.html(this.getLayoutHTML());
             this.parentEl.on("click", itemClicked.bind(this))
-            this.parentEl.get(0).ontouchmove = itemClicked.bind(this);
+            this.parentEl.get(0).ontouchend = itemTouchEnd.bind(this);
 
             if (typeof (this._onInit) == 'function') {
                 this.parentEl.removeClass('loading');
@@ -3743,6 +3759,22 @@ License: MIT
                 this.layout = this.layoutSpot.layout(this.layoutConfig);
             };
 
+        }
+    }    
+
+    function inRect(theRect, theX, theY) {
+        return theRect.x <= theX && theX <= theRect.x + theRect.width &&
+        theRect.y <= theY && theY <= theRect.y + theRect.height;
+    }
+    function itemTouchEnd(theEvent) {
+        var tmpTarget = theEvent.target || theEvent.currentTarget || theEvent.delegetTarget || {};
+        var tmpBounds = tmpTarget.getBoundingClientRect();
+        if( theEvent.changedTouches && theEvent.changedTouches.length > 0){
+            var tmpTouchInfo = theEvent.changedTouches[0];
+            if( inRect(tmpBounds, tmpTouchInfo.clientX, tmpTouchInfo.clientY ) ){
+               // console.log("tmpBounds,theEvent",tmpBounds,theEvent);
+               itemClicked.bind(this)(theEvent);
+            }
         }
     }
 
