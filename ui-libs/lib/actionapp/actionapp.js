@@ -2125,9 +2125,9 @@ var ActionAppCore = {};
     }
 
     function initAppActions() {
-        $('body').on("click", itemClicked)
+        $('body').on("click", itemClicked);
+        $('body').get(0).ontouchmove = itemClicked;
     }
-
     //---- Internal: Gets the action or action from the current element or the first parent element with such an entry,
     //               ... this is needed so when a child element is clicked, the proper parent action element is used.
     me.getActionFromObj = function (theObj, theOptionalTag) {
@@ -3731,6 +3731,7 @@ License: MIT
             this.parentEl = this.app.getByAttr$({ group: "app:pages", item: this.pageName });
             this.parentEl.html(this.getLayoutHTML());
             this.parentEl.on("click", itemClicked.bind(this))
+            this.parentEl.get(0).ontouchmove = itemClicked.bind(this);
 
             if (typeof (this._onInit) == 'function') {
                 this.parentEl.removeClass('loading');
