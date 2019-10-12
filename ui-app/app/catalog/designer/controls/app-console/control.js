@@ -440,7 +440,7 @@ License: MIT
 		}
 		var tmpURL = '/design/ws/deploy-cordova?appname=' + tmpAppName
 		ThisApp.apiCall({ url: tmpURL }).then(function (theReply) {
-			ThisApp.alert("Done, open in VS code to review and deploy.", "Deployment Created");
+			ThisApp.appMessage("Mobile App Created.  Open in VS code to review and deploy.", "s", {show:true});
 		})
 	};
 
@@ -452,7 +452,7 @@ License: MIT
 		}
 		var tmpURL = '/design/ws/deploy-app?appname=' + tmpAppName
 		ThisApp.apiCall({ url: tmpURL }).then(function (theReply) {
-			ThisApp.alert("Done, open in VS code to review and deploy.", "Deployment Created");
+			ThisApp.appMessage("Done, open in VS code to review and deploy.", "s", {show:true});
 		})
 	};
 
