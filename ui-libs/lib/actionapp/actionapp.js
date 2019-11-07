@@ -3964,62 +3964,62 @@ License: MIT
     function init(theApp) {
         tmpHTML = [];
 
-        tmpHTML.push('<div appuse="_prompter:prompt-dialog" class="ui modal">')
-        tmpHTML.push('	<div appuse="_prompter:prompt-dialog-title" class="header"></div>')
-        tmpHTML.push('	<div class="scrolling content">')
-        tmpHTML.push('	<div appuse="_prompter:prompt-dialog-text-top" class="forms-top-content"></div>')
-        tmpHTML.push('	<div appuse="_prompter:prompt-dialog-text" class="app-layout-pane">')
-        tmpHTML.push('  </div>')
-        tmpHTML.push('  </div>')
-        tmpHTML.push('	<div class="actions">')
-        tmpHTML.push('	  <div appuse="_prompter:prompt-dialog-no" action="_prompter:hidePrompt" class="ui gray button">')
-        tmpHTML.push('		No')
-        tmpHTML.push('	  </div>')
-        tmpHTML.push('	  <div appuse="_prompter:prompt-dialog-yes" action="_prompter:submitPrompt" class="ui button blue">')
-        tmpHTML.push('		Yes')
-        tmpHTML.push('	  </div>')
-        tmpHTML.push('	  <div appuse="_prompter:prompt-dialog-cancel" action="_prompter:hidePrompt" class="ui button" style="display:none">')
-        tmpHTML.push('		Cancel')
-        tmpHTML.push('	  </div>')
-        tmpHTML.push('	</div>')
-        tmpHTML.push('</div>')
-        tmpHTML.push('')
+        tmpHTML.push('<div appuse="_prompter:prompt-dialog" class="ui modal">');
+        tmpHTML.push('	<div appuse="_prompter:prompt-dialog-title" class="header"></div>');
+        tmpHTML.push('	<div class="scrolling content">');
+        tmpHTML.push('	<div appuse="_prompter:prompt-dialog-text-top" class="forms-top-content"></div>');
+        tmpHTML.push('	<div appuse="_prompter:prompt-dialog-text" class="app-layout-pane">');
+        tmpHTML.push('  </div>');
+        tmpHTML.push('  </div>');
+        tmpHTML.push('	<div class="actions">');
+        tmpHTML.push('	  <div appuse="_prompter:prompt-dialog-yes" action="_prompter:submitPrompt" class="ui button blue">');
+        tmpHTML.push('		Yes');
+        tmpHTML.push('	  </div>');
+        tmpHTML.push('	  <div appuse="_prompter:prompt-dialog-no" action="_prompter:hidePrompt" class="ui gray button">');
+        tmpHTML.push('		No');
+        tmpHTML.push('	  </div>');
+        tmpHTML.push('	  <div appuse="_prompter:prompt-dialog-cancel" action="_prompter:hidePrompt" class="ui button" style="display:none">');
+        tmpHTML.push('		Cancel');
+        tmpHTML.push('	  </div>');
+        tmpHTML.push('	</div>');
+        tmpHTML.push('</div>');
+        tmpHTML.push('');
 
-        tmpHTML.push('<div appuse="_prompter:ask-dialog" class="ui tiny modal">')
-        tmpHTML.push('	<div appuse="_prompter:ask-dialog-title" class="header"></div>')
-        tmpHTML.push('	<div class="content" style="font-size:larger;font-weight:bolder;">')
-        tmpHTML.push('<div style="float:left;"><div style="margin-bottom:10px;"><i class="icon huge question circle blue" /></div></div>')
-        tmpHTML.push('    <div appuse="_prompter:ask-dialog-text" class="description">')
-        tmpHTML.push('    </div>')
-        tmpHTML.push('	</div>')
-        tmpHTML.push('	<div class="actions" style="clear:both;">')
-        tmpHTML.push('	  <div action="_prompter:hideConfirmNo" class="ui red button">')
-        tmpHTML.push('		No')
-        tmpHTML.push('	  </div>')
-        tmpHTML.push('	  <div action="_prompter:hideConfirmYes" class="ui right green labeled icon button">')
-        tmpHTML.push('		Yes')
-        tmpHTML.push('		<i class="checkmark icon"></i>')
-        tmpHTML.push('	  </div>')
-        tmpHTML.push('	</div>')
-        tmpHTML.push('</div>')
+        tmpHTML.push('<div appuse="_prompter:ask-dialog" class="ui tiny modal">');
+        tmpHTML.push('	<div appuse="_prompter:ask-dialog-title" class="header"></div>');
+        tmpHTML.push('	<div class="content" style="font-size:larger;font-weight:bolder;">');
+        tmpHTML.push('<div style="float:left;"><div style="margin-bottom:10px;"><i class="icon huge question circle blue" /></div></div>');
+        tmpHTML.push('    <div appuse="_prompter:ask-dialog-text" class="description">');
+        tmpHTML.push('    </div>');
+        tmpHTML.push('	</div>');
+        tmpHTML.push('	<div class="actions" style="clear:both;">');
+        tmpHTML.push('	  <div action="_prompter:hideConfirmNo" class="ui red button">');
+        tmpHTML.push('		No');
+        tmpHTML.push('	  </div>');
+        tmpHTML.push('	  <div action="_prompter:hideConfirmYes" class="ui right green labeled icon button">');
+        tmpHTML.push('		Yes');
+        tmpHTML.push('		<i class="checkmark icon"></i>');
+        tmpHTML.push('	  </div>');
+        tmpHTML.push('	</div>');
+        tmpHTML.push('</div>');
 
-        tmpHTML.push('<div appuse="_prompter:alert-dialog" class="ui tiny modal">')
-        tmpHTML.push('	<div appuse="_prompter:alert-dialog-title" class="header"></div>')
-        tmpHTML.push('	<div class="content" style="font-size:larger;font-weight:bolder;">')
-        tmpHTML.push('<div style="float:left;"><div style="margin-bottom:10px;"><i appuse="_prompter:alert-dialog-icon" class="" /></div></div>')
-        tmpHTML.push('    <div appuse="_prompter:alert-dialog-text" class="description">')
-        tmpHTML.push('    </div>')
+        tmpHTML.push('<div appuse="_prompter:alert-dialog" class="ui tiny modal">');
+        tmpHTML.push('	<div appuse="_prompter:alert-dialog-title" class="header"></div>');
+        tmpHTML.push('	<div class="content" style="font-size:larger;font-weight:bolder;">');
+        tmpHTML.push('<div style="float:left;"><div style="margin-bottom:10px;"><i appuse="_prompter:alert-dialog-icon" class="" /></div></div>');
+        tmpHTML.push('    <div appuse="_prompter:alert-dialog-text" class="description">');
+        tmpHTML.push('    </div>');
 
-        tmpHTML.push('	</div>')
-        tmpHTML.push('	<div class="actions" style="clear:both;">')
-        tmpHTML.push('	  <div action="_prompter:hideAlert" class="ui right blue button" style="min-width:200px">')
-        tmpHTML.push('		OK')
-        tmpHTML.push('	  </div>')
-        tmpHTML.push('	</div>')
-        tmpHTML.push('</div>')
+        tmpHTML.push('	</div>');
+        tmpHTML.push('	<div class="actions" style="clear:both;">');
+        tmpHTML.push('	  <div action="_prompter:hideAlert" class="ui right blue button" style="min-width:200px">');
+        tmpHTML.push('		OK');
+        tmpHTML.push('	  </div>');
+        tmpHTML.push('	</div>');
+        tmpHTML.push('</div>');
 
 
-        $('body').append(tmpHTML.join(''))
+        $('body').append(tmpHTML.join(''));
 
 
         //--- Semantic UI Modal code needs time to complete before next modal
@@ -4038,14 +4038,12 @@ License: MIT
             , "c": "icon huge check circle green"
             , "w": "icon huge exclamation triangle orange"
             , "e": "icon huge exclamation circle red"
-
-        }
+        };
 
         me.hideAlert = function () {
             me.alertDialog.modal("hide");
-
-
         }
+
         me.alert = function (theText, theTitle, theType) {
             var tmpText = theText || '';
             var tmpTitle = theTitle || '';
