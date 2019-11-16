@@ -387,7 +387,7 @@ var ActionAppCore = {};
             if (tmpLayouts.length) {
                 tmpLayouts
                     .addClass('ctl-layout-frame')
-                    // .css('min-height', '200px')
+                    .css('min-height', '200px')
                     .css('height', '100%')
                     .attr('appcomporig', 'layout')
                     .attr('appcomp', '')
@@ -855,7 +855,6 @@ var ActionAppCore = {};
     //--- Example usage
     //   $(window).resize(function () {
     //     ThisApp.waitForFinalEvent(function(){
-    //       console.log('Resize...');
     //       //...
     //     }, 500, "ThisAppResize");
     // });
@@ -2181,7 +2180,6 @@ var ActionAppCore = {};
         if( theEvent.changedTouches && theEvent.changedTouches.length > 0){
             var tmpTouchInfo = theEvent.changedTouches[0];
             if( inRect(tmpBounds, tmpTouchInfo.clientX, tmpTouchInfo.clientY ) ){
-               // console.log("tmpBounds,theEvent",tmpBounds,theEvent);
                itemClicked(theEvent);
             }
         }
@@ -2198,7 +2196,7 @@ var ActionAppCore = {};
         tmpObj = tmpActionDetails.el;
 
         if (tmpAction) {
-            theEvent.preventDefault();
+//            theEvent.preventDefault();
             theEvent.stopPropagation();
             ThisApp.runAppAction(tmpAction, tmpObj);
         }
@@ -3771,7 +3769,7 @@ License: MIT
             this.parentEl = this.app.getByAttr$({ group: "app:pages", item: this.pageName });
             this.parentEl.html(this.getLayoutHTML());
             this.parentEl.on("click", itemClicked.bind(this))
-            this.parentEl.get(0).ontouchend = itemTouchEnd.bind(this);
+            //this.parentEl.get(0).ontouchend = itemTouchEnd.bind(this);
 
             if (typeof (this._onInit) == 'function') {
                 this.parentEl.removeClass('loading');
@@ -3796,7 +3794,6 @@ License: MIT
         if( theEvent.changedTouches && theEvent.changedTouches.length > 0){
             var tmpTouchInfo = theEvent.changedTouches[0];
             if( inRect(tmpBounds, tmpTouchInfo.clientX, tmpTouchInfo.clientY ) ){
-               // console.log("tmpBounds,theEvent",tmpBounds,theEvent);
                itemClicked.bind(this)(theEvent);
             }
         }
@@ -8856,4 +8853,5 @@ License: MIT
 
 
 })(ActionAppCore, $);
+
 
