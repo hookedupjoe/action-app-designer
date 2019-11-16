@@ -2196,7 +2196,7 @@ var ActionAppCore = {};
         tmpObj = tmpActionDetails.el;
 
         if (tmpAction) {
-//            theEvent.preventDefault();
+            theEvent.preventDefault();
             theEvent.stopPropagation();
             ThisApp.runAppAction(tmpAction, tmpObj);
         }
@@ -3769,7 +3769,7 @@ License: MIT
             this.parentEl = this.app.getByAttr$({ group: "app:pages", item: this.pageName });
             this.parentEl.html(this.getLayoutHTML());
             this.parentEl.on("click", itemClicked.bind(this))
-            //this.parentEl.get(0).ontouchend = itemTouchEnd.bind(this);
+            this.parentEl.get(0).ontouchend = itemTouchEnd.bind(this);
 
             if (typeof (this._onInit) == 'function') {
                 this.parentEl.removeClass('loading');
@@ -5972,6 +5972,20 @@ License: MIT
             tmpEl.removeClass('mobile');
         }
     }
+    function inRect(theRect, theX, theY) {
+        return theRect.x <= theX && theX <= theRect.x + theRect.width &&
+        theRect.y <= theY && theY <= theRect.y + theRect.height;
+    }
+    function itemTouchEnd(theEvent) {
+        var tmpTarget = theEvent.target || theEvent.currentTarget || theEvent.delegetTarget || {};
+        var tmpBounds = tmpTarget.getBoundingClientRect();
+        if( theEvent.changedTouches && theEvent.changedTouches.length > 0){
+            var tmpTouchInfo = theEvent.changedTouches[0];
+            if( inRect(tmpBounds, tmpTouchInfo.clientX, tmpTouchInfo.clientY ) ){
+                this.onItemClick(theEvent);
+            }
+        }
+    }
     meInstance.onItemClick = function (theEvent) {
         var tmpObj = theEvent.target || theEvent.currentTarget || theEvent.delegetTarget || {};
         var tmpActionDetails = ThisApp.getActionFromObj(tmpObj, 'myaction');
@@ -6245,6 +6259,8 @@ License: MIT
         tmpThis.parentEl.html(tmpHTML);
         tmpThis.parentEl.on('change', tmpThis.onFieldChange.bind(this));
         tmpThis.parentEl.on('click', tmpThis.onItemClick.bind(this));
+        tmpThis.parentEl.get(0).ontouchend = itemTouchEnd.bind(this);
+        
         tmpThis.getConfig().options = tmpThis.getConfig().options || {};
 
 
