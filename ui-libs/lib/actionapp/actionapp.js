@@ -2143,6 +2143,7 @@ var ActionAppCore = {};
     function initAppActions() {
         $('body').on("click", itemClicked);
         $('body').get(0).ontouchend = itemTouchEnd;
+        $('body').get(0).ontouchstart = ThisApp.util.itemTouchStart.bind(this);
     }
     
     //---- Internal: Gets the action or action from the current element or the first parent element with such an entry,
@@ -2170,16 +2171,27 @@ var ActionAppCore = {};
         return { action: tmpAction, el: tmpObj };
     }
 
-    function inRect(theRect, theX, theY) {
-        return theRect.x <= theX && theX <= theRect.x + theRect.width &&
-        theRect.y <= theY && theY <= theRect.y + theRect.height;
-    }
+    // function inRect(theRect, theX, theY) {
+    //     var tmpFarX = theRect.x - theX;
+    //     var tmpFarY = theRect.y - theY;
+    //     if( tmpFarX > MIN_TOUCH_DISTANCE || tmpFarY > MIN_TOUCH_DISTANCE){
+    //         return false;
+    //     }
+    //     return theRect.x <= theX && theX <= theRect.x + theRect.width &&
+    //     theRect.y <= theY && theY <= theRect.y + theRect.height;
+    // }
     function itemTouchEnd(theEvent) {
         var tmpTarget = theEvent.target || theEvent.currentTarget || theEvent.delegetTarget || {};
         var tmpBounds = tmpTarget.getBoundingClientRect();
         if( theEvent.changedTouches && theEvent.changedTouches.length > 0){
             var tmpTouchInfo = theEvent.changedTouches[0];
-            if( inRect(tmpBounds, tmpTouchInfo.clientX, tmpTouchInfo.clientY ) ){
+            var tmpStart = ThisApp.util._start;
+            var tmpXDiff = Math.abs(tmpStart.x - tmpTouchInfo.screenX)
+            var tmpYDiff = Math.abs(tmpStart.y - tmpTouchInfo.screenY)
+            if( tmpXDiff > ThisApp.util.MIN_TOUCH_DISTANCE || tmpYDiff > ThisApp.util.MIN_TOUCH_DISTANCE){
+                return;
+            }
+            if( ThisApp.util.touchIsClick(tmpBounds, tmpTouchInfo.clientX, tmpTouchInfo.clientY ) ){
                itemClicked(theEvent);
             }
         }
@@ -2196,9 +2208,9 @@ var ActionAppCore = {};
         tmpObj = tmpActionDetails.el;
 
         if (tmpAction) {
+            ThisApp.runAppAction(tmpAction, tmpObj);
             theEvent.preventDefault();
             theEvent.stopPropagation();
-            ThisApp.runAppAction(tmpAction, tmpObj);
         }
         return false;
     }
@@ -2335,6 +2347,8 @@ var ActionAppCore = {};
         //--- Converts string to obj or obj to string based on what is passed
         me.json = me.util.json;
         me.clone = me.util.clone;
+        
+    
 
         //--- Add controls plugin at the app level
         // ..... as global entrypoint for controls module
@@ -3000,8 +3014,33 @@ var ActionAppCore = {};
         return tmpEncoded;
     }
 
+    function itemTouchStart(theEvent) {
+        //var tmpTarget = theEvent.target || theEvent.currentTarget || theEvent.delegetTarget || {};
+        if( theEvent.targetTouches && theEvent.targetTouches.length > 0){
+            var tmpTouchInfo = theEvent.targetTouches[0];
+            ThisApp.util._start = {
+                x:tmpTouchInfo.screenX, 
+                y: tmpTouchInfo.screenY
+            }
+        }
+    }
+    function touchIsClick(theRect, theX, theY) {
+        
+        // var tmpFarX = Math.abs(theRect.x + theRect.width - theX);
+        // var tmpFarY = Math.abs(theRect.y - theY);
+        // if( tmpFarX > this.MIN_TOUCH_DISTANCE || tmpFarY > this.MIN_TOUCH_DISTANCE){
+        //     console.log( 'touchIsClick too far');
+        //     return false;
+        // }        
+        return theRect.x <= theX && theX <= theRect.x + theRect.width &&
+        theRect.y <= theY && theY <= theRect.y + theRect.height;
+    }
+
     //ThisApp.util...
     var utilFunctions = {
+        MIN_TOUCH_DISTANCE: 20,
+        itemTouchStart: itemTouchStart,
+        touchIsClick: touchIsClick,
         isPage: isPage,
         isStr: isStr,
         isFunc: isFunc,
@@ -3770,6 +3809,7 @@ License: MIT
             this.parentEl.html(this.getLayoutHTML());
             this.parentEl.on("click", itemClicked.bind(this))
             this.parentEl.get(0).ontouchend = itemTouchEnd.bind(this);
+            this.parentEl.get(0).ontouchstart = ThisApp.util.itemTouchStart.bind(this);
 
             if (typeof (this._onInit) == 'function') {
                 this.parentEl.removeClass('loading');
@@ -3784,16 +3824,35 @@ License: MIT
         }
     }    
 
-    function inRect(theRect, theX, theY) {
-        return theRect.x <= theX && theX <= theRect.x + theRect.width &&
-        theRect.y <= theY && theY <= theRect.y + theRect.height;
-    }
+    // function inRect(theRect, theX, theY) {
+    //     return theRect.x <= theX && theX <= theRect.x + theRect.width &&
+    //     theRect.y <= theY && theY <= theRect.y + theRect.height;
+    // }
+    
+    // function itemTouchStart(theEvent) {
+    //     var tmpTarget = theEvent.target || theEvent.currentTarget || theEvent.delegetTarget || {};
+    //     if( theEvent.targetTouches && theEvent.targetTouches.length > 0){
+    //         var tmpTouchInfo = theEvent.targetTouches[0];
+    //         tmpTarget._start = {
+    //             x:tmpTouchInfo.screenX, 
+    //             y: tmpTouchInfo.screenY
+    //         }
+    //     }
+    // }
+
     function itemTouchEnd(theEvent) {
         var tmpTarget = theEvent.target || theEvent.currentTarget || theEvent.delegetTarget || {};
         var tmpBounds = tmpTarget.getBoundingClientRect();
         if( theEvent.changedTouches && theEvent.changedTouches.length > 0){
             var tmpTouchInfo = theEvent.changedTouches[0];
-            if( inRect(tmpBounds, tmpTouchInfo.clientX, tmpTouchInfo.clientY ) ){
+            var tmpStart = ThisApp.util._start;
+            var tmpXDiff = Math.abs(tmpStart.x - tmpTouchInfo.screenX)
+            var tmpYDiff = Math.abs(tmpStart.y - tmpTouchInfo.screenY)
+            if( tmpXDiff > ThisApp.util.MIN_TOUCH_DISTANCE || tmpYDiff > ThisApp.util.MIN_TOUCH_DISTANCE){
+                return;
+            }
+    
+            if( ThisApp.util.touchIsClick(tmpBounds, tmpTouchInfo.clientX, tmpTouchInfo.clientY ) ){
                itemClicked.bind(this)(theEvent);
             }
         }
@@ -3822,12 +3881,12 @@ License: MIT
 
 
         if (tmpAction) {
-            theEvent.preventDefault();
-            theEvent.stopPropagation();
             this.runAction(tmpAction, tmpObj);
             if (tmpAction == 'selectMe') {
                 this.publish('selectMe', [this, tmpObj])
             }
+            theEvent.preventDefault();
+            theEvent.stopPropagation();
         }
         return false;
 
@@ -5972,16 +6031,25 @@ License: MIT
             tmpEl.removeClass('mobile');
         }
     }
-    function inRect(theRect, theX, theY) {
-        return theRect.x <= theX && theX <= theRect.x + theRect.width &&
-        theRect.y <= theY && theY <= theRect.y + theRect.height;
-    }
+    // function inRect(theRect, theX, theY) {
+    //     return theRect.x <= theX && theX <= theRect.x + theRect.width &&
+    //     theRect.y <= theY && theY <= theRect.y + theRect.height;
+    // }
+    
+
     function itemTouchEnd(theEvent) {
         var tmpTarget = theEvent.target || theEvent.currentTarget || theEvent.delegetTarget || {};
         var tmpBounds = tmpTarget.getBoundingClientRect();
         if( theEvent.changedTouches && theEvent.changedTouches.length > 0){
             var tmpTouchInfo = theEvent.changedTouches[0];
-            if( inRect(tmpBounds, tmpTouchInfo.clientX, tmpTouchInfo.clientY ) ){
+            var tmpStart = ThisApp.util._start;
+            var tmpXDiff = Math.abs(tmpStart.x - tmpTouchInfo.screenX)
+            var tmpYDiff = Math.abs(tmpStart.y - tmpTouchInfo.screenY)
+            if( tmpXDiff > ThisApp.util.MIN_TOUCH_DISTANCE || tmpYDiff > ThisApp.util.MIN_TOUCH_DISTANCE){
+                return;
+            }
+
+            if( ThisApp.util.touchIsClick(tmpBounds, tmpTouchInfo.clientX, tmpTouchInfo.clientY ) ){
                 this.onItemClick(theEvent);
             }
         }
@@ -6080,12 +6148,12 @@ License: MIT
         tmpObj = tmpActionDetails.el;
 
         if (tmpAction) {
-            theEvent.preventDefault();
-            theEvent.stopPropagation();
             this.runAction(tmpAction, tmpObj);
             if (tmpAction == 'selectMe') {
                 this.publish('selectMe', [this, tmpObj])
             }
+            theEvent.preventDefault();
+            theEvent.stopPropagation();
             return;
         }
         return;
@@ -6260,6 +6328,7 @@ License: MIT
         tmpThis.parentEl.on('change', tmpThis.onFieldChange.bind(this));
         tmpThis.parentEl.on('click', tmpThis.onItemClick.bind(this));
         tmpThis.parentEl.get(0).ontouchend = itemTouchEnd.bind(this);
+        tmpThis.parentEl.get(0).ontouchstart = ThisApp.util.itemTouchStart.bind(this);
         
         tmpThis.getConfig().options = tmpThis.getConfig().options || {};
 
