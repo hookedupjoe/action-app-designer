@@ -440,13 +440,6 @@ cursor: not-allowed !important;
   clear:both;
 }
 
-.ui.toggle.checkbox label {
-  padding-left: 55px !important;
-}
-.ui.slider.checkbox label {
-  padding-left: 55px !important;
-}
-
 .mobile .ui.form .fields {
   -ms-flex-wrap: wrap !important;
   flex-wrap: wrap !important;
