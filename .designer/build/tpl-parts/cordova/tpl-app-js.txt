@@ -22,23 +22,30 @@
         document.addEventListener('deviceready', this.onDeviceReady.bind(this), false);
       },
       onBackButton: function () {
+        ThisApp.publish("onBackButton");
+        //console.log("mobileBackPress");
+        /*
         ThisApp.hideSidebar();
         ThisApp.closeCommonDialog();
         if (ThisApp.activePopup) {
           ThisApp.clearActivePopup();
         }
+        */
         return false;
       },
       onVolUpButton: function () {
         //alert('onVolUpButton');
+        ThisApp.publish("onVolUpButton");
         return false;
       },
       onVolDownButton: function () {
         //alert('onVolDownButton');
+        ThisApp.publish("onVolDownButton");
         return false;
       },
       onMenuButton: function () {
-        ThisApp.showSidebar();
+        //ThisApp.showSidebar();
+        ThisApp.publish("onMenuButton");
         return false;
       },
       onDeviceReady: function () {
