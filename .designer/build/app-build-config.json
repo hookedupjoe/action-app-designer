@@ -123,10 +123,11 @@
 			]
 		},
 		{
-			"name": "SvgWorkspaces",
+			"name": "SvgControls",
 			"label": "Beta - Graphical Workspaces and Controls",
 			"js": [
-				"<script src=\"{{LIBRARY-LOCATION}}/plugins/svg-controls-plugin.js\"></script>"
+				"<script src=\"{{LIBRARY-LOCATION}}/plugins/svg-controls-plugin.js\"></script>",
+				"<script src=\"{{LIBRARY-LOCATION}}/lib/d3/d3.min.js\"></script>"
 			]
 		}
 	]
