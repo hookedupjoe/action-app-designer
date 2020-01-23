@@ -274,8 +274,8 @@ SVG controls Plugin:
         me._svg = ActionAppCore.app.getComponent("plugin:SvgControls");
         me.baseURL = me._svg.controlsBaseURL + tmpThisControl.controlName + "/";
 
-        var tmpSpotName = $(theParentSVG).attr("spot");
-        tmpThisControl.svg = d3.select('[spot="' + tmpSpotName + '"]');
+        //var tmpSpotName = $(theParentSVG).attr("spot");
+        tmpThisControl.svg = d3.select(theParentSVG);
 
         if (typeof (tmpOptions.colorOffset) == 'number') {
             tmpThisControl.colorOffset = tmpOptions.colorOffset;
