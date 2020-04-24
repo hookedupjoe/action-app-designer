@@ -250,6 +250,8 @@ SVG controls Plugin:
         if (this.parentWS && this.parentWS.objectClicked) {
             this.parentWS.objectClicked(theEvent, this);
         }
+        this.publish('objectClicked', [this,theEvent]);
+
     }
 
     me.initControl = initControl;
