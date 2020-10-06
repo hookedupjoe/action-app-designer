@@ -6327,8 +6327,14 @@ License: MIT
         tmpThis.parentEl.html(tmpHTML);
         tmpThis.parentEl.on('change', tmpThis.onFieldChange.bind(this));
         tmpThis.parentEl.on('click', tmpThis.onItemClick.bind(this));
-        tmpThis.parentEl.get(0).ontouchend = itemTouchEnd.bind(this);
-        tmpThis.parentEl.get(0).ontouchstart = ThisApp.util.itemTouchStart.bind(this);
+        console.log("debug loadToElement tmpThis.parentEl",tmpThis.parentEl);
+        var tmpDom = tmpThis.parentEl.get(0);
+        if( tmpDom ){
+            tmpThis.parentEl.get(0).ontouchend = itemTouchEnd.bind(this);
+            tmpThis.parentEl.get(0).ontouchstart = ThisApp.util.itemTouchStart.bind(this);
+        //} else {
+        //    console.warn("no dom found for tmpThis.parentEl",tmpThis.parentEl)
+        }
         
         tmpThis.getConfig().options = tmpThis.getConfig().options || {};
 
