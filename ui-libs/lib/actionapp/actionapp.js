@@ -1,6 +1,6 @@
 /*
 ActionAppCore Core Library
-Author: Joseph Francis, 2017 - 2019
+Author: Joseph Francis, 2017 - 2020
 License: MIT
 */
 
@@ -2152,6 +2152,7 @@ var ActionAppCore = {};
         var tmpTagName = theOptionalTag || 'action';
         var tmpObj = theObj;
         var tmpAction = $(tmpObj).attr(tmpTagName) || "";
+        
         if (!tmpAction) {
             var tmpParent = $(tmpObj).closest('[' + tmpTagName + ']');
             if (tmpParent.length == 1) {
@@ -2167,6 +2168,11 @@ var ActionAppCore = {};
                     return false; //not an action
                 }
             }
+        }
+        //--- Update to not read the action of a form as an Action App action
+        //JF - 10-28-20
+        if( tmpObj && tmpObj.tagName && tmpObj.tagName.toUpperCase() == 'FORM'){
+            return false;
         }
         return { action: tmpAction, el: tmpObj };
     }
@@ -5538,10 +5544,19 @@ License: MIT
 
         var tmpFieldEl = this.getElByName$(theFieldName, 'field')
         if (!(tmpFieldEl)) { return ''; }
-
+       
         var tmpFieldSpecs = this.getFieldSpecs(theFieldName);
         if (tmpFieldSpecs) {
             var tmpCtl = tmpFieldSpecs.ctl || 'field';
+
+            if( tmpCtl == 'textarea'){
+                if( ThisApp.util.isArray(theValue)){
+                    theValue = theValue.join('\n');
+                }
+                console.log("tmpFieldEl",theFieldName,tmpCtl,theValue)
+            }
+
+            
             var tmpControl = me.webControls.get(tmpCtl);
             if (!(tmpControl.setFieldValue)) {
                 tmpFieldEl.val(theValue);
@@ -8110,7 +8125,7 @@ License: MIT
             } else {
                 var tmpPH = '';
                 if (tmpObject.placeholder !== false) {
-                    tmpPH = tmpObject.label || ''
+                    //tmpPH = tmpObject.label || ''
 
                     if (typeof (tmpObject.placeholder) == 'string') {
                         tmpPH = tmpObject.placeholder;
