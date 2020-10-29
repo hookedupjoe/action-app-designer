@@ -2680,9 +2680,6 @@ var ActionAppCore = {};
             tmpLOSpecs.north__paneSelector = ".site-layout-north";
         }
 
-        //--- ToDo: Support options in theAppConfig to control this        
-        console.log("theAppConfig",theAppConfig);
-        //comeback
         if (!(theAppConfig && theAppConfig.layout === false)){
             me.siteLayout = $('body').layout(tmpLOSpecs);
         }
