@@ -2681,7 +2681,9 @@ var ActionAppCore = {};
         }
 
         //--- ToDo: Support options in theAppConfig to control this        
-        if (this.app && this.app.$appPageContainer){
+        console.log("theAppConfig",theAppConfig);
+        //comeback
+        if (!(theAppConfig && theAppConfig.layout === false)){
             me.siteLayout = $('body').layout(tmpLOSpecs);
         }
 
