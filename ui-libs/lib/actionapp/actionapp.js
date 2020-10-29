@@ -380,7 +380,10 @@ var ActionAppCore = {};
                 .checkbox();
         }
 
-        var tmpLayouts = me.getByAttr$({ appcomp: 'layout' }, theOptionalTarget)
+        
+
+        var tmpLayouts = me.getByAttr$({ appcomp: 'layout' }, theOptionalTarget);
+        
         if (tmpLayouts) {
 
 
@@ -1991,6 +1994,10 @@ var ActionAppCore = {};
         clearCommonDialog();
     }
 
+    /*
+    Used to keep the same function from running a buch of times in a row 
+    due to multiple hits or types of events all being called at once.
+    */
     me.debounce = debounce;
     function debounce(func, wait, immediate) {
         var timeout;
@@ -2236,7 +2243,9 @@ var ActionAppCore = {};
 
 
     me.refreshLayouts = debounce(function (theTargetEl) {
-        ThisApp.siteLayout.resizeAll();
+        if( ThisApp.siteLayout ){
+            ThisApp.siteLayout.resizeAll();
+        }
     }, 200);
 
     me.resizeLayouts = function (name, $pane, paneState) {
@@ -2672,10 +2681,14 @@ var ActionAppCore = {};
         }
 
         //--- ToDo: Support options in theAppConfig to control this        
-        me.siteLayout = $('body').layout(tmpLOSpecs);
+        if (this.app && this.app.$appPageContainer){
+            me.siteLayout = $('body').layout(tmpLOSpecs);
+        }
 
         if (theAppConfig && theAppConfig.hideHeader == true) {
-            me.siteLayout.toggle('north');
+            if( me.siteLayout ){
+                me.siteLayout.toggle('north');
+            }
         }
         if (theAppConfig && theAppConfig.hidePagesMenu == true) {
             me.getByAttr$({ semaction: "showsidebar" }).hide();
@@ -2696,6 +2709,10 @@ var ActionAppCore = {};
         me.selectMe = showSubPage
 
         me.$appPageContainer = $(me.config.container || '[appuse="main-page-container"]');
+        if( me.$appPageContainer.length == 0){
+            me.$appPageContainer = false;
+        }
+        
 
         for (var aName in me.components) {
             var tmpController = me.components[aName];
@@ -3343,7 +3360,9 @@ License: MIT
             tmpThis.initLayout();
             tmpThis.initAppComponents();
             ThisApp.delay(100).then(function (theReply) {
-                ThisApp.siteLayout.resizeAll();
+                if( me.siteLayout ){
+                    ThisApp.siteLayout.resizeAll();
+                }
             })
             dfd.resolve(true);
         })
@@ -3813,9 +3832,12 @@ License: MIT
 
             this.parentEl = this.app.getByAttr$({ group: "app:pages", item: this.pageName });
             this.parentEl.html(this.getLayoutHTML());
-            this.parentEl.on("click", itemClicked.bind(this))
-            this.parentEl.get(0).ontouchend = itemTouchEnd.bind(this);
-            this.parentEl.get(0).ontouchstart = ThisApp.util.itemTouchStart.bind(this);
+            this.parentEl.on("click", itemClicked.bind(this));
+            var tmpParentDomEl = this.parentEl.get(0);
+            if( tmpParentDomEl ){
+                this.parentEl.get(0).ontouchend = itemTouchEnd.bind(this);
+                this.parentEl.get(0).ontouchstart = ThisApp.util.itemTouchStart.bind(this);
+            }
 
             if (typeof (this._onInit) == 'function') {
                 this.parentEl.removeClass('loading');
