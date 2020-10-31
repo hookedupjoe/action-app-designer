@@ -2027,18 +2027,21 @@ var ActionAppCore = {};
     function getCommonDialog() {
         if (!commonDialog) {
             commonDialog = ThisApp.getByAttr$({ appuse: 'global-dialog' })
-            commonDialog.modal('setting', {
-                detachable: false,
-                allowMultiple: true,
-                centered: false,
-                closable: true,
-                dimmerSettings: {
-                    opacity: 1
-                },
-                onShow: onCommonDialogShow,
-                onHide: onCommonDialogHide,
-                onHidden: onCommonDialogHidden
-            });
+            if( commonDialog && commonDialog.model){
+                commonDialog.modal('setting', {
+                    detachable: false,
+                    allowMultiple: true,
+                    centered: false,
+                    closable: true,
+                    dimmerSettings: {
+                        opacity: 1
+                    },
+                    onShow: onCommonDialogShow,
+                    onHide: onCommonDialogHide,
+                    onHidden: onCommonDialogHidden
+                });
+            }
+            
 
             ThisApp.commonDialog = commonDialog;
         }
@@ -2146,11 +2149,38 @@ var ActionAppCore = {};
         var tmpHTML = '<div appuse="global-dialog" class="ui modal longer inverted"><button style="float:right;margin-top:5px;margin-right:5px;" class="icon ui basic blue button circle" action="closeCommonDialog" ><i class="close icon"></i> <span spot="site:dialog-close-text">Close</span></button><div spot="site:dialog-header" class="header"></div>  <div spot="site:dialog-content" class="content common-dialog-content"> </div> <div spot="site:dialog-footer" class="common-dialog-footer"></div> </div> ';
         me.loadSpot(commonDialogSpot, tmpHTML)
     }
-
+    
+    me.initAppActions = initAppActions;
     function initAppActions() {
-        $('body').on("click", itemClicked);
-        $('body').get(0).ontouchend = itemTouchEnd;
-        $('body').get(0).ontouchstart = ThisApp.util.itemTouchStart.bind(this);
+        
+
+        
+
+        var tmpBody = $('body');     
+        if( tmpBody.length > 0 ){
+            var tmpBodyDom = tmpBody.get(0);
+            tmpBody.on("click", itemClicked);
+            tmpBodyDom.ontouchend = itemTouchEnd;
+            tmpBodyDom.ontouchstart = ThisApp.util.itemTouchStart.bind(this);
+    
+        /*
+        } else {
+            ThisApp.delay(2000).then(function (theReply) {
+                tmpBody = $('body');     
+                console.log("tmpBody 2",tmpBody);   
+                if( tmpBody.length > 0 ){
+                    var tmpBodyDom = tmpBody.get(0);
+                    tmpBody.on("click", itemClicked);
+                    console.log("added itemClicked",itemClicked);
+                    tmpBodyDom.ontouchend = itemTouchEnd;
+                    tmpBodyDom.ontouchstart = ThisApp.util.itemTouchStart.bind(this);
+            
+                } else {
+                    console.error("Could not init App, body not loaded");
+                }
+            })
+             */
+        }
     }
     
     //---- Internal: Gets the action or action from the current element or the first parent element with such an entry,
@@ -2390,6 +2420,11 @@ var ActionAppCore = {};
         var dfd = jQuery.Deferred();
 
         ThisCoreApp = this;
+        var tmpBody = $('body');     
+        if( tmpBody.length == 0 ){
+            dfd.resolve(false);
+            return dfd.promise();
+        }
         initAppMarkup();
 
         
@@ -2429,7 +2464,7 @@ var ActionAppCore = {};
                 } else {
                     ThisApp.hideLoading();
                     tmpThis.postInit(theAppConfig);
-                    dfd.resolve(true)
+                    dfd.resolve(true);
                 }
             });
         });
@@ -2680,8 +2715,10 @@ var ActionAppCore = {};
             tmpLOSpecs.north__paneSelector = ".site-layout-north";
         }
 
-        if (!(theAppConfig && theAppConfig.layout === false)){
-            me.siteLayout = $('body').layout(tmpLOSpecs);
+        var tmpBodyEl = $('body');
+        if (!(theAppConfig && theAppConfig.layout === false) && tmpBodyEl.length > 0){
+            console.log("Do layout setup");
+            me.siteLayout = tmpBodyEl.layout(tmpLOSpecs);
         }
 
         if (theAppConfig && theAppConfig.hideHeader == true) {
@@ -3851,8 +3888,8 @@ License: MIT
             this.parentEl.on("click", itemClicked.bind(this));
             var tmpParentDomEl = this.parentEl.get(0);
             if( tmpParentDomEl ){
-                this.parentEl.get(0).ontouchend = itemTouchEnd.bind(this);
-                this.parentEl.get(0).ontouchstart = ThisApp.util.itemTouchStart.bind(this);
+                tmpParentDomEl.ontouchend = itemTouchEnd.bind(this);
+                tmpParentDomEl.ontouchstart = ThisApp.util.itemTouchStart.bind(this);
             }
 
             if (typeof (this._onInit) == 'function') {
@@ -4165,6 +4202,7 @@ License: MIT
                 me.alertDialog.modal('hide');
 
                 ThisApp.delay(100).then(function () {
+
                     me.alertDialog.modal('show');
                 })
 
@@ -4177,20 +4215,24 @@ License: MIT
         me.alertDialogTitle = ThisApp.getByAttr$({ appuse: "_prompter:alert-dialog-title" });
         me.alertDialogText = ThisApp.getByAttr$({ appuse: "_prompter:alert-dialog-text" });
         me.alertDialogIcon = ThisApp.getByAttr$({ appuse: "_prompter:alert-dialog-icon" });
-        me.alertDialog = ThisApp.getByAttr$({ appuse: "_prompter:alert-dialog" }).modal(
-            {
-                onHidden: function () {
-                    if (alertDialogPromise) {
-                        var tmpP = alertDialogPromise
-                        delete alertDialogPromise;
-                        tmpP.resolve(true);
-                    }
-                },
-                allowMultiple: true,
-                closable: true
-            }
-
-        );
+        me.alertDialog = ThisApp.getByAttr$({ appuse: "_prompter:alert-dialog" });
+        if( me.alertDialog && me.alertDialog.modal){
+            me.alertDialog = me.alertDialog.modal(
+                {
+                    onHidden: function () {
+                        if (alertDialogPromise) {
+                            var tmpP = alertDialogPromise
+                            delete alertDialogPromise;
+                            tmpP.resolve(true);
+                        }
+                    },
+                    allowMultiple: true,
+                    closable: true
+                }
+    
+            );
+        }
+        
 
 
 
@@ -4223,24 +4265,29 @@ License: MIT
         me.askDialogTitle = ThisApp.getByAttr$({ appuse: "_prompter:ask-dialog-title" });
         me.askDialogText = ThisApp.getByAttr$({ appuse: "_prompter:ask-dialog-text" });
 
-        me.askDialog = ThisApp.getByAttr$({ appuse: "_prompter:ask-dialog" }).modal(
-            {
-                closable: false,
-                allowMultiple: true,
-                onHidden: function () {
-                    if (askDialogPromise) {
-                        var tmpP = askDialogPromise;
-                        ThisApp.delay(me.modalDelay).then(function () {
-                            tmpP.resolve(me.confirmStatus);
-                        })
-                        askDialogPromise = false;
-                        me.askDialogText.html('');
-                        me.askDialogTitle.html('')
+        me.askDialog = ThisApp.getByAttr$({ appuse: "_prompter:ask-dialog" });
+        if( me.askDialog && me.askDialog.modal){
+            me.askDialog = me.askDialog.modal(
+                {
+                    closable: false,
+                    allowMultiple: true,
+                    onHidden: function () {
+                        if (askDialogPromise) {
+                            var tmpP = askDialogPromise;
+                            ThisApp.delay(me.modalDelay).then(function () {
+                                tmpP.resolve(me.confirmStatus);
+                            })
+                            askDialogPromise = false;
+                            me.askDialogText.html('');
+                            me.askDialogTitle.html('')
+                        }
                     }
                 }
-            }
+    
+            );
+        }
 
-        );
+        
 
 
 
@@ -4299,13 +4346,17 @@ License: MIT
 
 
 
-        me.promptDialog = ThisApp.getByAttr$({ appuse: "_prompter:prompt-dialog" }).modal(
-            {
-                closable: false,
-                allowMultiple: true,
-                onHidden: me.onHiddenPrompt.bind(me)
-            }
-        );
+        me.promptDialog = ThisApp.getByAttr$({ appuse: "_prompter:prompt-dialog" });
+        if( me.promptDialog && me.promptDialog.modal){
+            me.promptDialog = me.promptDialog.modal(
+                {
+                    closable: false,
+                    allowMultiple: true,
+                    onHidden: me.onHiddenPrompt.bind(me)
+                }
+            );
+        }
+        
 
         me.promptDialogTitle = ThisApp.getByAttr$({ appuse: "_prompter:prompt-dialog-title" });
         me.promptDialogTextTop = ThisApp.getByAttr$({ appuse: "_prompter:prompt-dialog-text-top" });
@@ -6383,8 +6434,8 @@ License: MIT
         console.log("debug loadToElement tmpThis.parentEl",tmpThis.parentEl);
         var tmpDom = tmpThis.parentEl.get(0);
         if( tmpDom ){
-            tmpThis.parentEl.get(0).ontouchend = itemTouchEnd.bind(this);
-            tmpThis.parentEl.get(0).ontouchstart = ThisApp.util.itemTouchStart.bind(this);
+            tmpDom.ontouchend = itemTouchEnd.bind(this);
+            tmpDom.ontouchstart = ThisApp.util.itemTouchStart.bind(this);
         //} else {
         //    console.warn("no dom found for tmpThis.parentEl",tmpThis.parentEl)
         }
