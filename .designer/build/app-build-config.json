@@ -38,7 +38,7 @@
 		{
 			"name": "cloud",
 			"label": "Production Cloud CDN",
-			"prefix": "//actionappweb.hookedup.com"
+			"prefix": "//actionapp.hookedup.com"
 		},
 		{
 			"name": "app",
