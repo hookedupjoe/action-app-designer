@@ -38,7 +38,8 @@ License: MIT
         baseURL: pageBaseURL,
         north: false,
         east: false,
-        west: { partname: "west", control: "west" },
+        west: false,
+        waswest: { partname: "west", control: "west" },
         center: { partname: "center", control: "center" },
         south: false
     }
@@ -125,7 +126,7 @@ License: MIT
                 //--- Now your done - READY to do stuff the first time on your page
 
                 //--- Subscirbe to when item selected in workspace
-                ThisPage.parts.west.subscribe('selected', wsItemSelected);
+                //ThisPage.parts.west.subscribe('selected', wsItemSelected);
                 ThisPage.parts.center.subscribe('selected', wsItemSelected);
 
 
@@ -137,9 +138,30 @@ License: MIT
                 //      the page is activated if not already called by above code
                 ThisPage._onActivate();
 
+                
+
                 //Todo: Change to when west publishes loaded
                 ThisApp.delay(1000).then(function(){
-                    ThisPage.closeSiteMap();
+                    //ThisPage.closeSiteMap();
+
+                var tmpOutlineEl = ThisApp.getByAttr$({action: "outlineDisplay",type: "workspace"});
+                if( tmpOutlineEl && tmpOutlineEl.length > 0){
+                  ThisApp.outlineDisplay(false,tmpOutlineEl.get(0));  
+                  if( tmpOutlineEl.length > 1){
+                    ThisApp.outlineDisplay(false,tmpOutlineEl.get(1));  
+                  }
+                  ThisApp.delay(100).then(function(){
+                    var tmpOutlineEl = ThisApp.getByAttr$({action: "toggleMe",type: "apps"});
+                    console.log("tmpOutlineEl",tmpOutlineEl);
+                    if( tmpOutlineEl && tmpOutlineEl.length > 0){
+                        ThisApp.toggleMe(false,tmpOutlineEl.get(0));  
+                        if( tmpOutlineEl.length > 1){
+                          ThisApp.toggleMe(false,tmpOutlineEl.get(1));  
+                        }                        
+                      }
+                  })
+                }
+
                 })
             }
         );

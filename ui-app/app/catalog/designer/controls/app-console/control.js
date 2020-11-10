@@ -557,6 +557,14 @@ License: MIT
 
 		this.refreshTabNav();
 
+		// var tmpOutlineEl = ThisApp.getByAttr$({action: "outlineDisplay",type: "pages"});
+		// if( tmpOutlineEl && tmpOutlineEl.length > 0){
+		// 	ThisApp.outlineDisplay(false,tmpOutlineEl.get(0));  
+		// 	if( tmpOutlineEl.length > 1){
+		// 	ThisApp.outlineDisplay(false,tmpOutlineEl.get(1));  
+		// 	}
+		// }
+
 	}
 
 	function refreshTabNav() {
