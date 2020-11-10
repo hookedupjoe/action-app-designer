@@ -2477,7 +2477,6 @@ var ActionAppCore = {};
     me.outlineDisplay = outlineDisplay;
     function outlineDisplay(theParams, theTarget) {
         var tmpEl = $(theTarget);
-        //var tmpNext = tmpEl.parent().next(['group="' + tmpEl.attr('group') + '"']);
         var tmpSelect = tmpEl.attr('select') || '';
 
         if (tmpSelect) {
