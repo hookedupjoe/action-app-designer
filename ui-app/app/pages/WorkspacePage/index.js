@@ -152,7 +152,7 @@ License: MIT
                   }
                   ThisApp.delay(100).then(function(){
                     var tmpOutlineEl = ThisApp.getByAttr$({action: "toggleMe",type: "apps"});
-                    console.log("tmpOutlineEl",tmpOutlineEl);
+                    //console.log("tmpOutlineEl",tmpOutlineEl);
                     if( tmpOutlineEl && tmpOutlineEl.length > 0){
                         ThisApp.toggleMe(false,tmpOutlineEl.get(0));  
                         if( tmpOutlineEl.length > 1){
