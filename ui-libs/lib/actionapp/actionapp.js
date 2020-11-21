@@ -13,8 +13,28 @@ License: MIT
 
 */
 
-//--- Global Entry Point
-var ActionAppCore = {};
+//--- Global Entry Point / Always available functionality
+var ActionAppCore = {
+
+    //--- Debounce resize / rapid firing events
+    debounce: function (func, wait, immediate) {
+        var timeout;
+        return function() {
+            var context = this, args = arguments;
+            var later = function() {
+                timeout = null;
+                if (!immediate) func.apply(context, args);
+            };
+            var callNow = immediate && !timeout;
+            clearTimeout(timeout);
+            timeout = setTimeout(later, wait);
+            if (callNow) func.apply(context, args);
+        };
+    }
+};
+
+//--- Global Spot
+window.AACore = ActionAppCore;
 
 //--- Base module and simple module system --- --- --- --- --- --- --- --- --- --- --- --- 
 (function (ActionAppCore, $) {
@@ -365,6 +385,10 @@ var ActionAppCore = {};
         return dfd.promise();
     };
 
+    me.layoutComponentResized = function(){
+        console.log("layoutComponentResized",arguments);
+    }
+
     me.initAppComponents = function (theOptionalTarget) {
         var tmpDDs = me.getByAttr$({ appcomp: 'dropdown' }, theOptionalTarget);
         if (tmpDDs && tmpDDs.length) {
@@ -412,8 +436,21 @@ var ActionAppCore = {};
                         //--- Using custom template
                         tmpLayoutOptions = ThisApp.layoutTemplates[tmpLayoutTemplateName];
                     }
+                    tmpLayoutOptions = tmpLayoutOptions || {};
 
-                    tmpLayoutEntry.layout(tmpLayoutOptions);
+                    //comeback
+                    //ToDo: Implement app level layout control from markup
+                    //ToDo: Create / test more than one app comp and assure both resize
+                    /*
+                    var appCtlLayoutChanged = ActionAppCore.debounce(function () {
+                        console.log('page layout resized',this, arguments);
+                        this.publish('resized', {});
+                    }, 200).bind(this);
+
+                    var tmpRet = tmpLayoutEntry.layout(tmpLayoutOptions);
+                    tmpLayoutOptions.onresize_end = appCtlLayoutChanged;
+                    console.log("initAppComponents: Layout reply",tmpRet,tmpLayoutOptions)
+                    */
                 }
 
 
@@ -1998,21 +2035,8 @@ var ActionAppCore = {};
     Used to keep the same function from running a buch of times in a row 
     due to multiple hits or types of events all being called at once.
     */
-    me.debounce = debounce;
-    function debounce(func, wait, immediate) {
-        var timeout;
-        return function() {
-            var context = this, args = arguments;
-            var later = function() {
-                timeout = null;
-                if (!immediate) func.apply(context, args);
-            };
-            var callNow = immediate && !timeout;
-            clearTimeout(timeout);
-            timeout = setTimeout(later, wait);
-            if (callNow) func.apply(context, args);
-        };
-    };
+    me.debounce = ActionAppCore.debounce;
+    
 
     function onCommonDialogHide(theEl) {
         if (typeof (commonDialogCallbackOnHide) == 'function') {
@@ -2272,7 +2296,7 @@ var ActionAppCore = {};
     me.siteLayout = null;
 
 
-    me.refreshLayouts = debounce(function (theTargetEl) {
+    me.refreshLayouts = ActionAppCore.debounce(function (theTargetEl) {
         if( ThisApp.siteLayout ){
             ThisApp.siteLayout.resizeAll();
         }
@@ -2284,6 +2308,7 @@ var ActionAppCore = {};
                 ThisApp._onResizeLayouts(name, $pane, paneState);
             }
             var tmpH = $pane.get(0).clientHeight - $pane.get(0).offsetTop - 1;
+            //console.log("set to parent h",name, $pane);
             me.getByAttr$({ appuse: "cards", group: "app:pages", item: '' }).css("height", tmpH + "px");
         } catch (ex) {
 
@@ -2718,8 +2743,8 @@ var ActionAppCore = {};
 
         var tmpBodyEl = $('body');
         if (!(theAppConfig && theAppConfig.layout === false) && tmpBodyEl.length > 0){
-            console.log("Do layout setup");
-            me.siteLayout = tmpBodyEl.layout(tmpLOSpecs);
+            
+            me.siteLayout = tmpBodyEl.layout(tmpLOSpecs);            
         }
 
         if (theAppConfig && theAppConfig.hideHeader == true) {
@@ -3412,6 +3437,7 @@ License: MIT
 
         $.when(tmpPromRequired, tmpPromLayoutReq).then(function (theReply) {
             tmpThis.initLayout();
+            //comeback
             tmpThis.initAppComponents();
             ThisApp.delay(100).then(function (theReply) {
                 if( me.siteLayout ){
@@ -3814,6 +3840,9 @@ License: MIT
     //======================================
     //======================================
 
+    
+
+    
 
     me.init = init;
     function init(theApp) {
@@ -3898,9 +3927,21 @@ License: MIT
                 this._onInit(this.app)
             };
 
+            this.layoutConfig = this.layoutConfig || {};
+            //if( !(this.layoutConfig.onresize_end)){
+
+            this.pageLayoutChanged = ActionAppCore.debounce(function () {
+                console.log('page layout resized',this, arguments);
+                this.publish('resized', {});
+            }, 200).bind(this);
+            
+            this.layoutConfig.onresize_end = this.pageLayoutChanged;
+            
+            //}
             if (this.layoutOptions && this.layoutConfig) {
                 this.layoutSpot = ThisApp.getByAttr$({ group: ThisApp.pagesGroup, "item": this.pageName });
                 this.layout = this.layoutSpot.layout(this.layoutConfig);
+                //console.log("init page: Layout reply / config",this,this.layout,this.layoutConfig)
             };
 
         }
@@ -5643,7 +5684,7 @@ License: MIT
                 if( ThisApp.util.isArray(theValue)){
                     theValue = theValue.join('\n');
                 }
-                console.log("tmpFieldEl",theFieldName,tmpCtl,theValue)
+                //console.log("tmpFieldEl",theFieldName,tmpCtl,theValue)
             }
 
             
@@ -6407,13 +6448,20 @@ License: MIT
                     //--- Using custom template
                     tmpLayoutOptions = StaticApp.layoutTemplates[tmpLayoutTemplateName];
                 }
-                tmpLayoutEntry.layout(tmpLayoutOptions);
+                this.controlLayoutChanged = ActionAppCore.debounce(function () {
+                    console.log('control layout resized',this, arguments);
+                    this.publish('resized', {});
+                }, 200).bind(this);
+                tmpLayoutOptions.onresize_end = this.controlLayoutChanged;
+
+                var tmpControlLayout = tmpLayoutEntry.layout(tmpLayoutOptions);
             }
+        }
+        
+        $.whenAll(tmpDefs).then(function (theReply) {
             //--- Tell the app to resize it's layouts
             ThisApp.resizeLayouts();
-        }
-        $.whenAll(tmpDefs).then(function (theReply) {
-            dfd.resolve(true)
+            dfd.resolve(true);
         })
         return dfd.promise();
     }
@@ -6432,7 +6480,7 @@ License: MIT
         tmpThis.parentEl.html(tmpHTML);
         tmpThis.parentEl.on('change', tmpThis.onFieldChange.bind(this));
         tmpThis.parentEl.on('click', tmpThis.onItemClick.bind(this));
-        console.log("debug loadToElement tmpThis.parentEl",tmpThis.parentEl);
+        //console.log("debug loadToElement tmpThis.parentEl",tmpThis.parentEl);
         var tmpDom = tmpThis.parentEl.get(0);
         if( tmpDom ){
             tmpDom.ontouchend = itemTouchEnd.bind(this);
