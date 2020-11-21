@@ -738,7 +738,7 @@ position: inherit !important;
 .vakata-context { z-index:10052 !important; }
 
 .hidden {
-  display: none;
+  display: none !important;
 }
 
 .hidden.menu {
@@ -751,7 +751,7 @@ position: inherit !important;
 
 
 
-@media only screen and (min-width: 699px) {
+@media only screen and (min-width: 767px) {
   .mobileonly {
     display: none !important;
   }
@@ -760,7 +760,7 @@ position: inherit !important;
   }
 }
 
-@media only screen and (max-width: 700px) {
+@media only screen and (max-width: 767px) {
   .nomobile {
     display: none !important;
   }
