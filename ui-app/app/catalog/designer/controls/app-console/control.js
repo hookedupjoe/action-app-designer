@@ -529,19 +529,20 @@ License: MIT
 
 
 		var tmpPort = '33461';
-		try {
-			tmpPort = ThisApp.getPage("WorkspacePage").parts.west.parts.workspace.controlConfig.options.extra.previewPort
-		} catch (theError) {
-			console.info("Couldn't get preview port",theError)
-		}
-		console.log( 'tmpPort', tmpPort);
+		//ToDo: Update method for configuring preview port
+		// try {
+		// 	tmpPort = ThisApp.getPage("WorkspacePage").parts.west.parts.workspace.controlConfig.options.extra.previewPort
+		// } catch (theError) {
+		// 	console.info("Couldn't get preview port",theError)
+		// }
+		//console.log( 'tmpPort', tmpPort);
 
 		var tmpBasePath = window.location.origin;
 		tmpBasePath = tmpBasePath.replace('33460',('' + tmpPort));
 		if( tmpBasePath.endsWith(':80')){
 			tmpBasePath = tmpBasePath.replace(':80', '');
 		}
-		console.log( 'tmpBasePath', tmpBasePath);
+		//console.log( 'tmpBasePath', tmpBasePath);
 
 		//--- Set Preview Link
 		this.controlConfig.index.items["preview-link"].attr = {
