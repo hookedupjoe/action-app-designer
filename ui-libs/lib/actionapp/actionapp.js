@@ -386,7 +386,7 @@ window.AACore = ActionAppCore;
     };
 
     me.layoutComponentResized = function(){
-        console.log("layoutComponentResized",arguments);
+        // console.log("layoutComponentResized",arguments);
     }
 
     me.initAppComponents = function (theOptionalTarget) {
@@ -2308,7 +2308,6 @@ window.AACore = ActionAppCore;
                 ThisApp._onResizeLayouts(name, $pane, paneState);
             }
             var tmpH = $pane.get(0).clientHeight - $pane.get(0).offsetTop - 1;
-            //console.log("set to parent h",name, $pane);
             me.getByAttr$({ appuse: "cards", group: "app:pages", item: '' }).css("height", tmpH + "px");
         } catch (ex) {
 
@@ -3256,27 +3255,27 @@ License: MIT
             //--- Use standard border layout template if none provided
             this.layoutOptions.spotPrefix = this.layoutOptions.spotPrefix || this.pageName;
 
-            this.layoutConfig.onresize = (
-                function (thePane, theElement, theState, theOptions, theName) {
+            // this.layoutConfig.onresize_end = (
+//                 function (thePane, theElement, theState, theOptions, theName) {
+// console.log("onresize orig");
+//                     if (typeof (this._onResizeLayout) == 'function') {
+//                         if (thePane == 'center') {
+//                             this._onResizeLayout(thePane, theElement, theState, theOptions, theName);
+//                         }
+//                     }
 
-                    if (typeof (this._onResizeLayout) == 'function') {
-                        if (thePane == 'center') {
-                            this._onResizeLayout(thePane, theElement, theState, theOptions, theName);
-                        }
-                    }
-
-                    try {
-                        if (this.publish) {
-                            if (thePane == 'center') {
-                                this.publish('resizeLayout', [this, thePane, theElement, theState, theOptions, theName]);
-                            }
-                        }
-                    } catch (ex) {
-                        console.error('error on resize', ex);
-                    }
-                    return true;
-                }
-            ).bind(this);
+//                     try {
+//                         if (this.publish) {
+//                             if (thePane == 'center') {
+//                                 this.publish('resizeLayout', [this, thePane, theElement, theState, theOptions, theName]);
+//                             }
+//                         }
+//                     } catch (ex) {
+//                         console.error('error on resize', ex);
+//                     }
+//                     return true;
+//                 }
+//             ).bind(this);
 
             //--- Extend with new layout related spot functions
             this.addToRegion = function (theRegion, theContent, theOptionalTemplateName, thePrepend) {
@@ -3394,12 +3393,24 @@ License: MIT
         return theLayoutOptions;
     }
 
+    me.pubResize = function(){
+        if (typeof (this._onResizeLayout) == 'function') {
+            this._onResizeLayout();            
+        }
+        if( this.parts ){
+            for( aName in this.parts ){
+                var tmpPart = this.parts[aName];
+                if( tmpPart && tmpPart.refreshSubLayouts ){
+                    tmpPart.refreshSubLayouts();
+                }
+            }
+        }
+    };
     me.initOnFirstLoad = function () {
         var dfd = jQuery.Deferred();
         var tmpThis = this;
         this.options = this.options || {};
-        me.controls = {};
-        var tmpThis = this;
+        me.controls = {};        
 
         //--- Deprecated - backward compat functionality until apps are upgraded
         if (this.options.pageTemplates) {
@@ -3440,9 +3451,11 @@ License: MIT
             //comeback
             tmpThis.initAppComponents();
             ThisApp.delay(100).then(function (theReply) {
-                if( me.siteLayout ){
-                    ThisApp.siteLayout.resizeAll();
-                }
+                // if( me.siteLayout ){
+                //     ThisApp.siteLayout.resizeAll();                    
+                // };
+                tmpThis.publish('resized', {});
+                ThisApp.refreshLayouts();                
             })
             dfd.resolve(true);
         })
@@ -3846,7 +3859,7 @@ License: MIT
 
     me.init = init;
     function init(theApp) {
-
+        
         if (theApp) {
             this.app = theApp;
         }
@@ -3929,11 +3942,10 @@ License: MIT
 
             this.layoutConfig = this.layoutConfig || {};
             //if( !(this.layoutConfig.onresize_end)){
-
             this.pageLayoutChanged = ActionAppCore.debounce(function () {
-                console.log('page layout resized',this, arguments);
-                this.publish('resized', {});
+                this.publish('resized', {});                ;
             }, 200).bind(this);
+            
             
             this.layoutConfig.onresize_end = this.pageLayoutChanged;
             
@@ -3943,6 +3955,9 @@ License: MIT
                 this.layout = this.layoutSpot.layout(this.layoutConfig);
                 //console.log("init page: Layout reply / config",this,this.layout,this.layoutConfig)
             };
+
+            this.pubResize = me.pubResize.bind(this);
+            this.subscribe('resized',me.pubResize.bind(this));
 
         }
     }    
@@ -6356,6 +6371,23 @@ License: MIT
     }
     meInstance.clearEvents = meInstance.destroy;
 
+    meInstance.refreshSubLayouts = function(){
+        if( this.liveIndex && this.liveIndex.layouts ){
+            for( aName in this.liveIndex.layouts){
+                var tmpLayout = this.liveIndex.layouts[aName];
+                tmpLayout.resizeAll();
+            }
+        }
+        if( this.parts ){
+            for( aName in this.parts ){
+                var tmpPart = this.parts[aName];
+                if( tmpPart && tmpPart.refreshSubLayouts ){
+                    tmpPart.refreshSubLayouts();
+                }
+            }
+        }
+    }
+
     meInstance.initControlComponents = function () {
         var dfd = jQuery.Deferred();
         var tmpEl = this.parentEl;
@@ -6427,6 +6459,8 @@ License: MIT
         var tmpLayouts = ThisApp.getByAttr$({ ctlcomp: 'layout' }, tmpEl);
 
         if (tmpLayouts.length) {
+            this.layoutElements = tmpLayouts;
+
             tmpLayouts
                 .addClass('ctl-layout-frame')
                 .css('min-height', '200px')
@@ -6434,13 +6468,19 @@ License: MIT
                 .attr('ctlcomp', '')
                 ;
             //--- Assure all the elements to the next pane are 100%
-            ThisApp.util.resizeToParent(tmpLayouts);
+            //ToDo: Verify still needed ***
+            ThisApp.util.resizeToParent(this.layoutElements);
+            //comeback2
+
 
             //--- Assure layouts index is in there
             this.liveIndex.layouts = this.liveIndex.layouts || {};
             //--- Loop to create each one, getting details if needed from el
             for (var iLayout = 0; iLayout < tmpLayouts.length; iLayout++) {
                 var tmpLayoutEntry = $(tmpLayouts.get(iLayout));
+                
+
+
                 var tmpOptions = defaultLayoutOptions;
                 var tmpLayoutTemplateName = tmpLayoutEntry.attr('template') || '';
                 var tmpLayoutOptions = defaultLayoutOptions;
@@ -6449,12 +6489,14 @@ License: MIT
                     tmpLayoutOptions = StaticApp.layoutTemplates[tmpLayoutTemplateName];
                 }
                 this.controlLayoutChanged = ActionAppCore.debounce(function () {
-                    console.log('control layout resized',this, arguments);
-                    this.publish('resized', {});
+                    this.publish('resized',this);
                 }, 200).bind(this);
-                tmpLayoutOptions.onresize_end = this.controlLayoutChanged;
 
-                var tmpControlLayout = tmpLayoutEntry.layout(tmpLayoutOptions);
+                tmpLayoutOptions.onresize_end = this.controlLayoutChanged;
+                this.layoutCount = this.layoutCount || 0;
+                this.layoutCount++;
+                var tmpControlLayout = tmpLayoutEntry.layout(tmpLayoutOptions);                
+                this.liveIndex.layouts['layout-' + this.layoutCount] = tmpControlLayout;
             }
         }
         
@@ -6480,13 +6522,10 @@ License: MIT
         tmpThis.parentEl.html(tmpHTML);
         tmpThis.parentEl.on('change', tmpThis.onFieldChange.bind(this));
         tmpThis.parentEl.on('click', tmpThis.onItemClick.bind(this));
-        //console.log("debug loadToElement tmpThis.parentEl",tmpThis.parentEl);
         var tmpDom = tmpThis.parentEl.get(0);
         if( tmpDom ){
             tmpDom.ontouchend = itemTouchEnd.bind(this);
             tmpDom.ontouchstart = ThisApp.util.itemTouchStart.bind(this);
-        //} else {
-        //    console.warn("no dom found for tmpThis.parentEl",tmpThis.parentEl)
         }
         
         tmpThis.getConfig().options = tmpThis.getConfig().options || {};
@@ -6498,7 +6537,7 @@ License: MIT
                 if (isFunc(tmpThis._onInit)) {
                     tmpThis._onInit();
                 }
-
+                
                 tmpThis.refreshControl();
                 var tmpDoc = tmpOptions.doc || tmpThis.getConfig().options.doc || false;
                 if (tmpDoc) {
