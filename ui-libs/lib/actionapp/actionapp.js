@@ -2646,7 +2646,7 @@ window.AACore = ActionAppCore;
             if (tmpGrids && tmpGridsLen > 0) {
                 for (var iPos = 0; iPos < tmpGridsLen; iPos++) {
                     var tmpGridsEl = $(tmpGrids[iPos]);
-                    if (tmpGridsEl && tmpGridsEl.is(":visible")) {
+                    if (tmpGridsEl && (tmpOptions.force || tmpGridsEl.is(":visible"))) {
 
                         var tmpPaneEl = tmpGridsEl.first('.ui-layout-pane');
                         var tmpIW = tmpPaneEl.innerWidth();
@@ -2676,8 +2676,10 @@ window.AACore = ActionAppCore;
                         } else {
                             tmpXHead.hide();
                         }
+                        
                         var tmpToRemove = '';
                         tmpGridsEl.data = tmpGridsEl.data || {};
+                        
                         if (tmpGridsEl.data.currentCardCount) {
                             tmpToRemove = this.numLookup[tmpGridsEl.data.currentCardCount] + " wide";
                         }
