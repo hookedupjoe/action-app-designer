@@ -2626,7 +2626,118 @@ window.AACore = ActionAppCore;
     }
 
     me.grid16 = {
+        onResize: ActionAppCore.debounce(function () {
+            ThisApp.grid16.resizeLayoutProcess();
+            ThisApp.publish('grid16-resized');
+        }, 200),
 
+        minCardSizeSm: 210,
+        minCardSize : 210,
+        maxCardSizeSm : 365,
+        maxCardSize : 999,
+        currentCardCount : 0,
+        cutOffSmall : 668,
+        cutOffLarge : 9999,
+
+        resizeLayoutProcess : function (theForce) {
+            try {
+              //--- On layout resize ...
+              this.resizeGrid();
+              var tmpCardCount = 4;
+              var tmpCards = ThisApp.getByAttr$({"auto-adapt":"cards"});
+              
+              if( tmpCards && tmpCards.length ){
+  
+                var tmpCardsLen = tmpCards.length;
+  
+                if (tmpCards && tmpCardsLen > 0) {
+                  
+                  for (var iPos = 0; iPos < tmpCardsLen; iPos++) {
+                    var tmpCardsEl = $(tmpCards[iPos]);
+                    var tmpIW = tmpCardsEl.innerWidth();
+      
+                    var tmpMin = this.minCardSizeSm;
+                    //ToDo: Set cut off for small card sizing (xs?)
+                    // if (this.mode != "S") {
+                    //   tmpMin = this.minCardSize;
+                    // }
+                    //var tmpMax = this.maxCardSizeSm;
+                    // if (this.mode != "S") {
+                    //   tmpMax = this.maxCardSize;
+                    // }
+        
+                    //--- ToDo: Move to element data if used
+                    //this.lastIW = tmpIW;
+                
+                    var tmpEach = parseInt(tmpIW / tmpMin);
+                    tmpCardCount = tmpEach;
+                
+                    if (tmpCardCount > 10) {
+                      tmpCardCount = 10;
+                    }
+                
+            
+                    
+                    if (tmpCardsEl && tmpCardsEl.is(":visible")) {
+                      //console.log('tmpCardsEl',tmpCardsEl)
+                      var tmpCardEntryEls = tmpCardsEl.find('.card');
+  
+                      //ToDo: Implement with cut off value
+                      // if (this.mode == 'S') {
+                      //   tmpCardEntryEls.css('max-width', this.maxCardSizeSm + 'px');
+                      // } else {
+                      //   tmpCardEntryEls.css('max-width', this.maxCardSize + 'px');
+                      // }
+                      //tmpCardEntryEls.css('max-width', this.maxCardSize + 'px');
+                      //end ToDo
+  
+                      var tmpCurrCards = tmpCardEntryEls.length;
+                      //console.log('tmpCurrCards',tmpCurrCards)
+                      var tmpMaxCards = tmpCurrCards;
+                      //---
+                      //console.log('tmpCardCount',tmpCardCount)
+                      if (tmpCardCount > tmpMaxCards) {
+                        tmpCardCount = tmpMaxCards;
+                      }
+                      //console.log('tmpCardCount2',tmpCardCount)
+            
+                      if (tmpCurrCards == 4 && tmpCardCount == 3) {
+                        if (tmpTW < 800) {
+                          tmpCardCount = 2;
+                        } else {
+                          tmpCardCount = 4;
+                        }
+                      }
+            
+                      var tmpToRemove = '';
+                      if (this.currentCardCount) {
+                        tmpToRemove = this.numLookup[this.currentCardCount];
+                      }
+                      this.currentCardCount = tmpCardCount;
+                      var tmpToAdd = this.numLookup[this.currentCardCount];
+            
+            
+                      if (theForce || (tmpToRemove != tmpToAdd)) {
+                        if (tmpToRemove) {
+                          tmpCards.removeClass(tmpToRemove);
+                        }
+                        if (tmpToAdd) {
+                          tmpCards.addClass(tmpToAdd);
+                        }
+                      }
+                    }
+                  }
+                }
+  
+              }
+              //--- end layout resize
+            } catch (ex) {
+              console.error("Error on refresh ", ex);
+            }
+          },
+
+        sep_cards: "-----------------------------",
+        
         numLookup: ["zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten", "eleven", "twelve", "thirteen", "fourteen", "fifteen", "sixteen"],
         paramDefaults: {
             "gs-s-at": 330,
@@ -2635,12 +2746,14 @@ window.AACore = ActionAppCore;
             "gs-m": 8,
             "gs-l": 4
         },
+
         resizeGrid: function (theOptions) {
            try {
             var tmpOptions = theOptions || {};
             var tmpParent = tmpOptions.parent || false;
             //todo: use tmpParent
-            var tmpGrids = ThisApp.getByAttr$({ appuse: "grid-16" });
+            var tmpGrids = tmpParent ? tmpParent : ThisApp.getByAttr$({ appuse: "grid-16" });
+            //console.log('parent',tmpParent);
 
             var tmpGridsLen = tmpGrids.length;
             if (tmpGrids && tmpGridsLen > 0) {

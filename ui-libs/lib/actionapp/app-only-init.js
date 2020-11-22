@@ -11,6 +11,7 @@
 
   ActionAppCore = ActionAppCore || window.ActionAppCore;
 
+  
   function setup(thePages, thePlugins, theUseLayout) {
     try {
       var siteMod = ActionAppCore.module('site');
@@ -35,6 +36,12 @@
       //--- Use tmpRequiredSpecs to preload more using that example
       ThisApp.init({ setAlert: tmpSetAlert, layout: false, pages: thePages, plugins: thePlugins, required: tmpRequired }).then(function (theReply) {
         ThisApp.getByAttr$({ appuse: "app-loader" }).remove();
+
+        
+        window.addEventListener('resize', ThisApp.grid16.onResize );
+
+        ThisApp.grid16.resizeLayoutProcess();
+        
 
         //--- Extend common with your app specific stuff
         $.extend(ThisApp.common, {
