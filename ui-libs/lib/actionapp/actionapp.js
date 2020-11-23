@@ -2631,8 +2631,8 @@ window.AACore = ActionAppCore;
             ThisApp.publish('grid16-resized');
         }, 200),
 
-        minCardSizeSm: 210,
-        minCardSize : 210,
+        minCardSizeSm: 325,
+        minCardSize : 350,
         maxCardSizeSm : 365,
         maxCardSize : 999,
         currentCardCount : 0,
@@ -2655,7 +2655,6 @@ window.AACore = ActionAppCore;
                   for (var iPos = 0; iPos < tmpCardsLen; iPos++) {
                     var tmpCardsEl = $(tmpCards[iPos]);
                     var tmpIW = tmpCardsEl.innerWidth();
-      
                     var tmpMin = this.minCardSizeSm;
                     //ToDo: Set cut off for small card sizing (xs?)
                     // if (this.mode != "S") {
@@ -2671,12 +2670,12 @@ window.AACore = ActionAppCore;
                 
                     var tmpEach = parseInt(tmpIW / tmpMin);
                     tmpCardCount = tmpEach;
-                
                     if (tmpCardCount > 10) {
                       tmpCardCount = 10;
                     }
                 
             
+                   
                     
                     if (tmpCardsEl && tmpCardsEl.is(":visible")) {
                       //console.log('tmpCardsEl',tmpCardsEl)
@@ -2692,6 +2691,8 @@ window.AACore = ActionAppCore;
                       //end ToDo
   
                       var tmpCurrCards = tmpCardEntryEls.length;
+                      //console.log('tmpCardsLen',tmpCardsLen)
+
                       //console.log('tmpCurrCards',tmpCurrCards)
                       var tmpMaxCards = tmpCurrCards;
                       //---
@@ -2702,7 +2703,7 @@ window.AACore = ActionAppCore;
                       //console.log('tmpCardCount2',tmpCardCount)
             
                       if (tmpCurrCards == 4 && tmpCardCount == 3) {
-                        if (tmpTW < 800) {
+                        if (tmpIW < 800) {
                           tmpCardCount = 2;
                         } else {
                           tmpCardCount = 4;
@@ -2710,19 +2711,20 @@ window.AACore = ActionAppCore;
                       }
             
                       var tmpToRemove = '';
-                      if (this.currentCardCount) {
-                        tmpToRemove = this.numLookup[this.currentCardCount];
+                      var tmpAttrVal = tmpCardsEl.attr('grid16-ccc');
+                      if (tmpAttrVal) {
+                        tmpToRemove = tmpAttrVal;
                       }
-                      this.currentCardCount = tmpCardCount;
-                      var tmpToAdd = this.numLookup[this.currentCardCount];
-            
+                      //tmpCardsEl.data.currentCardCount = tmpCardCount;
+                      var tmpToAdd = this.numLookup[tmpCardCount];
+                      tmpCardsEl.attr('grid16-ccc',tmpToAdd);
             
                       if (theForce || (tmpToRemove != tmpToAdd)) {
                         if (tmpToRemove) {
-                          tmpCards.removeClass(tmpToRemove);
+                            tmpCardsEl.removeClass(tmpToRemove);
                         }
                         if (tmpToAdd) {
-                          tmpCards.addClass(tmpToAdd);
+                            tmpCardsEl.addClass(tmpToAdd);
                         }
                       }
                     }
