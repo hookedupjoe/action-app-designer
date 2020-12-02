@@ -738,7 +738,7 @@ position: inherit !important;
 .vakata-context { z-index:10052 !important; }
 
 .hidden {
-  display: none !important;
+  display: none;
 }
 
 .hidden.menu {
