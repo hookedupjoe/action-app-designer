@@ -1014,7 +1014,7 @@ body .ui.inverted::-webkit-scrollbar-thumb:hover {
   margin-right: 1.5em;
 }
 
-.ui.animated.button .hidden.content {
+.ui.animated.button .inithidden.content {
   position: absolute;
   width: 100%;
 }
@@ -1022,7 +1022,7 @@ body .ui.inverted::-webkit-scrollbar-thumb:hover {
 /* Horizontal */
 
 .ui.animated.button .visible.content,
-.ui.animated.button .hidden.content {
+.ui.animated.button .inithidden.content {
   -webkit-transition: right 0.3s ease 0s;
   transition: right 0.3s ease 0s;
 }
@@ -1032,7 +1032,7 @@ body .ui.inverted::-webkit-scrollbar-thumb:hover {
   right: 0%;
 }
 
-.ui.animated.button .hidden.content {
+.ui.animated.button .inithidden.content {
   top: 50%;
   left: auto;
   right: -100%;
@@ -1045,8 +1045,8 @@ body .ui.inverted::-webkit-scrollbar-thumb:hover {
   right: 200%;
 }
 
-.ui.animated.button:focus .hidden.content,
-.ui.animated.button:hover .hidden.content {
+.ui.animated.button:focus .inithidden.content,
+.ui.animated.button:hover .inithidden.content {
   left: auto;
   right: 0%;
 }
@@ -1054,7 +1054,7 @@ body .ui.inverted::-webkit-scrollbar-thumb:hover {
 /* Vertical */
 
 .ui.vertical.animated.button .visible.content,
-.ui.vertical.animated.button .hidden.content {
+.ui.vertical.animated.button .inithidden.content {
   -webkit-transition: top 0.3s ease, -webkit-transform 0.3s ease;
   transition: top 0.3s ease, -webkit-transform 0.3s ease;
   transition: top 0.3s ease, transform 0.3s ease;
@@ -1067,7 +1067,7 @@ body .ui.inverted::-webkit-scrollbar-thumb:hover {
   right: auto;
 }
 
-.ui.vertical.animated.button .hidden.content {
+.ui.vertical.animated.button .inithidden.content {
   top: -50%;
   left: 0%;
   right: auto;
@@ -1080,8 +1080,8 @@ body .ui.inverted::-webkit-scrollbar-thumb:hover {
   right: auto;
 }
 
-.ui.vertical.animated.button:focus .hidden.content,
-.ui.vertical.animated.button:hover .hidden.content {
+.ui.vertical.animated.button:focus .inithidden.content,
+.ui.vertical.animated.button:hover .inithidden.content {
   top: 50%;
   right: auto;
 }
@@ -1089,7 +1089,7 @@ body .ui.inverted::-webkit-scrollbar-thumb:hover {
 /* Fade */
 
 .ui.fade.animated.button .visible.content,
-.ui.fade.animated.button .hidden.content {
+.ui.fade.animated.button .inithidden.content {
   -webkit-transition: opacity 0.3s ease, -webkit-transform 0.3s ease;
   transition: opacity 0.3s ease, -webkit-transform 0.3s ease;
   transition: opacity 0.3s ease, transform 0.3s ease;
@@ -1104,7 +1104,7 @@ body .ui.inverted::-webkit-scrollbar-thumb:hover {
   transform: scale(1);
 }
 
-.ui.fade.animated.button .hidden.content {
+.ui.fade.animated.button .inithidden.content {
   opacity: 0;
   left: 0%;
   right: auto;
@@ -1121,8 +1121,8 @@ body .ui.inverted::-webkit-scrollbar-thumb:hover {
   transform: scale(0.75);
 }
 
-.ui.fade.animated.button:focus .hidden.content,
-.ui.fade.animated.button:hover .hidden.content {
+.ui.fade.animated.button:focus .inithidden.content,
+.ui.fade.animated.button:hover .inithidden.content {
   left: 0%;
   right: auto;
   opacity: 1;
@@ -5466,12 +5466,12 @@ body .ui.inverted::-webkit-scrollbar-thumb:hover {
     Hidden
 ---------------*/
 
-.ui.hidden.divider {
+.ui.inithidden.divider {
   border-color: transparent !important;
 }
 
-.ui.hidden.divider:before,
-.ui.hidden.divider:after {
+.ui.inithidden.divider:before,
+.ui.inithidden.divider:after {
   display: none;
 }
 
@@ -13841,18 +13841,18 @@ img.ui.image {
             States
 *******************************/
 
-.ui.hidden.images,
-.ui.hidden.image {
+.ui.inithidden.images,
+.ui.inithidden.image {
   display: none;
 }
 
-.ui.hidden.transition.images,
-.ui.hidden.transition.image {
+.ui.inithidden.transition.images,
+.ui.inithidden.transition.image {
   display: block;
   visibility: hidden;
 }
 
-.ui.images > .hidden.transition {
+.ui.images > .inithidden.transition {
   display: inline-block;
   visibility: hidden;
 }
@@ -15233,8 +15233,8 @@ a.ui.active.label:ActiveHover:before {
       Hidden
 --------------------*/
 
-.ui.labels.hidden .label,
-.ui.label.hidden {
+.ui.labels.inithidden .label,
+.ui.label.inithidden {
   display: none !important;
 }
 
@@ -17423,7 +17423,7 @@ ol.ui.horizontal.list li:before,
 }
 
 .ui.loader.disabled,
-.ui.loader.hidden {
+.ui.loader.inithidden {
   display: none;
 }
 
@@ -18056,7 +18056,7 @@ ol.ui.horizontal.list li:before,
   transition: all 0.5s ease 0.1s;
 }
 
-.ui.reveal > .hidden.content {
+.ui.reveal > .inithidden.content {
   position: relative !important;
   z-index: 2 !important;
 }
@@ -18098,7 +18098,7 @@ ol.ui.horizontal.list li:before,
   position: relative !important;
 }
 
-.ui.slide.reveal > .hidden.content {
+.ui.slide.reveal > .inithidden.content {
   position: absolute !important;
   left: 0% !important;
   width: 100% !important;
@@ -18112,8 +18112,8 @@ ol.ui.horizontal.list li:before,
   transform: translateX(-100%) !important;
 }
 
-.ui.slide.active.reveal > .hidden.content,
-.ui.slide.reveal:hover > .hidden.content {
+.ui.slide.active.reveal > .inithidden.content,
+.ui.slide.reveal:hover > .inithidden.content {
   -webkit-transform: translateX(0%) !important;
   transform: translateX(0%) !important;
 }
@@ -18123,7 +18123,7 @@ ol.ui.horizontal.list li:before,
   transform: translateX(0%) !important;
 }
 
-.ui.slide.right.reveal > .hidden.content {
+.ui.slide.right.reveal > .inithidden.content {
   -webkit-transform: translateX(-100%) !important;
   transform: translateX(-100%) !important;
 }
@@ -18134,13 +18134,13 @@ ol.ui.horizontal.list li:before,
   transform: translateX(100%) !important;
 }
 
-.ui.slide.right.active.reveal > .hidden.content,
-.ui.slide.right.reveal:hover > .hidden.content {
+.ui.slide.right.active.reveal > .inithidden.content,
+.ui.slide.right.reveal:hover > .inithidden.content {
   -webkit-transform: translateX(0%) !important;
   transform: translateX(0%) !important;
 }
 
-.ui.slide.up.reveal > .hidden.content {
+.ui.slide.up.reveal > .inithidden.content {
   -webkit-transform: translateY(100%) !important;
   transform: translateY(100%) !important;
 }
@@ -18151,13 +18151,13 @@ ol.ui.horizontal.list li:before,
   transform: translateY(-100%) !important;
 }
 
-.ui.slide.up.active.reveal > .hidden.content,
-.ui.slide.up.reveal:hover > .hidden.content {
+.ui.slide.up.active.reveal > .inithidden.content,
+.ui.slide.up.reveal:hover > .inithidden.content {
   -webkit-transform: translateY(0%) !important;
   transform: translateY(0%) !important;
 }
 
-.ui.slide.down.reveal > .hidden.content {
+.ui.slide.down.reveal > .inithidden.content {
   -webkit-transform: translateY(-100%) !important;
   transform: translateY(-100%) !important;
 }
@@ -18168,8 +18168,8 @@ ol.ui.horizontal.list li:before,
   transform: translateY(100%) !important;
 }
 
-.ui.slide.down.active.reveal > .hidden.content,
-.ui.slide.down.reveal:hover > .hidden.content {
+.ui.slide.down.active.reveal > .inithidden.content,
+.ui.slide.down.reveal:hover > .inithidden.content {
   -webkit-transform: translateY(0%) !important;
   transform: translateY(0%) !important;
 }
@@ -18212,7 +18212,7 @@ ol.ui.horizontal.list li:before,
   position: relative !important;
 }
 
-.ui.move.reveal > .hidden.content {
+.ui.move.reveal > .inithidden.content {
   position: absolute !important;
   left: 0% !important;
   width: 100% !important;
@@ -18294,7 +18294,7 @@ ol.ui.horizontal.list li:before,
   transform: none !important;
 }
 
-.ui.disabled.reveal:hover > .hidden.hidden.content {
+.ui.disabled.reveal:hover > .inithidden.inithidden.content {
   display: none !important;
 }
 
@@ -26091,7 +26091,7 @@ Floated Menu / Item
      Hidden
 ---------------*/
 
-.ui.hidden.hidden.hidden.hidden.message {
+.ui.inithidden.inithidden.inithidden.inithidden.message {
   display: none;
 }
 
@@ -31445,13 +31445,13 @@ a.ui.card:hover,
 /* Initialized checkbox moves input below element
  to prevent manually triggering */
 
-.ui.checkbox input.hidden {
+.ui.checkbox input.inithidden {
   z-index: -1;
 }
 
 /* Selectable Label */
 
-.ui.checkbox input.hidden + label {
+.ui.checkbox input.inithidden + label {
   cursor: pointer;
   -webkit-user-select: none;
   -moz-user-select: none;
@@ -32618,7 +32618,7 @@ select.ui.dropdown {
 
 /* User Item */
 
-.ui.selection.dropdown .menu > .hidden.addition.item {
+.ui.selection.dropdown .menu > .inithidden.addition.item {
   display: none;
 }
 
@@ -37062,7 +37062,7 @@ a.ui.nag {
   z-index: 100;
 }
 
-.ui.shape .hidden.side {
+.ui.shape .inithidden.side {
   opacity: 0.6;
 }
 
@@ -37995,7 +37995,7 @@ body.pushable > .pusher {
 
 /* Hidden */
 
-.hidden.transition {
+.inithidden.transition {
   display: none;
   visibility: hidden;
 }
