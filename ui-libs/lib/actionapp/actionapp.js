@@ -2631,7 +2631,7 @@ window.AACore = ActionAppCore;
             ThisApp.publish('grid16-resized');
         }, 200),
 
-        minCardSizeSm: 325,
+        minCardSizeSm: 245,
         minCardSize : 350,
         maxCardSizeSm : 365,
         maxCardSize : 999,
