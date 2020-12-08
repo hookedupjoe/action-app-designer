@@ -5589,6 +5589,16 @@ License: MIT
         return tmpRet;
     }
 
+    meInstance.submitForm = function () {
+        var tmpForm = this.getEl().find('form');
+        if( tmpForm.length == 0){
+            return false;
+        }
+        tmpForm.submit();
+        return true;
+    }
+
+
     meInstance.assureRequired = function () {
         var dfd = jQuery.Deferred();
         this.options = this.options || {};
@@ -6709,8 +6719,8 @@ License: MIT
         tmpHTML.push(getContentHTML(theControlName, tmpItems, theControlObj));
         var tmpAttr = ' segment ';
         if (tmpSpecOptions.padding === false) {
-            tmpAttr += ' nopad ';
-        } else {
+            tmpAttr = ' ';
+        } else if (tmpSpecOptions.padding === 'slim') {
             tmpAttr += '  slim ';
         }
         if (tmpSpecOptions.basic == true) {
@@ -7437,7 +7447,8 @@ License: MIT
             } else if (isStr(tmpObject.myaction)) {
                 tmpAction = ' myaction="' + tmpObject.myaction.trim() + '" ';
             }
-            tmpHTML.push('<button ' + tmpAction + getItemAttrString(theObject) + ' class="ui button ' + tmpClasses + ' " ' + tmpStyle + '>')
+
+            tmpHTML.push('<button type="button" ' + tmpAction + getItemAttrString(theObject) + ' class="ui button ' + tmpClasses + ' " ' + tmpStyle + '>')
 
             if (tmpObject.icon && !(tmpObject.right)) {
                 tmpHTML.push('<i class="' + tmpObject.icon + ' icon"></i> ');
