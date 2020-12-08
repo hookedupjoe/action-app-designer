@@ -595,17 +595,25 @@ window.AACore = ActionAppCore;
 
     }
 
+    // function assureRelative(theURL) {
+    //     var tmpURL = theURL;
+
+    //     if (!tmpURL.startsWith('.')) {
+    //         if (!tmpURL.startsWith('/')) {
+    //             tmpURL = './' + tmpURL;
+    //         } else {
+    //             tmpURL = '.' + tmpURL
+    //         }
+    //     }
+
+    //     return tmpURL;
+    // }
+    //--- Updated to allow hard coded root as usual
     function assureRelative(theURL) {
         var tmpURL = theURL;
-
-        if (!tmpURL.startsWith('.')) {
-            if (!tmpURL.startsWith('/')) {
+        if (!tmpURL.startsWith('.') && !tmpURL.startsWith('/')) {
                 tmpURL = './' + tmpURL;
-            } else {
-                tmpURL = '.' + tmpURL
-            }
         }
-
         return tmpURL;
     }
 
@@ -1034,6 +1042,8 @@ window.AACore = ActionAppCore;
    * getSpot$
    *  - Returns jQuery element for the spot name provided
    *  - Optionally pass a parent element as the DOM to look in
+   *  - If a jQuery element is passed as the name, it returns it
+   *    .. this is so you can hot swap any jQuery element for spot use
    * 
    * Example: 
    *   var tmpEl = ThisApp.getSpot('main:out')
@@ -1046,6 +1056,9 @@ window.AACore = ActionAppCore;
    * 
    */
     me.getSpot$ = function (theName, theOptionalParent$, theOptionalTagName) {
+        if( ThisApp.util.isjQuery(theName)){
+            return theName;
+        }
         var tmpTagName = theOptionalTagName || 'spot';
         var tmpSelector = '[' + tmpTagName + '="' + theName + '"]';
         var tmpSpot = false;
@@ -6715,9 +6728,26 @@ License: MIT
             tmpAttr += ' loading ';
         }
 
+        var tmpTag = 'div';
+        var tmpFormAction = '';
+        var tmpFormMethod = '';
+        var tmpFormAttr = '';
+
+        if (typeof(tmpSpecOptions.form) == 'object') {
+            tmpFormAction = tmpSpecOptions.form.action || '';
+            tmpFormMethod = tmpSpecOptions.form.method || '';
+
+            tmpFormAttr = ' action="' + tmpFormAction + '"';
+            if( tmpFormMethod ){
+                tmpFormAttr += ' method="' + tmpFormMethod + '"';
+            }
+
+            tmpTag = 'form';
+        }
+
         tmpHTML = tmpHTML.join('');
         if (tmpHTML) {
-            tmpHTML = '<div class="ui ' + tmpAttr + ' ' + tmpForm + '" controls control name="' + tmpControlName + '">' + tmpHTML + '</div>';
+            tmpHTML = '<' + tmpTag + ' ' + tmpFormAttr + ' class="ui ' + tmpAttr + ' ' + tmpForm + '" controls control name="' + tmpControlName + '">' + tmpHTML + '</' + tmpTag + '>';
         }
         return tmpHTML;
     }
