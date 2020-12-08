@@ -2427,11 +2427,16 @@ window.AACore = ActionAppCore;
         me.controls = me.getComponent("plugin:Controls");
 
         var tmpPromRequired = true;
+        var tmpPromConfigReqired = true;
         if (theAppConfig && theAppConfig.required) {
             tmpPromRequired = me.loadResources(theAppConfig.required);
         };
+        if (ActionAppCore.config && ActionAppCore.config.required) {
+            console.log("ActionAppCore.config.required",ActionAppCore.config.required);
+            tmpPromConfigReqired = me.loadResources(ActionAppCore.config.required);
+        };
 
-        $.when(tmpPromRequired).then(function () {
+        $.when(tmpPromRequired,tmpPromConfigReqired).then(function () {
             //--- do the rest of the app load
             dfd.resolve(true);
         })
@@ -3204,7 +3209,7 @@ window.AACore = ActionAppCore;
         return (theObject instanceof Element);
     }
     function isjQuery(theObject) {
-        return (theObject instanceof jQuery);
+        return ( theObject && theObject.jquery) ? true : false;
     }
     function isArray(theObject) {
         return Array.isArray(theObject);
