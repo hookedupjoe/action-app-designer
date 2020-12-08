@@ -123,6 +123,7 @@ Source Handlers:  ("name" = function or name of other handler.)
     me.transformNoSQLDocs = dataMgr.transformNoSQLDocs;
     me.getDatabase = dataMgr.getDatabase;
 
+//ToDo: Review this    
     window.onFail = function(theFailure){console.log(theFailure)};
     window.onDone = function(theResult){console.log("Done: Results are...", theResult)};
 
