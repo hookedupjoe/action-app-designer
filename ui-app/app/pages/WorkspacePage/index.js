@@ -185,12 +185,12 @@ License: MIT
 
     ThisPage.closeSiteMap = closeSiteMap;
     function closeSiteMap(theParams, theTarget) {
-        var tmpNav = ThisPage.parts.west;
-        var tmpWSEl = tmpNav.getItemEl('workspace');
-        ThisPage.navHead = ThisPage.navHead || tmpWSEl.find('[action="outlineDisplay"][select="false"]');
-        if (ThisPage.navHead) {
-            ThisPage.navHead.trigger('click');
-        }
+        // var tmpNav = ThisPage.parts.west;
+        // var tmpWSEl = tmpNav.getItemEl('workspace');
+        // ThisPage.navHead = ThisPage.navHead || tmpWSEl.find('[action="outlineDisplay"][select="false"]');
+        // if (ThisPage.navHead) {
+        //     ThisPage.navHead.trigger('click');
+        // }
     };
 
     var dsNameWorkspaceState = 'ws-page-state';
@@ -232,7 +232,8 @@ License: MIT
 
     actions.refreshWorkspace = refreshWorkspace;
     function refreshWorkspace() {
-        ThisPage.parts.west.parts.workspace.refreshFromURI();
+        //--- No longer using west panel
+        //ThisPage.parts.west.parts.workspace.refreshFromURI();
         ThisPage.parts.center.parts.workspace.refreshFromURI();
         //ThisPage.refreshNavTabs();
     };
