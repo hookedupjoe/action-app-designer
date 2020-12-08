@@ -508,8 +508,11 @@ $.fn.NoSqlDataManager = (function ($) {
         var tmpTempls = [];
 
         var tmpSource = theAction.source || '';
+        
         var tmpPre = './' + tmpSource + '/';
-
+        if( tmpSource.startsWith('/' ) ){
+            tmpPre = tmpSource + '/';
+        }
         
         var tmpDataType = "json";
         if( theOptions && theOptions.dataType ){
