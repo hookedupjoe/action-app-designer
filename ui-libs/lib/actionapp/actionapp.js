@@ -124,6 +124,9 @@ window.AACore = ActionAppCore;
     //--- return the prototype to be marged with prototype of target object
     ExtendMod.PubSub = me;
 
+    $.extend(ActionAppCore, ExtendMod.PubSub);
+    ActionAppCore.initPubSub();
+
 })(ActionAppCore, $);
 
 
@@ -2985,9 +2988,10 @@ window.AACore = ActionAppCore;
             }
         }
 
-
+        ActionAppCore.publish('app-loaded',[ThisApp]);
 
     }
+    
     function isStr(theItem) {
         return (typeof (theItem) == 'string')
     }
