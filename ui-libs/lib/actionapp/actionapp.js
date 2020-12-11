@@ -7593,8 +7593,12 @@ License: MIT
             var tmpClass = tmpObject.class || '';
             var tmpControlClass = tmpClass || theControlName;
             var tmpClasses = tmpObject.classes || '';
+            if( tmpObject.centered ){
+                tmpClasses += 'center aligned';
+            }
             tmpClasses += getValueIfTrue(theObject, ['link', 'fluid', 'placeholder', 'raised', 'tall', 'stacked', 'piled', 'vertical', 'loading', 'inverted', 'bottom', 'top', 'attached', 'padded', 'slim', 'compact', 'secondary', 'tertiary', 'circular', 'clearing', 'right', 'left', 'center', 'aligned', 'basic']);
             tmpClasses += getValueIfThere(theObject, ['color', 'icon', 'size']);
+
             tmpHTML = [];
             tmpHTML.push('<div ' + getItemAttrString(theObject) + ' class="ui ' + tmpControlClass + ' ' + tmpClasses + '" ' + tmpStyle + '>')
 
