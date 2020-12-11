@@ -311,7 +311,9 @@ License: MIT
 
         delete (theControlObj.controlConfig._key)
         //--- ,True on json call converts to stringable object
-        ThisPage.detailsEditor.setValue(ThisApp.json(theControlObj.controlConfig, true));
+        var tmpNew = ThisApp.clone(theControlObj.controlConfig);
+        delete (tmpNew.index);
+        ThisPage.detailsEditor.setValue(ThisApp.json(tmpNew, true));
         ThisPage.detailsEditor.clearSelection();
     }
 
