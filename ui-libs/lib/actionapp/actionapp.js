@@ -34,7 +34,7 @@ var ActionAppCore = {
 };
 
 //--- Global Spot
-window.AACore = ActionAppCore;
+window.ActionAppCore = window.ActionAppCore || ActionAppCore;
 
 //--- Base module and simple module system --- --- --- --- --- --- --- --- --- --- --- --- 
 (function (ActionAppCore, $) {
@@ -5589,9 +5589,14 @@ License: MIT
         return tmpRet;
     }
 
-    meInstance.submitForm = function () {
+    //ToDo: 
+    //--- Can pass the url, method, etc in options
+    //--- Can call with {ajax: true} to use the form action, method, etc to post via ajax
+    //---   Note: When calling ajax, it returns the promise
+    meInstance.submitForm = function (theOptions) {
         var tmpForm = this.getEl().find('form');
         if( tmpForm.length == 0){
+            console.error('sumitForm - no form found')
             return false;
         }
         tmpForm.submit();
