@@ -392,6 +392,15 @@ window.ActionAppCore = window.ActionAppCore || ActionAppCore;
         // console.log("layoutComponentResized",arguments);
     }
 
+    me.onDropDownNavChange = function(theValue, theText, theChoice){
+        if( theChoice.get(0) && theChoice.get(0).tagName){
+            var tmpURL = theChoice.attr('href');
+            if( tmpURL ){
+                window.location = tmpURL;
+            }
+        }
+    }
+
     me.initAppComponents = function (theOptionalTarget) {
         var tmpDDs = me.getByAttr$({ appcomp: 'dropdown' }, theOptionalTarget);
         if (tmpDDs && tmpDDs.length) {
@@ -399,6 +408,18 @@ window.ActionAppCore = window.ActionAppCore || ActionAppCore;
                 .dropdown({
                     showOnFocus: false
                 });
+        }
+        tmpDDs = me.getByAttr$({ appcomp: 'dropdownnav' }, theOptionalTarget);
+        if (tmpDDs && tmpDDs.length) {
+            tmpDDs.attr('appcomp', '');
+            tmpDDs.dropdown({
+                allowCategorySelection: true,
+                on: 'click',
+                onChange: me.onDropDownNavChange,
+                selectOnKeydown: false,
+                allowTab: true,
+                showOnFocus: true
+            });
         }
 
         var tmpCBs = me.getByAttr$({ appcomp: 'checkbox' }, theOptionalTarget);
