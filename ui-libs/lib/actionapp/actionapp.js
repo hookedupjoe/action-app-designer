@@ -2928,6 +2928,15 @@ window.ActionAppCore = window.ActionAppCore || ActionAppCore;
         me.showSubPage = showSubPage;
         me.selectMe = showSubPage
 
+        //--- Allows a div to work like a link
+        me.openhref = function(theParams, theTarget){
+            var tmpParams = ThisApp.getActionParams(theParams, theTarget, ['href']);
+            var tmpURL = tmpParams.href;
+            if( tmpURL ){
+                window.location = tmpURL;
+            }
+        }
+
         me.$appPageContainer = $(me.config.container || '[appuse="main-page-container"]');
         if( me.$appPageContainer.length == 0){
             me.$appPageContainer = false;
