@@ -136,6 +136,7 @@ class AudioMotionAnalyzer {
 		this._canvas.style = 'max-width: 100%;';
 		this._container.appendChild( this._canvas );
 		this._canvasCtx = this._canvas.getContext('2d');
+		
 
 		// create auxiliary canvases for the X-axis and circular scale labels
 		this._scaleX = document.createElement('canvas');
