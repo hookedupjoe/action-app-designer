@@ -51,7 +51,7 @@
 			"prefix": "."
 		}
 	],
-	"libraries": [
+	"libraries": [		
 		{
 			"name": "DataTables",
 			"label": "DataTables - Advanced Tables",
@@ -96,6 +96,24 @@
 			],
 			"js": [
 				"<script src=\"{{LIBRARY-LOCATION}}/lib/jsTree/jstree.min.js\"></script>"
+			]
+		},
+		{
+			"name": "audioMotionAnalyzer",
+			"label": "audioMotion Music Analyzer",
+			"css": [
+				"<link rel=\"stylesheet\" href=\"{{LIBRARY-LOCATION}}/lib/audioMotion/styles.css\" />"
+			],
+			"js": [
+				"<script src=\"{{LIBRARY-LOCATION}}/lib/audioMotion/audioMotion-analyzer.js\"></script>"
+			]
+		},
+		{
+			"name": "p5js",
+			"label": "p5js - Processing JavaScript",
+			"js": [
+				"<script src=\"{{LIBRARY-LOCATION}}/lib/p5js/p5.min.js\"></script>",
+				"<script src=\"{{LIBRARY-LOCATION}}/lib/p5js/addons/p5.sound.min.js\"></script>"
 			]
 		},
 		{
