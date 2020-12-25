@@ -912,16 +912,18 @@ class AudioMotionAnalyzer {
 
 			// get a new array of data from the FFT
 			this._analyzer[ channel ].getByteFrequencyData( this._dataArray );
-
+			
 			// start drawing path
 			ctx.beginPath();
 
 			// draw bars / lines
-
+			var tmpFoundMusic = false;
+			var tmpMusicVals = '';
 			for ( var i = 0; i < nBars; i++ ) {
 
 				var bar = this._bars[ i ],
 					barHeight = 0;
+					bar = this._bars[ i ]
 
 				if ( bar.endIdx == 0 ) { // single FFT bin
 					barHeight = this._dataArray[ bar.dataIdx ];
@@ -938,7 +940,22 @@ class AudioMotionAnalyzer {
 				}
 
 				barHeight /= 255;
+				if( !tmpFoundMusic && barHeight > 0){
+					tmpFoundMusic = true;
+				}
+				if( tmpMusicVals != ''){
+					tmpMusicVals += ',' + (barHeight*255);
+				} else {
+					tmpMusicVals = '' + (barHeight*255);
+				}
+
 				energy += barHeight;
+				var tmpPeak = bar.peak[ channel ];
+
+				if( tmpPeak > 0){
+					//console.log('peak ' + i,tmpPeak);
+					
+				}
 
 				// set opacity for lumi bars before barHeight value is normalized
 				if ( isLumiBars )
@@ -1058,6 +1075,12 @@ class AudioMotionAnalyzer {
 					}
 				}
 			} // for ( var i = 0; i < nBars; i++ )
+			if( tmpFoundMusic != ''){
+				console.log('tmpMusicVals ',tmpMusicVals);
+				ThisApp.common.ledctl.sendIt('9,7,2');
+				ThisApp.common.ledctl.sendIt('71,1,30,' + tmpMusicVals);
+			}
+			
 
 			// restore global alpha
 			ctx.globalAlpha = 1;
