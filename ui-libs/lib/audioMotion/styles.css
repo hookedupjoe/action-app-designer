@@ -21,10 +21,10 @@
 }
 
 /* background animation for overlay test on fluid demo */
-[appuse="audioMotion"].fluid > canvas {
+/* [appuse="audioMotion"].fluid > canvas {
 	background-image: url(media/sealoop.gif);
 	background-size: cover;
-}
+} */
 
 /* overlay */
 [appuse="audioMotion"].overlay {
