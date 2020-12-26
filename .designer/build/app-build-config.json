@@ -100,12 +100,12 @@
 		},
 		{
 			"name": "audioMotionAnalyzer",
-			"label": "audioMotion Music Analyzer",
+			"label": "audioMotion Music Engire",
 			"css": [
 				"<link rel=\"stylesheet\" href=\"{{LIBRARY-LOCATION}}/lib/audioMotion/styles.css\" />"
 			],
 			"js": [
-				"<script src=\"{{LIBRARY-LOCATION}}/lib/audioMotion/audioMotion-analyzer.js\"></script>"
+				"<script src=\"{{LIBRARY-LOCATION}}/lib/audioMotion/audioMotion-engine.js\"></script>"
 			]
 		},
 		{
