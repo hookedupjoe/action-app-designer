@@ -65,6 +65,9 @@ class AudioMotionEngine {
 			},
 		};
 
+        //--- Create draw tracking bins
+        this.lastBars = false;
+
 		// Set container
 		this._container = container || document.body;
 
@@ -300,17 +303,6 @@ class AudioMotionEngine {
 		this._setCanvas('lores');
 	}
 
-	// Luminance bars
-
-	get lumiBars() {
-		return this._lumiBars;
-	}
-	set lumiBars( value ) {
-		this._lumiBars = !! value;
-		this._calcAux();
-		this._calcLeds();
-		this._makeGrads();
-	}
 
 	// Radial mode
 
@@ -506,6 +498,38 @@ class AudioMotionEngine {
 		return _AUDIO_MOTION_ANALYZER_VERSION;
 	}
 
+	
+	nodeonplay(){
+		if( this._audioCtx.state == 'suspended'){
+			this._audioCtx.resume();  
+		}		
+		this.audioStatus = 'play';
+	}
+	
+	nodeonpause(){
+		this.audioStatus = 'paused';
+	}
+	nodeonended (){
+		this.audioStatus = 'ended';
+	}
+	
+	nodeonloadeddata(){
+		this.audioLoaded = true;
+	}
+	onSourceEvents(theSource){
+		theSource.addEventListener('play', this.nodeonplay.bind(this));
+		theSource.addEventListener('pause', this.nodeonpause.bind(this));
+		theSource.addEventListener('ended', this.nodeonended.bind(this));
+		theSource.addEventListener('loadeddata', this.nodeonloadeddata.bind(this));
+	}
+	unSourceEvents(theSource){
+		theSource.removeEventListener('play', this.nodeonplay.bind(this));
+		theSource.removeEventListener('pause', this.nodeonpause.bind(this));
+		theSource.removeEventListener('ended', this.nodeonended.bind(this));
+		theSource.removeEventListener('loadeddata', this.nodeonloadeddata.bind(this));
+	}
+
+
 	/**
 	 * ==========================================================================
      *
@@ -531,6 +555,9 @@ class AudioMotionEngine {
 
 		if ( ! this._sources.includes( node ) ) {
 			node.connect( this._input );
+			if( isHTML ){
+				this.onSourceEvents(source);
+			}
 			this._sources.push( node );
 		}
 
@@ -543,6 +570,7 @@ class AudioMotionEngine {
 	 * @param [{object|array}] a connected AudioNode object or an array of such objects; if undefined, all connected nodes are disconnected
 	 */
 	disconnectInput( sources ) {
+		//ToDo: this.unSourceEvents(...);
 		if ( ! sources )
 			sources = Array.from( this._sources );
 		else if ( ! Array.isArray( sources ) )
@@ -656,6 +684,10 @@ class AudioMotionEngine {
 		}
 	}
 
+	clearData(){
+		this._dataArray = new Uint8Array( this._analyzer[0].frequencyBinCount );
+		comeback
+	}
 	/**
 	 * Start / stop canvas animation
 	 *
@@ -713,14 +745,13 @@ class AudioMotionEngine {
 	_calcAux() {
 		this._radius         = this._canvas.height * ( this._stereo ? .375 : .125 ) | 0;
 		this._barSpacePx     = Math.min( this._barWidth - 1, ( this._barSpace > 0 && this._barSpace < 1 ) ? this._barWidth * this._barSpace : this._barSpace );
-		this._isOctaveBands  = ( this._mode % 10 != 0 );
-		this._isLedDisplay   = ( this._showLeds && this._isOctaveBands && ! this._radial );
-		this._isLumiBars     = ( this._lumiBars && this._isOctaveBands && ! this._radial );
-		this._maximizeLeds   = ! this._stereo || this._reflexRatio > 0 && ! this._isLumiBars;
+		this._isOctaveBands  = true;
+		this._isLedDisplay   = false;
+		this._maximizeLeds   = ! this._stereo || this._reflexRatio > 0;
 
-		var isDual = this._stereo && ! this._radial;
+		var isDual = this._stereo;
 		this._channelHeight  = this._canvas.height - ( isDual && ! this._isLedDisplay ? .5 : 0 ) >> isDual;
-		this._analyzerHeight = this._channelHeight * ( this._isLumiBars || this._radial ? 1 : 1 - this._reflexRatio ) | 0;
+		this._analyzerHeight = this._channelHeight * ( 1 - this._reflexRatio ) | 0;
 
 		// channelGap is **0** if isLedDisplay == true (LEDs already have spacing); **1** if canvas height is odd (windowed); **2** if it's even
 		// TODO: improve this, make it configurable?
@@ -786,16 +817,17 @@ class AudioMotionEngine {
 		};
 	}
 
-	/**
-	 * Redraw the canvas
-	 * this is called 60 times per second by requestAnimationFrame()
+    	/**
+	 * Redraw the canvas - process
+	 * this is called by _draw
 	 */
-	_draw( timestamp ) {
+
+	_drawProcess( timestamp ) {
+
 		var canvas         = this._canvas,
 			  ctx            = this._canvasCtx,
 			  isOctaveBands  = this._isOctaveBands,
 			  isLedDisplay   = this._isLedDisplay,
-			  isLumiBars     = this._isLumiBars,
 			  channelHeight  = this._channelHeight,
 			  channelGap     = this._channelGap,
 			  analyzerHeight = this._analyzerHeight;
@@ -809,31 +841,15 @@ class AudioMotionEngine {
 		if ( this._energy.val > 0 )
 			this._spinAngle += this._spinSpeed * tau / 3600;
 
-		// helper function - convert planar X,Y coordinates to radial coordinates
-		var radialXY = ( x, y ) => {
-			var height = radius + y,
-				  angle  = tau * ( x / canvas.width ) + this._spinAngle;
-
-			return [ centerX + height * Math.cos( angle ), centerY + height * Math.sin( angle ) ];
-		}
-
-		// helper function - draw a polygon of width `w` and height `h` at (x,y) in radial mode
-		var radialPoly = ( x, y, w, h ) => {
-			ctx.moveTo( ...radialXY( x, y ) );
-			ctx.lineTo( ...radialXY( x, y + h ) );
-			ctx.lineTo( ...radialXY( x + w, y + h ) );
-			ctx.lineTo( ...radialXY( x + w, y ) );
-		}
-
 		// select background color
-		var bgColor = ( ! this.showBgColor || isLedDisplay && ! this.overlay ) ? '#000' : this._gradients[ this._gradient ].bgColor;
+		var bgColor = ( ! this.showBgColor && ! this.overlay ) ? '#000' : this._gradients[ this._gradient ].bgColor;
 
 		// compute the effective bar width, considering the selected bar spacing
 		// if led effect is active, ensure at least the spacing from led definitions
 		var width = this._barWidth - ( ! isOctaveBands ? 0 : Math.max( isLedDisplay ? this._leds.spaceH : 0, this._barSpacePx ) );
 
 		// make sure width is integer for pixel accurate calculation, when no bar spacing is required
-		if ( this._barSpace == 0 && ! isLedDisplay )
+		if ( this._barSpace == 0 )
 			width |= 0;
 
 		var energy = 0;
@@ -843,8 +859,7 @@ class AudioMotionEngine {
 		for ( var channel = 0; channel < this._stereo + 1; channel++ ) {
 
 			var channelTop     = channelHeight * channel + channelGap * channel,
-				  channelBottom  = channelTop + channelHeight,
-				  analyzerBottom = channelTop + analyzerHeight - ( isLedDisplay && ! this._maximizeLeds ? this._leds.spaceV : 0 );
+				  analyzerBottom = channelTop + analyzerHeight;
 
 			// clear the channel area, if in overlay mode
 			// this is done per channel to clear any residue below 0 off the top channel (especially in line graph mode with lineWidth > 1)
@@ -871,7 +886,11 @@ class AudioMotionEngine {
 			ctx.fillStyle = ctx.strokeStyle = this._gradients[ this._gradient ].gradient;
 
 			// get a new array of data from the FFT
-			this._analyzer[ channel ].getByteFrequencyData( this._dataArray );
+			if( this.audioStatus == 'play'){
+				this._analyzer[ channel ].getByteFrequencyData( this._dataArray );
+			} else {
+				this._dataArray = new Uint8Array( this._analyzer[0].frequencyBinCount );
+			}
 			
 			// start drawing path
 			ctx.beginPath();
@@ -913,13 +932,13 @@ class AudioMotionEngine {
 				var tmpPeak = bar.peak[ channel ];
 
 				if( tmpPeak > 0){
-					//console.log('peak ' + i,tmpPeak);
+					//--- Use Peaks to control stuff
+					// Track peaks for beats?
+					// Use peaks to adjust total output to keep low from being low all the time?
 					
+					//console.log('peak ' + i,tmpPeak);
 				}
 
-				// set opacity for lumi bars before barHeight value is normalized
-				if ( isLumiBars )
-					ctx.globalAlpha = barHeight;
 
 				if ( isLedDisplay ) { // normalize barHeight to match one of the "led" elements
 					barHeight = ( barHeight * this._leds.nLeds | 0 ) * ( this._leds.ledHeight + this._leds.spaceV ) - this._leds.spaceV;
@@ -967,7 +986,7 @@ class AudioMotionEngine {
 
 				// Draw peak
 				if ( bar.peak[ channel ] > 1 ) { // avoid half "negative" peaks on top channel (peak height is 2px)
-					if ( this.showPeaks  ) {
+					if ( this.showPeaks  && this.audioStatus == 'play' ) {
 						ctx.fillRect( posX, analyzerBottom - bar.peak[ channel ], adjWidth, 2 );
 					}
 
@@ -1086,7 +1105,30 @@ class AudioMotionEngine {
 		// }
 
 		// schedule next canvas update
-		this._runId = requestAnimationFrame( timestamp => this._draw( timestamp ) );
+		
+	}
+
+	/**
+	 * Redraw the canvas
+	 * this is called 60 times per second by requestAnimationFrame()
+	 */
+
+	_draw( timestamp ) {
+		//this.lastData = this.lastData || '';
+        if( (!this._hasDrawnOnce) || (this._audioCtx.state && this._audioCtx.state == 'running') ){
+			if( (!this._hasDrawnOnce) || (audioMotion.audioStatus == 'play')){
+				this._drawProcess(timestamp);
+				this.isPlaying = true;
+			} else {
+				if( this.isPlaying === true ){
+					this.isPlaying = false;
+					this._drawProcess(timestamp);
+				}
+			}
+			this._hasDrawnOnce = true;
+        }
+        this._runId = requestAnimationFrame( timestamp => this._draw( timestamp ) );
+        
 	}
 
 	/**
@@ -1095,10 +1137,7 @@ class AudioMotionEngine {
 	_makeGrads() {
 
 		var isOctaveBands  = this._isOctaveBands,
-			  isLumiBars     = this._isLumiBars,
-			  gradientHeight = isLumiBars ? this._canvas.height : this._canvas.height * ( 1 - this._reflexRatio * ! this._stereo ) | 0,
-			  					// for stereo we keep the full canvas height and handle the reflex areas while generating the color stops
-			  analyzerRatio  = 1 - this._reflexRatio;
+			  gradientHeight = this._canvas.height * ( 1 - this._reflexRatio * ! this._stereo ) | 0
 
 		// for radial mode
 		var centerX = this._canvas.width >> 1,
@@ -1401,33 +1440,32 @@ class AudioMotionEngine {
 	 */
 	_setProps( options, useDefaults ) {
 
-		// settings defaults
-		var defaults = {
-			mode         : 0,
+        var defaults = {
+			mode         : 6,
 			fftSize      : 8192,
 			minFreq      : 20,
 			maxFreq      : 22000,
-			smoothing    : 0.5,
-			gradient     : 'classic',
+			smoothing    : 0.65,
+			gradient     : 'rainbow',
 			minDecibels  : -85,
 			maxDecibels  : -25,
-			showBgColor  : true,
+			showBgColor  : false,
 			showLeds     : false,
-			showScaleX   : true,
+			showScaleX   : false,
 			showScaleY   : false,
 			showPeaks    : true,
 			showFPS      : false,
 			lumiBars     : false,
 			loRes        : false,
-			reflexRatio  : 0,
-			reflexAlpha  : 0.15,
+			reflexRatio  : .3,
+			reflexAlpha  : 0.25,
 			reflexBright : 1,
 			reflexFit    : true,
 			lineWidth    : 0,
 			fillAlpha    : 1,
-			barSpace     : 0.1,
+			barSpace     : 0.25,
 			overlay      : false,
-			bgAlpha      : 0.7,
+			bgAlpha      : 0.0,
 			radial		 : false,
 			spinSpeed    : 0,
 			stereo       : false,
@@ -1435,7 +1473,7 @@ class AudioMotionEngine {
 			start        : true,
 			volume       : 1,
 			showBarOL    : true
-		};
+        }
 
 		// callback functions properties
 		var callbacks = [ 'onCanvasDraw', 'onCanvasResize' ];
