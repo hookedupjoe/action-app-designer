@@ -441,7 +441,7 @@ class AudioMotionEngine {
 
 		// update properties affected by stereo
 		this._calcAux();
-		this._createScales();
+		//this._createScales();
 		this._calcLeds();
 		this._makeGrads();
 	}
@@ -865,50 +865,7 @@ class AudioMotionEngine {
 				ctx.globalAlpha = 1;
 			}
 
-			// draw dB scale (Y-axis)
-			if ( this.showScaleY && ! isLumiBars && ! this._radial ) {
-				var scaleWidth = this._scaleX.height,
-					  fontSize   = scaleWidth >> 1,
-					  interval   = analyzerHeight / ( this._analyzer[0].maxDecibels - this._analyzer[0].minDecibels );
-
-				ctx.fillStyle = '#888';
-				ctx.font = `${fontSize}px sans-serif`;
-				ctx.textAlign = 'right';
-				ctx.lineWidth = 1;
-
-				for ( var db = this._analyzer[0].maxDecibels; db > this._analyzer[0].minDecibels; db -= 5 ) {
-					var posY = channelTop + ( this._analyzer[0].maxDecibels - db ) * interval,
-						  even = ( db % 2 == 0 ) | 0;
-
-					if ( even ) {
-						var labelY = posY + fontSize * ( posY == channelTop ? .8 : .35 );
-						ctx.fillText( db, scaleWidth * .85, labelY );
-						ctx.fillText( db, canvas.width - scaleWidth * .1, labelY );
-						ctx.strokeStyle = '#888';
-						ctx.setLineDash([2,4]);
-						ctx.lineDashOffset = 0;
-					}
-					else {
-						ctx.strokeStyle = '#555';
-						ctx.setLineDash([2,8]);
-						ctx.lineDashOffset = 1;
-					}
-
-					ctx.beginPath();
-					ctx.moveTo( scaleWidth * even, ~~posY + .5 ); // for sharp 1px line (https://stackoverflow.com/a/13879402/2370385)
-					ctx.lineTo( canvas.width - scaleWidth * even, ~~posY + .5 );
-					ctx.stroke();
-				}
-				// restore line properties
-				ctx.setLineDash([]);
-				ctx.lineDashOffset = 0;
-			}
-
-			// set line width and dash for LEDs effect
-			if ( isLedDisplay ) {
-				ctx.setLineDash( [ this._leds.ledHeight, this._leds.spaceV ] );
-				ctx.lineWidth = width;
-			}
+			
 
 			// set selected gradient for fill and stroke
 			ctx.fillStyle = ctx.strokeStyle = this._gradients[ this._gradient ].gradient;
@@ -986,102 +943,32 @@ class AudioMotionEngine {
 
 				// Draw current bar or line segment
 
-				if ( this._mode == 10 ) {
-					if ( this._radial ) {
-						// in radial graph mode, use value of previous FFT bin (if available) as the initial amplitude
-						if ( i == 0 && bar.dataIdx && bar.posX )
-							ctx.lineTo( ...radialXY( 0, this._dataArray[ bar.dataIdx - 1 ] / 255 * ( centerY - radius ) * ( channel == 1 ? -1 : 1 ) ) );
-						// draw line to current point, avoiding overlapping wrap-around frequencies
-						if ( bar.posX >= 0 )
-							ctx.lineTo( ...radialXY( bar.posX, barHeight ) );
-					}
-					else {
-						if ( i == 0 ) {
-							// in linear mode, start the line off screen
-							ctx.moveTo( -this.lineWidth, analyzerBottom );
-							// use value of previous FFT bin
-							if ( bar.dataIdx )
-								ctx.lineTo( -this.lineWidth, analyzerBottom - this._dataArray[ bar.dataIdx - 1 ] / 255 * analyzerHeight );
-						}
-						// draw line to current point
-						ctx.lineTo( bar.posX, analyzerBottom - barHeight );
-					}
-				}
-				else {
-					if ( this._mode > 0 ) {
-						if ( isLedDisplay )
-							posX += Math.max( this._leds.spaceH / 2, this._barSpacePx / 2 );
-						else {
-							if ( this._barSpace == 0 ) {
-								posX |= 0;
-								if ( i > 0 && posX > this._bars[ i - 1 ].posX + width ) {
-									posX--;
-									adjWidth++;
-								}
-							}
-							else
-								posX += this._barSpacePx / 2;
-						}
-					}
+                
+                if ( isLedDisplay )
+                    posX += Math.max( this._leds.spaceH / 2, this._barSpacePx / 2 );
+                else {
+                    if ( this._barSpace == 0 ) {
+                        posX |= 0;
+                        if ( i > 0 && posX > this._bars[ i - 1 ].posX + width ) {
+                            posX--;
+                            adjWidth++;
+                        }
+                    }
+                    else
+                        posX += this._barSpacePx / 2;
+                }
+                ctx.fillRect( posX, analyzerBottom, adjWidth, -barHeight );
 
-					if ( isLedDisplay ) {
-						var x = posX + width / 2;
-						// draw "unlit" leds
-						if ( this.showBgColor && ! this.overlay ) {
-							var alpha = ctx.globalAlpha;
-							ctx.beginPath();
-							ctx.moveTo( x, channelTop );
-							ctx.lineTo( x, analyzerBottom );
-							ctx.strokeStyle = '#7f7f7f22';
-							ctx.globalAlpha = 1;
-							ctx.stroke();
-							// restore properties
-							ctx.strokeStyle = ctx.fillStyle;
-							ctx.globalAlpha = alpha;
-						}
-						ctx.beginPath();
-						ctx.moveTo( x, isLumiBars ? channelTop : analyzerBottom );
-						ctx.lineTo( x, isLumiBars ? channelBottom : analyzerBottom - barHeight );
-						ctx.stroke();
-					}
-					else if ( ! this._radial ) {
-						ctx.fillRect( posX, isLumiBars ? channelTop : analyzerBottom, adjWidth, isLumiBars ? channelBottom : -barHeight );
-					}
-					else if ( bar.posX >= 0 ) {
-						radialPoly( posX, 0, adjWidth, barHeight );
-					}
-				}
-
-				if ( this.showBarOL && ! isLumiBars ) {
-					if ( isLedDisplay ) {
-						//-- Do this Version?
-					}
-					else if ( ! this._radial ) {
-						ctx.strokeStyle = ctx.fillStyle;
-						ctx.strokeRect( posX, analyzerBottom, adjWidth, 0-this._analyzerHeight );
-					}
-					else if ( this.mode != 10 && bar.posX >= 0 ) { // radial - no peaks for mode 10 or wrap-around frequencies
-						//-- Do this Version?
-					}
+				if ( this.showBarOL ) {
+					ctx.strokeStyle = ctx.fillStyle;
+                    ctx.strokeRect( posX, analyzerBottom, adjWidth, 0-this._analyzerHeight );
 				}
 
 
 				// Draw peak
 				if ( bar.peak[ channel ] > 1 ) { // avoid half "negative" peaks on top channel (peak height is 2px)
-					if ( this.showPeaks && ! isLumiBars ) {
-						if ( isLedDisplay ) {
-							// convert the bar height to the position of the corresponding led element
-							var fullLeds = bar.peak[ channel ] / ( analyzerHeight + this._leds.spaceV ) * this._leds.nLeds | 0,
-								  posY = ( this._leds.nLeds - fullLeds - 1 ) * ( this._leds.ledHeight + this._leds.spaceV );
-
-							ctx.fillRect( posX,	channelTop + posY, width, this._leds.ledHeight );
-						}
-						else if ( ! this._radial ) {
-							ctx.fillRect( posX, analyzerBottom - bar.peak[ channel ], adjWidth, 2 );
-						}
-						else if ( this.mode != 10 && bar.posX >= 0 ) { // radial - no peaks for mode 10 or wrap-around frequencies
-							radialPoly( posX, bar.peak[ channel ] * ( channel == 1 ? -1 : 1 ), adjWidth, -2 );
-						}
+					if ( this.showPeaks  ) {
+						ctx.fillRect( posX, analyzerBottom - bar.peak[ channel ], adjWidth, 2 );
 					}
 
 					if ( bar.hold[ channel ] )
@@ -1091,64 +978,37 @@ class AudioMotionEngine {
 						bar.peak[ channel ] -= bar.accel[ channel ];
 					}
 				}
-			} // for ( var i = 0; i < nBars; i++ )
+			} 
 
 			//ToDo: Convert this to computing bands on send?
 
-			if( window.cordova && ThisApp && ThisApp.common && ThisApp.common.ledctl && tmpFoundMusic != ''){
-				//console.log('tmpMusicVals ',tmpMusicVals);
-				var tmpBandRanges = ",0,5,10,14,18,22,26,0";
-				var tmpBeatHueOffset = "0";
-				var tmpRunType = "1";
-				var tmpSlot = "21";
-				var tmpShowColors = "1";
-				var tmpHueShift = "1";
-				var tmpReserved = "0";
-				var tmpOptions = "," + tmpBeatHueOffset;
-				tmpOptions += "," + tmpRunType;
-				tmpOptions += "," + tmpSlot;
-				tmpOptions += "," + tmpShowColors;
-				tmpOptions += "," + tmpHueShift;
-				tmpOptions += "," + tmpReserved;
-				if( ThisApp.common.musicMode !== true){
-					ThisApp.common.ledctl.sendIt('9,7,2');
-				}
-				ThisApp.common.ledctl.sendIt('71,1,30,' + tmpMusicVals + tmpBandRanges + tmpOptions);
-			}
+			// if( window.cordova && ThisApp && ThisApp.common && ThisApp.common.ledctl && tmpFoundMusic != ''){
+			// 	//console.log('tmpMusicVals ',tmpMusicVals);
+			// 	var tmpBandRanges = ",0,5,10,14,18,22,26,0";
+			// 	var tmpBeatHueOffset = "0";
+			// 	var tmpRunType = "1";
+			// 	var tmpSlot = "21";
+			// 	var tmpShowColors = "1";
+			// 	var tmpHueShift = "1";
+			// 	var tmpReserved = "0";
+			// 	var tmpOptions = "," + tmpBeatHueOffset;
+			// 	tmpOptions += "," + tmpRunType;
+			// 	tmpOptions += "," + tmpSlot;
+			// 	tmpOptions += "," + tmpShowColors;
+			// 	tmpOptions += "," + tmpHueShift;
+			// 	tmpOptions += "," + tmpReserved;
+			// 	if( ThisApp.common.musicMode !== true){
+			// 		ThisApp.common.ledctl.sendIt('9,7,2');
+			// 	}
+			// 	ThisApp.common.ledctl.sendIt('71,1,30,' + tmpMusicVals + tmpBandRanges + tmpOptions);
+			// }
 			
 
 			// restore global alpha
 			ctx.globalAlpha = 1;
 
-			// Fill/stroke drawing path for mode 10 and radial
-			if ( this._mode == 10 ) {
-				if ( this._radial )
-					ctx.closePath();
-				else
-					ctx.lineTo( canvas.width + this.lineWidth, analyzerBottom );
-
-				if ( this.lineWidth > 0 ) {
-					ctx.lineWidth = this.lineWidth;
-					ctx.stroke();
-				}
-
-				if ( this.fillAlpha > 0 ) {
-					if ( this._radial ) {
-						// exclude the center circle from the fill area
-						ctx.moveTo( centerX + radius, centerY );
-						ctx.arc( centerX, centerY, radius, 0, tau, true );
-					}
-					ctx.globalAlpha = this.fillAlpha;
-					ctx.fill();
-					ctx.globalAlpha = 1;
-				}
-			}
-			else if ( this._radial ) {
-				ctx.fill();
-			}
-
 			// Reflex effect
-			if ( this._reflexRatio > 0 && ! isLumiBars ) {
+			if ( this._reflexRatio > 0  ) {
 				var posY, height;
 				if ( this.reflexFit || this._stereo ) { // always fit reflex in stereo mode
 					posY   = this._stereo && channel == 0 ? channelHeight + channelGap : 0;
@@ -1174,7 +1034,7 @@ class AudioMotionEngine {
 				ctx.globalAlpha = 1;
 			}
 
-		} // for ( var channel = 0; channel < this._stereo + 1; channel++ ) {
+		} 
 
 		// Update energy
 		this._energy.val = energy / ( nBars << this._stereo );
@@ -1216,21 +1076,14 @@ class AudioMotionEngine {
 			this._frame = 0;
 			this._time = timestamp;
 		}
-		if ( this.showFPS ) {
-			var size = 20 * this._pixelRatio;
-			ctx.font = `bold ${size}px sans-serif`;
-			ctx.fillStyle = '#0f0';
-			ctx.textAlign = 'right';
-			ctx.fillText( Math.round( this._fps ), canvas.width - size, size * 2 );
-		}
-
-		// call callback function, if defined
-		if ( this.onCanvasDraw ) {
-			ctx.save();
-			ctx.fillStyle = ctx.strokeStyle = this._gradients[ this._gradient ].gradient;
-			this.onCanvasDraw( this );
-			ctx.restore();
-		}
+		
+		// // call callback function, if defined
+		// if ( this.onCanvasDraw ) {
+		// 	ctx.save();
+		// 	ctx.fillStyle = ctx.strokeStyle = this._gradients[ this._gradient ].gradient;
+		// 	this.onCanvasDraw( this );
+		// 	ctx.restore();
+		// }
 
 		// schedule next canvas update
 		this._runId = requestAnimationFrame( timestamp => this._draw( timestamp ) );
@@ -1281,14 +1134,7 @@ class AudioMotionEngine {
 						if ( dual )
 							offset /= 2;
 
-						// constrain the offset within the useful analyzer areas (avoid reflex areas)
-						if ( this._stereo && ! isLumiBars && ! this._radial && ! isHorizontal ) {
-							offset *= analyzerRatio;
-							// skip the first reflex area in split mode
-							if ( ! dual && offset > .5 * analyzerRatio )
-								offset += .5 * this._reflexRatio;
-						}
-
+						
 						// only for split mode
 						if ( channel == 1 ) {
 							// add colors in reverse order if radial or lumi are active
@@ -1318,59 +1164,6 @@ class AudioMotionEngine {
 
 			this._gradients[ key ].gradient = grad; // save the generated gradient back into the gradients array
 		});
-	}
-
-	/**
-	 * Generate the X-axis and radial scales in auxiliary canvases
-	 */
-	_createScales() {
-		var tau         = 2 * Math.PI,
-			  freqLabels  = [ 16, 31, 63, 125, 250, 500, 1000, 2000, 4000, 8000, 16000 ],
-			  ctxScaleX   = this._scaleX.getContext('2d'),
-			  ctxScaleR   = this._scaleR.getContext('2d'),
-			  scaleHeight = this._canvas.height * .03 | 0; // circular scale height (radial mode)
-
-		// in radial stereo mode, the scale is positioned exactly between both channels, by making the canvas a bit larger than the central diameter
-		this._scaleR.width = this._scaleR.height = ( this._radius << 1 ) + ( this._stereo * scaleHeight );
-
-		var radius  = this._scaleR.width >> 1, // this is also used as the center X and Y coordinates of the circular scale canvas
-			  radialY = radius - scaleHeight * .7;	// vertical position of text labels in the circular scale
-
-		// clear scale canvas
-		this._scaleX.width |= 0;
-
-		ctxScaleX.fillStyle = ctxScaleR.strokeStyle = '#000c';
-		ctxScaleX.fillRect( 0, 0, this._scaleX.width, this._scaleX.height );
-
-		ctxScaleR.arc( radius, radius, radius - scaleHeight / 2, 0, tau );
-		ctxScaleR.lineWidth = scaleHeight;
-		ctxScaleR.stroke();
-
-		ctxScaleX.fillStyle = ctxScaleR.fillStyle = '#fff';
-		ctxScaleX.font = `${ this._scaleX.height >> 1 }px sans-serif`;
-		ctxScaleR.font = `${ scaleHeight >> 1 }px sans-serif`;
-		ctxScaleX.textAlign = ctxScaleR.textAlign = 'center';
-
-		for ( var freq of freqLabels ) {
-			var label = ( freq >= 1000 ) ? `${ freq / 1000 }k` : freq,
-				  x     = this._logWidth * ( Math.log10( freq ) - this._minLog );
-
-			ctxScaleX.fillText( label, x, this._scaleX.height * .75 );
-
-			// avoid overlapping wrap-around labels in the circular scale
-			if ( x > 0 && x < this._canvas.width ) {
-				var angle  = tau * ( x / this._canvas.width ),
-					  adjAng = angle - Math.PI / 2, // rotate angles so 0 is at the top
-					  posX   = radialY * Math.cos( adjAng ),
-					  posY   = radialY * Math.sin( adjAng );
-
-				ctxScaleR.save();
-				ctxScaleR.translate( radius + posX, radius + posY );
-				ctxScaleR.rotate( angle );
-				ctxScaleR.fillText( label, 0, 0 );
-				ctxScaleR.restore();
-			}
-		}
 	}
 
 	/**
@@ -1409,28 +1202,28 @@ class AudioMotionEngine {
 
 		if ( ! this._isOctaveBands ) {
 		// Discrete frequencies or area fill modes
-			this._barWidth = 1;
+        this._barWidth = 1;
 
-			minLog = Math.log10( this._minFreq );
-			logWidth = this._canvas.width / ( Math.log10( this._maxFreq ) - minLog );
+        minLog = Math.log10( this._minFreq );
+        logWidth = this._canvas.width / ( Math.log10( this._maxFreq ) - minLog );
 
-			var minIndex = freqToBin( this._minFreq, 'floor' );
-			var maxIndex = freqToBin( this._maxFreq );
+        var minIndex = freqToBin( this._minFreq, 'floor' );
+        var maxIndex = freqToBin( this._maxFreq );
 
-	 		var lastPos = -999;
+         var lastPos = -999;
 
-			for ( var i = minIndex; i <= maxIndex; i++ ) {
-				var freq = binToFreq( i ); // frequency represented by this index
-				var pos  = Math.round( logWidth * ( Math.log10( freq ) - minLog ) ); // avoid fractionary pixel values
+        for ( var i = minIndex; i <= maxIndex; i++ ) {
+            var freq = binToFreq( i ); // frequency represented by this index
+            var pos  = Math.round( logWidth * ( Math.log10( freq ) - minLog ) ); // avoid fractionary pixel values
 
-				// if it's on a different X-coordinate, create a new bar for this frequency
-				if ( pos > lastPos ) {
-					this._bars.push( { posX: pos, dataIdx: i, endIdx: 0, factor: 0, peak: [0,0], hold: [], accel: [] } );
-					lastPos = pos;
-				} // otherwise, add this frequency to the last bar's range
-				else if ( this._bars.length )
-					this._bars[ this._bars.length - 1 ].endIdx = i;
-			}
+            // if it's on a different X-coordinate, create a new bar for this frequency
+            if ( pos > lastPos ) {
+                this._bars.push( { posX: pos, dataIdx: i, endIdx: 0, factor: 0, peak: [0,0], hold: [], accel: [] } );
+                lastPos = pos;
+            } // otherwise, add this frequency to the last bar's range
+            else if ( this._bars.length )
+                this._bars[ this._bars.length - 1 ].endIdx = i;
+        }
 		}
 		else {
 		// Octave bands modes
@@ -1533,10 +1326,10 @@ class AudioMotionEngine {
 		this._calcAux();
 
 		// generate the X-axis and radial scales
-		this._createScales();
+		//this._createScales();
 
 		// update LED properties
-		this._calcLeds();
+		//this._calcLeds();
 	}
 
 	/**
