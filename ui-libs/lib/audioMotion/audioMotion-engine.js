@@ -215,6 +215,10 @@ class AudioMotionEngine {
 		// Finish canvas setup
 		this._ready = true;
 		this._setCanvas('create');
+
+
+		window.setInterval(this._draw.bind(this), 10);
+
 	}
 
 	/**
@@ -502,19 +506,27 @@ class AudioMotionEngine {
 	nodeonplay(){
 		if( this._audioCtx.state == 'suspended'){
 			this._audioCtx.resume();  
-		}		
+		}
 		this.audioStatus = 'play';
+		this.clearData();
 	}
 	
 	nodeonpause(){
 		this.audioStatus = 'paused';
 	}
 	nodeonended (){
+		this.clearData();
 		this.audioStatus = 'ended';
 	}
 	
 	nodeonloadeddata(){
-		this.audioLoaded = true;
+		this.clearData();
+		this.audioLoaded = true;		
+		this.timeToTrack = false;
+		//--- This is to keep from loading buffered stuff from last song :(
+		setTimeout(() => {
+			this.timeToTrack = true
+		}, 500);		
 	}
 	onSourceEvents(theSource){
 		theSource.addEventListener('play', this.nodeonplay.bind(this));
@@ -686,8 +698,15 @@ class AudioMotionEngine {
 
 	clearData(){
 		this._dataArray = new Uint8Array( this._analyzer[0].frequencyBinCount );
-		comeback
+		var nBars = this._bars.length;
+		for ( var i = 0; i < nBars; i++ ) {
+			var bar = this._bars[ i ];
+			for ( var iPeak = 0; iPeak < bar.peak.length; iPeak++ ) {
+				bar.peak[iPeak] = 0;
+			}
+		}
 	}
+
 	/**
 	 * Start / stop canvas animation
 	 *
@@ -701,13 +720,13 @@ class AudioMotionEngine {
 			value = ! started;
 
 		if ( started && ! value ) {
-			cancelAnimationFrame( this._runId );
+			//cancelAnimationFrame( this._runId );
 			this._runId = undefined;
 		}
 		else if ( ! started && value ) {
 			this._frame = this._fps = 0;
 			this._time = performance.now();
-			this._runId = requestAnimationFrame( timestamp => this._draw( timestamp ) );
+			//this._runId = requestAnimationFrame( timestamp => this._draw( timestamp ) );
 		}
 
 		return this.isOn;
@@ -823,6 +842,7 @@ class AudioMotionEngine {
 	 */
 
 	_drawProcess( timestamp ) {
+		
 
 		var canvas         = this._canvas,
 			  ctx            = this._canvasCtx,
@@ -935,7 +955,7 @@ class AudioMotionEngine {
 					//--- Use Peaks to control stuff
 					// Track peaks for beats?
 					// Use peaks to adjust total output to keep low from being low all the time?
-					
+
 					//console.log('peak ' + i,tmpPeak);
 				}
 
@@ -948,34 +968,32 @@ class AudioMotionEngine {
 				else
 					barHeight = barHeight * ( this._radial ? centerY - radius : analyzerHeight ) | 0;
 
+				
+					
 				if ( barHeight >= bar.peak[ channel ] ) {
-					bar.peak[ channel ] = barHeight;
-					bar.hold[ channel ] = 30; // set peak hold time to 30 frames (0.5s)
-					bar.accel[ channel ] = 0;
+					if( this.audioStatus == 'play' ){
+						if( this.timeToTrack == true ){
+							bar.peak[ channel ] = barHeight;
+						}
+					}
+					// bar.hold[ channel ] = 30; // set peak hold time to 30 frames (0.5s)
+					// bar.accel[ channel ] = 0;
 				}
-
-				if ( this._radial && channel == 1 )
-					barHeight *= -1;
 
 				var posX = bar.posX;
 				var adjWidth = width; // bar width may need small adjustments for some bars, when barSpace == 0
 
-				// Draw current bar or line segment
+				if ( this._barSpace == 0 ) {
+					posX |= 0;
+					if ( i > 0 && posX > this._bars[ i - 1 ].posX + width ) {
+						posX--;
+						adjWidth++;
+					}
+				}
+				else{
+					posX += this._barSpacePx / 2;
+				}
 
-                
-                if ( isLedDisplay )
-                    posX += Math.max( this._leds.spaceH / 2, this._barSpacePx / 2 );
-                else {
-                    if ( this._barSpace == 0 ) {
-                        posX |= 0;
-                        if ( i > 0 && posX > this._bars[ i - 1 ].posX + width ) {
-                            posX--;
-                            adjWidth++;
-                        }
-                    }
-                    else
-                        posX += this._barSpacePx / 2;
-                }
                 ctx.fillRect( posX, analyzerBottom, adjWidth, -barHeight );
 
 				if ( this.showBarOL ) {
@@ -986,16 +1004,17 @@ class AudioMotionEngine {
 
 				// Draw peak
 				if ( bar.peak[ channel ] > 1 ) { // avoid half "negative" peaks on top channel (peak height is 2px)
-					if ( this.showPeaks  && this.audioStatus == 'play' ) {
-						ctx.fillRect( posX, analyzerBottom - bar.peak[ channel ], adjWidth, 2 );
+					if( this.audioStatus == 'play' ){
+						if ( this.showPeaks ) {
+							ctx.fillRect( posX, analyzerBottom - bar.peak[ channel ], adjWidth, 2 );
+						}
 					}
-
-					if ( bar.hold[ channel ] )
-						bar.hold[ channel ]--;
-					else {
-						bar.accel[ channel ]++;
-						bar.peak[ channel ] -= bar.accel[ channel ];
-					}
+					// if ( bar.hold[ channel ] )
+					// 	bar.hold[ channel ]--;
+					// else {
+					// 	bar.accel[ channel ]++;
+					// 	bar.peak[ channel ] -= bar.accel[ channel ];
+					// }		
 				}
 			} 
 
@@ -1127,7 +1146,7 @@ class AudioMotionEngine {
 			}
 			this._hasDrawnOnce = true;
         }
-        this._runId = requestAnimationFrame( timestamp => this._draw( timestamp ) );
+        //this._runId = requestAnimationFrame( timestamp => this._draw( timestamp ) );
         
 	}
 
