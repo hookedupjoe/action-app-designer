@@ -32,24 +32,6 @@ class AudioMotionEngine {
 		// Gradient definitions
 
 		this._gradients = {
-			classic: {
-				bgColor: '#111',
-				colorStops: [
-					'hsl( 0, 100%, 50% )',
-					{ pos: .6, color: 'hsl( 60, 100%, 50% )' },
-					'hsl( 120, 100%, 50% )'
-				]
-			},
-			prism:   {
-				bgColor: '#111',
-				colorStops: [
-					'hsl( 0, 100%, 50% )',
-					'hsl( 60, 100%, 50% )',
-					'hsl( 120, 100%, 50% )',
-					'hsl( 180, 100%, 50% )',
-					'hsl( 240, 100%, 50% )'
-				]
-			},
 			rainbow: {
 				bgColor: '#111',
 				dir: 'h',
@@ -942,11 +924,13 @@ class AudioMotionEngine {
 				if( !tmpFoundMusic && barHeight > 0){
 					tmpFoundMusic = true;
 				}
-				if( tmpMusicVals != ''){
-					tmpMusicVals += ',' + (barHeight*255);
-				} else {
-					tmpMusicVals = '' + (barHeight*255);
-				}
+				tmpMusicVals += ',' + (barHeight*255);
+
+				// if( tmpMusicVals != ''){
+				// 	tmpMusicVals += ',' + (barHeight*255);
+				// } else {
+				// 	tmpMusicVals = '' + (barHeight*255);
+				// }
 
 				energy += barHeight;
 				var tmpPeak = bar.peak[ channel ];
@@ -1017,29 +1001,16 @@ class AudioMotionEngine {
 					// }		
 				}
 			} 
+			this.lastBands = this.bandsText;
+			this.bandsText = tmpMusicVals;
+			this.bandsFound = tmpFoundMusic;
+			this.bandsChanged = (this.lastBands != this.bandsText);
 
-			//ToDo: Convert this to computing bands on send?
-
-			// if( window.cordova && ThisApp && ThisApp.common && ThisApp.common.ledctl && tmpFoundMusic != ''){
-			// 	//console.log('tmpMusicVals ',tmpMusicVals);
-			// 	var tmpBandRanges = ",0,5,10,14,18,22,26,0";
-			// 	var tmpBeatHueOffset = "0";
-			// 	var tmpRunType = "1";
-			// 	var tmpSlot = "21";
-			// 	var tmpShowColors = "1";
-			// 	var tmpHueShift = "1";
-			// 	var tmpReserved = "0";
-			// 	var tmpOptions = "," + tmpBeatHueOffset;
-			// 	tmpOptions += "," + tmpRunType;
-			// 	tmpOptions += "," + tmpSlot;
-			// 	tmpOptions += "," + tmpShowColors;
-			// 	tmpOptions += "," + tmpHueShift;
-			// 	tmpOptions += "," + tmpReserved;
-			// 	if( ThisApp.common.musicMode !== true){
-			// 		ThisApp.common.ledctl.sendIt('9,7,2');
-			// 	}
-			// 	ThisApp.common.ledctl.sendIt('71,1,30,' + tmpMusicVals + tmpBandRanges + tmpOptions);
-			// }
+			if( this.bandsChanged ){
+				if( typeof(this.onBandsChange) == 'function' ){
+					this.onBandsChange(this.bandsText);
+				}
+			}
 			
 
 			// restore global alpha
@@ -1515,8 +1486,6 @@ class AudioMotionEngine {
 	}
 
 }
-
-/* Custom error class */
 
 class AudioMotionEngineError extends Error {
 	constructor( code, message ) {
