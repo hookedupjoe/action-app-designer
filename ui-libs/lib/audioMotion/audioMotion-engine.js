@@ -28,6 +28,7 @@ class AudioMotionEngine {
 	constructor( container, options = {} ) {
 
 		this._ready = false;
+		this._isOn = true;
 
 		// Gradient definitions
 
@@ -472,7 +473,7 @@ class AudioMotionEngine {
 		return this._isLumiBars;
 	}
 	get isOn() {
-		return this._runId !== undefined;
+		return this._isOn;
 	}
 	get peakEnergy() {
 		return this._energy.peak;
@@ -695,23 +696,13 @@ class AudioMotionEngine {
 	 * @param {boolean} [value] if undefined, inverts the current status
 	 * @returns {boolean} resulting status after the change
 	 */
-	toggleAnalyzer( value ) {
-		var started = this.isOn;
-
-		if ( value === undefined )
-			value = ! started;
-
-		if ( started && ! value ) {
-			//cancelAnimationFrame( this._runId );
-			this._runId = undefined;
+	toggleAnalyzer( theVal ) {
+		var tmpIsOn = this._isOn;
+		if ( theVal === undefined ){
+			theVal = !tmpIsOn;
 		}
-		else if ( ! started && value ) {
-			this._frame = this._fps = 0;
-			this._time = performance.now();
-			//this._runId = requestAnimationFrame( timestamp => this._draw( timestamp ) );
-		}
-
-		return this.isOn;
+		this._isOn =  !( tmpIsOn && ! theVal );
+		return this._isOn;
 	}
 
 	/**
@@ -1104,6 +1095,9 @@ class AudioMotionEngine {
 	 */
 
 	_draw( timestamp ) {
+		if( !this.isOn ){
+			return;
+		}
 		//this.lastData = this.lastData || '';
         if( (!this._hasDrawnOnce) || (this._audioCtx.state && this._audioCtx.state == 'running') ){
 			if( (!this._hasDrawnOnce) || (audioMotion.audioStatus == 'play')){
