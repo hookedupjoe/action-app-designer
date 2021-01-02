@@ -840,6 +840,12 @@ line-height: 36px;
 overflow:hidden;
 }
 
+@media print { 
+  .noprint { 
+     display:none; 
+  } 
+} 
+
 .prettyprint {
 font-size:10px;
 }
