@@ -6438,11 +6438,21 @@ License: MIT
                         if (tmpOnClick.validate === true) {
                             var tmpValidation = this.validate();
                             tmpIsValid = tmpValidation.isValid;
+                            if (tmpIsValid) {
+                                this.publish(tmpEvent, [this, tmpPubParams, tmpTarget, theEvent])
+                            }
                         }
-                        if (tmpIsValid) {
-                            this.publish(tmpEvent, [this, tmpPubParams, tmpTarget, theEvent])
-                        }
+                        
                     } else if (tmpToRun == 'action' || tmpToRun == 'pageaction') {
+                        if (tmpOnClick.validate === true) {
+                            var tmpValidation = this.validate();
+                            tmpIsValid = tmpValidation.isValid;
+                            if (!(tmpIsValid)) {
+                                return false;
+                            }
+                        }
+                        
+
                         var tmpAction = tmpOnClick.action || '';
                         var tmpPageAction = tmpOnClick.pageaction || '';
                         var tmpAppAction = tmpOnClick.appaction || '';
