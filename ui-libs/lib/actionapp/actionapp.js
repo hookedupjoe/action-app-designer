@@ -8526,7 +8526,11 @@ License: MIT
                     tmpPH = ' placeholder="' + tmpPH + ' ';
                 }
 
-                tmpHTML.push('<textarea controls field name="' + tmpObject.name + '" ' + tmpPH + '" ></textarea>')
+                var tmpRows = '';
+                if( tmpObject.rows ){
+                    tmpRows = 'rows=' + tmpObject.rows + ' ';
+                }
+                tmpHTML.push('<textarea ' + tmpRows + 'controls field name="' + tmpObject.name + '" ' + tmpPH + '" ></textarea>')
 
                 tmpHTML.push(getNoteMarkup(theObject));
 
