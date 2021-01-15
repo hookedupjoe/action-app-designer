@@ -8502,8 +8502,24 @@ License: MIT
                 tmpDispOnly = true;
             }
 
+            var tmpInputClasses = tmpObject.inputClasses || '';
+            tmpInputClasses += getValueIfTrue(theObject, ['fit']);
+            if (tmpInputClasses) {
+                tmpInputClasses = ' class="' + tmpInputClasses + '" '
+            }
+            var tmpClasses = ''
+            tmpClasses += getValueIfTrue(theObject, ['compact', 'fluid']);
+            tmpClasses += getValueIfThere(theObject, ['color', 'size']);
 
-            tmpHTML.push('<div controls fieldwrap name="' + tmpObject.name + '" class="' + tmpReq + ' field" ' + tmpStyle + '>')
+            
+            var tmpSizeName = '';
+            if (tmpObject.size && tmpObject.size > 0 && tmpObject.size < 17) {
+                tmpSizeName = getNumName(tmpObject.size)
+                tmpSizeName = ' ' + tmpSizeName + ' wide ';
+            }
+            
+            
+            tmpHTML.push('<div controls fieldwrap name="' + tmpObject.name + '" class="' + tmpClasses + tmpSizeName + tmpReq + ' field" ' + tmpStyle + '>')
             if (tmpObject.label) {
                 tmpHTML.push('<label>')
                 tmpHTML.push(tmpObject.label || '')
@@ -8526,6 +8542,7 @@ License: MIT
                     tmpPH = ' placeholder="' + tmpPH + ' ';
                 }
 
+    
                 var tmpRows = '';
                 if( tmpObject.rows ){
                     tmpRows = 'rows=' + tmpObject.rows + ' ';
