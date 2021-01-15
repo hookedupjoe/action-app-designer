@@ -9346,6 +9346,20 @@ License: MIT
     }
     me.validations.add('minlen', minLen);
 
+    function exactLen(theFieldName, theFieldValue, theControlObj, theParams) {
+        var tmpValue = theFieldValue || '';
+        var tmpMinLen = theParams.len || 3;
+        if (isStr(tmpMinLen)) {
+            tmpMinLen = parseInt(tmpMinLen);
+        }
+        if (tmpValue.length != tmpMinLen) {
+            return 'Value must be exactly ' + tmpMinLen + " characters";
+        }
+        return true;
+    }
+    me.validations.add('exactlen', exactLen);
+
+
 
 
     //--- =========== =========== =========== =========== =========== ===========
