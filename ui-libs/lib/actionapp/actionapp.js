@@ -2466,7 +2466,6 @@ window.ActionAppCore = window.ActionAppCore || ActionAppCore;
             tmpPromRequired = me.loadResources(theAppConfig.required);
         };
         if (ActionAppCore.config && ActionAppCore.config.required) {
-            console.log("ActionAppCore.config.required",ActionAppCore.config.required);
             tmpPromConfigReqired = me.loadResources(ActionAppCore.config.required);
         };
 
@@ -2512,7 +2511,8 @@ window.ActionAppCore = window.ActionAppCore || ActionAppCore;
                 var tmpPageName = tmpPageNames[iPageName];
                 var tmpPage = ThisApp.getPage(tmpPageName);
                 if (!(tmpPage)) {
-                    var tmpURL = './app/pages/' + tmpPageName + '/index.js?open'
+                    var tmpPageBase = theAppConfig.pageBaseURL || './app/pages/';
+                    var tmpURL = tmpPageBase + tmpPageName + '/index.js?open'
                     tmpDefs.push($.ajax({
                         url: tmpURL,
                         dataType: "script"
@@ -2744,13 +2744,14 @@ window.ActionAppCore = window.ActionAppCore || ActionAppCore;
                       }
                       //console.log('tmpCardCount2',tmpCardCount)
             
-                      if (tmpCurrCards == 4 && tmpCardCount == 3) {
-                        if (tmpIW < 800) {
-                          tmpCardCount = 2;
-                        } else {
-                          tmpCardCount = 4;
-                        }
-                      }
+                      //=== Example of a way to help with dangling single value
+                    //   if (tmpCurrCards == 4 && tmpCardCount == 3) {
+                    //     if (tmpIW < 800) {
+                    //       tmpCardCount = 2;
+                    //     } else {
+                    //       tmpCardCount = 4;
+                    //     }
+                    //   }
             
                       var tmpToRemove = '';
                       var tmpAttrVal = tmpCardsEl.attr('grid16-ccc');
@@ -4377,7 +4378,7 @@ License: MIT
         tmpHTML.push('	<div class="actions" style="clear:both;">');
         tmpHTML.push('	  <div action="_prompter:hideAlert" class="ui right blue button" style="min-width:200px">');
         tmpHTML.push('		OK');
-        tmpHTML.push('	  </div>');
+        tmpHTML.push('	  </div><div style="clear:both;"></div>');
         tmpHTML.push('	</div>');
         tmpHTML.push('</div>');
 
