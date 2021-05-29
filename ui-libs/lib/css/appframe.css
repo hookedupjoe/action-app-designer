@@ -6,6 +6,9 @@ html, body {
   font-family: Calibri, Tahoma, Geneva, sans-serif;
 }
 
+.fluid-field {
+  width: 100%;
+}
 
 .tabulator-selected i.icon.circle.select:before {
   content: "\f058" !important;  
