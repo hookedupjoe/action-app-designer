@@ -2685,7 +2685,6 @@ window.ActionAppCore = window.ActionAppCore || ActionAppCore;
         resizeLayoutProcess : function (theForce) {
             try {
               //--- On layout resize ...
-              console.log("resizeLayoutProcess");
               this.resizeGrid();
               var tmpCardCount = 4;
               var tmpCards = ThisApp.getByAttr$({"auto-adapt":"cards"});
@@ -2804,8 +2803,6 @@ window.ActionAppCore = window.ActionAppCore || ActionAppCore;
              
             var tmpGridsLen = tmpGrids.length;
             if (tmpGrids && tmpGridsLen > 0) {
-                console.log('resizeGrid',tmpGrids);
-//                console.log('ThisApp.getByAttr$({ appuse: "grid-16" })',ThisApp.getByAttr$({ appuse: "grid-16" }))
                     for (var iPos = 0; iPos < tmpGridsLen; iPos++) {
                     var tmpGridsEl = $(tmpGrids[iPos]);
                     if (tmpGridsEl && (tmpOptions.force || tmpGridsEl.is(":visible"))) {
