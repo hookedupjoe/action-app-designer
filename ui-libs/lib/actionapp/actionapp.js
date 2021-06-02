@@ -553,7 +553,8 @@ window.ActionAppCore = window.ActionAppCore || ActionAppCore;
 
             var tmpExists = false;
             var tmpExisting = false;
-            if (ThisApp.resCache[tmpURI.type] && ThisApp.resCache[tmpURI.type][tmpURI.uri]) {
+            var tmpLocalExists = tmpThis.res[tmpURI.type] && tmpThis.res[tmpURI.type][(tmpURI.name)];
+            if (tmpLocalExists || ThisApp.resCache[tmpURI.type] && ThisApp.resCache[tmpURI.type][tmpURI.uri]) {
                 tmpExists = true;
                 tmpExisting = ThisApp.resCache[tmpURI.type][tmpURI.uri];
                 //--- If existing in cache, also load reference as resource name
@@ -569,13 +570,14 @@ window.ActionAppCore = window.ActionAppCore || ActionAppCore;
 
             if (!(tmpExists)) {
 
-                var tmpURL = tmpURI.uri;
+                var tmpURL = tmpURI.uri;                
                 if (!(tmpURI.uri.endsWith('/') || (tmpURI.uri.indexOf('?') > -1) || tmpURI.uri.endsWith('.xsp'))) {
                     //--- Do not add extn to flat items
                     tmpURL += me.getExtnForType(tmpURI.type);
                 }
-                tmpURL = assureRelative(tmpURL);
-                //ThisApp.appMessage("Getting " + tmpURL);
+                if (!(tmpURI.uri.startsWith('http:') || tmpURI.uri.startsWith('https:'))) {
+                    tmpURL = assureRelative(tmpURL);
+                }
 
                 tmpRequests.push(tmpURI);
                 tmpDefs.push(
@@ -795,14 +797,13 @@ window.ActionAppCore = window.ActionAppCore || ActionAppCore;
 
     me.addResource = function (theType, theName, theFullPath, theResourceData) {
         if (theType == 'templates') {
-            //--- Always add templates at the application level
+            //--- Always asssure templates are added at the application level
             ThisApp.addTemplate(theName, theResourceData);
-        } else {
-            this.res[theType] = this.res[theType] || {};
-            ThisApp.resCache[theType] = ThisApp.resCache[theType] || {};
-            ThisApp.resCache[theType][theFullPath] = theResourceData;
-            this.res[theType][theName] = theResourceData;
         }
+        this.res[theType] = this.res[theType] || {};
+        ThisApp.resCache[theType] = ThisApp.resCache[theType] || {};
+        ThisApp.resCache[theType][theFullPath] = theResourceData;
+        this.res[theType][theName] = theResourceData;
     }
 
     CoreApp.layoutTemplates = {
@@ -2684,6 +2685,7 @@ window.ActionAppCore = window.ActionAppCore || ActionAppCore;
         resizeLayoutProcess : function (theForce) {
             try {
               //--- On layout resize ...
+              console.log("resizeLayoutProcess");
               this.resizeGrid();
               var tmpCardCount = 4;
               var tmpCards = ThisApp.getByAttr$({"auto-adapt":"cards"});
@@ -2795,14 +2797,16 @@ window.ActionAppCore = window.ActionAppCore || ActionAppCore;
         resizeGrid: function (theOptions) {
            try {
             var tmpOptions = theOptions || {};
-            var tmpParent = tmpOptions.parent || false;
-            //todo: use tmpParent
-            var tmpGrids = tmpParent ? tmpParent : ThisApp.getByAttr$({ appuse: "grid-16" });
-            //console.log('parent',tmpParent);
-
+            // var tmpParent = tmpOptions.parent || false;
+            // console.log('tmpParent',tmpParent);
+            // was !!(tmpParent) ? tmpParent : 
+            var tmpGrids = ThisApp.getByAttr$({ appuse: "grid-16" });
+             
             var tmpGridsLen = tmpGrids.length;
             if (tmpGrids && tmpGridsLen > 0) {
-                for (var iPos = 0; iPos < tmpGridsLen; iPos++) {
+                console.log('resizeGrid',tmpGrids);
+//                console.log('ThisApp.getByAttr$({ appuse: "grid-16" })',ThisApp.getByAttr$({ appuse: "grid-16" }))
+                    for (var iPos = 0; iPos < tmpGridsLen; iPos++) {
                     var tmpGridsEl = $(tmpGrids[iPos]);
                     if (tmpGridsEl && (tmpOptions.force || tmpGridsEl.is(":visible"))) {
 
@@ -2829,6 +2833,7 @@ window.ActionAppCore = window.ActionAppCore || ActionAppCore;
                         var tmpGridCols = tmpGridsEl.find('[gscol]');
                         //todo: Make generic
                         var tmpXHead = tmpGridsEl.find('[griduse="extra-header"]');
+                        
                         if (tmpGridSize < 16) {
                             tmpXHead.show();
                         } else {
@@ -6442,6 +6447,8 @@ License: MIT
                             if (tmpIsValid) {
                                 this.publish(tmpEvent, [this, tmpPubParams, tmpTarget, theEvent])
                             }
+                        } else {
+                            this.publish(tmpEvent, [this, tmpPubParams, tmpTarget, theEvent])
                         }
                         
                     } else if (tmpToRun == 'action' || tmpToRun == 'pageaction') {
@@ -6541,6 +6548,7 @@ License: MIT
         if (tmpParams.controls && tmpParams.name) {
             var tmpFN = tmpParams.name;
             this.refreshForField(tmpFN);
+            this.publish('field-changed',[this,tmpFN]);
         }
     }
 
