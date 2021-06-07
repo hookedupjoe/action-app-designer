@@ -4,6 +4,9 @@
     "default": {
       "title": "Default Loaded"
     },    
+    "personform": {
+      "title": "Person Form"
+    },
     "searchbar": {
       "title": "Search Bar"
     },
