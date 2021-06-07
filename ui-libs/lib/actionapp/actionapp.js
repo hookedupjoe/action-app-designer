@@ -5129,7 +5129,7 @@ License: MIT
         if (tmpEls.length > 0) {
             var tmpEl = $(tmpEls[0]);
             if (tmpEl.attr('type') == 'hidden') {
-                //--- Dropdown compoennt
+                //--- Dropdown control
                 var tmpControl = tmpEl.closest('[ctlcomp]');
                 if (tmpControl && tmpControl.dropdown) {
                     tmpControl.dropdown('show');
@@ -8211,11 +8211,14 @@ License: MIT
                 tmpPH = ' placeholder="' + tmpPH + ' ';
             }
             //--- Add field specific content here
-
+            var tmpDefaultValHTML = '';
+            if( tmpObject.default != '' ){
+                tmpDefaultValHTML = ' value="'+tmpObject.default + '" ';
+            }
             tmpHTML.push('\n            <div ctlcomp="dropdown" class="ui selection ' + tmpDDAttr + tmpMulti + ' dropdown">')
             tmpHTML.push('\n                <div class="default text">Select</div>')
             tmpHTML.push('\n                <i class="dropdown icon"></i>')
-            tmpHTML.push('\n                <input controls field type="hidden" name="' + theObject.name + '" >')
+            tmpHTML.push('\n                <input ' + tmpDefaultValHTML + ' controls field type="hidden" name="' + theObject.name + '" >')
             tmpHTML.push('\n                <div class="menu">')
             var tmpList = getListAsArrays(theObject.list);
 
@@ -8230,6 +8233,7 @@ License: MIT
                             tmpText = tmpEntry[0]
                             tmpVal = tmpEntry[1]
                         }
+                        
                         tmpHTML.push('\n                  <div class="item" data-value="' + tmpVal + '">' + tmpText + '</div>')
                     }
                 }
