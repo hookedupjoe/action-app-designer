@@ -1,0 +1,42 @@
+{
+  "options": {
+    "prompt": {
+      "submitLabel": "Save Page Changes",
+      "title": "Page Details",
+      "submitLabelNew": "Create New Page",
+      "titleNew": "New Page"
+    }
+  },
+  "content": [
+    {
+      "ctl": "fieldrow",
+      "name": "info-row",
+      "items": [
+        {
+          "name": "pagename",
+          "label": "Page Filename",
+          "req": true
+        },
+        {
+          "name": "title",
+          "label": "Page Title",
+          "req": true
+        }
+      ]
+    },
+    {
+      "ctl": "dropdown",
+      "name": "template",
+      "label": "Starting Point",
+      "default": "local",
+      "list": "Default Page|DefaultPage",
+      "req": true
+    },
+    {
+      "name": "description",
+      "label": "Description",
+      "placeholder": "Enter optional details about this page",
+      "ctl": "field"
+    }
+  ]
+}

@@ -28,11 +28,16 @@ License: MIT
         },
         panels: {
             map: {
-                "design/ws/frmNewApp": "frmNewApp",
-                "design/ws/frmNewPage": "frmNewPage"
+                "app/catalog/designer/panels/frmNewApp": "frmNewApp",
+                "app/catalog/designer/panels/frmNewPage": "frmNewPage"
             }
         }
     }
+    //DEVELOPER NOTE: Can use the following for backend versions that can include backend created details
+    /*
+                "design/ws/frmNewApp": "frmNewApp",
+                "design/ws/frmNewPage": "frmNewPage"
+    */
 
     thisPageSpecs.layoutOptions = {
         baseURL: pageBaseURL,

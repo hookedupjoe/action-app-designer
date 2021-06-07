@@ -1,0 +1,42 @@
+{
+    "options": {
+      "prompt": {
+        "submitLabel": "Save Application Changes",
+        "title": "Application Details",
+        "submitLabelNew": "Create New Application",
+        "titleNew": "New Application"
+      }
+    },
+    "content": [
+      {
+        "ctl": "fieldrow",
+        "name": "info-row",
+        "items": [
+          {
+            "name": "appname",
+            "label": "Application Filename",
+            "req": true
+          },
+          {
+            "name": "title",
+            "label": "Application Title",
+            "req": true
+          }
+        ]
+      },
+      {
+        "ctl": "dropdown",
+        "name": "template",
+        "label": "Starting Point",
+        "default": "local",
+        "hidden": true,
+        "req": false
+      },
+      {
+        "name": "description",
+        "label": "Description",
+        "placeholder": "Enter optional details about this application",
+        "ctl": "field"
+      }
+    ]
+  }
