@@ -22,8 +22,6 @@ License: MIT
         controls: {
             baseURL: pageBaseURL,
             map: {
-                "controls/TesterControl": "TesterControl",
-                "controls/FormShowFor": "FormShowFor"
             }
         }
     }
@@ -31,9 +29,9 @@ License: MIT
     thisPageSpecs.layoutOptions = {
         baseURL: pageBaseURL,
 
-        useControls: true,
+        //useControls: true,
 
-        center: true,
+        center: { partname: "editor", control: "AceEditor"},
         east: { partname: "preview", panel: "previewPanel", source: "catalog/panels/common"},
         west: { partname: "controls", control: "ControlPanel"},
         north: { html: "north" },
@@ -106,25 +104,13 @@ License: MIT
                 // })
                 //     ;
 
-                ThisPage.detailsEditorEl = ThisPage.getSpot$('details-editor')
-
-                ThisPage.detailsEditor = ace.edit(ThisPage.detailsEditorEl.get(0));
-                ThisPage.detailsEditor.setTheme("ace/theme/tomorrow_night_bright");
-                ThisPage.detailsEditor.setFontSize(16);
-                ThisPage.detailsEditor.session.setMode("ace/mode/json");
-                ThisPage.detailsEditor.session.setTabSize(2);
-
-                ThisPage.detailsEditor.session.selection.on('changeSelection', detailsEditorSelectionChange);
-
-                ThisPage.detailsEditor.setValue(ThisApp.json({
-                    "Controls": [
-                        "Loaded Dynamically",
-                        "Stored in forms directory",
-                        "Create more than one"
-                    ]
-                }))
+                
 
                 loadAndShow('default');
+                //DEBUGGING
+                console.info('Debug: ThisPage set');
+                window.ThisPage = ThisPage;
+                
                 //--- Do special stuff on page load here
                 //--- Then optionally call the stuff that will happen every time 
                 //      the page is activated if not already called by above code
@@ -136,34 +122,23 @@ License: MIT
 
     ThisPage._onActivate = function () {
         //-- Do refresh / checks here to update when page is activated
-
+        
     }
 
     //--- Layout related lifecycle hooks
     ThisPage._onResizeLayout = function (thePane, theElement, theState, theOptions, theName) {
-
-
-        if (thePane == 'center') {
-            var tmpH = ThisPage.layout.panes.center.height()
-
-            if (ThisPage.detailsEditorEl && ThisPage.detailsEditor) {
-                ThisPage.detailsEditorEl
-                    .css('height', '' + tmpH + 'px')
-                    .css('position', 'relative')
-                ThisPage.detailsEditor.resize(true);
-            }
-
-        } else if (thePane == 'east') {
-            if (layoutResponsive) {
-                var tmpEast = ThisPage.spot$('preview-area');
-                var tmpWidth = tmpEast.width();
-                if (tmpWidth < 450) {
-                    tmpEast.addClass('mobile');
-                } else {
-                    tmpEast.removeClass('mobile');
-                }
+        
+        //ThisPage.parts.editor.resizeToParent();
+        if (layoutResponsive) {
+            var tmpEast = ThisPage.spot$('preview-area');
+            var tmpWidth = tmpEast.width();
+            if (tmpWidth < 450) {
+                tmpEast.addClass('mobile');
+            } else {
+                tmpEast.removeClass('mobile');
             }
         }
+
     }
 
     //--- End lifecycle hooks
@@ -186,32 +161,7 @@ License: MIT
     //=== Page 
 
 
-    function detailsEditorSelectionChange(theEvent) {
-        var tmpSelected = ThisPage.detailsEditor.getSelectedText();
-        if (tmpSelected) {
-            var tmpLen = tmpSelected.length;
 
-            if (tmpLen > 3 && tmpLen < 200) {
-                var tmpItems = tmpSelected.split(':');
-                if (tmpItems.length == 2) {
-                    tmpSelected = tmpSelected.replace(',', '');
-                    try {
-                        tmpSelected = ThisApp.json('{' + tmpSelected + '}');
-                        if (tmpSelected.ctl) {
-                            var tmpCtl = ThisApp.controls.catalog.get(tmpSelected.ctl);
-                            if (tmpCtl && tmpCtl.getInfo) {
-                                var tmpControlInfo = tmpCtl.getInfo(tmpSelected.ctl);
-                                console.log('tmpControlInfo', tmpControlInfo);
-                            }
-                        }
-                    } catch (ex) {
-                        //---- not a valid selection
-                    }
-                }
-            }
-        }
-
-    }
 
     actions.loadThisControl = loadThisControl;
     function loadThisControl(theAction, theTarget) {
@@ -338,21 +288,18 @@ License: MIT
 
         delete (theControlObj.controlConfig._key)
         //--- ,True on json call converts to stringable object
-        ThisPage.detailsEditor.setValue(ThisApp.json(theControlObj.controlConfig, true));
-        ThisPage.detailsEditor.clearSelection();
+        ThisPage.parts.editor.setValue(ThisApp.json(theControlObj.controlConfig, true));
     }
 
     actions.showControlDetails = showControlDetails;
     function showControlDetails() {
         var tmpDetails = activeControl.getControlDetails()
-        ThisPage.detailsEditor.setValue(ThisApp.json(tmpDetails.data));
-        ThisPage.detailsEditor.clearSelection();
+        ThisPage.parts.editor.setValue(ThisApp.json(tmpDetails.data));
     };
 
 
     function showDetailsJson(theObject) {
-        ThisPage.detailsEditor.setValue(ThisApp.json(theObject, true));
-        ThisPage.detailsEditor.clearSelection();
+        ThisPage.parts.editor.setValue(ThisApp.json(theObject, true));
     }
 
     actions.showControlSpecConfig = showControlSpecConfig;
@@ -490,38 +437,10 @@ License: MIT
 
     };
 
-    ThisPage.toggleTitle = toggleTitle;
-    function toggleTitle() {
-
-        var tmpIsVis = activeControl.getItemDisplay('title');
-        activeControl.setItemDisplay('title', !tmpIsVis)
-
-        tmpIsVis = activeControl.getItemDisplay('options-row');
-        activeControl.setItemDisplay('options-row', !tmpIsVis)
-
-        var tmpTopicAvail = activeControl.getFieldDisplay('topic');
-        console.log('Is the topic field available on the form?', tmpTopicAvail);
-        var tmpTopicVis = activeControl.getFieldVisibility('topic');
-        console.log('Can you see the topic?', tmpTopicVis);
-
-    };
-
-    ThisPage.validateActiveControl = validateActiveControl;
-    function validateActiveControl() {
-        var tmpValidation = activeControl.validate();
-        if (!tmpValidation.isValid) {
-            //Message shows automatically
-            //alert("Not valid, see form for deatils", "Did not pass validation", "i");
-        } else {
-            alert("Your good", "Passed Validation", "c")
-        }
-    };
-
-
 
     ThisPage.refreshControlDisplay = refreshControlDisplay;
     function refreshControlDisplay() {
-        var tmpObject = ThisPage.detailsEditor.getValue();
+        var tmpObject = ThisPage.parts.editor.getValue();
         tmpObject = ThisApp.json(tmpObject);
         var tmpName = "_onTheFly";
         if (index[tmpName]) {
