@@ -642,18 +642,28 @@ window.ActionAppCore = window.ActionAppCore || ActionAppCore;
         var tmpResourceData = theControl;
         var tmpCheckPath = thePath;
         //--- If the base element (with no params) is not loaded, get the CSS and load it
-        if (!(tmpCheckPath) || (me.resourceInitFlags[tmpCheckPath] !== true)) {
-            if (tmpCheckPath) {
-                me.resourceInitFlags[tmpCheckPath] = true;
-                if (tmpResourceData.controlConfig) {
-                    tmpResourceData.controlConfig.uri = theFullPath;
-                }
-            }
-            if (tmpResourceData.controlConfig && tmpResourceData.controlConfig.options && tmpResourceData.controlConfig.options.css) {
-                var tmpCSS = tmpResourceData.controlConfig.options.css || '';
-                if (tmpCSS) {
-                    me.addCSS({ css: tmpCSS, path: tmpCheckPath })
-                }
+        // if (!(tmpCheckPath) || (me.resourceInitFlags[tmpCheckPath] !== true)) {
+        //     if (tmpCheckPath) {
+        //         console.log(tmpCheckPath);
+        //         me.resourceInitFlags[tmpCheckPath] = true;
+        //         if (tmpResourceData.controlConfig) {
+        //             console.log('added',tmpCheckPath)
+        //             tmpResourceData.controlConfig.uri = theFullPath;
+        //         }
+        //     }
+        //     if (tmpResourceData.controlConfig && tmpResourceData.controlConfig.options && tmpResourceData.controlConfig.options.css) {
+        //         var tmpCSS = tmpResourceData.controlConfig.options.css || '';
+        //         if (tmpCSS) {
+        //             me.addCSS({ css: tmpCSS, path: tmpCheckPath })
+        //         }
+        //     }
+        // }
+        //TODO: The caching cause issues - need to include params for backend dynamic, not do dynamic
+        //         ** also review above change for accessive redundant activity on load **
+        if (tmpResourceData.controlConfig && tmpResourceData.controlConfig.options && tmpResourceData.controlConfig.options.css) {
+            var tmpCSS = tmpResourceData.controlConfig.options.css || '';
+            if (tmpCSS) {
+                me.addCSS({ css: tmpCSS, path: tmpCheckPath })
             }
         }
 
