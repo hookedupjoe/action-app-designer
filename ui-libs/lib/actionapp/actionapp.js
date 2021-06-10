@@ -389,7 +389,7 @@ window.ActionAppCore = window.ActionAppCore || ActionAppCore;
     };
 
     me.layoutComponentResized = function(){
-        // console.log("layoutComponentResized",arguments);
+        
     }
 
     me.onDropDownNavChange = function(theValue, theText, theChoice){
@@ -467,13 +467,11 @@ window.ActionAppCore = window.ActionAppCore || ActionAppCore;
                     //ToDo: Create / test more than one app comp and assure both resize
                     /*
                     var appCtlLayoutChanged = ActionAppCore.debounce(function () {
-                        console.log('page layout resized',this, arguments);
                         this.publish('resized', {});
                     }, 200).bind(this);
 
                     var tmpRet = tmpLayoutEntry.layout(tmpLayoutOptions);
                     tmpLayoutOptions.onresize_end = appCtlLayoutChanged;
-                    console.log("initAppComponents: Layout reply",tmpRet,tmpLayoutOptions)
                     */
                 }
 
@@ -484,12 +482,6 @@ window.ActionAppCore = window.ActionAppCore || ActionAppCore;
                 ThisApp.resizeLayouts();
             }
 
-            // me.getByAttr$({ appcomp: 'layout' }, theOptionalTarget)
-            //     .addClass('ctl-layout-frame')
-            //     .attr('appcomporig', 'layout')
-            //     .attr('appcomp', '')
-            //     .layout()
-            //     ;
         }
     }
 
@@ -912,25 +904,7 @@ window.ActionAppCore = window.ActionAppCore || ActionAppCore;
     }
 
     me.layoutTemplates = CoreApp.layoutTemplates;
-    me.waitForFinalEvent = (function () {
-        var timers = {};
-        return function (callback, ms, uniqueId) {
-            if (!uniqueId) {
-                uniqueId = "shouldUseID";
-            }
-            if (timers[uniqueId]) {
-                clearTimeout(timers[uniqueId]);
-            }
-            timers[uniqueId] = setTimeout(callback, ms);
-        };
-    })();
 
-    //--- Example usage
-    //   $(window).resize(function () {
-    //     ThisApp.waitForFinalEvent(function(){
-    //       //...
-    //     }, 500, "ThisAppResize");
-    // });
     /**
        * getUpdatedMarkupForNS
        *  - Returns HTML content that has the been prefixed with "namespace:"
@@ -2007,11 +1981,6 @@ window.ActionAppCore = window.ActionAppCore || ActionAppCore;
         }
     }
 
-
-
-
-
-
     //--- Internal Functionality ========== ========== ========== ========== ========== ========== ========== ========== ========== ========== 
     //--- ========  ========== ========== ========== ========== ========== ========== ========== ========== ========== ========== 
     function isFunc(theItem) {
@@ -2224,24 +2193,6 @@ window.ActionAppCore = window.ActionAppCore || ActionAppCore;
             tmpBody.on("click", itemClicked);
             tmpBodyDom.ontouchend = itemTouchEnd;
             tmpBodyDom.ontouchstart = ThisApp.util.itemTouchStart.bind(this);
-    
-        /*
-        } else {
-            ThisApp.delay(2000).then(function (theReply) {
-                tmpBody = $('body');     
-                console.log("tmpBody 2",tmpBody);   
-                if( tmpBody.length > 0 ){
-                    var tmpBodyDom = tmpBody.get(0);
-                    tmpBody.on("click", itemClicked);
-                    console.log("added itemClicked",itemClicked);
-                    tmpBodyDom.ontouchend = itemTouchEnd;
-                    tmpBodyDom.ontouchstart = ThisApp.util.itemTouchStart.bind(this);
-            
-                } else {
-                    console.error("Could not init App, body not loaded");
-                }
-            })
-             */
         }
     }
     
@@ -2721,7 +2672,6 @@ window.ActionAppCore = window.ActionAppCore || ActionAppCore;
                    
                     
                     if (tmpCardsEl && tmpCardsEl.is(":visible")) {
-                      //console.log('tmpCardsEl',tmpCardsEl)
                       var tmpCardEntryEls = tmpCardsEl.find('.card');
   
                       //ToDo: Implement with cut off value
@@ -2734,17 +2684,12 @@ window.ActionAppCore = window.ActionAppCore || ActionAppCore;
                       //end ToDo
   
                       var tmpCurrCards = tmpCardEntryEls.length;
-                      //console.log('tmpCardsLen',tmpCardsLen)
 
-                      //console.log('tmpCurrCards',tmpCurrCards)
                       var tmpMaxCards = tmpCurrCards;
-                      //---
-                      //console.log('tmpCardCount',tmpCardCount)
                       if (tmpCardCount > tmpMaxCards) {
                         tmpCardCount = tmpMaxCards;
                       }
-                      //console.log('tmpCardCount2',tmpCardCount)
-            
+           
                       //=== Example of a way to help with dangling single value
                     //   if (tmpCurrCards == 4 && tmpCardCount == 3) {
                     //     if (tmpIW < 800) {
@@ -2797,7 +2742,6 @@ window.ActionAppCore = window.ActionAppCore || ActionAppCore;
            try {
             var tmpOptions = theOptions || {};
             // var tmpParent = tmpOptions.parent || false;
-            // console.log('tmpParent',tmpParent);
             // was !!(tmpParent) ? tmpParent : 
             var tmpGrids = ThisApp.getByAttr$({ appuse: "grid-16" });
              
@@ -3301,7 +3245,6 @@ window.ActionAppCore = window.ActionAppCore || ActionAppCore;
         // var tmpFarX = Math.abs(theRect.x + theRect.width - theX);
         // var tmpFarY = Math.abs(theRect.y - theY);
         // if( tmpFarX > this.MIN_TOUCH_DISTANCE || tmpFarY > this.MIN_TOUCH_DISTANCE){
-        //     console.log( 'touchIsClick too far');
         //     return false;
         // }        
         return theRect.x <= theX && theX <= theRect.x + theRect.width &&
@@ -3429,7 +3372,6 @@ License: MIT
 
             // this.layoutConfig.onresize_end = (
 //                 function (thePane, theElement, theState, theOptions, theName) {
-// console.log("onresize orig");
 //                     if (typeof (this._onResizeLayout) == 'function') {
 //                         if (thePane == 'center') {
 //                             this._onResizeLayout(thePane, theElement, theState, theOptions, theName);
@@ -4125,7 +4067,6 @@ License: MIT
             if (this.layoutOptions && this.layoutConfig) {
                 this.layoutSpot = ThisApp.getByAttr$({ group: ThisApp.pagesGroup, "item": this.pageName });
                 this.layout = this.layoutSpot.layout(this.layoutConfig);
-                //console.log("init page: Layout reply / config",this,this.layout,this.layoutConfig)
             };
 
             this.pubResize = me.pubResize.bind(this);
@@ -5504,6 +5445,7 @@ License: MIT
             tmpMyConfig.options = ThisApp.clone(tmpConfig.options);
             tmpMyConfig.content = ThisApp.clone(tmpConfig.content);
         }
+        
         if (tmpMyConfig.options.hasOwnProperty('mobileAt')) {
             this.mobileAt = tmpMyConfig.options.mobileAt;
         }
@@ -5886,7 +5828,6 @@ License: MIT
                 if( ThisApp.util.isArray(theValue)){
                     theValue = theValue.join('\n');
                 }
-                //console.log("tmpFieldEl",theFieldName,tmpCtl,theValue)
             }
 
             
@@ -6612,11 +6553,9 @@ License: MIT
                 }
             }
         }
-
         var tmpPanels = ThisApp.getByAttr$({ ctlcomp: 'panel' }, tmpEl);
         if (tmpPanels.length) {
             for (var iControl = 0; iControl < tmpPanels.length; iControl++) {
-
                 var tmpControlEl = $(tmpPanels[iControl]);
                 var tmpControlName = tmpControlEl.attr('controlname');
 
@@ -6635,7 +6574,7 @@ License: MIT
 
             }
         }
-
+        
         var tmpDDs = ThisApp.getByAttr$({ ctlcomp: 'dropdown' }, tmpEl);
 
         if (tmpDDs.length) {
@@ -6646,7 +6585,7 @@ License: MIT
                 .attr('ctlcomp', '')
                 .attr('appcomp', '');
         }
-
+        
         var tmpCBs = ThisApp.getByAttr$({ ctlcomp: 'checkbox' }, tmpEl);
 
         if (tmpCBs.length) {
@@ -7048,7 +6987,7 @@ License: MIT
     }
 
     me.processDynamicContent = processDynamicContent
-    function processDynamicContent(theControlName, theObject, theControlObj) {
+    function processDynamicContent(theControlName, theObject, theControlObj) {        
         var tmpRet = ThisApp.clone(theObject);
         var tmpIsDyno = false;
         var tmpContext = theControlObj.context || ThisApp.getContext();
