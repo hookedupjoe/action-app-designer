@@ -16,6 +16,7 @@ License: MIT
 		"content": [
 			{
 				"ctl": "button",
+				hidden: true,
 				pageaction: "refreshResources",
 				text: "Refresh",
 				basic: true,
@@ -24,16 +25,32 @@ License: MIT
 			{
 				"ctl": "button",
 				pageaction: "addResource",
-				text: "Add ...",
+				attr:{"restype":"control"},
+				text: "New Control",
 				basic: true,
 				color: "purple",
 				icon: "plus",
 				"name": "btn-new-box"
 			},
 			{
-				"ctl": "panel",
-				"controlname": "design/ws/get-ws-resources",
-				"name": "resources"
+				"ctl": "button",
+				pageaction: "addResource",
+				attr:{"restype":"panel"},
+				text: "New Panel",
+				basic: true,
+				color: "purple",
+				icon: "plus",
+				"name": "btn-new-box"
+			},
+			{
+				"ctl": "button",
+				pageaction: "addResource",
+				attr:{"restype":"template"},
+				text: "New Template",
+				basic: true,
+				color: "purple",
+				icon: "plus",
+				"name": "btn-new-box"
 			}
 		]
 		}
