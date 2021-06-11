@@ -7517,7 +7517,7 @@ License: MIT
 
             var tmpClasses = tmpObject.classes || '';
             tmpClasses += getValueIfTrue(theObject, ['inverted', 'fitted', 'hidden', 'section', 'clearing']);
-            tmpClasses += getValueIfThere(theObject, ['color', 'attached', 'size']);
+            tmpClasses += getValueIfThere(theObject, ['color', 'attached', 'size','aligned']);
 
             var tmpStarter = 'h' + tmpLevel;
             var tmpHoriz = '';
