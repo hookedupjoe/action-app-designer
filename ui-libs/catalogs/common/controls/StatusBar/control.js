@@ -14,14 +14,13 @@ License: MIT
 			{
 				"ctl": "segment",
 				"basic": true,
-				"slim": true,
 				"name": "",
-				"classes": "mar4 pad0",
+				"classes": "pad8",
 				"content": [
 					{
 						"ctl": "spot",
 						"name": "status-bar",
-						"classes": "ui message fluid",
+						"classes": "ui message floating green",
 						"text": "Common Status Bar"
 					}
 				]
