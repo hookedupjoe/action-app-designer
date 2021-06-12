@@ -76,7 +76,7 @@ License: MIT
 												"name": "btn-add-page",
 												"text": "Add Page"
 											},
-											
+
 											{
 												"ctl": "divider",
 												"fitted": true,
@@ -94,6 +94,86 @@ License: MIT
 										"name": "apptabs-resources",
 										"ctl": "tab",
 										"content": [
+											{
+												"ctl": "button",
+												"size": "small",
+												basic: true,
+												compact: true,
+												"onClick": {
+													"run": "action",
+													"action": "refreshResources"
+												},
+												"basic": true,
+												"icon": "recycle",
+												"name": "btn-refresh-catalog-resources",
+												"text": "Refresh"
+											},
+											{
+												"ctl": "button",
+												"color": "purple",
+												"size": "small",
+												basic: true,
+												compact: true,
+												"onClick": {
+													"run": "action",
+													"action": "addCatalogControl"
+												},
+												"labeled": true,
+												"right": true,
+												"icon": "newspaper",
+												"name": "btn-add-control",
+												"text": "Add Control"
+											},
+											{
+												"ctl": "button",
+												"color": "purple",
+												"size": "small",
+												basic: true,
+												compact: true,
+												"onClick": {
+													"run": "action",
+													"action": "addCatalogPanel"
+												},
+												"labeled": true,
+												"right": true,
+												"icon": "newspaper outline",
+												"name": "btn-add-panel",
+												"text": "Add Panel"
+											},
+											{
+												"ctl": "button",
+												"color": "purple",
+												"size": "small",
+												basic: true,
+												compact: true,
+												"onClick": {
+													"run": "action",
+													"action": "addCatalogTemplate"
+												},
+												"labeled": true,
+												"right": true,
+												"icon": {
+													"[computed]": "context.app.controller.controls.detailsIndex.getDetails('Template').icon"
+												},
+												"name": "btn-add-template",
+												"text": "Add Template"
+											},
+											{
+												"ctl": "button",
+												"color": "purple",
+												"size": "small",
+												basic: true,
+												compact: true,
+												"onClick": {
+													"run": "action",
+													"action": "addCatalogHTML"
+												},
+												"labeled": true,
+												"right": true,
+												"icon": "code",
+												"name": "btn-add-resource",
+												"text": "Add HTML"
+											},
 											{
 												"ctl": "panel",
 												"controlname": "design/ws/get-ws-outline?type=resources&appname=",
@@ -289,18 +369,23 @@ License: MIT
 		openInCode: openInCode,
 		refreshTabNav: refreshTabNav,
 		addPage, addPage,
+		addCatalogHTML: addCatalogHTML,
+		addCatalogTemplate: addCatalogTemplate,
+		addCatalogControl: addCatalogControl,
+		addCatalogPanel: addCatalogPanel,
+		refreshResources: refreshResources,
 		promptForSetupInfo: promptForSetupInfo
 	};
 
 	function _onInit() {
 		this.parts.pages.subscribe('selectMe', onPageSelect.bind(this))
 		this.parts.resources.subscribe('selectMe', onResourceSelect.bind(this))
-		
+
 		//console.log(this.context,this.parts);
 		//this.context.page.controller.actions.wsItemSelected('', theTarget);
 
 		var tmpSetupInfo = this.getSetupInfo();
-		var tmpAppPath = this.parts.setupinfo.controlSpec.controlConfig.options.links.path;		
+		var tmpAppPath = this.parts.setupinfo.controlSpec.controlConfig.options.links.path;
 		var tmpDeployPath = this.parts.setupinfo.controlSpec.controlConfig.options.links.deploy;
 		var tmpCordovaPath = this.parts.setupinfo.controlSpec.controlConfig.options.links.cordova;
 		this.details.path = tmpAppPath;
@@ -332,7 +417,7 @@ License: MIT
 	function onResourceSelect(theEvent, theControl, theTarget) {
 		this.publish('selected', [theControl, theTarget]);
 	}
-	
+
 
 	function addPage() {
 		var tmpThis = this;
@@ -440,7 +525,7 @@ License: MIT
 
 
 
-	
+
 	function createCordovaDeployment() {
 		var tmpAppName = this.params.appname || ''
 		if (!(tmpAppName)) {
@@ -449,7 +534,7 @@ License: MIT
 		}
 		var tmpURL = '/design/ws/deploy-cordova?appname=' + tmpAppName
 		ThisApp.apiCall({ url: tmpURL }).then(function (theReply) {
-			ThisApp.appMessage("Mobile App Created.  Open in VS code to review and deploy.", "s", {show:true});
+			ThisApp.appMessage("Mobile App Created.  Open in VS code to review and deploy.", "s", { show: true });
 		})
 	};
 
@@ -461,7 +546,7 @@ License: MIT
 		}
 		var tmpURL = '/design/ws/deploy-app?appname=' + tmpAppName
 		ThisApp.apiCall({ url: tmpURL }).then(function (theReply) {
-			ThisApp.appMessage("Done, open in VS code to review and deploy.", "s", {show:true});
+			ThisApp.appMessage("Done, open in VS code to review and deploy.", "s", { show: true });
 		})
 	};
 
@@ -532,7 +617,7 @@ License: MIT
 		this.controlConfig.index.controls.resources.controlname += tmpAppName
 
 		this.controlConfig.index.controls.setupinfo.controlname += tmpAppName
-	
+
 		//--- Set Title
 		this.controlConfig.index.items.title.text = 'Loading ...';
 
@@ -547,8 +632,8 @@ License: MIT
 		//console.log( 'tmpPort', tmpPort);
 
 		var tmpBasePath = window.location.origin;
-		tmpBasePath = tmpBasePath.replace('33460',('' + tmpPort));
-		if( tmpBasePath.endsWith(':80')){
+		tmpBasePath = tmpBasePath.replace('33460', ('' + tmpPort));
+		if (tmpBasePath.endsWith(':80')) {
 			tmpBasePath = tmpBasePath.replace(':80', '');
 		}
 		//console.log( 'tmpBasePath', tmpBasePath);
@@ -558,7 +643,7 @@ License: MIT
 			href: tmpBasePath + "/" + tmpAppName,
 			target: "app" + tmpAppName
 		}
-		
+
 
 
 	}
@@ -606,6 +691,119 @@ License: MIT
 	function getSetupInfo() {
 		return this.parts.setupinfo.getData();
 	}
+	
+	function refreshResources() {
+		this.parts.resources.refreshFromURI();
+	}
+
+
+	function addCatalogHTML() {
+		var tmpThis = this;
+
+		ThisApp.input("Enter HTML name", "HTML Name", "Create HTML Resource", "")
+			.then(function (theValue) {
+				if (!(theValue)) { return };
+				var tmpRequest = {
+					pagename: tmpThis.details.pagename || '',
+					appname: tmpThis.details.appname || '',
+					resname: theValue,
+					restype: 'HTML',
+					content: ""
+				}
+
+				ThisApp.apiCall({
+					url: '/design/ws/save-resource?run',
+					data: tmpRequest
+				}).then(function (theReply) {
+					tmpThis.refreshResources();
+				})
+
+			})
+
+
+
+	}
+
+	function addCatalogTemplate() {
+		var tmpThis = this;
+
+		ThisApp.input("Enter template name", "Template Name", "Create Template Resource", "")
+			.then(function (theValue) {
+				if (!(theValue)) { return };
+				var tmpRequest = {
+					pagename: tmpThis.details.pagename || '',
+					appname: tmpThis.details.appname || '',
+					resname: theValue,
+					restype: 'Template',
+					content: ""
+				}
+
+				ThisApp.apiCall({
+					url: '/design/ws/save-resource?run',
+					data: tmpRequest
+				}).then(function (theReply) {
+					tmpThis.refreshResources();
+				})
+
+			})
+
+	}
+
+	function addCatalogControl() {
+		var tmpThis = this;
+
+		ThisApp.input("Enter control name", "Control Name", "Create Control Resource", "")
+			.then(function (theValue) {
+				if (!(theValue)) { return };
+				var tmpRequest = {
+					pagename: tmpThis.details.pagename || '',
+					appname: tmpThis.details.appname || '',
+					resname: theValue,
+					restype: 'Control',
+					content: ""
+				}
+
+				ThisApp.apiCall({
+					url: '/design/ws/save-resource?run',
+					data: tmpRequest
+				}).then(function (theReply) {
+					tmpThis.refreshResources();
+				})
+
+			})
+
+
+
+	}
+
+	function addCatalogPanel() {
+		var tmpThis = this;
+		ThisApp.input("Enter panel name", "Panel Name", "Create Panel Resource", "")
+			.then(function (theValue) {
+				if (!(theValue)) { return };
+				var tmpRequest = {
+					pagename: tmpThis.details.pagename || '',
+					appname: tmpThis.details.appname || '',
+					resname: theValue,
+					restype: 'Panel',
+					content: ""
+				}
+
+				ThisApp.apiCall({
+					url: '/design/ws/save-resource?run',
+					data: tmpRequest
+				}).then(function (theReply) {
+					tmpThis.refreshResources();
+				})
+
+			})
+
+
+
+
+	}
+
+
 
 	//~ControlCode~//~
 
