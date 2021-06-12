@@ -90,7 +90,7 @@ License: MIT
 										]
 									},
 									{
-										"label": "Resources",
+										"label": "Application Catalog",
 										"name": "apptabs-resources",
 										"ctl": "tab",
 										"content": [

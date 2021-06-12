@@ -17,7 +17,6 @@ License: MIT
 
     var pageBaseURL = 'app/pages/' + thisPageSpecs.pageName + '/';
 
-
     thisPageSpecs.required = {
         controls: {
             map: {
