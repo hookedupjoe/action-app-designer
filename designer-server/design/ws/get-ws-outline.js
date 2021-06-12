@@ -466,6 +466,10 @@ module.exports.setup = function setup(scope) {
                             .replace('.json','')
                             .replace('.js','')
 
+                        var tmpEntryColor = "purple";
+                        if( tmpPageName == ''){
+                            tmpEntryColor = "brown";
+                        }
                         var tmpEntry = {
                             "ctl": "tbl-ol-node",
                             "type": "resource",
@@ -474,7 +478,7 @@ module.exports.setup = function setup(scope) {
                             "meta": "&#160;",
                             "level": 1,
                             "icon": tmpType.icon,
-                            "color": "purple",
+                            "color": tmpEntryColor,
                             attr: {
                                 appname: tmpAppName,
                                 pagename: tmpPageName,

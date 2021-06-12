@@ -672,7 +672,7 @@ License: MIT
                         if (!(tmpAppsIndex[tmpResFN]) && (tmpForAppName == tmpAppName)) {
                             if (tmpPageName == tmpForPageName) {
                                 var tmpIcon = ThisApp.controls.detailsIndex.getDetails(tmpResType).icon;
-                                tmpHTML.push('<a appuse="tablinks" group="workspace-outline" item="' + tmpAppName + '-' + tmpPageName + '-' + tmpResName + '" appname="' + tmpAppName + '" pagename="' + tmpPageName + '"  resname="' + tmpResName + '" pageaction="showResourceConsole"    class="item black"><i class="icon ' + tmpIcon + ' purple"></i> ' + tmpResTitle + '</a>')
+                                tmpHTML.push('<a appuse="tablinks" group="workspace-outline" item="' + tmpAppName + '-' + tmpPageName + '-' + tmpResName + '" appname="' + tmpAppName + '" pagename="' + tmpPageName + '"  resname="' + tmpResName + '" pageaction="showResourceConsole"    class="item black"><i class="icon ' + tmpIcon + ' brown"></i> ' + tmpResTitle + '</a>')
                                 tmpAppsIndex[tmpResFN] = true;
                             }
                         }

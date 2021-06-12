@@ -110,9 +110,9 @@ License: MIT
 											},
 											{
 												"ctl": "button",
-												"color": "purple",
+												"color": "brown",
 												"size": "small",
-												basic: true,
+												basic: false,
 												compact: true,
 												"onClick": {
 													"run": "action",
@@ -126,9 +126,9 @@ License: MIT
 											},
 											{
 												"ctl": "button",
-												"color": "purple",
+												"color": "brown",
 												"size": "small",
-												basic: true,
+												basic: false,
 												compact: true,
 												"onClick": {
 													"run": "action",
@@ -142,9 +142,9 @@ License: MIT
 											},
 											{
 												"ctl": "button",
-												"color": "purple",
+												"color": "brown",
 												"size": "small",
-												basic: true,
+												basic: false,
 												compact: true,
 												"onClick": {
 													"run": "action",
@@ -160,9 +160,9 @@ License: MIT
 											},
 											{
 												"ctl": "button",
-												"color": "purple",
+												"color": "brown",
 												"size": "small",
-												basic: true,
+												basic: false,
 												compact: true,
 												"onClick": {
 													"run": "action",
