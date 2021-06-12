@@ -923,12 +923,3 @@ div.ui.message.floating {
   -webkit-box-shadow: 0 0 0 1px rgb(34 36 38 / 22%) inset, 0 0 0 0 transparent; 
   box-shadow: 0 0 0 1px rgb(34 36 38 / 22%) inset, 0 2px 4px 0 rgb(34 36 38 / 12%), 0 2px 10px 0 rgb(34 36 38 / 15%);
 }
-
-.ui.message:after,.ui.clearing:after {
-  content: ".";
-  display: block;
-  height: 0;
-  clear: both;
-  visibility: hidden;
-}
-
