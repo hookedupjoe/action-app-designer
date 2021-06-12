@@ -124,8 +124,6 @@ License: MIT
                 //--- For debugging
                 window.wsPage = ThisPage;
 
-              
-
                 ThisPage.subscribe('selectMe', ThisPage.pageTabSelected)
 
                 //--- Now your done - READY to do stuff the first time on your page
@@ -133,7 +131,6 @@ License: MIT
                 //--- Subscirbe to when item selected in workspace
                 //ThisPage.parts.west.subscribe('selected', wsItemSelected);
                 ThisPage.parts.center.subscribe('selected', wsItemSelected);
-
 
                 //ThisPage.layout.toggle("west");
                 ThisPage.refreshWSNav();
@@ -157,7 +154,6 @@ License: MIT
                   }
                   ThisApp.delay(100).then(function(){
                     var tmpOutlineEl = ThisApp.getByAttr$({action: "toggleMe",type: "apps"});
-                    //console.log("tmpOutlineEl",tmpOutlineEl);
                     if( tmpOutlineEl && tmpOutlineEl.length > 0){
                         ThisApp.toggleMe(false,tmpOutlineEl.get(0));  
                         if( tmpOutlineEl.length > 1){
@@ -315,7 +311,13 @@ License: MIT
             tmpPageName = tmpParams.pagename;
         }
 
-        tmpEntryName = tmpAppName + "-" + tmpPageName + "-" + tmpEntryName
+        tmpEntryName = tmpAppName + "-" + tmpPageName + "-" + tmpEntryName;
+        // if( tmpPageName ){
+        //     tmpEntryName = tmpAppName + "-" + tmpPageName + "-" + tmpEntryName;
+        // } else {
+        //     tmpEntryName = tmpAppName + "-catalog-" + tmpEntryName;
+        // }
+
 
         if (loadedResources[tmpEntryName]) {
             var tmpTabAttr = { group: wsOutlineName, item: tmpEntryName };
@@ -328,6 +330,7 @@ License: MIT
                 refreshWorkspace()
             })
             loadedResources[tmpEntryName] = tmpNewResource;
+            
 
 
             //--- For Debugging
@@ -344,7 +347,7 @@ License: MIT
             tmpNewResource.loadToElement(tmpNewGroup).then(function (theReply) {
                 tmpNewResource.setup(tmpParams);
                 //ThisPage.refreshNavTabs();
-                ThisPage.saveWorkspaceState();
+                ThisPage.saveWorkspaceState();                
             });
             //--- Go to the newly added card (to show it and hide others)
             ThisApp.gotoTab(tmpTabAttr);
@@ -506,7 +509,12 @@ License: MIT
                 }
             })
             delete loadedResources[tmpEntryName];
-            showPageConsole(tmpParams);
+            if( tmpPageName ){
+                showPageConsole(tmpParams);
+            } else {
+                showAppConsole(tmpParams);
+            }
+            
         } else {
             onsole.warn("No loaded resource to close for " + tmpEntryName)
         }
@@ -562,7 +570,7 @@ License: MIT
 
 
     var commonParams = ['appname', 'apptitle', 'titie', 'source', 'type', 'pagename', 'resname', 'restype'];
-
+    actions.wsItemSelected = wsItemSelected;
     function wsItemSelected(theEvent, theControl, theTarget) {
         var tmpParams = ThisApp.getActionParams('na', theTarget, commonParams);
         //        var tmpEl = $(theTarget);
@@ -636,6 +644,50 @@ License: MIT
                 tmpAppsIndex[tmpAppName] = true;
             }
         }
+        for (var iPos in loadedResources) {
+            var tmpRes = loadedResources[iPos]
+            var tmpAppName = '';
+            if (tmpRes.details && tmpRes.details.appname) {
+                tmpAppName = tmpRes.details.appname
+            }
+            if (!(tmpAppsIndex[tmpAppName]) && tmpForAppName == tmpAppName) {
+                tmpHTML.push('<a appuse="tablinks" group="workspace-outline" item="' + tmpAppName + '" appname="' + tmpAppName + '" pageaction="showAppConsole" class="item black  "><i class="icon globe blue"></i> ' + tmpAppName + '</a>');
+                tmpAppsIndex[tmpAppName] = true;
+            }
+
+            if (tmpAppName) {
+                var tmpPageName = '';
+                if (tmpRes.details && tmpRes.details.pagename) {
+                    tmpPageName = tmpRes.details.pagename
+                }
+                var tmpPageFN = tmpAppName + '-' + tmpPageName;
+                if( !tmpPageName ){
+                    //--- If this is showing nav for the page, show resources
+                    if (tmpForPageName || !(tmpPageName)) {
+                        var tmpResName = tmpRes.details.resname;
+                        var tmpResTitle = tmpRes.details.title || tmpRes.details.resname;
+
+                        var tmpResType = tmpRes.details.restype;
+                        var tmpResFN = tmpAppName + '-' + tmpPageName + '-' + tmpResName;
+
+                        if (!(tmpAppsIndex[tmpResFN]) && (tmpForAppName == tmpAppName)) {
+                            if (tmpPageName == tmpForPageName) {
+                                var tmpIcon = ThisApp.controls.detailsIndex.getDetails(tmpResType).icon;
+                                tmpHTML.push('<a appuse="tablinks" group="workspace-outline" item="' + tmpAppName + '-' + tmpPageName + '-' + tmpResName + '" appname="' + tmpAppName + '" pagename="' + tmpPageName + '"  resname="' + tmpResName + '" pageaction="showResourceConsole"    class="item black"><i class="icon ' + tmpIcon + ' purple"></i> ' + tmpResTitle + '</a>')
+                                tmpAppsIndex[tmpResFN] = true;
+                            }
+                        }
+                    }
+                }
+
+
+                
+
+
+            }
+
+        }
+
         for (var iPos in loadedPages) {
             var tmpPage = loadedPages[iPos]
             var tmpAppName = '';
@@ -653,8 +705,8 @@ License: MIT
                     tmpPageName = tmpPage.details.pagename
                 }
                 var tmpPageFN = tmpAppName + '-' + tmpPageName;
-                if (!(tmpAppsIndex[tmpPageFN]) && tmpForAppName == tmpAppName) {
-                    if (!(tmpForPageName) || (tmpForPageName && (tmpPageName == tmpForPageName))) {
+                if (!(tmpAppsIndex[tmpPageFN])) {
+                    if ((tmpForPageName && (tmpPageName == tmpForPageName))) {
                         tmpHTML.push('<a appuse="tablinks" group="workspace-outline" item="' + tmpAppName + '-' + tmpPageName + '" appname="' + tmpAppName + '" pagename="' + tmpPageName + '" pageaction="showPageConsole" class="item black"><i class="icon columns green"></i> ' + tmpPageName + '</a>');
                         tmpAppsIndex[tmpPageFN] = true;
                     }
@@ -681,16 +733,18 @@ License: MIT
                     tmpPageName = tmpRes.details.pagename
                 }
                 var tmpPageFN = tmpAppName + '-' + tmpPageName;
-
-                if (!(tmpAppsIndex[tmpPageFN]) && tmpForAppName == tmpAppName) {
-                    if (!(tmpForPageName) || (tmpForPageName && (tmpPageName == tmpForPageName))) {
-                        tmpHTML.push('<a appuse="tablinks" group="workspace-outline" item="' + tmpAppName + '-' + tmpPageName + '" appname="' + tmpAppName + '" pagename="' + tmpPageName + '" pageaction="showPageConsole" class="item black"><i class="icon columns green"></i> ' + tmpPageName + '</a>');
-                        tmpAppsIndex[tmpPageFN] = true;
+                if( tmpPageName ){
+                    if (!(tmpAppsIndex[tmpPageFN]) && tmpForAppName == tmpAppName) {
+                        if (!(tmpForPageName) || (tmpForPageName && (tmpPageName == tmpForPageName))) {
+                            tmpHTML.push('<a appuse="tablinks" group="workspace-outline" item="' + tmpAppName + '-' + tmpPageName + '" appname="' + tmpAppName + '" pagename="' + tmpPageName + '" pageaction="showPageConsole" class="item black"><i class="icon columns green"></i> ' + tmpPageName + '</a>');
+                            tmpAppsIndex[tmpPageFN] = true;
+                        }
                     }
                 }
 
+
                 //--- If this is showing nav for the page, show resources
-                if (tmpForPageName) {
+                if (tmpForPageName || !(tmpPageName)) {
                     var tmpResName = tmpRes.details.resname;
                     var tmpResTitle = tmpRes.details.title || tmpRes.details.resname;
 
@@ -700,7 +754,6 @@ License: MIT
                     if (!(tmpAppsIndex[tmpResFN]) && (tmpForAppName == tmpAppName)) {
                         if (tmpPageName == tmpForPageName) {
                             var tmpIcon = ThisApp.controls.detailsIndex.getDetails(tmpResType).icon;
-
                             tmpHTML.push('<a appuse="tablinks" group="workspace-outline" item="' + tmpAppName + '-' + tmpPageName + '-' + tmpResName + '" appname="' + tmpAppName + '" pagename="' + tmpPageName + '"  resname="' + tmpResName + '" pageaction="showResourceConsole"    class="item black"><i class="icon ' + tmpIcon + ' purple"></i> ' + tmpResTitle + '</a>')
                             tmpAppsIndex[tmpResFN] = true;
                         }
@@ -771,3 +824,4 @@ License: MIT
     }
 
 })(ActionAppCore, $);
+

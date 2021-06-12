@@ -34,6 +34,8 @@ module.exports.setup = function setup(scope) {
                     tmpSourceDir = tmpAppsDir + tmpReq.appname;
                     if( tmpReq.pagename ){
                         tmpSourceDir += '/app/pages/' + tmpReq.pagename;
+                    } else {
+                        tmpSourceDir += '/catalog/';
                     }
                     if( tmpResType == 'Panel' ){
                         tmpSourceDir += '/panels/'

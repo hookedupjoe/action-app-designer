@@ -43,7 +43,7 @@ License: MIT
     //--- Customize default layout configuration
     //--- See http://layout.jquery-dev.com/documentation.cfm for details
     thisPageSpecs.layoutConfig = {
-        west__size: "350"
+        west__size: "250"
         , east__size: "200"
     }
 

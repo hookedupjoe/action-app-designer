@@ -294,6 +294,11 @@ License: MIT
 
 	function _onInit() {
 		this.parts.pages.subscribe('selectMe', onPageSelect.bind(this))
+		this.parts.resources.subscribe('selectMe', onResourceSelect.bind(this))
+		
+		//console.log(this.context,this.parts);
+		//this.context.page.controller.actions.wsItemSelected('', theTarget);
+
 		var tmpSetupInfo = this.getSetupInfo();
 		var tmpAppPath = this.parts.setupinfo.controlSpec.controlConfig.options.links.path;		
 		var tmpDeployPath = this.parts.setupinfo.controlSpec.controlConfig.options.links.deploy;
@@ -322,8 +327,12 @@ License: MIT
 	}
 
 	function onPageSelect(theEvent, theControl, theTarget) {
-		this.publish('selected', [theControl, theTarget])
+		this.publish('selected', [theControl, theTarget]);
 	}
+	function onResourceSelect(theEvent, theControl, theTarget) {
+		this.publish('selected', [theControl, theTarget]);
+	}
+	
 
 	function addPage() {
 		var tmpThis = this;

@@ -23,35 +23,24 @@ License: MIT
 						"readonly": true,
 						"inputClasses": "title",
 
-						"default": "Page",
+						"default": "Catalog",
 						"placeholder": "",
 						"content": [
 
+
 							{
 								"ctl": "button",
-								"toLeft": true,
-								"color": "blue",
-								"icon": "save",
-								"disabled": true,
-								"name": "btn-save",
-								"label": "Save",
+								"size": "small",
+								basic: true,
+								compact: true,
 								"onClick": {
 									"run": "action",
-									"action": "saveCode"
-								}
-							},
-							{
-								"ctl": "button",
-								"color": "black",
-								basic: true,
-								right: true,
+									"action": "refreshResources"
+								},
+								"basic": true,
 								"icon": "recycle",
-								"name": "btn-reload-page",
-								"label": "Reload",
-								onClick: {
-									"run": "action",
-									action: "reloadPage"
-								}
+								"name": "btn-refresh-pages",
+								"text": "Refresh"
 							},
 							{
 								"ctl": "button",
@@ -74,372 +63,79 @@ License: MIT
 				],
 				center: [
 					{
-						"ctl": "tabs",
-						"name": "pagetabs",
-						"layout": true,
+						ctl: "segment",
+						basic: true,
 						slim: true,
-						"tabs": [
+						items: [
 							{
-								"label": "Code",
-								"name": "pagetabs-one",
-								"ctl": "tab",
-								"content": [
-									{
-										ctl: "layout",
-										name: "layout",
-										north: [
-
-										],
-										center: [
-											{
-												ctl: "spot",
-												name: "ace-editor",
-												text: ""
-											}
-										],
-										west: [
-											{
-												"ctl": "button",
-												"color": "black",
-												basic: true,
-												"name": "btn-format-code",
-												"label": "Format",
-												"onClick": {
-													"run": "action",
-													"action": "formatCode"
-												},
-											},
-											{
-												"ctl": "button",
-												"color": "black",
-												basic: true,
-												hidden: true,
-												"name": "btn-format-page-code",
-												"label": "Format Page",
-												"onClick": {
-													"run": "action",
-													"action": "formatPageCode"
-												},
-											},
-
-											{
-												ctl: 'divider',
-												fitted: true,
-												clearing: true
-											}
-											,
-											{
-												"ctl": "tbl-ol-node",
-												"name": "page-code",
-												"type": "page",
-												"details": "Code Outline",
-												"meta": "&#160;",
-												"classes": "page-code-table",
-												"level": 1,
-												"group": "page-code-outline",
-												"item": "page",
-												"icon": "columns",
-												"color": "green",
-												"content": [
-													{
-														"ctl": "tbl-ol-node",
-														"type": "setup",
-														"name": "Setup",
-														"details": "Page",
-														"meta": "&#160;",
-														"level": 2,
-														"icon": "certificate",
-														"color": "green",
-														"content": [
-															{
-																"ctl": "tbl-ol-node",
-																"name": "setup-pageinfo",
-																"details": "Page Info",
-																"meta": "&#160;",
-																"group": "page-code-outline",
-																"item": "setup-pageinfo",
-																"onClick": {
-																	"run": "action",
-																	"action": "showCode",
-																	"name": "thisPageSpecs"
-																},
-																"icon": "file code outline",
-																"color": "blue"
-															},
-															{
-																"ctl": "tbl-ol-node",
-																"name": "setup-resources",
-																"details": "Required On Load",
-																"meta": "&#160;",
-																"group": "page-code-outline",
-																"item": "setup-resources",
-																"onClick": {
-																	"run": "action",
-																	"action": "showCode",
-																	"name": "required"
-																},
-																"icon": "file code outline",
-																"color": "blue"
-															},
-															{
-																"ctl": "tbl-ol-node",
-																"name": "setup-pagecode",
-																"details": "Page Code",
-																"meta": "&#160;",
-																"group": "page-code-outline",
-																"item": "setup-pagecode",
-																"onClick": {
-																	"run": "action",
-																	"action": "showCode",
-																	"name": "YourPageCode"
-																},
-																"icon": "file code outline",
-																"color": "blue"
-															}
-														]
-													},
-													{
-														"ctl": "tbl-ol-node",
-														"type": "layout",
-														"name": "Layout",
-														"details": "Layout",
-														"meta": "&#160;",
-														"level": 2,
-														"icon": "calculator",
-														"color": "orange",
-														"content": [
-															{
-																"ctl": "tbl-ol-node",
-																"name": "layout-regions",
-																"details": "Regions",
-																"meta": "&#160;",
-																"group": "page-code-outline",
-																"item": "layout-regions",
-																"onClick": {
-																	"run": "action",
-																	"action": "showCode",
-																	"name": "layoutOptions"
-																},
-																"icon": "file code outline",
-																"color": "blue"
-															},
-															{
-																"ctl": "tbl-ol-node",
-																"name": "layout-config",
-																"details": "Config",
-																"meta": "&#160;",
-																"group": "page-code-outline",
-																"item": "layout-config",
-																"onClick": {
-																	"run": "action",
-																	"action": "showCode",
-																	"name": "layoutConfig"
-																},
-																"icon": "file code outline",
-																"color": "blue"
-															}
-														]
-													},
-													{
-														"ctl": "tbl-ol-node",
-														"type": "events",
-														"name": "Events",
-														"details": "Events",
-														"meta": "&#160;",
-														"level": 2,
-														"icon": "recycle",
-														"color": "black",
-														"content": [
-															{
-																"ctl": "tbl-ol-node",
-																"name": "events-pre-init",
-																"details": "Pre Init",
-																"meta": "&#160;",
-																"group": "page-code-outline",
-																"item": "events-pre-init",
-																"onClick": {
-																	"run": "action",
-																	"action": "showCode",
-																	"name": "_onPreInit"
-																},
-																"icon": "file code outline",
-																"color": "blue"
-															},
-															{
-																"ctl": "tbl-ol-node",
-																"name": "events-init",
-																"details": "Initialize",
-																"meta": "&#160;",
-																"group": "page-code-outline",
-																"item": "events-init",
-																"onClick": {
-																	"run": "action",
-																	"action": "showCode",
-																	"name": "_onInit"
-																},
-																"icon": "file code outline",
-																"color": "blue"
-															},
-															{
-																"ctl": "tbl-ol-node",
-																"name": "events-preload",
-																"details": "Pre Load",
-																"meta": "&#160;",
-																"group": "page-code-outline",
-																"item": "events-preload",
-																"onClick": {
-																	"run": "action",
-																	"action": "showCode",
-																	"name": "_onFirstActivate"
-																},
-																"icon": "file code outline",
-																"color": "blue"
-															},
-															{
-																"ctl": "tbl-ol-node",
-																"name": "events-load",
-																"details": "Initial Load",
-																"meta": "&#160;",
-																"group": "page-code-outline",
-																"item": "events-load",
-																"onClick": {
-																	"run": "action",
-																	"action": "showCode",
-																	"name": "_onFirstLoad"
-																},
-																"icon": "file code outline",
-																"color": "blue"
-															},
-															{
-																"ctl": "tbl-ol-node",
-																"name": "events-resize",
-																"details": "Resized",
-																"meta": "&#160;",
-																"group": "page-code-outline",
-																"item": "events-resize",
-																"onClick": {
-																	"run": "action",
-																	"action": "showCode",
-																	"name": "_onResizeLayout"
-																},
-																"icon": "file code outline",
-																"color": "blue"
-															}
-														]
-													}
-												]
-											}
-
-										],
-										rem_north: [
-											{
-												"ctl": "field",
-												"name": "code-title",
-												"fluid": true,
-												"readonly": true,
-												"inputClasses": "title",
-												"default": "Page Editor",
-												"placeholder": "",
-												"content": [
-
-												]
-											}
-										]
-
-									}
-								]
+								"ctl": "title",
+								"color": "purple",
+								"size": "medium",
+								"aligned": "center",
+								"color": "blue",
+								"text": "App Catalog"
+							}, {
+								"ctl": "button",
+								"color": "purple",
+								"size": "small",
+								basic: true,
+								fluid: true,
+								pageaction: "addResource",
+								attr: { "restype": "control" },
+								"labeled": true,
+								"right": true,
+								"icon": "newspaper",
+								"name": "btn-add-control",
+								"text": "New Control"
 							},
 							{
-								"label": "Resources",
-								"name": "pagetabs-resources",
-								"ctl": "tab",
-								"content": [
-									{
-										"ctl": "button",
-										"size": "small",
-										basic: true,
-										compact: true,
-										"onClick": {
-											"run": "action",
-											"action": "refreshResources"
-										},
-										"basic": true,
-										"icon": "recycle",
-										"name": "btn-refresh-pages",
-										"text": "Refresh"
-									},
-									{
-										"ctl": "button",
-										"color": "purple",
-										"size": "small",
-										basic: true,
-										compact: true,
-										"onClick": {
-											"run": "action",
-											"action": "addPageControl"
-										},
-										"labeled": true,
-										"right": true,
-										"icon": "newspaper",
-										"name": "btn-add-control",
-										"text": "Add Control"
-									},
-									{
-										"ctl": "button",
-										"color": "purple",
-										"size": "small",
-										basic: true,
-										compact: true,
-										"onClick": {
-											"run": "action",
-											"action": "addPagePanel"
-										},
-										"labeled": true,
-										"right": true,
-										"icon": "newspaper outline",
-										"name": "btn-add-panel",
-										"text": "Add Panel"
-									},
-									{
-										"ctl": "button",
-										"color": "purple",
-										"size": "small",
-										basic: true,
-										compact: true,
-										"onClick": {
-											"run": "action",
-											"action": "addPageTemplate"
-										},
-										"labeled": true,
-										"right": true,
-										"icon": {
-											"[computed]": "context.app.controller.controls.detailsIndex.getDetails('Template').icon"
-										},
-										"name": "btn-add-template",
-										"text": "Add Template"
-									},
-									{
-										"ctl": "button",
-										"color": "purple",
-										"size": "small",
-										basic: true,
-										compact: true,
-										"onClick": {
-											"run": "action",
-											"action": "addPageHTML"
-										},
-										"labeled": true,
-										"right": true,
-										"icon": "code",
-										"name": "btn-add-resource",
-										"text": "Add HTML"
-									},
-									{
-										"ctl": "panel",
-										"controlname": "design/ws/get-ws-outline?type=resources&appname=app001&pagename=HomePage",
-										"name": "resources"
-									}
-								]
+								"ctl": "button",
+								"color": "purple",
+								"size": "small",
+								basic: true,
+								fluid: true,
+								pageaction: "addResource",
+								attr: { "restype": "panel" },
+								"labeled": true,
+								"right": true,
+								"icon": "newspaper outline",
+								"name": "btn-add-panel",
+								"text": "New Panel"
+							},
+							{
+								"ctl": "button",
+								"color": "purple",
+								"size": "small",
+								basic: true,
+								fluid: true,
+								pageaction: "addResource",
+								attr: { "restype": "template" },
+								"labeled": true,
+								"right": true,
+								"icon": {
+									"[computed]": "context.app.controller.controls.detailsIndex.getDetails('Template').icon"
+								},
+								"name": "btn-add-template",
+								"text": "New Template"
+							},
+							{
+								"ctl": "button",
+								"color": "purple",
+								"size": "small",
+								basic: true,
+								fluid: true,
+								pageaction: "addResource",
+								attr: { "restype": "html" },
+								"labeled": true,
+								"right": true,
+								"icon": "code",
+								"name": "btn-add-resource",
+								"text": "New HTML"
+							},
+							{
+								"ctl": "panel",
+								"controlname": "design/ws/get-ws-outline?type=resources&appname=app001&pagename=HomePage",
+								"name": "resources"
 							}
 						]
 					}

@@ -44,9 +44,9 @@ module.exports.setup = function setup(scope) {
                 if( tmpResType ){
                     tmpResDetails = $.bld.detailsIndex.getDetails(tmpResType);
                 }
-                if (!(tmpPageName)) {
-                    throw "Page name not provided"
-                }
+                // if (!(tmpPageName)) {
+                //     throw "Page name not provided"
+                // }
                 if ( typeof(tmpReq.content) != 'string' ){
                     throw 'No text content provided';
                 }
@@ -63,6 +63,10 @@ module.exports.setup = function setup(scope) {
                         throw ("Application " + tmpAppName + " not found at " + tmpAppBase);
                     }
 
+                }
+
+                var tmpPageBase = '';
+                if( tmpPageName ){
                     tmpPagesBase = tmpAppBase + 'app/pages/';
 
                     var tmpPages = $.await($.bld.getDirFiles(tmpPagesBase))
@@ -70,10 +74,11 @@ module.exports.setup = function setup(scope) {
                     if (tmpPages.indexOf(tmpPageName) == -1) {
                         throw "Page " + tmpPageName + " does not exists"
                     }
-
+                    tmpPageBase = tmpPagesBase + tmpPageName;
+                } else {
+                    tmpPageBase = tmpAppBase + 'catalog/';
                 }
        
-                var tmpPageBase = tmpPagesBase + tmpPageName ;
 
                 var tmpContentBase = tmpPageBase + '/' + tmpResDetails.dir;
 

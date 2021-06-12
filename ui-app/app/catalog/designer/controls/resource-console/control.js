@@ -412,6 +412,12 @@ License: MIT
 			url: '/design/ws/save-resource?run',
 			data: tmpRequest
 		}).then(function (theReply) {
+			console.log('theReply',theReply);
+			if( theReply && theReply.status === false){
+				var tmpMsg = "There was an error, contact support with these details: " + theReply.error || '(unknown error)';
+				alert(tmpMsg,"Error","e");
+				return;
+			}
 			tmpThis.setItemDisabled('btn-save', true);
 			tmpThis.markClean();
 		})
