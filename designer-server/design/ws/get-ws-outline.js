@@ -19,11 +19,13 @@ module.exports.setup = function setup(scope) {
         var self = this;
         return new Promise($.async(function (resolve, reject) {
             try {
+                var tmpCatName = req.query.catname || '';
                 var tmpAppName = req.query.appname || '';
                 var tmpPageName = req.query.pagename || '';
                 var tmpType = req.query.type || '';
                 var tmpWSDir = scope.locals.path.ws.uiApps;
                 var tmpPagesDir = scope.locals.path.ws.pages;
+                var tmpCatsDir = scope.locals.path.ws.catalogs;
 
                 //todo: scope.locals.ports.preview on init not here
                 var tmpPreviewPort = process.env.PREVIEWPORT || 33461;
@@ -61,23 +63,27 @@ module.exports.setup = function setup(scope) {
                     }
 
                     resolve(tmpRet);
-                } else if (tmpAppName && tmpType == 'resources') {
+                    
+                } else if (tmpCatName && tmpType == 'resources') {
+                   
 
+                    var tmpRes = false;
 
-                    var tmpBase = {
-                        "ctl": "tbl-ol-node",
-                        "type": "resources",
-                        "name": "resources",
-                        "item": "resources",
-                        "details": ".../resources",
-                        "meta": "&#160;",
-                        "classes": "ws-outline",
-                        "level": 3,
-                        "icon": "box",
-                        "color": "brown",
-                        "group": "workspace-outline",
-                        "content": []
+                    var tmpCatBase = tmpCatsDir + tmpCatName + '/';
+                    tmpRes = $.await(getWSResourcesNode({baseURL: tmpCatBase, catname: tmpCatName}));
+
+                    //--- To assure proper css applied to outline
+                    tmpRes.classes = "ws-outline"
+
+                    var tmpRet = {
+                        "options": {
+                            padding: false,
+                        },
+                        "content": [tmpRes]
                     }
+
+                    resolve(tmpRet);
+                } else if (tmpAppName && tmpType == 'resources') {
 
                     var tmpRes = false;
 
@@ -223,8 +229,8 @@ module.exports.setup = function setup(scope) {
                     "meta": "&#160;",
                     "classes": "ws-editor-outline",
                     "level": 2,
-                    "icon": "box",
-                    "color": "brown",
+                    "icon": "archive",
+                    "color": "black",
                     "group": "workspace-outline",
                     "content": []
                 }
@@ -251,8 +257,8 @@ module.exports.setup = function setup(scope) {
                         "details": '[' + tmpCatName + '] ' + tmpTitle,
                         "meta": "&#160;",
                         "level": 1,
-                        "icon": "box",
-                        "color": "brown",
+                        "icon": "archive",
+                        "color": "teal",
                         "group": "workspace-outline"
                     }
 
@@ -525,6 +531,7 @@ module.exports.setup = function setup(scope) {
                 //theBaseDir, theBase, theAppName, thePageName
 
                 var tmpTitle = "Workspace Resources"
+                var tmpCatName = tmpOptions.catname || '';
                 var tmpAppName = tmpOptions.appname || '';
                 var tmpPageName = tmpOptions.pagename || '';
                 var tmpBaseURL = tmpOptions.baseURL || '';
@@ -532,6 +539,7 @@ module.exports.setup = function setup(scope) {
 
                 var tmpPagesDir = scope.locals.path.ws.pages;
                 var tmpAppsDir = scope.locals.path.ws.uiApps;
+                var tmpCatsDir = scope.locals.path.ws.catalogs;
 
                 if (tmpBaseURL) {
                     tmpTitle = 'Resources';
@@ -545,7 +553,7 @@ module.exports.setup = function setup(scope) {
                     "classes": "ws-editor-outline",
                     "level": 2,
                     "icon": "box",
-                    "color": "brown",
+                    "color": "black",
                     "group": "workspace-outline",
                     "content": []
                 }
@@ -584,6 +592,8 @@ module.exports.setup = function setup(scope) {
                     }
                     if( tmpAppName && tmpPageName ){
                         tmpBaseDir = tmpAppsDir + '/' + tmpAppName + '/app/pages/' + tmpPageName + '/' + tmpType.dir + '/';
+                    } else if( tmpCatName ){
+                        tmpBaseDir = tmpCatsDir + '/' + tmpCatName + '/' + tmpType.dir + '/';
                     }
 
                     var tmpFiles = $.await($.bld.getDirFiles(tmpBaseDir));
@@ -595,8 +605,16 @@ module.exports.setup = function setup(scope) {
                             .replace('.js','')
 
                         var tmpEntryColor = "purple";
-                        if( tmpPageName == ''){
+                        if( tmpCatName != ''){
                             tmpEntryColor = "brown";
+                        } else if( tmpPageName == ''){
+                            tmpEntryColor = "violet";
+                        }
+                        var tmpSource = "workspace";
+                        if( tmpAppName ){
+                            tmpSource = "app"
+                        } else if( tmpCatName ){
+                            tmpSource = "cat"
                         }
                         var tmpEntry = {
                             "ctl": "tbl-ol-node",
@@ -608,11 +626,12 @@ module.exports.setup = function setup(scope) {
                             "icon": tmpType.icon,
                             "color": tmpEntryColor,
                             attr: {
+                                catname: tmpCatName,
                                 appname: tmpAppName,
                                 pagename: tmpPageName,
                                 resname: tmpFileName,
                                 restype: tmpType.type,
-                                source: (tmpAppName ? "app" : "workspace")
+                                source: tmpSource
                             },
                             "group": "workspace-outline",
                         }

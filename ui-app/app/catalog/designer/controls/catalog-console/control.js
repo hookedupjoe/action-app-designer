@@ -36,107 +36,99 @@ License: MIT
 				"tabs": [
 					{
 						"label": "Resources",
-						"name": "apptabs-catalog",
+						"name": "cattabs-catalog",
 						"ctl": "tab",
 						"content": [
 							{
-								"label": "Catalog",
-								"name": "apptabs-resources",
-								"ctl": "tab",
-								"content": [
-									{
-										"ctl": "button",
-										"size": "small",
-										basic: true,
-										compact: true,
-										"onClick": {
-											"run": "action",
-											"action": "refreshResources"
-										},
-										"basic": true,
-										"icon": "recycle",
-										"name": "btn-refresh-catalog-resources",
-										"text": "Refresh"
-									},
-									{
-										"ctl": "button",
-										"color": "brown",
-										"size": "small",
-										basic: false,
-										compact: true,
-										"onClick": {
-											"run": "action",
-											"action": "addCatalogControl"
-										},
-										"labeled": true,
-										"right": true,
-										"icon": "newspaper",
-										"name": "btn-add-control",
-										"text": "Add Control"
-									},
-									{
-										"ctl": "button",
-										"color": "brown",
-										"size": "small",
-										basic: false,
-										compact: true,
-										"onClick": {
-											"run": "action",
-											"action": "addCatalogPanel"
-										},
-										"labeled": true,
-										"right": true,
-										"icon": "newspaper outline",
-										"name": "btn-add-panel",
-										"text": "Add Panel"
-									},
-									{
-										"ctl": "button",
-										"color": "brown",
-										"size": "small",
-										basic: false,
-										compact: true,
-										"onClick": {
-											"run": "action",
-											"action": "addCatalogTemplate"
-										},
-										"labeled": true,
-										"right": true,
-										"icon": {
-											"[computed]": "context.app.controller.controls.detailsIndex.getDetails('Template').icon"
-										},
-										"name": "btn-add-template",
-										"text": "Add Template"
-									},
-									{
-										"ctl": "button",
-										"color": "brown",
-										"size": "small",
-										basic: false,
-										compact: true,
-										"onClick": {
-											"run": "action",
-											"action": "addCatalogHTML"
-										},
-										"labeled": true,
-										"right": true,
-										"icon": "code",
-										"name": "btn-add-resource",
-										"text": "Add HTML"
-									},
-									{
-										"ctl": "panel",
-										"controlname": "design/ws/get-ws-outline?type=resources&catname=",
-										"name": "resources"
-									}
-								]
+								"ctl": "button",
+								"size": "small",
+								basic: true,
+								compact: true,
+								"onClick": {
+									"run": "action",
+									"action": "refreshResources"
+								},
+								"basic": true,
+								"icon": "recycle",
+								"name": "btn-refresh-catalog-resources",
+								"text": "Refresh"
+							},
+							{
+								"ctl": "button",
+								"color": "brown",
+								"size": "small",
+								basic: false,
+								compact: true,
+								"onClick": {
+									"run": "action",
+									"action": "addCatalogControl"
+								},
+								"labeled": true,
+								"right": true,
+								"icon": "newspaper",
+								"name": "btn-add-control",
+								"text": "Add Control"
+							},
+							{
+								"ctl": "button",
+								"color": "brown",
+								"size": "small",
+								basic: false,
+								compact: true,
+								"onClick": {
+									"run": "action",
+									"action": "addCatalogPanel"
+								},
+								"labeled": true,
+								"right": true,
+								"icon": "newspaper outline",
+								"name": "btn-add-panel",
+								"text": "Add Panel"
+							},
+							{
+								"ctl": "button",
+								"color": "brown",
+								"size": "small",
+								basic: false,
+								compact: true,
+								"onClick": {
+									"run": "action",
+									"action": "addCatalogTemplate"
+								},
+								"labeled": true,
+								"right": true,
+								"icon": {
+									"[computed]": "context.app.controller.controls.detailsIndex.getDetails('Template').icon"
+								},
+								"name": "btn-add-template",
+								"text": "Add Template"
+							},
+							{
+								"ctl": "button",
+								"color": "brown",
+								"size": "small",
+								basic: false,
+								compact: true,
+								"onClick": {
+									"run": "action",
+									"action": "addCatalogHTML"
+								},
+								"labeled": true,
+								"right": true,
+								"icon": "code",
+								"name": "btn-add-resource",
+								"text": "Add HTML"
+							},
+							{
+								"ctl": "panel",
+								"controlname": "design/ws/get-ws-outline?type=resources&catname=",
+								"name": "resources"
 							}
 						]
 					},
-
 					{
 						"label": "Details",
-						"name": "apptabs-setup",
+						"name": "cattabs-setup",
 						"ctl": "tab",
 						"content": [
 							{
@@ -241,7 +233,7 @@ License: MIT
 
 	function _onInit() {
 		//this.parts.pages.subscribe('selectMe', onPageSelect.bind(this))
-		//this.parts.resources.subscribe('selectMe', onResourceSelect.bind(this))
+		this.parts.resources.subscribe('selectMe', onResourceSelect.bind(this))
 
 		//this.context.page.controller.actions.wsItemSelected('', theTarget);
 
@@ -459,7 +451,6 @@ License: MIT
 
 	//	this.controlConfig.index.controls.pages.controlname += tmpcatname
 		this.controlConfig.index.controls.resources.controlname += tmpcatname
-
 		this.controlConfig.index.controls.setupinfo.controlname += tmpcatname
 
 		//--- Set Title

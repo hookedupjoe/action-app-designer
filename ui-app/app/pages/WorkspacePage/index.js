@@ -358,18 +358,29 @@ License: MIT
         }
         var tmpResourceTitle = tmpResourceName;
 
+        var tmpCatName = '';
         var tmpAppName = '';
         var tmpPageName = '';
+
 
         var tmpEntryName = tmpResourceName || '';
         if ((tmpParams.appname)) {
             tmpAppName = tmpParams.appname;
         }
+        if ((tmpParams.catname)) {
+            tmpCatName = tmpParams.catname;
+        }
         if ((tmpParams.pagename)) {
             tmpPageName = tmpParams.pagename;
         }
 
-        tmpEntryName = tmpAppName + "-" + tmpPageName + "-" + tmpEntryName;
+        if( tmpCatName ){
+            tmpEntryName = tmpCatName + "--" + tmpEntryName;
+        } else {
+            tmpEntryName = tmpAppName + "-" + tmpPageName + "-" + tmpEntryName;
+        }
+        
+        
         // if( tmpPageName ){
         //     tmpEntryName = tmpAppName + "-" + tmpPageName + "-" + tmpEntryName;
         // } else {
@@ -408,7 +419,11 @@ License: MIT
                 ThisPage.saveWorkspaceState();                
             });
             //--- Go to the newly added card (to show it and hide others)
-            ThisApp.gotoTab(tmpTabAttr);
+            console.log('tmpTabAttr',tmpTabAttr);
+
+            ThisApp.delay(1).then(function(){
+                ThisApp.gotoTab(tmpTabAttr);
+            })
         }
     };
 
@@ -574,7 +589,7 @@ License: MIT
             }
             
         } else {
-            onsole.warn("No loaded resource to close for " + tmpEntryName)
+            console.warn("No loaded resource to close for " + tmpEntryName)
         }
 
     };
@@ -725,7 +740,7 @@ License: MIT
                 tmpCatName = tmpCat.details.catname;
                 var tmpCatTitle = tmpCat.details.title ||  tmpCat.details.catname;
                 if (!(tmpCatsIndex[tmpForCatName]) && tmpForCatName == tmpCatName) {
-                    tmpHTML.push('<a appuse="tablinks" group="workspace-outline" item="' + tmpCatName + '" catname="' + tmpCatName + '" pageaction="showCatalogConsole" class="item   "><i class="icon box brown"></i> ' + tmpCatTitle + '</a>');
+                    tmpHTML.push('<a appuse="tablinks" group="workspace-outline" item="' + tmpCatName + '" catname="' + tmpCatName + '" pageaction="showCatalogConsole" class="item   "><i class="icon archive teal"></i> ' + tmpCatTitle + '</a>');
                 }
                 tmpCatsIndex[tmpCatName] = true;
             }
@@ -749,9 +764,12 @@ License: MIT
             if (tmpRes.details && tmpRes.details.appname) {
                 tmpAppName = tmpRes.details.appname
             }
-            if (!(tmpAppsIndex[tmpAppName]) && tmpForAppName == tmpAppName) {
+            if (tmpAppName && (!(tmpAppsIndex[tmpAppName]) && tmpForAppName == tmpAppName)) {
                 tmpHTML.push('<a appuse="tablinks" group="workspace-outline" item="' + tmpAppName + '" appname="' + tmpAppName + '" pageaction="showAppConsole" class="item black  "><i class="icon globe blue"></i> ' + tmpAppName + '</a>');
                 tmpAppsIndex[tmpAppName] = true;
+            } else if (tmpCatName && !(tmpCatsIndex[tmpCatName]) && tmpForCatName == tmpCatName){
+                tmpHTML.push('<a appuse="tablinks" group="workspace-outline" item="' + tmpCatName + '" catname="' + tmpCatName + '" pageaction="showCatalogConsole" class="item   "><i class="icon archive teal"></i> ' + tmpCatTitle + '</a>');
+                tmpCatsIndex[tmpCatName] = true;
             }
 
             if (tmpAppName) {
@@ -772,17 +790,27 @@ License: MIT
                         if (!(tmpAppsIndex[tmpResFN]) && (tmpForAppName == tmpAppName)) {
                             if (tmpPageName == tmpForPageName) {
                                 var tmpIcon = ThisApp.controls.detailsIndex.getDetails(tmpResType).icon;
-                                tmpHTML.push('<a appuse="tablinks" group="workspace-outline" item="' + tmpAppName + '-' + tmpPageName + '-' + tmpResName + '" appname="' + tmpAppName + '" pagename="' + tmpPageName + '"  resname="' + tmpResName + '" pageaction="showResourceConsole"    class="item black"><i class="icon ' + tmpIcon + ' brown"></i> ' + tmpResTitle + '</a>')
+                                tmpHTML.push('<a appuse="tablinks" group="workspace-outline" item="' + tmpAppName + '-' + tmpPageName + '-' + tmpResName + '" appname="' + tmpAppName + '" pagename="' + tmpPageName + '"  resname="' + tmpResName + '" pageaction="showResourceConsole"    class="item black"><i class="icon ' + tmpIcon + ' violet"></i> ' + tmpResTitle + '</a>')
                                 tmpAppsIndex[tmpResFN] = true;
                             }
                         }
                     }
                 }
-
-
+            } else if (tmpCatName) {
                 
+                var tmpResName = tmpRes.details.resname;
+                var tmpResTitle = tmpRes.details.title || tmpRes.details.resname;
 
+                var tmpResType = tmpRes.details.restype;
+                var tmpResFN = tmpCatName + '--' + tmpResName;
 
+                if (!(tmpCatsIndex[tmpResFN]) && (tmpForCatName == tmpCatName)) {
+                    if (tmpPageName == tmpForPageName) {
+                        var tmpIcon = ThisApp.controls.detailsIndex.getDetails(tmpResType).icon;
+                        tmpHTML.push('<a appuse="tablinks" group="workspace-outline" item="' + tmpCatName + '--' + tmpResName + '" catname="' + tmpCatName + '" pagename="' + tmpPageName + '"  resname="' + tmpResName + '" pageaction="showResourceConsole"    class="item black"><i class="icon ' + tmpIcon + ' brown"></i> ' + tmpResTitle + '</a>')
+                        tmpCatsIndex[tmpResFN] = true;
+                    }
+                }
             }
 
         }
@@ -821,7 +849,7 @@ License: MIT
             if (tmpRes.details && tmpRes.details.appname) {
                 tmpAppName = tmpRes.details.appname
             }
-            if (!(tmpAppsIndex[tmpAppName]) && tmpForAppName == tmpAppName) {
+            if (tmpAppName && !(tmpAppsIndex[tmpAppName]) && tmpForAppName == tmpAppName) {
                 tmpHTML.push('<a appuse="tablinks" group="workspace-outline" item="' + tmpAppName + '" appname="' + tmpAppName + '" pageaction="showAppConsole" class="item black  "><i class="icon globe blue"></i> ' + tmpAppName + '</a>');
                 tmpAppsIndex[tmpAppName] = true;
             }
@@ -857,6 +885,21 @@ License: MIT
                             tmpAppsIndex[tmpResFN] = true;
                         }
                     }
+                }
+
+
+            } else if (tmpCatName) {
+                
+                var tmpResName = tmpRes.details.resname;
+                var tmpResTitle = tmpRes.details.title || tmpRes.details.resname;
+
+                var tmpResType = tmpRes.details.restype;
+                var tmpResFN = tmpCatName + '--' + tmpResName;
+
+                if (!(tmpCatsIndex[tmpResFN]) && (tmpForCatName == tmpCatName)) {
+                    var tmpIcon = ThisApp.controls.detailsIndex.getDetails(tmpResType).icon;
+                    tmpHTML.push('<a appuse="tablinks" group="workspace-outline" item="' + tmpCatName + '--' + tmpResName + '" catname="' + tmpCatName + '" pagename="' + tmpPageName + '"  resname="' + tmpResName + '" pageaction="showResourceConsole"    class="item black"><i class="icon ' + tmpIcon + ' brown"></i> ' + tmpResTitle + '</a>')
+                    tmpCatsIndex[tmpResFN] = true;
                 }
 
 

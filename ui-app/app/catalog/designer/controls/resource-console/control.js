@@ -207,6 +207,7 @@ License: MIT
 
 
 		var tmpPageName = theDetails.pagename || '';
+		var tmpCatName = theDetails.catname || '';
 		var tmpAppName = theDetails.appname || '';
 		var tmpResName = theDetails.resname || '';
 		var tmpResType = theDetails.restype || '';
@@ -227,6 +228,7 @@ License: MIT
 			source: tmpSource,
 			title: tmpShowName,
 			appname: tmpAppName,
+			catname: tmpCatName,
 			resname: tmpResName,
 			restype: tmpResType
 		}
@@ -245,6 +247,9 @@ License: MIT
 		if (tmpAppName) {
 			this.endpointURL += '&appname=' + tmpAppName;
 		}
+		if (tmpCatName) {
+			this.endpointURL += '&catname=' + tmpCatName;
+		}
 		this.refreshFromSource();
 
 
@@ -252,31 +257,44 @@ License: MIT
 
 	}
 
-	function refreshTabNav() {
-		this.details = this.details || {};
-		var tmpAppName = this.details.appname || '';
-		var tmpPageName = this.details.pagename || '';
-		var tmpResName = this.details.resname || '';
-		var tmpResType = this.details.restype || '';
+	// function refreshTabNav() {
+	// 	this.details = this.details || {};
+	// 	var tmpCatName = this.details.catname || '';
+	// 	var tmpAppName = this.details.appname || '';
+	// 	var tmpPageName = this.details.pagename || '';
+	// 	var tmpResName = this.details.resname || '';
+	// 	var tmpResType = this.details.restype || '';
 
-		if ((tmpAppName || tmpPageName) && tmpResName) {
-			var tmpHTML = [];
-			var tmpIcon = ThisApp.controls.detailsIndex.getDetails(tmpResType).icon;
+	// 	if (tmpCatName && tmpResName) {
+	// 		var tmpHTML = [];
+	// 		var tmpIcon = ThisApp.controls.detailsIndex.getDetails(tmpResType).icon;
 
-			tmpHTML.push('<div class="pad0 ui top attached tabular tab-nav menu" style="">');
-			if (tmpAppName) {
-				tmpHTML.push('<a appuse="tablinks" group="workspace-outline" item="' + tmpAppName + '" appname="' + tmpAppName + '" pageaction="showAppConsole" class="item black  "><i class="icon globe blue"></i> ' + tmpAppName + '</a>');
-			}
-			if (tmpPageName) {
-				tmpHTML.push('<a appuse="tablinks" group="workspace-outline" item="' + tmpAppName + '-' + tmpPageName + '" appname="' + tmpAppName + '" pagename="' + tmpPageName + '" pageaction="showPageConsole" class="item black"><i class="icon columns green"></i> ' + tmpPageName + '</a>');
-			}
-			tmpHTML.push('<a appuse="tablinks" group="workspace-outline" item="' + tmpAppName + '-' + tmpPageName + '-' + tmpResName + '" class="item black"><i class="icon ' + tmpIcon + ' purple"></i> ' + tmpResName + '</a>')
-			tmpHTML.push('</div><div class="ui divider fitted black"></div>')
-			tmpHTML = tmpHTML.join('\n');
-			this.loadSpot('nav-tabs', tmpHTML)
-		}
+	// 		tmpHTML.push('<div class="pad0 ui top attached tabular tab-nav menu" style="">');
+	// 		tmpHTML.push('<a appuse="tablinks" group="workspace-outline" item="' + tmpCatName + '" catname="' + tmpAtmpCatNameppName + '" pageaction="showCatalogConsole" class="item black  "><i class="icon box brown"></i> ' + tmpCatName + '</a>');
+	// 		tmpHTML.push('<a appuse="tablinks" group="workspace-outline" item="' + tmpCatName + '--' + tmpResName + '" class="item black"><i class="icon ' + tmpIcon + ' brown"></i> ' + tmpResName + '</a>')
+	// 		tmpHTML.push('</div><div class="ui divider fitted black"></div>')
+	// 		tmpHTML = tmpHTML.join('\n');
+	// 		this.loadSpot('nav-tabs', tmpHTML)
+	// 	} else if ((tmpAppName || tmpPageName) && tmpResName) {
+	// 		var tmpHTML = [];
+	// 		var tmpIcon = ThisApp.controls.detailsIndex.getDetails(tmpResType).icon;
 
-	}
+	// 		tmpHTML.push('<div class="pad0 ui top attached tabular tab-nav menu" style="">');
+	// 		if (tmpAppName) {
+	// 			tmpHTML.push('<a appuse="tablinks" group="workspace-outline" item="' + tmpAppName + '" appname="' + tmpAppName + '" pageaction="showAppConsole" class="item black  "><i class="icon globe blue"></i> ' + tmpAppName + '</a>');
+	// 		}
+	// 		if (tmpPageName) {
+	// 			tmpHTML.push('<a appuse="tablinks" group="workspace-outline" item="' + tmpAppName + '-' + tmpPageName + '" appname="' + tmpAppName + '" pagename="' + tmpPageName + '" pageaction="showPageConsole" class="item black"><i class="icon columns green"></i> ' + tmpPageName + '</a>');
+	// 		}
+	// 		tmpHTML.push('<a appuse="tablinks" group="workspace-outline" item="' + tmpAppName + '-' + tmpPageName + '-' + tmpResName + '" class="item black"><i class="icon ' + tmpIcon + ' purple"></i> ' + tmpResName + '</a>')
+	// 		tmpHTML.push('</div><div class="ui divider fitted black"></div>')
+	// 		tmpHTML = tmpHTML.join('\n');
+	// 		this.loadSpot('nav-tabs', tmpHTML)
+	// 	} else {
+			
+	// 	}
+
+	// }
 
 	function uniqueGroups(theUniqueness) {
 		var tmpIndex = this.getIndex();

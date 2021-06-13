@@ -90,14 +90,13 @@ License: MIT
 										]
 									},
 									{
-										"label": "Application Catalog",
+										"label": "Application Resources",
 										"name": "apptabs-resources",
 										"ctl": "tab",
 										"content": [
 											{
 												"ctl": "button",
 												"size": "small",
-												basic: true,
 												compact: true,
 												"onClick": {
 													"run": "action",
@@ -110,9 +109,9 @@ License: MIT
 											},
 											{
 												"ctl": "button",
-												"color": "brown",
+												"color": "violet",
 												"size": "small",
-												basic: false,
+												basic: true,
 												compact: true,
 												"onClick": {
 													"run": "action",
@@ -126,9 +125,9 @@ License: MIT
 											},
 											{
 												"ctl": "button",
-												"color": "brown",
+												"color": "violet",
 												"size": "small",
-												basic: false,
+												basic: true,
 												compact: true,
 												"onClick": {
 													"run": "action",
@@ -142,9 +141,9 @@ License: MIT
 											},
 											{
 												"ctl": "button",
-												"color": "brown",
+												"color": "violet",
 												"size": "small",
-												basic: false,
+												basic: true,
 												compact: true,
 												"onClick": {
 													"run": "action",
@@ -160,9 +159,9 @@ License: MIT
 											},
 											{
 												"ctl": "button",
-												"color": "brown",
+												"color": "violet",
 												"size": "small",
-												basic: false,
+												basic: true,
 												compact: true,
 												"onClick": {
 													"run": "action",

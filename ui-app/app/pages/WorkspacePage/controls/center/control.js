@@ -66,12 +66,12 @@ License: MIT
 												},
 												{
 													"ctl": "button",
-													"color": "brown",
+													"color": "teal",
 													"size": "large",
 													"pageaction": "addCatalog",
 													"labeled": true,
 													"right": true,
-													"icon": "box",
+													"icon": "archive",
 													"name": "btn-new-cat",
 													"text": "New Catalog"
 												},
