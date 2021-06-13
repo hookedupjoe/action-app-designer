@@ -557,6 +557,7 @@ License: MIT
             return;
         }
 
+        var tmpCatName = '';
         var tmpAppName = '';
         var tmpPageName = '';
 
@@ -564,11 +565,18 @@ License: MIT
         if ((tmpParams.appname)) {
             tmpAppName = tmpParams.appname;
         }
+        if ((tmpParams.catname)) {
+            tmpCatName = tmpParams.catname;
+        }
         if ((tmpParams.pagename)) {
             tmpPageName = tmpParams.pagename;
         }
-
-        tmpEntryName = tmpAppName + "-" + tmpPageName + "-" + tmpEntryName
+        if( tmpAppName ){
+            tmpEntryName = tmpAppName + "-" + tmpPageName + "-" + tmpEntryName
+        } else if( tmpCatName ){
+            tmpEntryName = tmpCatName + "--" + tmpEntryName
+        } 
+        
 
         if (loadedResources[tmpEntryName]) {
             var tmpTabAttr = { group: wsOutlineName, item: tmpEntryName };
@@ -582,6 +590,8 @@ License: MIT
             delete loadedResources[tmpEntryName];
             if( tmpPageName ){
                 showPageConsole(tmpParams);
+            } else if( tmpCatName ){                
+                showCatalogConsole(tmpParams);
             } else {
                 showAppConsole(tmpParams);
             }
