@@ -48,6 +48,7 @@ let utils = {
     settingsHome: settingsHome,
     buildApp: buildApp,
     updateAppSetup: updateAppSetup,
+    updateCatSetup: updateCatSetup,    
     getBuildConfigJson: getBuildConfigJson,
     restartServer: restartServer,
     replaceAll: replaceAll,
@@ -139,6 +140,45 @@ function restartServer() {
 function getDirApps() {
 
 }
+
+
+function updateCatSetup(theName, theSetupDetails, scope) {
+    // console.log( 'updateCatSetup', theName, theSetupDetails);
+    var self = this;
+    return new Promise($.async(function (resolve, reject) {
+        try {
+            var bld = $.bld;
+            var tmpName = theName || '';
+            if (!(tmpName)) {
+                throw "Application name not provided"
+            }
+
+            var tmpWSDir = scope.locals.path.ws.catalogs;
+
+            var tmpAppBase = tmpWSDir + tmpName + '/';
+            // console.log( 'Saving to ', tmpAppBase, theSetupDetails);
+            $.await(utils.saveJsonFile(tmpAppBase + 'cat-info.json', theSetupDetails))
+            //$.await(buildApp(tmpName, scope));
+
+            var tmpRet = {
+                status: true,
+                refresh: true
+            }
+
+            resolve(tmpRet);
+
+        }
+        catch (error) {
+            console.log('Err : ' + error);
+            reject(error);
+        }
+
+    }));
+
+
+
+}
+
 function updateAppSetup(theAppName, theSetupDetails, scope) {
     // console.log( 'updateAppSetup', theAppName, theSetupDetails);
     var self = this;

@@ -20,6 +20,7 @@ License: MIT
     thisPageSpecs.required = {
         controls: {
             map: {
+                "app/catalog/designer/controls/catalog-console": "panelCatConsole",
                 "app/catalog/designer/controls/app-console": "panelAppConsole",
                 "app/catalog/designer/controls/resource-console": "resourceConsole",
                 "app/catalog/designer/controls/page-console": "pageConsole"
@@ -27,6 +28,7 @@ License: MIT
         },
         panels: {
             map: {
+                "app/catalog/designer/panels/frmNewCatalog": "frmNewCatalog",
                 "app/catalog/designer/panels/frmNewApp": "frmNewApp",
                 "app/catalog/designer/panels/frmNewPage": "frmNewPage"
             }
@@ -68,6 +70,7 @@ License: MIT
     */
     var actions = ThisPage.pageActions;
     var wsOutlineName = 'workspace-outline';
+    var loadedCats = {};
     var loadedApps = {};
     var loadedPages = {};
     var loadedResources = {};
@@ -236,6 +239,68 @@ License: MIT
         //ThisPage.parts.west.parts.workspace.refreshFromURI();
         ThisPage.parts.center.parts.workspace.refreshFromURI();
         //ThisPage.refreshNavTabs();
+    };
+
+    
+
+    actions.showCatalogConsole = showCatalogConsole;
+    function showCatalogConsole(theParams, theTarget) {
+
+        var tmpParams = ThisApp.getActionParams(theParams, theTarget, ['catname', 'cattitle', 'name', 'title']);
+        var tmpCatName = tmpParams.catname || tmpParams.name || '';
+        console.log('tmpCatName',tmpCatName);
+        if (!(tmpCatName)) {
+            alert("No category name provided to open");
+            return;
+        }
+        var tmpCatTitle = tmpParams.cattitle || tmpParams.title || tmpCatName;
+
+        if (loadedCats[tmpCatName]) {
+            var tmpTabAttr = { group: wsOutlineName, item: tmpCatName };
+            loadedCats[tmpCatName].refreshOnActivate();
+            console.log('tmpTabAttr',tmpTabAttr);
+            ThisApp.delay(1).then(function(){
+                ThisApp.gotoTab(tmpTabAttr);
+            })
+        } else {
+            var tmpNewCat = ThisPage.getControl('panelCatConsole').create('cat-' + tmpCatName);
+            tmpNewCat.subscribe('selected', wsItemSelected);
+
+            
+            tmpNewCat.subscribe('update-cat-setup', function () {
+                refreshWorkspace()
+            })
+            loadedCats[tmpCatName] = tmpNewCat;
+//console.log('tmpNewCat',tmpNewCat);
+            //--- For Debugging
+            window[tmpCatName] = tmpNewCat;
+
+            //--- Create a new card for this app
+            ThisPage.addToSpot('ws-work-area', '<div appuse="cards" group="' + wsOutlineName + '" item="' + tmpCatName + '"></div>');
+            var tmpTabAttr = { group: wsOutlineName, item: tmpCatName };
+            //--- Find created cards jQuery element
+            var tmpNewGroup = ThisPage.getByAttr$({ group: wsOutlineName, item: tmpCatName, appuse: 'cards' });
+
+            var tmpSetupDetails = { catname: tmpCatName, title: tmpCatTitle };
+
+            tmpNewCat.preLoad(tmpSetupDetails);
+            //--- Load App Console into that card
+            //console.log('tmpSetupDetails',tmpSetupDetails);
+            
+            //console.log('tmpNewGroup',tmpNewGroup);
+            window.tmpNewGroup = tmpNewGroup;
+            tmpNewCat.loadToElement(tmpNewGroup).then(function (theReply) {
+                //--- Go to the newly added card (to show it and hide others)
+                
+                tmpNewCat.setup(tmpSetupDetails);
+                //console.log('gotoTab',tmpTabAttr);
+                //ThisPage.saveWorkspaceState();
+                ThisApp.delay(1).then(function(){
+                    ThisApp.gotoTab(tmpTabAttr);
+                })
+                
+            });
+        }
     };
 
 
@@ -519,6 +584,29 @@ License: MIT
         }
 
     };
+
+    actions.addCatalog = addCatalog;
+    function addCatalog(theParams, theTarget) {
+        ThisPage.getPanel('frmNewCatalog').prompt(
+            {
+                isNew: true,
+                doc: { template: 'default' }
+            }
+        ).then(function (theSubmitted, theData) {
+            if (!theSubmitted) {
+                return;
+            }
+
+            ThisApp.common.apiCall({
+                url: '/design/ws/new-catalog',
+                data: theData
+            }).then(function (theReply) {
+                refreshWorkspace();
+                showCatalogConsole(theData);
+            })
+        })
+    };
+
     actions.addApp = addApp;
     function addApp(theParams, theTarget) {
         ThisPage.getPanel('frmNewApp').prompt(
@@ -568,7 +656,7 @@ License: MIT
     };
 
 
-    var commonParams = ['appname', 'apptitle', 'titie', 'source', 'type', 'pagename', 'resname', 'restype'];
+    var commonParams = ['catname', 'appname', 'apptitle', 'titie', 'source', 'type', 'pagename', 'resname', 'restype'];
     actions.wsItemSelected = wsItemSelected;
     function wsItemSelected(theEvent, theControl, theTarget) {
         var tmpParams = ThisApp.getActionParams('na', theTarget, commonParams);
@@ -579,6 +667,8 @@ License: MIT
             showPageConsole(tmpParams);
         } else if (tmpParams.type == 'resource') {
             showResourceConsole(tmpParams);
+        } else if (tmpParams.type == 'catalog') {
+            showCatalogConsole(tmpParams);
         } else {
 
         }
@@ -625,20 +715,37 @@ License: MIT
     ThisPage.getSubNavTabs = getSubNavTabs
     function getSubNavTabs(theDetails) {
         var tmpAppsIndex = {};
+        var tmpCatsIndex = {};
         var tmpHTML = [];
         tmpHTML.push('<div class="pad0 ui top attached tabular tab-nav menu" style="">');
         tmpHTML.push('<a appuse="tablinks" group="workspace-outline" item="workspace" action="selectMe" class="item black"><i class="icon hdd black"></i> </a>');
-
+        
         var tmpForAppName = theDetails.appname || '';
+        var tmpForCatName = theDetails.catname || '';
         var tmpForPageName = theDetails.pagename || '';
+
+//console.log('loadedCats',loadedCats);
+        for (var iPos in loadedCats) {
+            var tmpCat = loadedCats[iPos]
+            var tmpCatName = '';
+            if (tmpCat.details && tmpCat.details.catname) {
+                tmpCatName = tmpCat.details.catname;
+                var tmpCatTitle = tmpCat.details.title ||  tmpCat.details.catname;
+                if (!(tmpCatsIndex[tmpForCatName]) && tmpForCatName == tmpCatName) {
+                    tmpHTML.push('<a appuse="tablinks" group="workspace-outline" item="' + tmpCatName + '" catname="' + tmpCatName + '" pageaction="showCatalogConsole" class="item black  "><i class="icon box black"></i> ' + tmpCatTitle + '</a>');
+                }
+                tmpCatsIndex[tmpCatName] = true;
+            }
+        }
 
         for (var iPos in loadedApps) {
             var tmpApp = loadedApps[iPos]
             var tmpAppName = '';
             if (tmpApp.details && tmpApp.details.appname) {
                 tmpAppName = tmpApp.details.appname;
+                var tmpAppTitle = tmpApp.details.title || tmpAppName;
                 if (!(tmpAppsIndex[tmpForAppName]) && tmpForAppName == tmpAppName) {
-                    tmpHTML.push('<a appuse="tablinks" group="workspace-outline" item="' + tmpAppName + '" appname="' + tmpAppName + '" pageaction="showAppConsole" class="item black  "><i class="icon globe blue"></i> ' + tmpAppName + '</a>');
+                    tmpHTML.push('<a appuse="tablinks" group="workspace-outline" item="' + tmpAppName + '" appname="' + tmpAppName + '" pageaction="showAppConsole" class="item black  "><i class="icon globe blue"></i> ' + tmpAppTitle + '</a>');
                 }
                 tmpAppsIndex[tmpAppName] = true;
             }
@@ -782,14 +889,31 @@ License: MIT
         var tmpHTML = [];
         tmpHTML.push('<div class="pad0 ui top attached tabular tab-nav menu" style="">');
         tmpHTML.push('<a appuse="tablinks" group="workspace-outline" item="workspace" action="selectMe" class="item black"><i class="icon hdd black"></i> </a>');
-        var tmpAppsIndex = {}
+        var tmpAppsIndex = {};
+        var tmpCatsIndex = {};
 
+        var tmpForCatName = '';
+
+ 
+
+        for (var iPos in loadedCats) {
+            var tmpCat = loadedCats[iPos]
+            var tmpCatName = '';
+            if (tmpCat.details && tmpCat.details.catname) {
+                tmpCatName = tmpCat.details.catname;
+                var tmpCatTitle = tmpCat.details.title ||  tmpCat.details.catname;
+                tmpHTML.push('<a appuse="tablinks" group="workspace-outline" item="' + tmpCatName + '" catname="' + tmpCatName + '" pageaction="showCatalogConsole" class="item black  "><i class="icon box black"></i> ' + tmpCatTitle + '</a>');
+                tmpCatsIndex[tmpCatName] = true;
+            }
+        }
+        
         for (var iPos in loadedApps) {
             var tmpApp = loadedApps[iPos]
             var tmpAppName = '';
             if (tmpApp.details && tmpApp.details.appname) {
                 tmpAppName = tmpApp.details.appname;
-                tmpHTML.push('<a appuse="tablinks" group="workspace-outline" item="' + tmpAppName + '" appname="' + tmpAppName + '" pageaction="showAppConsole" class="item black  "><i class="icon globe blue"></i> ' + tmpAppName + '</a>');
+                var tmpAppTitle = tmpApp.details.title || tmpAppName;
+                tmpHTML.push('<a appuse="tablinks" group="workspace-outline" item="' + tmpAppName + '" appname="' + tmpAppName + '" pageaction="showAppConsole" class="item black  "><i class="icon globe blue"></i> ' + tmpAppTitle + '</a>');
                 tmpAppsIndex[tmpAppName] = true;
             }
         }

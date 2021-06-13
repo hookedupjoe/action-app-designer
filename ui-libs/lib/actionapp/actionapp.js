@@ -6653,6 +6653,7 @@ License: MIT
     }
 
     meInstance.loadToElement = function (theEl, theOptions) {
+        
         var dfd = jQuery.Deferred();
         var tmpOptions = theOptions || {};
         var tmpThis = this;
@@ -6661,7 +6662,6 @@ License: MIT
         if (isFunc(tmpThis._onPreInit)) {
             tmpThis._onPreInit();
         }
-
         var tmpHTML = tmpThis.getHTML();
         tmpThis.parentEl.html(tmpHTML);
         tmpThis.parentEl.on('change', tmpThis.onFieldChange.bind(this));
@@ -6672,10 +6672,12 @@ License: MIT
             tmpDom.ontouchstart = ThisApp.util.itemTouchStart.bind(this);
         }
 
+        
         tmpThis.getConfig().options = tmpThis.getConfig().options || {};
 
 
         this.assureRequired().then(function () {
+        
             tmpThis.initControlComponents().then(function (theReply) {
 
                 if (isFunc(tmpThis._onInit)) {

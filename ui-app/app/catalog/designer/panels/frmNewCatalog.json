@@ -1,0 +1,35 @@
+{
+    "options": {
+      "prompt": {
+        "submitLabel": "Save Catalog Changes",
+        "title": "Catalog Details",
+        "submitLabelNew": "Create New Catalog",
+        "titleNew": "New Catalog"
+      }
+    },
+    "content": [
+      {
+        "ctl": "fieldrow",
+        "name": "info-row",
+        "items": [
+          {
+            "name": "catname",
+            "label": "Catalog Name",
+            "note": "no spaces",
+            "req": true
+          },
+          {
+            "name": "title",
+            "label": "Catalog Title",
+            "req": true
+          }
+        ]
+      },
+      {
+        "name": "description",
+        "label": "Description",
+        "placeholder": "Enter optional details about this catalog",
+        "ctl": "field"
+      }
+    ]
+  }

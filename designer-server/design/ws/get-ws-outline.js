@@ -144,6 +144,10 @@ module.exports.setup = function setup(scope) {
 
                 var tmpAppsNode = $.await(getApplicationsNode());
                 tmpBase.content.push(tmpAppsNode);
+                var tmpCatsNode = $.await(getCatalogsNode());
+                tmpBase.content.push(tmpCatsNode);
+                // var tmpCataNode = $.await(getCatalogsNode());
+                // tmpBase.content.push(tmpCataNode);
                 // var tmpWSNode = $.await(getWSResourcesNode());
                 // tmpBase.content.push(tmpWSNode);
                 // var tmpPagesNode = $.await(getPagesNode());
@@ -206,7 +210,133 @@ module.exports.setup = function setup(scope) {
     }
 
 
+    function getCatalogsNode() {
+        var self = this;
+        return new Promise($.async(function (resolve, reject) {
+            try {
+
+
+                var tmpBase = {
+                    "ctl": "tbl-ol-node",
+                    "type": "catalogs",
+                    "details": "Catalogs",
+                    "meta": "&#160;",
+                    "classes": "ws-editor-outline",
+                    "level": 2,
+                    "icon": "box",
+                    "color": "black",
+                    "group": "workspace-outline",
+                    "content": []
+                }
+
+                var tmpBaseDir = scope.locals.path.ws.catalogs;
+
+                var tmpFiles = $.await($.bld.getDirFiles(tmpBaseDir))
+
+                for (var index in tmpFiles) {
+                    var tmpCatName = tmpFiles[index];
+                    var tmpBasePath = tmpBaseDir + tmpCatName + '/';
+                    var tmpDetails = $.await($.bld.getJsonFile(tmpBasePath + 'cat-info.json'))
+                    var tmpTitle = tmpDetails.title || "(untitled)";
+
+                    var tmpCat = {
+                        "ctl": "tbl-ol-node",
+                        "type": "catalog",
+                        "item": tmpTitle + "",
+                        attr: {
+                            catname: tmpCatName,
+                            cattitle: tmpTitle,
+                            source: "catalog"
+                        },
+                        "details": '[' + tmpCatName + '] ' + tmpTitle,
+                        "meta": "&#160;",
+                        "level": 1,
+                        "icon": "box",
+                        "color": "box",
+                        "group": "workspace-outline"
+                    }
+
+                    tmpBase.content.push(tmpCat);
+                }
+
+                resolve(tmpBase);
+            }
+            catch (error) {
+                console.log('Err : ' + error);
+                reject(error);
+            }
+
+        }));
+
+
+
+    }
+
+
     function getApplicationsNode() {
+        var self = this;
+        return new Promise($.async(function (resolve, reject) {
+            try {
+
+
+                var tmpBase = {
+                    "ctl": "tbl-ol-node",
+                    "type": "apps",
+                    "details": "Applications",
+                    "meta": "&#160;",
+                    "classes": "ws-editor-outline",
+                    "level": 2,
+                    "icon": "globe",
+                    "color": "black",
+                    "group": "workspace-outline",
+                    "content": []
+                }
+
+                var tmpWSDir = scope.locals.path.ws.uiApps;
+
+                var tmpFiles = $.await($.bld.getDirFiles(tmpWSDir))
+
+                for (var index in tmpFiles) {
+                    var tmpAppName = tmpFiles[index];
+                    var tmpAppBase = tmpWSDir + tmpAppName + '/';
+                    var tmpAppDetails = $.await($.bld.getJsonFile(tmpAppBase + 'app-info.json'))
+                    var tmpAppTitle = tmpAppDetails.title || "(untitled)";
+
+                    var tmpApp = {
+                        "ctl": "tbl-ol-node",
+                        "type": "app",
+                        "item": tmpAppName + "",
+                        attr: {
+                            appname: tmpAppName,
+                            apptitle: tmpAppTitle,
+                            source: "workspace"
+                        },
+                        "details": '[' + tmpAppName + '] ' + tmpAppTitle,
+                        "meta": "&#160;",
+                        "level": 1,
+                        "icon": "globe",
+                        "color": "blue",
+                        "group": "workspace-outline"
+                    }
+
+                    tmpBase.content.push(tmpApp);
+                }
+
+                resolve(tmpBase);
+            }
+            catch (error) {
+                console.log('Err : ' + error);
+                reject(error);
+            }
+
+        }));
+
+
+
+    }
+
+
+    function getAllApplicationsDetailsNode() {
         var self = this;
         return new Promise($.async(function (resolve, reject) {
             try {
@@ -249,11 +379,9 @@ module.exports.setup = function setup(scope) {
                         "level": 2,
                         "icon": "globe",
                         "color": "blue",
-                        "group": "workspace-outline",
-                        content: []
+                        "group": "workspace-outline"
                     }
 
-                    // + '/app/pages/'
                     var tmpPagesNode = $.await(getPagesNode({ appname: tmpAppName }));
                     tmpApp.content.push(tmpPagesNode);
 

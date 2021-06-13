@@ -65,6 +65,17 @@ License: MIT
 													"text": "New Application"
 												},
 												{
+													"ctl": "button",
+													"color": "brown",
+													"size": "large",
+													"pageaction": "addCatalog",
+													"labeled": true,
+													"right": true,
+													"icon": "box",
+													"name": "btn-new-cat",
+													"text": "New Catalog"
+												},
+												{
 													"ctl": "panel",
 													"controlname": "design/ws/get-ws-outline",
 													"name": "workspace"

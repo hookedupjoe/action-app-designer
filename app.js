@@ -91,6 +91,7 @@ function setup() {
                 root: tmpWSDirectory,
                 deploy: tmpWSDirectory + "deploy/",
                 uiApps: tmpWSDirectory + "ui-apps/",
+                catalogs: tmpWSDirectory + "catalogs/",
                 catalog: tmpWSDirectory + "catalog/",
                 pages: tmpWSDirectory + "catalog/pages/",
                 serverApps: tmpWSDirectory + "designer-servers/"
