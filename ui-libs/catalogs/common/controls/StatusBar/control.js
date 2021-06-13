@@ -20,7 +20,7 @@ License: MIT
 					{
 						"ctl": "spot",
 						"name": "status-bar",
-						"classes": "ui message floating green",
+						"classes": "ui message floating",
 						"text": "Common Status Bar"
 					}
 				]

@@ -15,7 +15,7 @@ License: MIT
 				"ctl": "segment",
 				"basic": true,
 				"slim": true,
-				"name": "demo-item",
+				"name": "container",
 				"content": [
 					{
 						"ctl": "field",
@@ -52,11 +52,32 @@ License: MIT
   var ControlCode = {
 		runSearch: runSearch,
 		clearSearch: clearSearch,
+		showLoading: showLoading,
+		clearLoading: clearLoading,
 		_onInit: _onInit
 	};
 
-	function runSearch() {
+	
+	function showLoading(theIsLoading) {
+		var tmpSeg = this.getItem('container');
+		if( !tmpSeg && tmpSeg.el){
+			return;
+		}
+		if( theIsLoading !== false ){
+			tmpSeg.el.addClass('loading');
+		} else {
+			tmpSeg.el.removeClass('loading');
+		}
+	}
+	function clearLoading() {
+		this.showLoading(false)
+	}
+	function runSearch(theOnlyIfChangedFlag) {
 		var tmpVal = this.getFieldValue('search');
+		if( (this.lastVal == tmpVal) && (theOnlyIfChangedFlag === true)){
+			return;
+		}
+		this.lastVal = tmpVal;
 		if( tmpVal == '' ){
 			this.publish('clear',[this]);
 			return;
@@ -69,19 +90,25 @@ License: MIT
 	}
 	function _onInit() {
 		//--- Only fire the process change event
-		var processChange = ActionAppCore.debounce(function () {
-			console.log('pc')
-			this.runSearch();
-		}, 400).bind(this);
+		var processChange = ActionAppCore.debounce(function (theEvent) {			
+			var tmpOnlyIfChanged = true;
+			//--- Below code makes it run twice, to force research - use button
+			// if( ( theEvent && theEvent.keyCode  && theEvent.keyCode == 13) ){
+			// 	tmpOnlyIfChanged = false;
+			// }
+
+			this.runSearch(tmpOnlyIfChanged);
+		}, 500).bind(this);
 		this.elSearch = this.getFieldEl('search');
 		this.elSearch.on('change', processChange.bind(this));
 		this.elSearch.keyup(processChange.bind(this));
-		// this.elSearch.keyup(function(theEvent){
-		// 	if( theEvent && theEvent.keyCode  && theEvent.keyCode == 13){
-		// 		processChange();
-		// 	}
+		
+		this.elSearch.keyup((function(theEvent){
+			if( ( theEvent && theEvent.keyCode  && theEvent.keyCode == 13) ){
+				this.runSearch(true);
+			}
 			
-		// });
+		 }).bind(this));
 	}
 	
 	
