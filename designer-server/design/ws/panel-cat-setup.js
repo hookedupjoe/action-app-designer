@@ -59,8 +59,8 @@ module.exports.setup = function setup(scope) {
                     "req": true
                   },
                   {
-                    "name": "description",
-                    "label": "Description",
+                    "name": "details",
+                    "label": "Details",
                     "placeholder": "Enter optional details about this catalog",
                     "ctl": "field"
                   },

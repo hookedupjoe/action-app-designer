@@ -47,6 +47,10 @@ module.exports.setup = function setup(scope) {
                 // $.await($.fs.copy(tmpFromDir,tmpToDir));
 
                 $.await($.fs.ensureDir(tmpCatBase));
+                $.await($.fs.ensureDir(tmpCatBase + 'panels/'));
+                $.await($.fs.ensureDir(tmpCatBase + 'controls/'));
+                $.await($.fs.ensureDir(tmpCatBase + 'tpl/'));
+                $.await($.fs.ensureDir(tmpCatBase + 'html/'));
 
                 var tmpCatDetails = $.await($.bld.getJsonFile(tmpCatBase + 'cat-info.json'));
                 tmpCatDetails.title = tmpCatTitle;
