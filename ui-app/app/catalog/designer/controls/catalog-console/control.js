@@ -243,12 +243,10 @@ License: MIT
 		//this.parts.pages.subscribe('selectMe', onPageSelect.bind(this))
 		//this.parts.resources.subscribe('selectMe', onResourceSelect.bind(this))
 
-		//console.log(this.context,this.parts);
 		//this.context.page.controller.actions.wsItemSelected('', theTarget);
 
 		var tmpDetailsInfo = this.getDetailsInfo();
 		var tmpAppPath = this.parts.setupinfo.controlSpec.controlConfig.options.links.path;
-		console.log('tmpDetailsInfo',tmpDetailsInfo);
 		this.details.title = tmpDetailsInfo.title || this.details.catname;
 		var tmpTitle = this.details.catname;
 		if (this.details.title) {
@@ -446,8 +444,6 @@ License: MIT
 			alert("No app to open");
 			return;
 		}
-		console.log("disabled");
-		//ThisApp.apiCall({ url: '/design/ws/launch-app?catname=' + tmpcatname })
 	};
 
 
@@ -488,7 +484,6 @@ License: MIT
 	}
 
 	function refreshTabNav() {
-		console.log('this.details',this.details);
 		var tmpHTML = this.context.page.controller.getSubNavTabs(this.details);
 		if ((tmpHTML)) {
 			this.loadSpot('nav-tabs', tmpHTML.join(''))

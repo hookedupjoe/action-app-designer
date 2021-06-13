@@ -248,7 +248,6 @@ License: MIT
 
         var tmpParams = ThisApp.getActionParams(theParams, theTarget, ['catname', 'cattitle', 'name', 'title']);
         var tmpCatName = tmpParams.catname || tmpParams.name || '';
-        console.log('tmpCatName',tmpCatName);
         if (!(tmpCatName)) {
             alert("No category name provided to open");
             return;
@@ -258,7 +257,6 @@ License: MIT
         if (loadedCats[tmpCatName]) {
             var tmpTabAttr = { group: wsOutlineName, item: tmpCatName };
             loadedCats[tmpCatName].refreshOnActivate();
-            console.log('tmpTabAttr',tmpTabAttr);
             ThisApp.delay(1).then(function(){
                 ThisApp.gotoTab(tmpTabAttr);
             })
@@ -271,7 +269,6 @@ License: MIT
                 refreshWorkspace()
             })
             loadedCats[tmpCatName] = tmpNewCat;
-//console.log('tmpNewCat',tmpNewCat);
             //--- For Debugging
             window[tmpCatName] = tmpNewCat;
 
@@ -285,15 +282,12 @@ License: MIT
 
             tmpNewCat.preLoad(tmpSetupDetails);
             //--- Load App Console into that card
-            //console.log('tmpSetupDetails',tmpSetupDetails);
             
-            //console.log('tmpNewGroup',tmpNewGroup);
             window.tmpNewGroup = tmpNewGroup;
             tmpNewCat.loadToElement(tmpNewGroup).then(function (theReply) {
                 //--- Go to the newly added card (to show it and hide others)
                 
                 tmpNewCat.setup(tmpSetupDetails);
-                //console.log('gotoTab',tmpTabAttr);
                 //ThisPage.saveWorkspaceState();
                 ThisApp.delay(1).then(function(){
                     ThisApp.gotoTab(tmpTabAttr);
@@ -724,7 +718,6 @@ License: MIT
         var tmpForCatName = theDetails.catname || '';
         var tmpForPageName = theDetails.pagename || '';
 
-//console.log('loadedCats',loadedCats);
         for (var iPos in loadedCats) {
             var tmpCat = loadedCats[iPos]
             var tmpCatName = '';
