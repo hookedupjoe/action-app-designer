@@ -419,8 +419,6 @@ License: MIT
                 ThisPage.saveWorkspaceState();                
             });
             //--- Go to the newly added card (to show it and hide others)
-            console.log('tmpTabAttr',tmpTabAttr);
-
             ThisApp.delay(1).then(function(){
                 ThisApp.gotoTab(tmpTabAttr);
             })
@@ -833,7 +831,7 @@ License: MIT
                 }
                 var tmpPageFN = tmpAppName + '-' + tmpPageName;
                 if (!(tmpAppsIndex[tmpPageFN])) {
-                    if ((tmpForPageName && (tmpPageName == tmpForPageName))) {
+                    if ((!tmpForPageName && (tmpForAppName == tmpAppName)) || (tmpForPageName && (tmpPageName == tmpForPageName)  && (tmpForAppName == tmpAppName))) {
                         tmpHTML.push('<a appuse="tablinks" group="workspace-outline" item="' + tmpAppName + '-' + tmpPageName + '" appname="' + tmpAppName + '" pagename="' + tmpPageName + '" pageaction="showPageConsole" class="item black"><i class="icon columns green"></i> ' + tmpPageName + '</a>');
                         tmpAppsIndex[tmpPageFN] = true;
                     }
