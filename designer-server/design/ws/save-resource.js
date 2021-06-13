@@ -30,9 +30,11 @@ module.exports.setup = function setup(scope) {
 
                 var tmpWSDir = scope.locals.path.ws.uiApps;
                 var tmpPagesDir = scope.locals.path.ws.pages;
+                var tmpCatDir = scope.locals.path.ws.catalogs;
 
                 var tmpReq = tmpBody;
 
+                var tmpCatName = tmpReq.catname || '';
                 var tmpAppName = tmpReq.appname || '';
                 var tmpResName = tmpReq.resname || '';
                 var tmpResType = tmpReq.restype || '';
@@ -51,7 +53,7 @@ module.exports.setup = function setup(scope) {
                     throw 'No text content provided';
                 }
 
-                var tmpPagesBase = tmpPagesDir;
+                var tmpResBase = '';
 
                 if( tmpAppName ){
                     var tmpAppBase = tmpWSDir + tmpAppName + '/';
@@ -62,10 +64,22 @@ module.exports.setup = function setup(scope) {
                     if (!(tmpAppTitle)) {
                         throw ("Application " + tmpAppName + " not found at " + tmpAppBase);
                     }
+                    tmpResBase = tmpAppBase + 'catalog/';
 
+                } else if( tmpCatName ){
+                    var tmpCatBase = tmpCatDir + tmpCatName + '/';
+
+                    var tmpCatDetails = $.await($.bld.getJsonFile(tmpCatBase + 'cat-info.json'))
+                    var tmpCatTitle = tmpCatDetails.title || '';
+    
+                    if (!(tmpCatTitle)) {
+                        throw ("Catalog " + tmpCatName + " not found at " + tmpCatBase);
+                    }
+                    tmpResBase = tmpCatBase;
                 }
 
-                var tmpPageBase = '';
+                
+                var tmpPagesBase = tmpPagesDir;
                 if( tmpPageName ){
                     tmpPagesBase = tmpAppBase + 'app/pages/';
 
@@ -74,13 +88,11 @@ module.exports.setup = function setup(scope) {
                     if (tmpPages.indexOf(tmpPageName) == -1) {
                         throw "Page " + tmpPageName + " does not exists"
                     }
-                    tmpPageBase = tmpPagesBase + tmpPageName;
-                } else {
-                    tmpPageBase = tmpAppBase + 'catalog/';
+                    tmpResBase = tmpPagesBase + tmpPageName;
                 }
        
 
-                var tmpContentBase = tmpPageBase + '/' + tmpResDetails.dir;
+                var tmpContentBase = tmpResBase + '/' + tmpResDetails.dir;
 
                 $.await($.fs.ensureDir(tmpContentBase + '/'));
 
