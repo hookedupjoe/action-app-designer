@@ -762,6 +762,10 @@ License: MIT
             if (tmpRes.details && tmpRes.details.appname) {
                 tmpAppName = tmpRes.details.appname
             }
+            if (tmpRes.details && tmpRes.details.catname) {
+                tmpCatName = tmpRes.details.catname
+            }
+             
             if (tmpAppName && (!(tmpAppsIndex[tmpAppName]) && tmpForAppName == tmpAppName)) {
                 tmpHTML.push('<a appuse="tablinks" group="workspace-outline" item="' + tmpAppName + '" appname="' + tmpAppName + '" pageaction="showAppConsole" class="item black  "><i class="icon globe blue"></i> ' + tmpAppName + '</a>');
                 tmpAppsIndex[tmpAppName] = true;
@@ -803,11 +807,9 @@ License: MIT
                 var tmpResFN = tmpCatName + '--' + tmpResName;
 
                 if (!(tmpCatsIndex[tmpResFN]) && (tmpForCatName == tmpCatName)) {
-                    if (tmpPageName == tmpForPageName) {
-                        var tmpIcon = ThisApp.controls.detailsIndex.getDetails(tmpResType).icon;
-                        tmpHTML.push('<a appuse="tablinks" group="workspace-outline" item="' + tmpCatName + '--' + tmpResName + '" catname="' + tmpCatName + '" pagename="' + tmpPageName + '"  resname="' + tmpResName + '" pageaction="showResourceConsole"    class="item black"><i class="icon ' + tmpIcon + ' brown"></i> ' + tmpResTitle + '</a>')
-                        tmpCatsIndex[tmpResFN] = true;
-                    }
+                    var tmpIcon = ThisApp.controls.detailsIndex.getDetails(tmpResType).icon;
+                    tmpHTML.push('<a appuse="tablinks" group="workspace-outline" item="' + tmpCatName + '--' + tmpResName + '" catname="' + tmpCatName + '" pagename="' + tmpPageName + '"  resname="' + tmpResName + '" pageaction="showResourceConsole"    class="item black"><i class="icon ' + tmpIcon + ' brown"></i> ' + tmpResTitle + '</a>')
+                    tmpCatsIndex[tmpResFN] = true;
                 }
             }
 
@@ -816,8 +818,12 @@ License: MIT
         for (var iPos in loadedPages) {
             var tmpPage = loadedPages[iPos]
             var tmpAppName = '';
+            var tmpCatName = '';
             if (tmpPage.details && tmpPage.details.appname) {
                 tmpAppName = tmpPage.details.appname
+            }
+            if (tmpPage.details && tmpPage.details.catname) {
+                tmpCatName = tmpPage.details.catname
             }
             if (!(tmpAppsIndex[tmpAppName]) && tmpForAppName == tmpAppName) {
                 tmpHTML.push('<a appuse="tablinks" group="workspace-outline" item="' + tmpAppName + '" appname="' + tmpAppName + '" pageaction="showAppConsole" class="item black  "><i class="icon globe blue"></i> ' + tmpAppName + '</a>');
@@ -844,9 +850,14 @@ License: MIT
         for (var iPos in loadedResources) {
             var tmpRes = loadedResources[iPos]
             var tmpAppName = '';
+            var tmpCatName = '';
             if (tmpRes.details && tmpRes.details.appname) {
                 tmpAppName = tmpRes.details.appname
             }
+            if (tmpRes.details && tmpRes.details.catname) {
+                tmpCatName = tmpRes.details.catname
+            }
+
             if (tmpAppName && !(tmpAppsIndex[tmpAppName]) && tmpForAppName == tmpAppName) {
                 tmpHTML.push('<a appuse="tablinks" group="workspace-outline" item="' + tmpAppName + '" appname="' + tmpAppName + '" pageaction="showAppConsole" class="item black  "><i class="icon globe blue"></i> ' + tmpAppName + '</a>');
                 tmpAppsIndex[tmpAppName] = true;
@@ -886,14 +897,13 @@ License: MIT
                 }
 
 
-            } else if (tmpCatName) {
+            } else if (tmpCatName && (tmpForCatName == tmpCatName)) {
                 
                 var tmpResName = tmpRes.details.resname;
                 var tmpResTitle = tmpRes.details.title || tmpRes.details.resname;
 
                 var tmpResType = tmpRes.details.restype;
                 var tmpResFN = tmpCatName + '--' + tmpResName;
-
                 if (!(tmpCatsIndex[tmpResFN]) && (tmpForCatName == tmpCatName)) {
                     var tmpIcon = ThisApp.controls.detailsIndex.getDetails(tmpResType).icon;
                     tmpHTML.push('<a appuse="tablinks" group="workspace-outline" item="' + tmpCatName + '--' + tmpResName + '" catname="' + tmpCatName + '" pagename="' + tmpPageName + '"  resname="' + tmpResName + '" pageaction="showResourceConsole"    class="item black"><i class="icon ' + tmpIcon + ' brown"></i> ' + tmpResTitle + '</a>')
@@ -936,7 +946,7 @@ License: MIT
             if (tmpCat.details && tmpCat.details.catname) {
                 tmpCatName = tmpCat.details.catname;
                 var tmpCatTitle = tmpCat.details.title ||  tmpCat.details.catname;
-                tmpHTML.push('<a appuse="tablinks" group="workspace-outline" item="' + tmpCatName + '" catname="' + tmpCatName + '" pageaction="showCatalogConsole" class="item   "><i class="icon box brown"></i> ' + tmpCatTitle + '</a>');
+                tmpHTML.push('<a appuse="tablinks" group="workspace-outline" item="' + tmpCatName + '" catname="' + tmpCatName + '" pageaction="showCatalogConsole" class="item   "><i class="icon archive teal"></i> ' + tmpCatTitle + '</a>');
                 tmpCatsIndex[tmpCatName] = true;
             }
         }
