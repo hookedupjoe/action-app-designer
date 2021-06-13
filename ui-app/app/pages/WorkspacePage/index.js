@@ -732,7 +732,7 @@ License: MIT
                 tmpCatName = tmpCat.details.catname;
                 var tmpCatTitle = tmpCat.details.title ||  tmpCat.details.catname;
                 if (!(tmpCatsIndex[tmpForCatName]) && tmpForCatName == tmpCatName) {
-                    tmpHTML.push('<a appuse="tablinks" group="workspace-outline" item="' + tmpCatName + '" catname="' + tmpCatName + '" pageaction="showCatalogConsole" class="item black  "><i class="icon box black"></i> ' + tmpCatTitle + '</a>');
+                    tmpHTML.push('<a appuse="tablinks" group="workspace-outline" item="' + tmpCatName + '" catname="' + tmpCatName + '" pageaction="showCatalogConsole" class="item   "><i class="icon box brown"></i> ' + tmpCatTitle + '</a>');
                 }
                 tmpCatsIndex[tmpCatName] = true;
             }
@@ -902,7 +902,7 @@ License: MIT
             if (tmpCat.details && tmpCat.details.catname) {
                 tmpCatName = tmpCat.details.catname;
                 var tmpCatTitle = tmpCat.details.title ||  tmpCat.details.catname;
-                tmpHTML.push('<a appuse="tablinks" group="workspace-outline" item="' + tmpCatName + '" catname="' + tmpCatName + '" pageaction="showCatalogConsole" class="item black  "><i class="icon box black"></i> ' + tmpCatTitle + '</a>');
+                tmpHTML.push('<a appuse="tablinks" group="workspace-outline" item="' + tmpCatName + '" catname="' + tmpCatName + '" pageaction="showCatalogConsole" class="item   "><i class="icon box brown"></i> ' + tmpCatTitle + '</a>');
                 tmpCatsIndex[tmpCatName] = true;
             }
         }
@@ -913,7 +913,7 @@ License: MIT
             if (tmpApp.details && tmpApp.details.appname) {
                 tmpAppName = tmpApp.details.appname;
                 var tmpAppTitle = tmpApp.details.title || tmpAppName;
-                tmpHTML.push('<a appuse="tablinks" group="workspace-outline" item="' + tmpAppName + '" appname="' + tmpAppName + '" pageaction="showAppConsole" class="item black  "><i class="icon globe blue"></i> ' + tmpAppTitle + '</a>');
+                tmpHTML.push('<a appuse="tablinks" group="workspace-outline" item="' + tmpAppName + '" appname="' + tmpAppName + '" pageaction="showAppConsole" class="item   "><i class="icon globe blue"></i> ' + tmpAppTitle + '</a>');
                 tmpAppsIndex[tmpAppName] = true;
             }
         }

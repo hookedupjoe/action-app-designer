@@ -74,7 +74,7 @@ module.exports.setup = function setup(scope) {
                         "classes": "ws-outline",
                         "level": 3,
                         "icon": "box",
-                        "color": "black",
+                        "color": "brown",
                         "group": "workspace-outline",
                         "content": []
                     }
@@ -224,7 +224,7 @@ module.exports.setup = function setup(scope) {
                     "classes": "ws-editor-outline",
                     "level": 2,
                     "icon": "box",
-                    "color": "black",
+                    "color": "brown",
                     "group": "workspace-outline",
                     "content": []
                 }
@@ -252,7 +252,7 @@ module.exports.setup = function setup(scope) {
                         "meta": "&#160;",
                         "level": 1,
                         "icon": "box",
-                        "color": "box",
+                        "color": "brown",
                         "group": "workspace-outline"
                     }
 
@@ -545,7 +545,7 @@ module.exports.setup = function setup(scope) {
                     "classes": "ws-editor-outline",
                     "level": 2,
                     "icon": "box",
-                    "color": "black",
+                    "color": "brown",
                     "group": "workspace-outline",
                     "content": []
                 }
