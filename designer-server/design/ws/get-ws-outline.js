@@ -611,15 +611,18 @@ module.exports.setup = function setup(scope) {
                             tmpEntryColor = "violet";
                         }
                         var tmpSource = "workspace";
+                        var tmpMainName = ''
                         if( tmpAppName ){
-                            tmpSource = "app"
+                            tmpSource = "app";
+                            tmpMainName = tmpAppName;
                         } else if( tmpCatName ){
-                            tmpSource = "cat"
+                            tmpSource = "cat";
+                            tmpMainName = tmpCatName;
                         }
                         var tmpEntry = {
                             "ctl": "tbl-ol-node",
                             "type": "resource",
-                            "item": tmpAppName + '-' + tmpPageName + '-' + tmpFileName + "",
+                            "item": tmpMainName + '-' + tmpPageName + '-' + tmpFileName + "",
                             "details": tmpShowName,
                             "meta": "&#160;",
                             "level": 1,
