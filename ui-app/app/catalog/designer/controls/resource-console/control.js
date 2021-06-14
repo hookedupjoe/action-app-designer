@@ -150,7 +150,6 @@ License: MIT
 	};
 
 	function _onParentResize() {
-		console.log('_onParentResize rc');
 		// var tmpThis = this;
 		// ThisApp.delay(200).then(function (theReply) {
 		// 	if (tmpThis.aceEditorEl) {
@@ -324,7 +323,6 @@ License: MIT
 		//this.aceEditorEl = this.getSpot("ace-editor");
 		//this.aceEditor = ace.edit(this.aceEditorEl.get(0));
 		this.aceEditor = this.parts.editor.codeEditor;
-		console.log('ace setup',this);
 		if( this.context.page && this.context.page.controller ){
 			this.context.page.controller.subscribe('resized', onEditorResize.bind(this));
 		}
@@ -397,7 +395,6 @@ License: MIT
 		theSession.setTabSize(2);
 	}
 	function refreshEditorFromCodeIndex() {
-		console.log('this.loaded.codeIndex',this.loaded.codeIndex);
 		for (var aName in this.loaded.codeIndex) {
 			var tmpCode = this.loaded.codeIndex[aName];
 			if (!(this.loaded.sessions[aName])) {
@@ -441,7 +438,6 @@ License: MIT
 			url: '/design/ws/save-resource?run',
 			data: tmpRequest
 		}).then(function (theReply) {
-			console.log('theReply',theReply);
 			if( theReply && theReply.status === false){
 				var tmpMsg = "There was an error, contact support with these details: " + theReply.error || '(unknown error)';
 				alert(tmpMsg,"Error","e");

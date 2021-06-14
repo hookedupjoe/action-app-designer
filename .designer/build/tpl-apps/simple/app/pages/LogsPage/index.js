@@ -216,7 +216,6 @@ License: MIT
     ThisPage.refreshMessageCenter = refreshMessageCenter;
     function refreshMessageCenter() {
         var tmpMessages = ThisApp.getMessages();
-        console.log( 'refreshMessageCenter tmpMessages', tmpMessages);
         $.each(tmpMessages, function(thePos){
             var tmpObj = tmpMessages[thePos]
             var tmpMore = '';
