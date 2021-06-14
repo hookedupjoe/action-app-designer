@@ -89,6 +89,8 @@ License: MIT
         ThisPage.loadedApps = loadedApps;
         ThisPage.loadedPages = loadedPages;
         ThisPage.loadedResources = loadedResources;
+        ActionAppCore.common = ActionAppCore.common || {};
+        ActionAppCore.common.designerEndpointPrefix = ActionAppCore.common.designerEndpointPrefix || 'design/ws';
     }
     ThisPage._onInit = function () {
 
