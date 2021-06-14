@@ -479,6 +479,71 @@ License: MIT
         }
     };
 
+    
+
+    ThisPage.closeCatalogConsole = actions.closeCatalogConsole = closeCatalogConsole;
+    function closeCatalogConsole(theParams, theTarget) {
+        var tmpParams = ThisApp.getActionParams(theParams, theTarget, commonParams);
+        
+        var tmpCatName = '';
+        if (tmpParams.catname) {
+            tmpCatName = tmpParams.catname;
+        }
+
+        if (loadedCats[tmpCatName]) {
+            var tmpTabAttr = { group: wsOutlineName, item: tmpCatName };
+            var tmpAll = ThisPage.getByAttr$(tmpTabAttr);
+            tmpAll.each(function (theIndex, theItem) {
+                var tmpItemEl = $(theItem);
+                if (!(tmpItemEl.attr('oluse'))) {
+                    tmpItemEl.remove();
+                }
+            })
+            delete loadedCats[tmpCatName];
+
+        } else {
+            console.warn("No loaded cat to close for " + tmpCatName)
+        }
+
+        var tmpToRemove = [];
+        for (var aName in loadedResources) {
+            var tmpRes = loadedResources[aName]
+            var tmpResCatName = '';
+            if (tmpRes.details && tmpRes.details.catname) {
+                tmpResCatName = tmpRes.details.catname
+            }
+
+            if (tmpResCatName) {
+                if (tmpResCatName == tmpCatName) {
+                    tmpToRemove.push(aName);
+                }
+            }
+
+        }
+
+        for (var iPos in tmpToRemove) {
+            var tmpRemoveItem = tmpToRemove[iPos];
+            var tmpTabAttr = { group: wsOutlineName, item: tmpRemoveItem };
+            var tmpAll = ThisPage.getByAttr$(tmpTabAttr);
+            tmpAll.each(function (theIndex, theItem) {
+                var tmpItemEl = $(theItem);
+                if (!(tmpItemEl.attr('oluse'))) {
+                    tmpItemEl.remove();
+                }
+            })
+
+            delete loadedResources[tmpRemoveItem];
+        }
+        showWorkspace();
+        //showAppConsole(tmpParams);
+    };
+
+
+    function showWorkspace(){
+        ThisApp.gotoTab({group:'workspace-outline', item: 'workspace'});
+        ThisPage.refreshWSNav();
+    }
+
     ThisPage.closePageConsole = actions.closePageConsole = closePageConsole;
     function closePageConsole(theParams, theTarget) {
         var tmpParams = ThisApp.getActionParams(theParams, theTarget, commonParams);
@@ -544,6 +609,94 @@ License: MIT
         }
 
         showAppConsole(tmpParams);
+    };
+
+    ThisPage.closeAppConsole = actions.closeAppConsole = closeAppConsole;
+    function closeAppConsole(theParams, theTarget) {
+        var tmpParams = ThisApp.getActionParams(theParams, theTarget, commonParams);
+        tmpAppName = tmpParams.appname;
+        
+        if (loadedApps[tmpAppName]) {
+            var tmpTabAttr = { group: wsOutlineName, item: tmpAppName };
+            var tmpAll = ThisPage.getByAttr$(tmpTabAttr);
+            tmpAll.each(function (theIndex, theItem) {
+                var tmpItemEl = $(theItem);
+                if (!(tmpItemEl.attr('oluse'))) {
+                    tmpItemEl.remove();
+                }
+            })
+            delete loadedApps[tmpAppName];
+
+        } else {
+            console.warn("No loaded page to close for " + tmpEntryName)
+        }
+
+        var tmpToRemove = [];
+
+        for (var aName in loadedPages) {
+            var tmpRes = loadedPages[aName]
+            var tmpResAppName = '';
+            if (tmpRes.details && tmpRes.details.appname) {
+                tmpResAppName = tmpRes.details.appname
+            }
+
+            if (tmpResAppName) {
+                if (tmpResAppName == tmpAppName) {
+                    tmpToRemove.push(aName);
+                }
+            }
+
+        }
+
+        for (var iPos in tmpToRemove) {
+            var tmpRemoveItem = tmpToRemove[iPos];
+            var tmpTabAttr = { group: wsOutlineName, item: tmpRemoveItem };
+            var tmpAll = ThisPage.getByAttr$(tmpTabAttr);
+            tmpAll.each(function (theIndex, theItem) {
+                var tmpItemEl = $(theItem);
+                if (!(tmpItemEl.attr('oluse'))) {
+                    tmpItemEl.remove();
+                }
+            })
+
+            delete loadedPages[tmpRemoveItem];
+        }
+
+        tmpToRemove = [];
+        for (var aName in loadedResources) {
+            var tmpRes = loadedResources[aName]
+            var tmpResAppName = '';
+            if (tmpRes.details && tmpRes.details.appname) {
+                tmpResAppName = tmpRes.details.appname
+            }
+
+            if (tmpResAppName) {
+                var tmpResPageName = '';
+                if (tmpRes.details && tmpRes.details.pagename) {
+                    tmpResPageName = tmpRes.details.pagename
+                }
+                if (tmpResAppName == tmpAppName) {
+                    tmpToRemove.push(aName);
+                }
+            }
+
+        }
+
+        for (var iPos in tmpToRemove) {
+            var tmpRemoveItem = tmpToRemove[iPos];
+            var tmpTabAttr = { group: wsOutlineName, item: tmpRemoveItem };
+            var tmpAll = ThisPage.getByAttr$(tmpTabAttr);
+            tmpAll.each(function (theIndex, theItem) {
+                var tmpItemEl = $(theItem);
+                if (!(tmpItemEl.attr('oluse'))) {
+                    tmpItemEl.remove();
+                }
+            })
+
+            delete loadedResources[tmpRemoveItem];
+        }
+
+        showWorkspace();
     };
 
 

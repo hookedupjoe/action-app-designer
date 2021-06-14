@@ -21,12 +21,29 @@ License: MIT
 				slim: true,
 				content: [
 					{
-						"ctl": "title",
+						"ctl": "field",
 						"name": "title",
-						"size": "large",
-						"color": "black",
-						"icon": "box",
-						"text": "Catalog"
+						"fluid": true,
+						"readonly": true,
+						"inputClasses": "title",
+						"default": "Resource",
+						"placeholder": "",
+						"content": [
+							{
+								"ctl": "button",
+								"color": "black",
+								hidden: false,
+								basic: true,
+								right: true,
+								"icon": "cancel",
+								"name": "btn-close-page",
+								"label": "Close",
+								onClick: {
+									"run": "action",
+									action: "closeMe"
+								}
+							}
+						]
 					}
 				]
 			},
@@ -228,8 +245,14 @@ License: MIT
 		addCatalogControl: addCatalogControl,
 		addCatalogPanel: addCatalogPanel,
 		refreshResources: refreshResources,
+		closeMe: closeMe,
 		promptForDetailsInfo: promptForDetailsInfo
 	};
+
+	function closeMe() {
+		this.context.page.controller.closeCatalogConsole(this.details);
+	}
+
 
 	function _onInit() {
 		//this.parts.pages.subscribe('selectMe', onPageSelect.bind(this))
@@ -244,9 +267,9 @@ License: MIT
 		if (this.details.title) {
 			tmpTitle = '[' + this.details.catname + '] ' + this.details.title;
 		}
-		this.getItemEl('title').html(tmpTitle);
-		
-
+		//this.getItemEl('title').html(tmpTitle);
+		this.setFieldValue('title',tmpTitle);
+		window.activeControl = this;
 	}
 
 	function onPageSelect(theEvent, theControl, theTarget) {
@@ -454,14 +477,14 @@ License: MIT
 		this.controlConfig.index.controls.setupinfo.controlname += tmpcatname
 
 		//--- Set Title
-		this.controlConfig.index.items.title.text = 'Loading ...';
+		//this.controlConfig.index.items.title.text = 'Loading ...';
 
 
 
 	}
 	//---- Initial Details of the control
 	function setup(theDetails) {
-
+console.log('setup',theDetails);
 		this.refreshTabNav();
 
 		// var tmpOutlineEl = ThisApp.getByAttr$({action: "outlineDisplay",type: "pages"});
@@ -614,8 +637,6 @@ License: MIT
 
 
 	}
-
-
 
 	//~ControlCode~//~
 

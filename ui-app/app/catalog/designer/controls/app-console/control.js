@@ -21,12 +21,29 @@ License: MIT
 				slim: true,
 				content: [
 					{
-						"ctl": "title",
+						"ctl": "field",
 						"name": "title",
-						"size": "large",
-						"color": "blue",
-						"icon": "globe",
-						"text": "Application"
+						"fluid": true,
+						"readonly": true,
+						"inputClasses": "title",
+						"default": "Resource",
+						"placeholder": "",
+						"content": [
+							{
+								"ctl": "button",
+								"color": "black",
+								hidden: false,
+								basic: true,
+								right: true,
+								"icon": "cancel",
+								"name": "btn-close-page",
+								"label": "Close",
+								onClick: {
+									"run": "action",
+									action: "closeMe"
+								}
+							}
+						]
 					}
 				]
 			},
@@ -373,8 +390,14 @@ License: MIT
 		addCatalogControl: addCatalogControl,
 		addCatalogPanel: addCatalogPanel,
 		refreshResources: refreshResources,
+		closeMe: closeMe,
 		promptForSetupInfo: promptForSetupInfo
 	};
+
+	function closeMe() {
+		this.context.page.controller.closeAppConsole(this.details);
+	}
+
 
 	function _onInit() {
 		this.parts.pages.subscribe('selectMe', onPageSelect.bind(this))
@@ -395,7 +418,8 @@ License: MIT
 		if (this.details.apptitle) {
 			tmpTitle = '[' + this.details.appname + '] ' + this.details.apptitle;
 		}
-		this.getItemEl('title').html(tmpTitle);
+		//this.getItemEl('title').html(tmpTitle);
+		this.setFieldValue('title', tmpTitle);
 		var tmpCodeLink = this.getItemEl('open-in-code-link');
 		tmpCodeLink.attr('href', "vscode://file/" + this.details.path);
 		tmpCodeLink.attr('target', "app-code-" + this.details.appname);
@@ -618,7 +642,7 @@ License: MIT
 		this.controlConfig.index.controls.setupinfo.controlname += tmpAppName
 
 		//--- Set Title
-		this.controlConfig.index.items.title.text = 'Loading ...';
+		//this.controlConfig.index.items.title.text = 'Loading ...';
 
 
 		var tmpPort = '33461';
