@@ -8,9 +8,9 @@ License: MIT
 
     var thisPageSpecs = {
         pageName: "ControlBuilderPage",
-        pageTitle: "Control Builder",
+        pageTitle: "Builder",
         navOptions: {
-            topLink: false,
+            topLink: true,
             sideLink: true
         }
     };
@@ -28,10 +28,7 @@ License: MIT
 
     thisPageSpecs.layoutOptions = {
         baseURL: pageBaseURL,
-
-        //useControls: true,
-
-        center: { partname: "editor", control: "AceEditor"},
+        center: { partname: "editor", control: "AceEditor", source: "/catalogs/developer/controls"},
         east: { partname: "preview", panel: "previewPanel", source: "catalog/panels/common"},
         west: { partname: "controls", control: "ControlPanel"},
         north: { html: "north" },

@@ -117,8 +117,9 @@ License: MIT
 						],
 						center: [
 							{
-								ctl: "spot",
-								name: "ace-editor",
+								ctl: "control",
+								"controlname": "/catalogs/developer/controls/AceEditor",
+								name: "editor",
 								text: ""
 							}
 
@@ -149,19 +150,20 @@ License: MIT
 	};
 
 	function _onParentResize() {
-		var tmpThis = this;
-		ThisApp.delay(200).then(function (theReply) {
-			if (tmpThis.aceEditorEl) {
-				var tmpH = tmpThis.aceEditorEl.closest('.ui-layout-pane').height();
-				if (tmpThis.aceEditorEl && tmpThis.aceEditor) {
-					tmpThis.aceEditorEl
-						.css('height', '' + tmpH + 'px')
-						.css('position', 'relative')
-					tmpThis.aceEditor.resize(true);
-				}
-			}
+		console.log('_onParentResize rc');
+		// var tmpThis = this;
+		// ThisApp.delay(200).then(function (theReply) {
+		// 	if (tmpThis.aceEditorEl) {
+		// 		var tmpH = tmpThis.aceEditorEl.closest('.ui-layout-pane').height();
+		// 		if (tmpThis.aceEditorEl && tmpThis.aceEditor) {
+		// 			tmpThis.aceEditorEl
+		// 				.css('height', '' + tmpH + 'px')
+		// 				.css('position', 'relative')
+		// 			tmpThis.aceEditor.resize(true);
+		// 		}
+		// 	}
 
-		})
+		// })
 
 	}
 
@@ -308,6 +310,10 @@ License: MIT
 		}
 	}
 
+	function onEditorResize(){
+		console.log('onEditorResize',this);
+		this.parts.editor.resizeToParent();
+	}
 	function setupEditor() {
 		if (this.editorSetup === true) {
 			return;
@@ -316,9 +322,14 @@ License: MIT
 
 		this.editorSetup = true;
 
-		this.aceEditorEl = this.getSpot("ace-editor");
-		this.aceEditor = ace.edit(this.aceEditorEl.get(0));
-		this.aceEditor.setTheme("ace/theme/tomorrow_night_bright");
+		//this.aceEditorEl = this.getSpot("ace-editor");
+		//this.aceEditor = ace.edit(this.aceEditorEl.get(0));
+		this.aceEditor = this.parts.editor.codeEditor;
+		console.log('ace setup',this);
+		if( this.context.page && this.context.page.controller ){
+			this.context.page.controller.subscribe('resized', onEditorResize.bind(this));
+		}
+		//this.aceEditor.setTheme("ace/theme/tomorrow_night_bright");
 		this.aceEditor.setFontSize(16);
 
 		ace.config.loadModule('ace/ext/beautify', function (theResults) {
@@ -387,6 +398,7 @@ License: MIT
 		theSession.setTabSize(2);
 	}
 	function refreshEditorFromCodeIndex() {
+		console.log('this.loaded.codeIndex',this.loaded.codeIndex);
 		for (var aName in this.loaded.codeIndex) {
 			var tmpCode = this.loaded.codeIndex[aName];
 			if (!(this.loaded.sessions[aName])) {

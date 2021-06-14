@@ -20,10 +20,11 @@ License: MIT
     thisPageSpecs.required = {
         controls: {
             map: {
+//                "AceEditor": {source: "/catalogs/developer/controls", name: "AceEditor"},
                 "app/catalog/designer/controls/catalog-console": "panelCatConsole",
                 "app/catalog/designer/controls/app-console": "panelAppConsole",
                 "app/catalog/designer/controls/resource-console": "resourceConsole",
-                "app/catalog/designer/controls/page-console": "pageConsole"
+                "app/catalog/designer/controls/page-console": "pageConsole",
             }
         },
         panels: {
@@ -73,19 +74,22 @@ License: MIT
     var loadedCats = {};
     var loadedApps = {};
     var loadedPages = {};
-    var loadedResources = {};
+    var loadedResources = {};    
+    
     // var loadedOutline = {};
 
     //--- for debug
-    window.loadedApps = loadedApps;
-    window.loadedPages = loadedPages;
-    window.loadedResources = loadedResources;
+    // window.loadedApps = loadedApps;
+    // window.loadedPages = loadedPages;
+    // window.loadedResources = loadedResources;
 
     var appSetupConfig = false;
 
     ThisPage._onPreInit = function (theApp) {
         ThisPage._om = theApp.om;
-
+        ThisPage.loadedApps = loadedApps;
+        ThisPage.loadedPages = loadedPages;
+        ThisPage.loadedResources = loadedResources;
     }
     ThisPage._onInit = function () {
 
