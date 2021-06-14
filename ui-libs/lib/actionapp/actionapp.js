@@ -3407,7 +3407,7 @@ License: MIT
                     console.error('the control is not there to create ', theInstanceName);
                     throw ("Control now found to create " + theInstanceName)
                 }
-                this.parts[theInstanceName] = theControl.create(theInstanceName);
+                this.parts[theInstanceName] = theControl.create(theInstanceName, {parent:this});
                 return this.parts[theInstanceName];
             }
 
@@ -5620,6 +5620,7 @@ License: MIT
         if (!(this.controlConfig.content)) {
             return;
         }
+        
         this.controlConfig.index = me._loadContentIndex(this.controlConfig.content)
     }
 
@@ -6551,7 +6552,7 @@ License: MIT
                         var tmpCached = ThisApp.resCache['controls'][tmpControlName];
                         console.warn("initControlComponents Could not find parent control " + tmpControlName)
                     } else {
-                        var tmpPart = tmpCtl.create(tmpPartName);
+                        var tmpPart = tmpCtl.create(tmpPartName, {parent:this});
                         this.parts[tmpPartName] = tmpPart;
                         tmpDefs.push(tmpPart.loadToElement(tmpControlEl));
                     }
@@ -6572,7 +6573,7 @@ License: MIT
                         console.warn("Could not find parent control " + tmpControlName)
                         return false;
                     }
-                    var tmpPart = tmpCtl.create(tmpPartName);
+                    var tmpPart = tmpCtl.create(tmpPartName, {parent:this});
                     this.parts[tmpPartName] = tmpPart;
                     tmpDefs.push(tmpPart.loadToElement(tmpControlEl));
                 }
@@ -6622,10 +6623,6 @@ License: MIT
             //--- Loop to create each one, getting details if needed from el
             for (var iLayout = 0; iLayout < tmpLayouts.length; iLayout++) {
                 var tmpLayoutEntry = $(tmpLayouts.get(iLayout));
-
-
-
-                var tmpOptions = defaultLayoutOptions;
                 var tmpLayoutTemplateName = tmpLayoutEntry.attr('template') || '';
                 var tmpLayoutOptions = defaultLayoutOptions;
                 if (tmpLayoutTemplateName && StaticApp.layoutTemplates[tmpLayoutTemplateName]) {
