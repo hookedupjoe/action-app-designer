@@ -38,7 +38,6 @@ License: MIT
 			.css('height', '' + tmpH + 'px')
 			.css('width', '' + tmpW + 'px')
 			.css('position', 'relative');
-				console.log('resize it',tmpH,tmpW);
 
 			this.codeEditor.resize(true);
 			this.codeEditorEl.show();

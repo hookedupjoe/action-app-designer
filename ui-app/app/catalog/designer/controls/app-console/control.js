@@ -460,7 +460,7 @@ License: MIT
 			theData.target = 'app';
 			theData.appname = tmpAppName;
 			ThisApp.common.apiCall({
-				url: '/design/ws/new-page?run',
+				url: 'design/ws/new-page?run',
 				data: theData
 			}).then(function (theReply) {
 				tmpThis.refreshAll();
@@ -529,7 +529,7 @@ License: MIT
 
 			var tmpThis = this;
 			ThisApp.apiCall({
-				url: '/design/ws/update-app-setup',
+				url: 'design/ws/update-app-setup',
 				data: (tmpNewSetupInfo)
 			}).then(function (theReply) {
 				tmpThis.refreshSetupInfo();
@@ -555,7 +555,7 @@ License: MIT
 			alert("No app to open");
 			return;
 		}
-		var tmpURL = '/design/ws/deploy-cordova?appname=' + tmpAppName
+		var tmpURL = 'design/ws/deploy-cordova?appname=' + tmpAppName
 		ThisApp.apiCall({ url: tmpURL }).then(function (theReply) {
 			ThisApp.appMessage("Mobile App Created.  Open in VS code to review and deploy.", "s", { show: true });
 		})
@@ -567,7 +567,7 @@ License: MIT
 			alert("No app to open");
 			return;
 		}
-		var tmpURL = '/design/ws/deploy-app?appname=' + tmpAppName
+		var tmpURL = 'design/ws/deploy-app?appname=' + tmpAppName
 		ThisApp.apiCall({ url: tmpURL }).then(function (theReply) {
 			ThisApp.appMessage("Done, open in VS code to review and deploy.", "s", { show: true });
 		})
@@ -580,7 +580,7 @@ License: MIT
 			alert("No app to open");
 			return;
 		}
-		var tmpURL = '/design/ws/launch-cordova-deploy?appname=' + tmpAppName
+		var tmpURL = 'design/ws/launch-cordova-deploy?appname=' + tmpAppName
 		ThisApp.apiCall({ url: tmpURL }).then(function (theReply) {
 
 		})
@@ -591,7 +591,7 @@ License: MIT
 			alert("No app to open");
 			return;
 		}
-		var tmpURL = '/design/ws/launch-app-deploy?appname=' + tmpAppName
+		var tmpURL = 'design/ws/launch-app-deploy?appname=' + tmpAppName
 		ThisApp.apiCall({ url: tmpURL }).then(function (theReply) {
 
 		})
@@ -604,7 +604,7 @@ License: MIT
 			alert("No app to open");
 			return;
 		}
-		ThisApp.apiCall({ url: '/design/ws/build-app?appname=' + tmpAppName }).then(function (theReply) {
+		ThisApp.apiCall({ url: 'design/ws/build-app?appname=' + tmpAppName }).then(function (theReply) {
 			alert("Recreated " + tmpAppName, "Build Complete", "c");
 		})
 	};
@@ -622,7 +622,7 @@ License: MIT
 			return;
 		}
 		console.log("disabled");
-		//ThisApp.apiCall({ url: '/design/ws/launch-app?appname=' + tmpAppName })
+		//ThisApp.apiCall({ url: 'design/ws/launch-app?appname=' + tmpAppName })
 	};
 
 
@@ -735,7 +735,7 @@ License: MIT
 				}
 
 				ThisApp.apiCall({
-					url: '/design/ws/save-resource?run',
+					url: 'design/ws/save-resource?run',
 					data: tmpRequest
 				}).then(function (theReply) {
 					tmpThis.refreshResources();
@@ -762,7 +762,7 @@ License: MIT
 				}
 
 				ThisApp.apiCall({
-					url: '/design/ws/save-resource?run',
+					url: 'design/ws/save-resource?run',
 					data: tmpRequest
 				}).then(function (theReply) {
 					tmpThis.refreshResources();
@@ -787,7 +787,7 @@ License: MIT
 				}
 
 				ThisApp.apiCall({
-					url: '/design/ws/save-resource?run',
+					url: 'design/ws/save-resource?run',
 					data: tmpRequest
 				}).then(function (theReply) {
 					tmpThis.refreshResources();
@@ -813,7 +813,7 @@ License: MIT
 				}
 
 				ThisApp.apiCall({
-					url: '/design/ws/save-resource?run',
+					url: 'design/ws/save-resource?run',
 					data: tmpRequest
 				}).then(function (theReply) {
 					tmpThis.refreshResources();

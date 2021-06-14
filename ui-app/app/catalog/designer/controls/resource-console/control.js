@@ -118,7 +118,7 @@ License: MIT
 						center: [
 							{
 								ctl: "control",
-								"controlname": "/catalogs/developer/controls/AceEditor",
+								"controlname": "app/catalog/designer/controls/AceEditor",
 								name: "editor",
 								text: ""
 							}
@@ -311,7 +311,6 @@ License: MIT
 	}
 
 	function onEditorResize(){
-		console.log('onEditorResize',this);
 		this.parts.editor.resizeToParent();
 	}
 	function setupEditor() {

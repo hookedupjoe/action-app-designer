@@ -20,7 +20,6 @@ License: MIT
     thisPageSpecs.required = {
         controls: {
             map: {
-//                "AceEditor": {source: "/catalogs/developer/controls", name: "AceEditor"},
                 "app/catalog/designer/controls/catalog-console": "panelCatConsole",
                 "app/catalog/designer/controls/app-console": "panelAppConsole",
                 "app/catalog/designer/controls/resource-console": "resourceConsole",
