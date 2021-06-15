@@ -89,10 +89,14 @@ License: MIT
         ThisPage.loadedApps = loadedApps;
         ThisPage.loadedPages = loadedPages;
         ThisPage.loadedResources = loadedResources;
-        ThisPage.designerConfig = ThisPage.designerConfig || {};
-        ThisPage.designerConfig.endpoints = {
-            outline: 'design/ws/get-ws-outline'
+        ThisPage.contextData.designer_endpoints = {
+            get_ws_outline: 'design/ws/get-ws-outline'
         }
+        //console.log(ThisPage.contextData);
+        // ThisPage.designerConfig = ThisPage.designerConfig || {};
+        // ThisPage.designerConfig.endpoints = {
+        //     outline: 'design/ws/get-ws-outline'
+        // }
     }
     ThisPage._onInit = function () {
 
