@@ -77,8 +77,8 @@ License: MIT
 												},
 												{
 													"ctl": "panel",
-													"controlname": "[[base-endpoint]]/get-ws-outline",
-													"name": "workspace"
+													"controlname": {"[computed]": "context.page.controller.designerConfig.endpoints.outline || ''"},
+													"name": "listpanel"
 												}
 	
 											]
@@ -103,13 +103,11 @@ License: MIT
 	};
 
 	function _onInit(){
-		this.parts.workspace.subscribe('selectMe', onWsSelect.bind(this))
+		this.parts.listpanel.subscribe('selectMe', onWsSelect.bind(this))
 	}
 
 	function _onPreInit(){
-		ActionAppCore.common = ActionAppCore.common || {};
-		var tmpPrefix = ActionAppCore.common.designerEndpointPrefix || 'design/ws';
-		this.controlConfig.index.controls.workspace.controlname = this.controlConfig.index.controls.workspace.controlname.replace('[[base-endpoint]]', tmpPrefix);
+
 	}
 
 	function onWsSelect(theEvent, theControl, theTarget){

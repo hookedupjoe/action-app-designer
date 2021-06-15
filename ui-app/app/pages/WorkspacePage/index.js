@@ -89,8 +89,10 @@ License: MIT
         ThisPage.loadedApps = loadedApps;
         ThisPage.loadedPages = loadedPages;
         ThisPage.loadedResources = loadedResources;
-        ActionAppCore.common = ActionAppCore.common || {};
-        ActionAppCore.common.designerEndpointPrefix = ActionAppCore.common.designerEndpointPrefix || 'design/ws';
+        ThisPage.designerConfig = ThisPage.designerConfig || {};
+        ThisPage.designerConfig.endpoints = {
+            outline: 'design/ws/get-ws-outline'
+        }
     }
     ThisPage._onInit = function () {
 
