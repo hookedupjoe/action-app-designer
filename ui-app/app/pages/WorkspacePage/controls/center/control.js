@@ -77,7 +77,7 @@ License: MIT
 												},
 												{
 													"ctl": "panel",
-													"controlname": {"[computed]": "context.page.data.designer_endpoints.get_ws_outline || ''"},
+													"controlname": {"[computed]": "context.app.data.designer.endpoints.get_ws_outline || ''"},
 													"name": "listpanel"
 												}
 	
