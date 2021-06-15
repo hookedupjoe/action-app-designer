@@ -553,7 +553,13 @@ window.ActionAppCore = window.ActionAppCore || ActionAppCore;
                 //     ** so a page can alias the control and use a cached version
                 tmpThis.res[tmpURI.type][(tmpURI.name || tmpURI.uri)] = tmpExisting;
             }
-
+            
+            if( typeof(tmpURI.uri) == 'object' ){
+                //--- Special case, process computed URI values when loading resources
+                var tmpToProc = {uri:tmpURI.uri};
+                var tmpReply = ThisApp.controls.processDynamicContent("",tmpToProc,this);
+                tmpURI.uri = tmpReply.uri;
+            }
             //--- ToDo: Implement App Caching Rules            
             if (tmpURI.uri.startsWith('design/')) {
                 tmpExists = false;
@@ -6993,9 +6999,7 @@ License: MIT
     me.processDynamicContent = processDynamicContent
     function processDynamicContent(theControlName, theObject, theControlObj) {
         var tmpRet = ThisApp.clone(theObject);
-        var tmpIsDyno = false;
-        var tmpContext = theControlObj.context || ThisApp.getContext();
-
+        var tmpContext = theControlObj.context || ThisApp.getContext();        
         for (var aFN in tmpRet) {
             var tmpObj = tmpRet[aFN];
             var tmpCompKey = '[computed]';
@@ -7013,6 +7017,7 @@ License: MIT
                     var tmpCompContext = tmpComputed.context || '';
                     if (tmpCompContext) {
                         try {
+                            //--- This is used in the eval statement, do not remove
                             var context = tmpContext;
                             tmpCompValue = eval(tmpCompContext)
                         } catch (ex) {
@@ -7023,7 +7028,6 @@ License: MIT
                     }
                     tmpRet[aFN] = tmpCompValue;
                 }
-                tmpIsDyno = true;
 
             }
 
@@ -7040,6 +7044,8 @@ License: MIT
             return '';
         }
 
+        //---ToDo: Use index to determine of dynamic is needed
+        //  also consider a type of dynamic that runs between preinit and init ???
         var tmpDataObject = me.processDynamicContent(theControlName, theObject, theControlObj);
 
         var tmpControl = me.webControls.get(theControlName);
