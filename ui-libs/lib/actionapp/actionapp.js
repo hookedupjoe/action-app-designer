@@ -650,10 +650,8 @@ window.ActionAppCore = window.ActionAppCore || ActionAppCore;
         //--- If the base element (with no params) is not loaded, get the CSS and load it
         // if (!(tmpCheckPath) || (me.resourceInitFlags[tmpCheckPath] !== true)) {
         //     if (tmpCheckPath) {
-        //         console.log(tmpCheckPath);
         //         me.resourceInitFlags[tmpCheckPath] = true;
         //         if (tmpResourceData.controlConfig) {
-        //             console.log('added',tmpCheckPath)
         //             tmpResourceData.controlConfig.uri = theFullPath;
         //         }
         //     }
@@ -1350,6 +1348,35 @@ window.ActionAppCore = window.ActionAppCore || ActionAppCore;
 
     //--- Public ================ ================= ===================== ================
 
+    me.getData = function(theKey){
+        return this.context.data[theKey];
+    }
+    me.setData = function(theKey, theData){
+        this.context.data[theKey] = theData;
+        return this;
+    }
+    me.hasData = function(theKey, theData){
+        return this.context.data.hasOwnProperty(theKey);
+    }
+    me.getDataObject = function(theKey){
+        if( !this.hasData(theKey)){
+            this.setData(theKey,{});
+        }
+        return this.getData(theKey);
+    }
+    me.setDataObject = function(theKey, theObject, theMergeWithExisting){
+        var tmpToAdd = ThisApp.clone(theObject || {});
+        if( !this.hasData(theKey)){
+            this.setData(theKey,tmpToAdd);
+        } else {
+            if( theMergeWithExisting === true ){
+                //ToDo: merge with existing
+            }
+            this.setData(tmpToAdd);
+        }
+        return this;
+    }
+    
 
     /**
      * getAttrs
@@ -3957,6 +3984,36 @@ License: MIT
         }
     }
 
+    me.getData = function(theKey){
+        return this.contextData[theKey];
+    }
+    me.setData = function(theKey, theData){
+        this.contextData[theKey] = theData;
+        return this;
+    }
+    me.hasData = function(theKey, theData){
+        return this.contextData.hasOwnProperty(theKey);
+    }
+    // me.getDataObject = function(theKey){
+    //     if( !this.hasData(theKey)){
+    //         this.setData(theKey,{});
+    //     }
+    //     return this.getData(theKey);
+    // }
+    // me.setDataObject = function(theKey, theObject, theMergeWithExisting){
+    //     var tmpToAdd = ThisApp.clone(theObject || {});
+    //     if( !this.hasData(theKey)){
+    //         this.setData(theKey,tmpToAdd);
+    //     } else {
+    //         if( theMergeWithExisting === true ){
+    //             //ToDo: merge with existing
+    //         }
+    //         this.setData(tmpToAdd);
+    //     }
+    //     return this;
+    // }
+    
+
     me.getByAttr$ = function (theItems, theExcludeBlanks) {
         return ThisApp.getByAttr$(theItems, this.getParent$(), theExcludeBlanks);
     }
@@ -3988,6 +4045,21 @@ License: MIT
         if (theApp) {
             this.app = theApp;
         }
+
+        
+        var tmpStuffToPullIn = [
+            , 'getDataObject'
+            , 'setDataObject'
+        ];
+
+        for (var iStuff = 0; iStuff < tmpStuffToPullIn.length; iStuff++) {
+            var tmpFuncName = tmpStuffToPullIn[iStuff];
+            var tmpFunc = this.app[tmpFuncName];
+            if (ThisApp.util.isFunc(tmpFunc)) {
+                this[tmpFuncName] = tmpFunc.bind(this);
+            }
+        }
+        
 
         this.context = {
             app: ThisApp.context,
