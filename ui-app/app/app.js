@@ -36,7 +36,10 @@
           index: appIndex,
           apiCall: apiCall
         })
-        
+       var tmpDesigner = ThisApp.getDataObject('designer');
+        tmpDesigner.endpoints = {
+          get_ws_outline: 'design/ws/get-ws-outline'
+        }
       });
     } catch (ex) {
       console.error("Unexpected Error " + ex);
