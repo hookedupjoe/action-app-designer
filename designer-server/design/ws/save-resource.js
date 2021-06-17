@@ -54,6 +54,9 @@ module.exports.setup = function setup(scope) {
                 }
 
                 var tmpResBase = '';
+                if ( !(tmpAppName || tmpCatName )){
+                    throw 'No container app or catalog provided';
+                }
 
                 if( tmpAppName ){
                     var tmpAppBase = tmpWSDir + tmpAppName + '/';
