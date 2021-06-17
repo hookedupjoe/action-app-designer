@@ -239,8 +239,8 @@ License: MIT
     actions.refreshWorkspace = refreshWorkspace;
     function refreshWorkspace() {
         //--- No longer using west panel
-        //ThisPage.parts.west.parts.workspace.refreshFromURI();
-        ThisPage.parts.center.parts.workspace.refreshFromURI();
+        //ThisPage.parts.west.parts.listpanel.refreshFromURI();
+        ThisPage.parts.center.parts.listpanel.refreshFromURI();
         //ThisPage.refreshNavTabs();
     };
 
