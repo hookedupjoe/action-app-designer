@@ -206,7 +206,6 @@ License: MIT
 	//---- Initial Setup of the control
 	function setup(theDetails) {
 
-
 		var tmpPageName = theDetails.pagename || '';
 		var tmpCatName = theDetails.catname || '';
 		var tmpAppName = theDetails.appname || '';
@@ -424,9 +423,9 @@ License: MIT
 
 		var tmpContentText = tmpNewCodeIndex["content"];
 
-
 		var tmpRequest = {
 			pagename: this.details.pagename,
+			catname: this.details.catname || '',
 			appname: this.details.appname || '',
 			resname: this.details.resname || '',
 			restype: this.details.restype || '',
