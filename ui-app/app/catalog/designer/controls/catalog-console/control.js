@@ -472,7 +472,6 @@ License: MIT
 			title: tmpAppTitle
 		}
 
-	//	this.controlConfig.index.controls.pages.controlname += tmpcatname
 		this.controlConfig.index.controls.resources.controlname += tmpcatname
 		this.controlConfig.index.controls.setupinfo.controlname += tmpcatname
 
@@ -484,17 +483,7 @@ License: MIT
 	}
 	//---- Initial Details of the control
 	function setup(theDetails) {
-console.log('setup',theDetails);
 		this.refreshTabNav();
-
-		// var tmpOutlineEl = ThisApp.getByAttr$({action: "outlineDisplay",type: "pages"});
-		// if( tmpOutlineEl && tmpOutlineEl.length > 0){
-		// 	ThisApp.outlineDisplay(false,tmpOutlineEl.get(0));  
-		// 	if( tmpOutlineEl.length > 1){
-		// 	ThisApp.outlineDisplay(false,tmpOutlineEl.get(1));  
-		// 	}
-		// }
-
 	}
 
 	function refreshTabNav() {
