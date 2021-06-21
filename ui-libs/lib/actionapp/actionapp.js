@@ -918,6 +918,19 @@ window.ActionAppCore = window.ActionAppCore || ActionAppCore;
     }
 
     me.layoutTemplates = CoreApp.layoutTemplates;
+    //--- Added for backward compatibility
+    me.waitForFinalEvent = (function () {
+        var timers = {};
+        return function (callback, ms, uniqueId) {
+            if (!uniqueId) {
+                uniqueId = "shouldUseID";
+            }
+            if (timers[uniqueId]) {
+                clearTimeout(timers[uniqueId]);
+            }
+            timers[uniqueId] = setTimeout(callback, ms);
+        };
+    })();
 
     /**
        * getUpdatedMarkupForNS
@@ -2140,6 +2153,9 @@ window.ActionAppCore = window.ActionAppCore || ActionAppCore;
         var tmpOptions = theOptions || '';
         if (typeof (tmpOptions) == 'string') {
             tmpOptions = { url: tmpOptions };
+        }
+        if( ActionAppCore.apiCallOptions && typeof(ActionAppCore.apiCallOptions.filterOptions) == 'function'){
+            ActionAppCore.apiCallOptions.filterOptions(tmpOptions);
         }
 
         var tmpAsForm = (tmpOptions.formSubmit === true);
