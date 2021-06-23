@@ -1524,20 +1524,6 @@ window.ActionAppCore = window.ActionAppCore || ActionAppCore;
         return tmpRet;
     }
 
-
-    /**
-     * setDisplay
-     *    - sets the attribute to hidden or not hidden
-     * 
-     * To Use: ThisApp.setDisplay(anyEl,anyBooleanValue);
-     *
-     * @param  {Object} theEl   [target object with details about the page to open]
-     * @param  {Boolean} theIsVis   [true to show, false to hide]
-     * @return void
-     * 
-     *   Moved to ExtendMod.SetDisplay   
-     */
-
     me.initModuleComponents = initModuleComponents;
     function initModuleComponents(theApp, theModuleName, theComponents) {
         var appModule = ActionAppCore.module(theModuleName);
@@ -2165,16 +2151,6 @@ window.ActionAppCore = window.ActionAppCore || ActionAppCore;
             throw "No URL provided"
         }
 
-        // var tmpRequest = {
-        //     cache: false,
-        //     success: function (theResponse) {
-        //         dfd.resolve(theResponse);
-        //     },
-        //     error: function (theError) {
-        //         dfd.reject(theError)
-        //     }
-        // };
-        //$.extend(tmpRequest, tmpOptions);
         tmpOptions.cache = false;
         var tmpLoadingEl = false;
         if (tmpOptions.loading !== false) {
@@ -6755,9 +6731,11 @@ License: MIT
         }
         var tmpHTML = tmpThis.getHTML();
         tmpThis.parentEl.html(tmpHTML);
-        tmpThis.parentEl.on('change', tmpThis.onFieldChange.bind(this));
-        tmpThis.parentEl.on('click', tmpThis.onItemClick.bind(this));
-        var tmpDom = tmpThis.parentEl.get(0);
+        var tmpControl = tmpThis.parentEl.find('[control]');
+        tmpControl = tmpControl || tmpThis.parentEl;
+        tmpControl.on('change', tmpThis.onFieldChange.bind(this));
+        tmpControl.on('click', tmpThis.onItemClick.bind(this));
+        var tmpDom = tmpControl.get(0);
         if (tmpDom) {
             tmpDom.ontouchend = itemTouchEnd.bind(this);
             tmpDom.ontouchstart = ThisApp.util.itemTouchStart.bind(this);
