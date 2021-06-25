@@ -97,8 +97,6 @@ License: MIT
                 ThisPage.detailsEditor.session.setMode("ace/mode/json");
                 ThisPage.detailsEditor.session.setTabSize(2);
                 
-                ThisPage.detailsEditor.session.selection.on('changeSelection', detailsEditorSelectionChange);
-
                 ThisPage.detailsEditor.setValue(ThisApp.json({
                     "Controls": [
                         "Loaded Dynamically",
@@ -157,34 +155,6 @@ License: MIT
         , activeControl = false;
 
     //=== Page 
-
-    
-    function detailsEditorSelectionChange(theEvent){
-        var tmpSelected = ThisPage.detailsEditor.getSelectedText();
-        if( tmpSelected ){
-            var tmpLen = tmpSelected.length;
-            
-            if( tmpLen > 3 && tmpLen < 200){
-                var tmpItems = tmpSelected.split(':');
-                if (tmpItems.length == 2 ){
-                    tmpSelected = tmpSelected.replace(',', '');
-                    try {
-                        tmpSelected = ThisApp.json('{' + tmpSelected + '}');
-                        if( tmpSelected.ctl ){
-                            var tmpCtl = ThisApp.controls.catalog.get(tmpSelected.ctl);
-                            if( tmpCtl && tmpCtl.getInfo ){
-                                var tmpControlInfo = tmpCtl.getInfo(tmpSelected.ctl);
-                              //  console.log( 'tmpControlInfo', tmpControlInfo);
-                            }
-                        }
-                    } catch (ex) {
-                        //---- not a valid selection
-                    }
-                }
-            }
-        }
-
-    }
 
     ThisPage.loadThisControl = loadThisControl;
     function loadThisControl(theAction, theTarget) {
@@ -385,25 +355,6 @@ License: MIT
 
     };
 
-    ThisPage.fieldShowSpecs = fieldShowSpecs;
-    function fieldShowSpecs() {
-        var tmpFN = getSelectedField() || '';
-        if (!tmpFN) { return alert("Select a Field") }
-        var tmpSpecs = activeControl.getFieldSpecs(tmpFN);
-        var tmpCtlName = tmpSpecs.ctl || 'field';
-
-        var tmpCtl = ThisApp.controls.webControls.get(tmpCtlName);
-        if( tmpCtl && tmpCtl.getInfo ){
-            var tmpInfo = tmpCtl.getInfo(tmpCtlName);
-        } else {
-            alert( "Not found " + tmpCtlName)
-        }
-        
-        tmpSpecs.controlDetails = tmpInfo;
-        
-        showDetailsJson(tmpSpecs);
-    };
-
     ThisPage.fieldGoto = fieldGoto;
     function fieldGoto() {
         var tmpFN = getSelectedField() || '';
@@ -566,24 +517,6 @@ License: MIT
 
         }
     };
-
-    ThisPage.showControlInfo = showControlInfo;
-    function showControlInfo(theParams, theTarget){
-        var tmpParams = ThisApp.getActionParams(theParams, theTarget, ['controlname'])
-        var tmpName = tmpParams.controlname || 'title';
-        
-        var tmpCtl = ThisApp.controls.webControls.get(tmpName);
-        
-        if( tmpCtl && tmpCtl.getInfo ){
-            var tmpInfo = tmpCtl.getInfo(tmpName);
-        
-        } else {
-            alert( "Not found " + tmpName)
-        }
-        
-
-    };
-    
 
     ThisPage.getDefaultColor = getDefaultColor;
     function getDefaultColor() {

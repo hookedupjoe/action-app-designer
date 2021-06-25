@@ -74,36 +74,6 @@ License: MIT
 
 	}
 
-	//--- Private stuff
-    function codeEditorSelectionChange(theEvent) {
-        var tmpSelected = this.codeEditor.getSelectedText();
-        if (tmpSelected) {
-            var tmpLen = tmpSelected.length;
-
-            if (tmpLen > 3 && tmpLen < 200) {
-                var tmpItems = tmpSelected.split(':');
-                if (tmpItems.length == 2) {
-                    tmpSelected = tmpSelected.replace(',', '');
-                    try {
-                        tmpSelected = ThisApp.json('{' + tmpSelected + '}');
-                        if (tmpSelected.ctl) {
-                            var tmpCtl = ThisApp.controls.catalog.get(tmpSelected.ctl);
-                            if (tmpCtl && tmpCtl.getInfo) {
-                                var tmpControlInfo = tmpCtl.getInfo(tmpSelected.ctl);
-                                console.log('tmpControlInfo', tmpControlInfo);
-                            }
-                        }
-                    } catch (ex) {
-                        //---- not a valid selection
-                    }
-                }
-            }
-        }
-
-    }
-
-
-
 	//---- Return Control
 	var ThisControl = { specs: ControlSpecs, options: { proto: ControlCode, parent: ThisApp } };
 	return ThisControl;

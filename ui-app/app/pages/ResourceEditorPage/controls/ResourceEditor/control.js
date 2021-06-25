@@ -576,25 +576,6 @@ License: MIT
 
 	};
 
-	ControlCode.fieldShowSpecs = fieldShowSpecs;
-	function fieldShowSpecs() {
-		var tmpFN = getSelectedField() || '';
-		if (!tmpFN) { return alert("Select a Field") }
-		var tmpSpecs = activeControl.getFieldSpecs(tmpFN);
-		var tmpCtlName = tmpSpecs.ctl || 'field';
-
-		var tmpCtl = ThisApp.controls.webControls.get(tmpCtlName);
-		if (tmpCtl && tmpCtl.getInfo) {
-			var tmpInfo = tmpCtl.getInfo(tmpCtlName);
-		} else {
-			alert("Not found " + tmpCtlName)
-		}
-
-		tmpSpecs.controlDetails = tmpInfo;
-
-		showDetailsJson(tmpSpecs);
-	};
-
 	ControlCode.fieldGoto = fieldGoto;
 	function fieldGoto() {
 		var tmpFN = getSelectedField() || '';
