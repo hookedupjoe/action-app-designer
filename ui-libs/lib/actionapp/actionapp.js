@@ -6928,11 +6928,21 @@ License: MIT
             if (tmpItem.name) {
                 var tmpName = tmpItem.name;
                 if (tmpCtl == 'control' || tmpCtl == 'panel') {
+                    var tmpAppComp = tmpCtl;
                     tmpIndex.controls[tmpName] = tmpItem;
                     if (tmpControl && tmpItem.controlname && (!(tmpItem.source === 'parent'))) {
+                        var tmpControlName = tmpItem.controlname;
+                        var tmpCatalog = tmpItem.catalog || tmpItem.source || '';
+                        if( tmpCatalog ){
+                            if( me.catalogs[tmpCatalog] ){
+                                tmpCatalog = me.catalogs[tmpCatalog];
+                                tmpCatalog += tmpAppComp + 's/';
+                            }
+                            tmpControlName = tmpCatalog + tmpControlName;
+                        }
                         tmpIndex.required[tmpCtl] = tmpIndex.required[tmpCtl] || {};
                         tmpIndex.required[tmpCtl].list = tmpIndex.required[tmpCtl].list || [];
-                        tmpIndex.required[tmpCtl].list.push(tmpItem.controlname)
+                        tmpIndex.required[tmpCtl].list.push(tmpControlName)
                     }
                 }
                 var tmpToAdd = tmpItem;
@@ -7006,6 +7016,13 @@ License: MIT
         return tmpRet
 
     }
+
+
+
+    me.catalogs = {
+        common: '/catalogs/common/'
+    };
+
 
     me.sources = {
         states: 'Alabama|AL,Alaska|AK,Arizona|AZ,Arkansas|AR,California|CA,Colorado|CO,Connecticut|CT,Delaware|DE,District Of Columbia|DC,Florida|FL,Georgia|GA,Hawaii|HI,Idaho|ID,Illinois|IL,Indiana|IN,Iowa|IA,Kansas|KS,Kentucky|KY,Louisiana|LA,Maine|ME,Maryland|MD,Massachusetts|MA,Michigan|MI,Minnesota|MN,Mississippi|MS,Missouri|MO,Montana|MT,Nebraska|NE,Nevada|NV,New Hampshire|NH,New Jersey|NJ,New Mexico|NM,New York|NY,North Carolina|NC,North Dakota|ND,Ohio|OH,Oklahoma|OK,Oregon|OR,Pennsylvania|PA,Rhode Island|RI,South Carolina|SC,South Dakota|SD,Tennessee|TN,Texas|TX,Utah|UT,Vermont|VT,Virginia|VA,Washington|WA,West Virginia|WV,Wisconsin|WI,Wyoming|WY',
@@ -7089,6 +7106,18 @@ License: MIT
     me.getListAsArrays = getListAsArrays
     function getListAsArrays(theList) {
         var tmpList = theList;
+        
+        if( isObj(tmpList) ){
+            var tmpSource = false;
+            if( tmpList.source && ThisApp.controls.sources.hasOwnProperty(tmpList.source) ){
+                tmpSource = ThisApp.controls.sources[tmpList.source];
+                tmpList = tmpSource;
+            }
+            if( !(tmpSource) ){
+                console.error("Passed invalid object for list type, no valid source provided.  Source: " + tmpList.source);
+                tmpList = '';
+            }
+        }
         if (isStr(tmpList)) {
             tmpList = tmpList.split(",");
         }
@@ -7577,7 +7606,7 @@ License: MIT
         isField: false
     }
 
-
+    
     me.ControlPanel = {
         getHTML: function (theControlName, theObject, theControlObj) {
             var tmpObject = theObject || {};
@@ -7777,11 +7806,22 @@ License: MIT
             }
             var tmpClasses = tmpObject.class || tmpObject.classes || '';
             var tmpStyles = tmpObject.style || tmpObject.styles || '';
+            
             var tmpHTML = [];
 
             var tmpAppComp = 'control'
             if (theControlName == 'panel') {
                 tmpAppComp = 'panel'
+            }
+            var tmpItem = tmpObject;
+
+            var tmpCatalog = tmpItem.catalog || tmpItem.source || '';
+            if( tmpCatalog ){
+                if( me.catalogs[tmpCatalog] ){
+                    tmpCatalog = me.catalogs[tmpCatalog];
+                    tmpCatalog += tmpAppComp + 's/';
+                }
+                tmpControlName = tmpCatalog + tmpControlName;
             }
             var tmpMyAttr = ' name="' + tmpName + '" ctlcomp="' + tmpAppComp + '" ' + 'controlname="' + tmpControlName + '" '
             tmpHTML.push('<div ' + getItemAttrString(theObject) + ' class="' + tmpClasses + '" style="' + tmpStyles + '" ' + tmpMyAttr + '></div>')
@@ -8854,9 +8894,12 @@ License: MIT
     me.webControls.add('td', me.ControlDOM);
 
     me.webControls.add('dropmenu', me.ControlDropMenu);
-
+    
     me.webControls.add('layout', me.ControlLayout);
 
+
+    //=== Special UI Controls
+    me.webControls.add('uisegment', me.UIControlPanel);
 
     //=== Common Custom Web Controls ..
     me.webControls.add('cardfull', me.ControlFullCard);
