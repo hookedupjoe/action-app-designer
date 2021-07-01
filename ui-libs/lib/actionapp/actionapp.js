@@ -5229,7 +5229,6 @@ License: MIT
                     var tmpField = $(tmpFields[index]);
                     var tmpFT = tmpField.attr('type');
                     var tmpFN = tmpField.attr("name");
-
                     if (tmpFN) {
                         if (tmpFT == 'radio' || tmpFT == 'checkbox') {
                             if (tmpFT == 'checkbox') {
@@ -5244,7 +5243,6 @@ License: MIT
                             var tmpExistingVal = tmpData[tmpFN];
                             if (Array.isArray(tmpExistingVal)) {
                                 tmpExistingVal = tmpExistingVal.join(",");
-
                             }
                             if (tmpVal) {
                                 if (tmpExistingVal) {
@@ -5262,9 +5260,19 @@ License: MIT
 
                                 }
                             }
+                            
                             tmpData[tmpFN] = tmpExistingVal;
                         } else {
-                            tmpData[tmpFN] = tmpField.val() || '';
+                            var tmpMultiValue = tmpField.data('multivalue');
+                            if( tmpMultiValue == undefined){
+                                var tmpFldValue = tmpField.val();
+                                if( tmpFldValue === undefined || tmpFldValue === 'undefined'){
+                                    tmpFldValue = '';  
+                                }
+                                tmpData[tmpFN] = tmpFldValue;
+                            } else {
+                                tmpData[tmpFN] = tmpMultiValue; 
+                            }
                         }
                     }
                 }
@@ -5910,6 +5918,11 @@ License: MIT
             var tmpControl = me.webControls.get(tmpCtl);
             if (!(tmpControl.setFieldValue)) {
                 tmpFieldEl.val(theValue);
+                if( Array.isArray(theValue) ){
+                    tmpFieldEl.data('multivalue',theValue)
+                } else {
+                    tmpFieldEl.data('multivalue',undefined);
+                }
                 if (!tmpSetOnly) {
                     tmpFieldEl.trigger('change');
                 }
@@ -7951,6 +7964,10 @@ License: MIT
                 tmpFieldType = 'hidden';
                 tmpStyle = "";
             }
+            var tmpIsMultiFlag = '';
+            if (tmpObject.multiple === true) {
+                tmpIsMultiFlag = ' multiple="multiple" ';
+            }
             tmpHTML.push('<div controls fieldwrap name="' + theObject.name + '" class="' + tmpClasses + tmpSizeName + tmpReq + ' ui ' + tmpFieldOrInput + '" ' + tmpStyle + '>');
             if (theObject.label) {
                 tmpHTML.push('<label>');
@@ -7964,7 +7981,7 @@ License: MIT
                 }
                 tmpPH = ' placeholder="' + tmpPH + ' ';
             }
-            tmpHTML.push('<input ' + tmpReadOnly + tmpInputClasses + ' type="' + tmpFieldType + '" controls field ' + tmpValue + ' name="' + theObject.name + '" ' + tmpPH + '">')
+            tmpHTML.push('<input ' + tmpReadOnly + tmpInputClasses + ' type="' + tmpFieldType + '" controls field ' + tmpValue + ' name="' + theObject.name + '" ' + tmpIsMultiFlag + tmpPH + '">')
             tmpHTML.push('</input>')
             tmpHTML.push(getNoteMarkup(theObject));
             tmpHTML.push(getContentHTML(theControlName, tmpItems, theControlObj));
