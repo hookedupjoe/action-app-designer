@@ -5263,15 +5263,28 @@ License: MIT
                             
                             tmpData[tmpFN] = tmpExistingVal;
                         } else {
-                            var tmpMultiValue = tmpField.data('multivalue');
-                            if( tmpMultiValue == undefined){
+                            var tmpDataValue = tmpField.data('datavalue');
+                            if( tmpDataValue == undefined){
                                 var tmpFldValue = tmpField.val();
+
+                                //ToDo: Review the need for this after default fix
                                 if( tmpFldValue === undefined || tmpFldValue === 'undefined'){
                                     tmpFldValue = '';  
                                 }
+
+                                //--- Use datatype?
+                                if( tmpFT == 'number' ){
+                                    try {
+                                        tmpFldValue = parseFloat(tmpFldValue);  
+                                    } catch (theError) {
+                                        console.error("Field: " + tmpFN + " had invalid numeric value, returning 0 instead of " + tmpFldValue);
+                                        tmpFldValue = 0;
+                                    }
+                                } 
                                 tmpData[tmpFN] = tmpFldValue;
                             } else {
-                                tmpData[tmpFN] = tmpMultiValue; 
+                                tmpData[tmpFN] = tmpDataValue; 
+                                
                             }
                         }
                     }
@@ -5918,11 +5931,16 @@ License: MIT
             var tmpControl = me.webControls.get(tmpCtl);
             if (!(tmpControl.setFieldValue)) {
                 tmpFieldEl.val(theValue);
-                if( Array.isArray(theValue) ){
-                    tmpFieldEl.data('multivalue',theValue)
-                } else {
-                    tmpFieldEl.data('multivalue',undefined);
+                if( tmpCtl == 'hidden'){
+                    if( Array.isArray(theValue) ){
+                        tmpFieldEl.data('datavalue',theValue)
+                    } else if( typeof(theValue) == 'number' ){
+                        tmpFieldEl.data('datavalue',theValue)
+                    } else {
+                        tmpFieldEl.data('datavalue',undefined);
+                    }    
                 }
+                
                 if (!tmpSetOnly) {
                     tmpFieldEl.trigger('change');
                 }
@@ -7219,88 +7237,89 @@ License: MIT
     //--- Common Controls =========== =========== =========== =========== =========== ===========
     //--- =========== =========== =========== =========== =========== ===========
 
-    //----   COMMON ITEM CONTROLS - INFORMATION =================================
+    // //----   COMMON ITEM CONTROLS - INFORMATION =================================
+    //    **** No longer using this method for self docs
 
-    me.catalogInfo = new Index();
-    me.catalogInfo.add('color', {
-        name: "color",
-        label: "Semantic Color List",
-        type: "string",
-        ctl: "dropdown",
-        list: ["red", "orange", "yellow", "olive", "green", "teal", "blue", "violet", "purple", "pink", "brown", "black"],
-        notes: "No other options are valid for colors"
-    })
-    me.catalogInfo.add('hidden', {
-        name: "hidden",
-        label: "Hidden",
-        type: "boolean",
-        notes: "Set to true to start initially hidden"
-    })
-    me.catalogInfo.add('icon', {
-        name: "icon",
-        label: "Icon Name",
-        type: "string",
-        notes: "Name of icon to use"
-    })
-    me.catalogInfo.add('size', {
-        name: "size",
-        label: "Semantic Size List",
-        type: "string",
-        ctl: "dropdown",
-        list: ["mini", "tiny", "small", "large", "big", "huge", "massive"],
-        notes: "No other options are valid for colors"
-    })
+    // me.catalogInfo = new Index();
+    // me.catalogInfo.add('color', {
+    //     name: "color",
+    //     label: "Semantic Color List",
+    //     type: "string",
+    //     ctl: "dropdown",
+    //     list: ["red", "orange", "yellow", "olive", "green", "teal", "blue", "violet", "purple", "pink", "brown", "black"],
+    //     notes: "No other options are valid for colors"
+    // })
+    // me.catalogInfo.add('hidden', {
+    //     name: "hidden",
+    //     label: "Hidden",
+    //     type: "boolean",
+    //     notes: "Set to true to start initially hidden"
+    // })
+    // me.catalogInfo.add('icon', {
+    //     name: "icon",
+    //     label: "Icon Name",
+    //     type: "string",
+    //     notes: "Name of icon to use"
+    // })
+    // me.catalogInfo.add('size', {
+    //     name: "size",
+    //     label: "Semantic Size List",
+    //     type: "string",
+    //     ctl: "dropdown",
+    //     list: ["mini", "tiny", "small", "large", "big", "huge", "massive"],
+    //     notes: "No other options are valid for colors"
+    // })
 
-    me.catalogInfo.add('compact', {
-        name: "compact",
-        label: "Compact mode",
-        type: "boolean",
-        notes: "Trim the space around it, making it more compact"
-    })
+    // me.catalogInfo.add('compact', {
+    //     name: "compact",
+    //     label: "Compact mode",
+    //     type: "boolean",
+    //     notes: "Trim the space around it, making it more compact"
+    // })
 
-    me.catalogInfo.add('floating', {
-        name: "floating",
-        label: "Floating look",
-        type: "boolean",
-        notes: "Adds a border to make it look higher than others"
-    })
+    // me.catalogInfo.add('floating', {
+    //     name: "floating",
+    //     label: "Floating look",
+    //     type: "boolean",
+    //     notes: "Adds a border to make it look higher than others"
+    // })
 
 
-    //--- Field related ...
-    me.catalogInfo.add('fieldlabel', {
-        name: "label",
-        label: "Field Label",
-        type: "string",
-        notes: "Label to show"
-    })
-    me.catalogInfo.add('fieldlist', {
-        name: "list",
-        label: "List of values to select from",
-        type: "string",
-        notes: "String or array really, 'One|one,Two|two' can be used. "
-    })
+    // //--- Field related ...
+    // me.catalogInfo.add('fieldlabel', {
+    //     name: "label",
+    //     label: "Field Label",
+    //     type: "string",
+    //     notes: "Label to show"
+    // })
+    // me.catalogInfo.add('fieldlist', {
+    //     name: "list",
+    //     label: "List of values to select from",
+    //     type: "string",
+    //     notes: "String or array really, 'One|one,Two|two' can be used. "
+    // })
 
-    me.catalogInfo.add('fieldsize', {
-        name: "size",
-        label: "Semantic Field Size Value",
-        type: "number",
-        notes: "From 1 to 16 using Fields / Form grid"
-    })
+    // me.catalogInfo.add('fieldsize', {
+    //     name: "size",
+    //     label: "Semantic Field Size Value",
+    //     type: "number",
+    //     notes: "From 1 to 16 using Fields / Form grid"
+    // })
 
-    me.getCommonControlProperties = getCommonControlProperties;
-    function getCommonControlProperties(theCommonList) {
-        var tmpCommonList = theCommonList || ['hidden'];
-        var tmpRet = {}
-        for (var iPos = 0; iPos < tmpCommonList.length; iPos++) {
-            var tmpPropName = tmpCommonList[iPos];
-            var tmpDetails = me.catalogInfo.get(tmpPropName);
-            if (tmpPropName && tmpDetails) {
-                tmpRet[tmpPropName] = tmpDetails;
-            }
-        }
+    // me.getCommonControlProperties = getCommonControlProperties;
+    // function getCommonControlProperties(theCommonList) {
+    //     var tmpCommonList = theCommonList || ['hidden'];
+    //     var tmpRet = {}
+    //     for (var iPos = 0; iPos < tmpCommonList.length; iPos++) {
+    //         var tmpPropName = tmpCommonList[iPos];
+    //         var tmpDetails = me.catalogInfo.get(tmpPropName);
+    //         if (tmpPropName && tmpDetails) {
+    //             tmpRet[tmpPropName] = tmpDetails;
+    //         }
+    //     }
 
-        return tmpRet;
-    }
+    //     return tmpRet;
+    // }
 
 
     //----   COMMON ITEM CONTROLS =================================
@@ -7901,10 +7920,14 @@ License: MIT
             var tmpObject = theObject || {};
             var tmpHTML = [];
             //---> ToDo: Add value and default value to other fields *****
+            
             var tmpValue = tmpObject.value || tmpObject.default || '';
+
+            //ToDo: Only do this to tmpObject.default ??
             if( tmpValue === undefined || tmpValue === 'undefined'){
                 tmpValue = '';
             }
+
             var tmpSizeName = '';
             if (tmpObject.size && tmpObject.size > 0 && tmpObject.size < 17) {
                 tmpSizeName = getNumName(tmpObject.size)
@@ -7965,7 +7988,16 @@ License: MIT
             if (theControlName == 'hidden') {
                 tmpFieldType = 'hidden';
                 tmpStyle = "";
+            } else if (theControlName == 'number') {
+                tmpFieldType = 'number';
+            } else if (theControlName == 'date') {
+                tmpFieldType = 'date';
+            } else if (theControlName == 'datetime') {
+                tmpFieldType = 'datetime-local';
+            } else if (theControlName == 'color') {
+                tmpFieldType = 'color';
             }
+
             var tmpIsMultiFlag = '';
             if (tmpObject.multiple === true) {
                 tmpIsMultiFlag = ' multiple="multiple" ';
@@ -8874,6 +8906,11 @@ License: MIT
     me.webControls.add('fieldrow', me.ControlFieldRow);
     me.webControls.add('field', me.ControlField);
     me.webControls.add('hidden', me.ControlField);
+    me.webControls.add('number', me.ControlField);
+    me.webControls.add('date', me.ControlField);
+    me.webControls.add('datetime', me.ControlField);
+    me.webControls.add('color', me.ControlField);
+
     me.webControls.add('dropdown', me.ControlDropDown);
     me.webControls.add('checkboxlist', me.ControlCheckboxList);
     me.webControls.add('radiolist', me.ControlRadioList);
@@ -8918,7 +8955,7 @@ License: MIT
 
 
     //=== Special UI Controls
-    me.webControls.add('uisegment', me.UIControlPanel);
+    // me.webControls.add('uisegment', me.UIControlPanel);
 
     //=== Common Custom Web Controls ..
     me.webControls.add('cardfull', me.ControlFullCard);
