@@ -1627,9 +1627,9 @@ window.ActionAppCore = window.ActionAppCore || ActionAppCore;
      *   me.actions = me.options.actions || {};
      *   var defaults = {};
      *   if (typeof (me.options.app) == 'object') {
-     *       ThisApp = me.options.app;
-     *       if (ThisApp && ThisApp.registerComponent) {
-     *           ThisApp.registerComponent("app:PouchPage", this);
+     *       var tmpApp = me.options.app;
+     *       if (tmpApp && tmpApp.registerComponent) {
+     *           tmpApp.registerComponent("app:PouchPage", this);
      *       }
      *   }
      * }
@@ -4310,7 +4310,7 @@ License: MIT
     var MyMod = ActionAppCore.module("plugin");
     MyMod[pluginConfig.name] = ThisPageController;
 
-    var ThisApp = null;
+    //var ThisApp = null;
 
 
     var thisComponentID = "plugin:" + pluginConfig.name;
@@ -4321,9 +4321,9 @@ License: MIT
         this.actions = this.options.actions || {};
         var defaults = {};
         if (typeof (this.options.app) == 'object') {
-            ThisApp = this.options.app;
-            if (ThisApp && ThisApp.registerComponent) {
-                ThisApp.registerComponent(thisComponentID, this);
+            var tmpApp = this.options.app;
+            if (tmpApp && tmpApp.registerComponent) {
+                tmpApp.registerComponent(thisComponentID, this);
             }
         }
     }
@@ -4810,7 +4810,7 @@ License: MIT
 
     var ExtendMod = ActionAppCore.module("extension");
 
-    var ThisApp = null;
+    //var ThisApp = null;
 
     var thisComponentID = "plugin:" + pluginConfig.name;
 
@@ -4820,9 +4820,9 @@ License: MIT
         this.actions = this.options.actions || {};
         var defaults = {};
         if (typeof (this.options.app) == 'object') {
-            ThisApp = this.options.app;
-            if (ThisApp && ThisApp.registerComponent) {
-                ThisApp.registerComponent(thisComponentID, this);
+            var tmpApp = this.options.app;
+            if (tmpApp && tmpApp.registerComponent) {
+                tmpApp.registerComponent(thisComponentID, this);
             }
         }
     }

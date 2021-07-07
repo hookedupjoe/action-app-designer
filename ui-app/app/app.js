@@ -22,7 +22,7 @@
   function setup(thePages, thePlugins) {
     try {
       var siteMod = ActionAppCore.module('site');
-      ThisApp = new siteMod.CoreApp();
+      window.ThisApp = new siteMod.CoreApp();
 
       //--- Items to load when the application loads
       var tmpRequired = {}
@@ -36,7 +36,7 @@
           index: appIndex,
           apiCall: apiCall
         })
-       var tmpDesigner = ThisApp.getDataObject('designer');
+        var tmpDesigner = ThisApp.getDataObject('designer');
         tmpDesigner.endpoints = {
           get_ws_outline: 'design/ws/get-ws-outline'
         }
