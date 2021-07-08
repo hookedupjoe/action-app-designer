@@ -3991,24 +3991,7 @@ License: MIT
     me.hasData = function(theKey, theData){
         return this.contextData.hasOwnProperty(theKey);
     }
-    // me.getDataObject = function(theKey){
-    //     if( !this.hasData(theKey)){
-    //         this.setData(theKey,{});
-    //     }
-    //     return this.getData(theKey);
-    // }
-    // me.setDataObject = function(theKey, theObject, theMergeWithExisting){
-    //     var tmpToAdd = ThisApp.clone(theObject || {});
-    //     if( !this.hasData(theKey)){
-    //         this.setData(theKey,tmpToAdd);
-    //     } else {
-    //         if( theMergeWithExisting === true ){
-    //             //ToDo: merge with existing
-    //         }
-    //         this.setData(tmpToAdd);
-    //     }
-    //     return this;
-    // }
+    //--> me.getDataObject and me.setDataObject also available
     
 
     me.getByAttr$ = function (theItems, theExcludeBlanks) {
