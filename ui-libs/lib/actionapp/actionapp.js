@@ -1,6 +1,6 @@
 /*
 ActionAppCore Core Library
-Author: Joseph Francis, 2017 - 2020
+Author: Joseph Francis, 2017 - 2021
 License: MIT
 */
 
