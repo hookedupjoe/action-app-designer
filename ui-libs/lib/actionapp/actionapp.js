@@ -8206,6 +8206,10 @@ License: MIT
         var tmpRorC = 'checkbox';
         var tmpRadioStr = '';
 
+        var tmpDefaultValue = '';
+        if (tmpObject.default != '' && tmpObject.default !== undefined && tmpObject.default !== 'undefined') {
+            tmpDefaultValue = tmpObject.default;
+        }
 
         var tmpGorI = 'grouped';
         if (tmpObject.row === true || tmpObject.inline === true) {
@@ -8299,10 +8303,16 @@ License: MIT
                             tmpText = tmpEntry[0]
                             tmpVal = tmpEntry[1]
                         }
-                        var tmpFieldID = 'fld-cb-auto-' + (checkBoxAt++)
+                        var tmpFieldID = 'fld-cb-auto-' + (checkBoxAt++);
+                        var tmpChecked = '';
+                        //ToDo: Support multiple value default for checkbox (and multi dropdown);
+                        if( tmpVal == tmpDefaultValue ){
+                            tmpChecked = ' checked="true" ';
+                        }
+
                         tmpHTML.push('	<div class="field">')
                         tmpHTML.push('	  <div class="ui ' + tmpRadioStr + tmpType + ' checkbox">')
-                        tmpHTML.push('		<input controls field id="' + tmpFieldID + '" type="' + tmpRorC + '" data-value="' + tmpVal + '" name="' + tmpObject.name + '" >')
+                        tmpHTML.push('		<input controls field id="' + tmpFieldID + '" type="' + tmpRorC + '" ' + tmpChecked + ' data-value="' + tmpVal + '" name="' + tmpObject.name + '" >')
                         tmpHTML.push('		<label for="' + tmpFieldID + '">' + tmpText + '&nbsp;&nbsp;&nbsp;</label>')
                         tmpHTML.push('	  </div>')
                         tmpHTML.push('	</div>')
