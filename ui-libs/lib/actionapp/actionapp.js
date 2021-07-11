@@ -7902,12 +7902,13 @@ License: MIT
             var tmpHTML = [];
             //---> ToDo: Add value and default value to other fields *****
             
-            var tmpValue = tmpObject.value || tmpObject.default || '';
+            var tmpValue = tmpObject.default || '';
 
             //ToDo: Only do this to tmpObject.default ??
             if( tmpValue === undefined || tmpValue === 'undefined'){
                 tmpValue = '';
             }
+            tmpValue = tmpObject.value || tmpValue;
 
             var tmpSizeName = '';
             if (tmpObject.size && tmpObject.size > 0 && tmpObject.size < 17) {
@@ -8074,7 +8075,7 @@ License: MIT
             }
             //--- Add field specific content here
             var tmpDefaultValHTML = '';
-            if (tmpObject.default != '' && tmpObject.default !== undefined && tmpObject.default === 'undefined') {
+            if (tmpObject.default != '' && tmpObject.default !== undefined && tmpObject.default !== 'undefined') {
                 tmpDefaultValHTML = ' value="' + tmpObject.default + '" ';
             }
             tmpHTML.push('\n            <div ctlcomp="dropdown" class="ui selection ' + tmpDDAttr + tmpMulti + ' dropdown">')
