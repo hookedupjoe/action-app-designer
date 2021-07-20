@@ -387,11 +387,18 @@ window.ActionAppCore = window.ActionAppCore || ActionAppCore;
     me.delay = function (theMS) {
         var tmpMS = theMS || 1000;
         var dfd = jQuery.Deferred();
-        setTimeout(function () {
+        ThisApp.delayTimerPending = setTimeout(function () {
             dfd.resolve(true);
+            ThisApp.delayTimerPending = false;
         }, tmpMS);
         return dfd.promise();
     };
+    me.delayEnd = function(){
+        if( ThisApp.delayTimerPending ){
+            clearTimeout(ThisApp.delayTimerPending);
+            ThisApp.delayTimerPending = false;
+        }
+    }
 
     me.layoutComponentResized = function () {
 
@@ -2642,10 +2649,17 @@ window.ActionAppCore = window.ActionAppCore || ActionAppCore;
     me.showLoading = function (theOptions) {
         var tmpOptions = theOptions || {};
         if (tmpOptions.el) {
-            tmpOptions.el.addClass('loading');
+            if( !tmpOptions.el.hasClass('loading') ){
+                tmpOptions.el.addClass('loading');
+            }
+            
         } else {
-            me.headerPanel.addClass('loading');
-            me.centerPanel.addClass('loading');
+            if( !me.headerPanel.hasClass('loading') ){
+                me.headerPanel.addClass('loading');
+            }
+            if( !me.centerPanel.hasClass('loading') ){
+                me.centerPanel.addClass('loading');
+            }
         }
     }
 
