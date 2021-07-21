@@ -552,7 +552,13 @@ License: MIT
 	function createCordovaDeployment() {
 		var tmpAppName = this.params.appname || ''
 		if (!(tmpAppName)) {
-			alert("No app to open");
+			alert("No app to open, contact the developer", "System Error", "e");
+			return;
+		}
+		var tmpApp = this.parts.setupinfo.getData();		
+		if( !(tmpApp["app-author"] && tmpApp["app-author-email"] && tmpApp["app-desc"] && tmpApp["app-id"] && tmpApp["app-title"] && tmpApp["app-url"] && tmpApp["app-version"] )){
+			alert("In the Setup tab, use Edit Setup and include all the details including author, app id, url, etc to build a mobile application.  ", "Could Not Build Mobile App", "e");
+			this.gotoItem('setupinfo');
 			return;
 		}
 		var tmpURL = 'design/ws/deploy-cordova?appname=' + tmpAppName
@@ -564,7 +570,7 @@ License: MIT
 	function createAppDeployment() {
 		var tmpAppName = this.params.appname || ''
 		if (!(tmpAppName)) {
-			alert("No app to open");
+			alert("No app to open, contact the developer", "System Error", "e");
 			return;
 		}
 		var tmpURL = 'design/ws/deploy-app?appname=' + tmpAppName
@@ -577,7 +583,7 @@ License: MIT
 	function vscodeDeploymentCordova() {
 		var tmpAppName = this.params.appname || ''
 		if (!(tmpAppName)) {
-			alert("No app to open");
+			alert("No app to open, contact the developer", "System Error", "e");
 			return;
 		}
 		var tmpURL = 'design/ws/launch-cordova-deploy?appname=' + tmpAppName
