@@ -2300,7 +2300,9 @@ window.ActionAppCore = window.ActionAppCore || ActionAppCore;
         }
     }
     //---- Internal: Catch a click item to look for the action
-    function itemClicked(theEvent) {
+    itemClicked = ActionAppCore.debounce(onItemClicked, 50);
+
+    function onItemClicked(theEvent) {
         var tmpObj = theEvent.target || theEvent.currentTarget || theEvent.delegetTarget || {};
         var tmpActionDetails = me.getActionFromObj(tmpObj);
         if (!((tmpActionDetails.hasOwnProperty('action') || tmpActionDetails.hasOwnProperty('action')) && tmpActionDetails.hasOwnProperty('el'))) {
