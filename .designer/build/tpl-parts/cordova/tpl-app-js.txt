@@ -52,6 +52,14 @@
         setup();
         this.receivedEvent('deviceready');
 
+        //--- This version of app.js only runs on mobile apps
+        ActionAppCore.isMobileApp = true;
+        $('body').addClass('cordova-app');
+
+        //--- This flag is for native only apps
+        ActionAppCore.isNativeApp = true;
+        $('body').addClass('native-app');
+
         document.addEventListener('backbutton', this.onBackButton.bind(this), false);
         if (typeof (navigator) != 'undefined' && typeof (navigator.app) != 'undefined' && typeof (navigator.app.overrideButton) === 'function') {
           navigator.app.overrideButton("menubutton", true); 
