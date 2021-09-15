@@ -68,6 +68,8 @@ module.exports.setup = function setup(scope) {
                 $.await($.fs.ensureDir(tmpDeployBase + '/CordovaApp/www'));
                 $.await($.fs.copy(tmpAppBase,tmpDeployBase + '/CordovaApp/www'));
 
+                $.await($.fs.emptyDir(tmpDeployBase + '/.git'));
+
                 $.await($.fs.copy(scope.locals.path.uilibs + '/',tmpDeployBase + '/CordovaApp/www'));
 
                 //--- Only do this one time or if forced
