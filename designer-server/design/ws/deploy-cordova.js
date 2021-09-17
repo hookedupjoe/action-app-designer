@@ -58,7 +58,9 @@ module.exports.setup = function setup(scope) {
 
                 var tmpServerFilesLoc = scope.locals.path.designer + '/build/tpl-servers/cordova/';
  
-                var tmpKeepAppFN = tmpDeployBase + 'CordovaApp/www/app/app.js';
+                //--- Copy the app.js from this file to cordova
+                var tmpKeepAppFN = tmpAppBase + 'app/app.js';
+
                 var tmpKeepConfigFN = tmpDeployBase + 'CordovaApp/config.xml';
                 var tmpKeepPackageFN = tmpDeployBase + 'CordovaApp/package.json';
 

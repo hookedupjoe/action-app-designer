@@ -1,37 +1,107 @@
+
 (function () {
+  window.ThisApp = null;
+  var tmpHasLaunched = false;
 
-  ThisApp = null;
+  try {
 
-  var tmpPageNames = ["Home"];
 
-  var tmpPluginNames = [];
+    var tmpPageNames = ["Home"];
+    var tmpPluginNames = [];
 
-  setup(tmpPageNames, tmpPluginNames);
+    if (typeof (window.cordova) == 'undefined') {
+      window.isWeb = true;
+      setup();
+      return;
+    }
 
-  //---- ACTUAL CODE ==    
-  ActionAppCore = ActionAppCore || window.ActionAppCore;
+    //---- ACTUAL CODE ==    
+    ActionAppCore = ActionAppCore || window.ActionAppCore;
 
-  function setup(thePages, thePlugins) {
+    var app = {
+      initialize: function () {
+        //document.write('<br />INIT CALLED')
+        document.addEventListener('deviceready', this.onDeviceReady.bind(this), false);
+      },
+      onBackButton: function () {
+        ThisApp.publish("onBackButton");
+        //console.log("mobileBackPress");
+        /*
+        ThisApp.hideSidebar();
+        ThisApp.closeCommonDialog();
+        if (ThisApp.activePopup) {
+          ThisApp.clearActivePopup();
+        }
+        */
+        return false;
+      },
+      onVolUpButton: function () {
+        //alert('onVolUpButton');
+        ThisApp.publish("onVolUpButton");
+        return false;
+      },
+      onVolDownButton: function () {
+        //alert('onVolDownButton');
+        ThisApp.publish("onVolDownButton");
+        return false;
+      },
+      onMenuButton: function () {
+        //ThisApp.showSidebar();
+        ThisApp.publish("onMenuButton");
+        return false;
+      },
+      onDeviceReady: function () {
+        this.receivedEvent('deviceready');
+
+       
+
+        document.addEventListener('backbutton', this.onBackButton.bind(this), false);
+        if (typeof (navigator) != 'undefined' && typeof (navigator.app) != 'undefined' && typeof (navigator.app.overrideButton) === 'function') {
+          navigator.app.overrideButton("menubutton", true); 
+        }
+        document.addEventListener("menubutton", this.onMenuButton, false);
+
+         //--- This version of app.js only runs on mobile apps
+        ActionAppCore.isMobileApp = true;
+        $('body').addClass('cordova-app');
+
+        //--- This flag is for native only apps
+        ActionAppCore.isNativeApp = true;
+        $('body').addClass('native-app');
+     
+        setup();
+
+      },
+      receivedEvent: function (id) {
+
+      }
+    };
+    app.initialize();
+
+  
+  } catch (ex) {
+
+  }
+
+
+  function setup() {
     try {
       var siteMod = ActionAppCore.module('site');
       ThisApp = new siteMod.CoreApp();
 
-      //--- Items to load when the application loads
       var tmpRequired = {}
 
-      //--- Use tmpRequiredSpecs to preload more using that example
-      ThisApp.init({ pages: thePages, plugins: thePlugins, required: tmpRequired }).then(function (theReply) {
+      ThisApp.init({ customHeader: true,  pages: tmpPageNames, plugins: tmpPluginNames, required: tmpRequired }).then(function (theReply) {
         ThisApp.getByAttr$({ appuse: "app-loader" }).remove();
 
-        //--- Extend common with your app specific stuff
         $.extend(ThisApp.common, {})
-        
+
       });
     } catch (ex) {
+
       console.error("Unexpected Error " + ex);
     }
   }
-
 
 
 
