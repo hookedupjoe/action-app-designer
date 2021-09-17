@@ -58,8 +58,11 @@ module.exports.setup = function setup(scope) {
 
                 var tmpServerFilesLoc = scope.locals.path.designer + '/build/tpl-servers/cordova/';
  
+                var tmpKeepAppFN = tmpDeployBase + 'CordovaApp/www/app/app.js';
                 var tmpKeepConfigFN = tmpDeployBase + 'CordovaApp/config.xml';
                 var tmpKeepPackageFN = tmpDeployBase + 'CordovaApp/package.json';
+
+                var tmpKeepAppText = $.await($.bld.getTextFile(tmpKeepAppFN));
                 var tmpKeepConfigText = $.await($.bld.getTextFile(tmpKeepConfigFN));
                 var tmpKeepPackageText = $.await($.bld.getTextFile(tmpKeepPackageFN));
 
@@ -88,6 +91,8 @@ module.exports.setup = function setup(scope) {
                 //tmpSaveText = replacePlaceholders(tmpSaveText, tmpAppDetails);
                 
                 $.await($.fs.writeFile(tmpSaveFN,tmpSaveText))
+
+              
 
                 tmpSaveFN = tmpDeployBase + 'CordovaApp/package.json';
                 if( tmpKeepPackageText != ''){
@@ -119,6 +124,17 @@ module.exports.setup = function setup(scope) {
                 //--- Rebuild using defaults
                 $.await($.bld.buildApp(tmpAppName,scope,{cdn:'mobile', deploy:true, deployType: 'cordova'}));
 
+                tmpSaveFN = tmpDeployBase + 'CordovaApp/www/app/app.js';
+                var tmpSaveText = '';
+
+                if( tmpKeepAppText != ''){
+                    tmpSaveText = tmpKeepAppText;
+                    $.await($.fs.writeFile(tmpSaveFN,tmpSaveText));
+                    console.log("saving new app file from content");
+                } else {
+                    console.log("had text");
+                }
+                
                 var tmpRet = {
                     status: true,
                     path: tmpDeployBase
