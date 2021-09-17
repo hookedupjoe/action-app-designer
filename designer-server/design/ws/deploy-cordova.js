@@ -132,9 +132,9 @@ module.exports.setup = function setup(scope) {
                 if( tmpKeepAppText != ''){
                     tmpSaveText = tmpKeepAppText;
                     $.await($.fs.writeFile(tmpSaveFN,tmpSaveText));
-                    console.log("saving new app file from content");
+                    console.log("saving new app file from content from app side",tmpKeepAppFN,tmpKeepAppText);
                 } else {
-                    console.log("had text");
+                    console.log("No content, keeping");
                 }
                 
                 var tmpRet = {

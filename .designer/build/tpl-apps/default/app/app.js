@@ -6,11 +6,17 @@
   try {
 
 
-    var tmpPageNames = ["Home"];
+    var tmpPageNames = ["ContentSite"];
     var tmpPluginNames = [];
 
     if (typeof (window.cordova) == 'undefined') {
       window.isWeb = true;
+      
+      if( getUrlParameter('app') == 'true' ){
+        ActionAppCore.isMobileApp = true;
+        $('body').addClass('cordova-app');
+      }
+      
       setup();
       return;
     }
@@ -69,6 +75,7 @@
         ActionAppCore.isNativeApp = true;
         $('body').addClass('native-app');
      
+        //--- Do stuff before setup if needed
         setup();
 
       },

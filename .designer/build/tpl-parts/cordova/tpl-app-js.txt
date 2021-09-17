@@ -1,3 +1,4 @@
+
 (function () {
   window.ThisApp = null;
   var tmpHasLaunched = false;
@@ -5,12 +6,19 @@
   try {
 
 
-    var tmpPageNames = {{PAGES-ARRAY}};
-    var tmpPluginNames = {{PLUGINS-ARRAY}};
+    var tmpPageNames = ["ContentSite"];
+    var tmpPluginNames = [];
 
     if (typeof (window.cordova) == 'undefined') {
       window.isWeb = true;
+      
+      if( getUrlParameter('app') == 'true' ){
+        ActionAppCore.isMobileApp = true;
+        $('body').addClass('cordova-app');
+      }
+      
       setup();
+      return;
     }
 
     //---- ACTUAL CODE ==    
@@ -49,7 +57,6 @@
         return false;
       },
       onDeviceReady: function () {
-        setup();
         this.receivedEvent('deviceready');
 
        
@@ -67,14 +74,18 @@
         //--- This flag is for native only apps
         ActionAppCore.isNativeApp = true;
         $('body').addClass('native-app');
+     
+        //--- Do stuff before setup if needed
+        setup();
+
       },
       receivedEvent: function (id) {
 
       }
     };
-
     app.initialize();
 
+  
   } catch (ex) {
 
   }
@@ -85,12 +96,12 @@
       var siteMod = ActionAppCore.module('site');
       ThisApp = new siteMod.CoreApp();
 
-      var tmpRequired = {{REQUIRED-OBJECT}}
+      var tmpRequired = {}
 
-      ThisApp.init({ {{INIT_OPTIONS}} pages: tmpPageNames, plugins: tmpPluginNames, required: tmpRequired }).then(function (theReply) {
+      ThisApp.init({ customHeader: true,  pages: tmpPageNames, plugins: tmpPluginNames, required: tmpRequired }).then(function (theReply) {
         ThisApp.getByAttr$({ appuse: "app-loader" }).remove();
 
-        $.extend(ThisApp.common, {{EXTEND-OBJECT}})
+        $.extend(ThisApp.common, {})
 
       });
     } catch (ex) {
@@ -99,6 +110,6 @@
     }
   }
 
-{{OPTIONAL-APP-CODE}}
+
 
 })();
