@@ -92,26 +92,51 @@
             }
         });
     }
+    
+    Client.prototype.getBroadcastIP = getBroadcastIP;
+
+    function getBroadcastIP(message, callback, optionlAltPort) {
+        var dfd = jQuery.Deferred();
+        if( networkinterface && typeof(networkinterface.getIPAddress == 'function')){
+            networkinterface.getIPAddress(function (theDetails) { 
+                var tmpLocalIP = theDetails.ip;
+                var tmpParts = tmpLocalIP.split('.');
+                if( tmpParts && tmpParts.length == 4){
+                    tmpParts[3] = '255';
+                    var tmpGlobalIP = tmpParts.join('.');
+                    dfd.resolve(tmpGlobalIP);
+                    } else {
+                    dfd.resolve('255.255.255.255');
+                }
+            });
+        } else {
+            dfd.resolve('255.255.255.255');
+        }
+        return dfd.promise();
+    }
+
 
     // Send a broadcast UDP message to the port
     Client.prototype.sendBroadcast = function (message, callback, optionlAltPort) {
-        var address = '255.255.255.255',
-            port = optionlAltPort || this.port,
+        var port = optionlAltPort || this.port,
             buffer = UDP.Buffer.fromString(message);
-
-        UDP.createSocket(address, port, function (socket, udp) {
-            try {
-                chrome.sockets.udp.setBroadcast(socket.socketId, true, function (theResult) {
-                    udp.send(socket.socketId, buffer, address, port, function (info) {
-                        callback(info);
-                        udp.close(socket.socketId);
-                    });
-                })
-            } catch (error) {
-                alert("Error " + error.toString())
-            }
-
-        });
+        
+            getBroadcastIP().then(function(theBroadcastIP){
+                console.log('debug theBroadcastIP',theBroadcastIP);
+                var address = theBroadcastIP;
+                UDP.createSocket(address, port, function (socket, udp) {
+                    try {
+                        chrome.sockets.udp.setBroadcast(socket.socketId, true, function (theResult) {
+                            udp.send(socket.socketId, buffer, address, port, function (info) {
+                                callback(info);
+                                udp.close(socket.socketId);
+                            });
+                        })
+                    } catch (error) {
+                        alert("Error " + error.toString())
+                    }
+                });
+            })
     }
 
 
