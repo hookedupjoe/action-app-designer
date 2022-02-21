@@ -120,8 +120,9 @@
     Client.prototype.sendBroadcast = function (message, callback, optionlAltPort) {
         var port = optionlAltPort || this.port,
             buffer = UDP.Buffer.fromString(message);
-        
+            
             getBroadcastIP().then(function(theBroadcastIP){
+                theBroadcastIP = "255.255.255.255";
                 console.log('debug theBroadcastIP',theBroadcastIP);
                 var address = theBroadcastIP;
                 UDP.createSocket(address, port, function (socket, udp) {

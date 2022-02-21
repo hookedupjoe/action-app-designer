@@ -1,38 +1,634 @@
+
+
 (function () {
+  window.ThisApp = null;
+  var tmpHasLaunched = false;
+  ActionAppCore.dirIndex = {};
 
-  ThisApp = null;
+  try {
 
-  var tmpPageNames = {{PAGES-ARRAY}};
 
-  var tmpPluginNames = {{PLUGINS-ARRAY}};
+    var tmpPageNames = ["ContentSite"];
+    var tmpPluginNames = [];
 
-  setup(tmpPageNames, tmpPluginNames);
+    if (typeof (window.cordova) == 'undefined') {
+      window.isWeb = true;
+      
+      if( getUrlParameter('app') == 'true' ){
+        ActionAppCore.isMobileApp = true;
+        $('body').addClass('cordova-app');
+      }
+      
+      setup();
+      return;
+    }
 
-  //---- ACTUAL CODE ==    
-  ActionAppCore = ActionAppCore || window.ActionAppCore;
+    //---- ACTUAL CODE ==    
+    ActionAppCore = ActionAppCore || window.ActionAppCore;
 
-  function setup(thePages, thePlugins) {
+    var app = {
+      initialize: function () {
+        //document.write('<br />INIT CALLED')
+        document.addEventListener('deviceready', this.onDeviceReady.bind(this), false);
+      },
+      onBackButton: function () {
+        ThisApp.publish("onBackButton");
+        //console.log("mobileBackPress");
+        /*
+        ThisApp.hideSidebar();
+        ThisApp.closeCommonDialog();
+        if (ThisApp.activePopup) {
+          ThisApp.clearActivePopup();
+        }
+        */
+        return false;
+      },
+      onVolUpButton: function () {
+        //alert('onVolUpButton');
+        ThisApp.publish("onVolUpButton");
+        return false;
+      },
+      onVolDownButton: function () {
+        //alert('onVolDownButton');
+        ThisApp.publish("onVolDownButton");
+        return false;
+      },
+      onMenuButton: function () {
+        //ThisApp.showSidebar();
+        ThisApp.publish("onMenuButton");
+        return false;
+      },
+      onDeviceReady: function () {
+        this.receivedEvent('deviceready');
+        document.addEventListener('backbutton', this.onBackButton.bind(this), false);
+        if (typeof (navigator) != 'undefined' && typeof (navigator.app) != 'undefined' && typeof (navigator.app.overrideButton) === 'function') {
+          navigator.app.overrideButton("menubutton", true); 
+        }
+        document.addEventListener("menubutton", this.onMenuButton, false);
+
+          //--- This version of app.js only runs on mobile apps
+        ActionAppCore.isMobileApp = true;
+        $('body').addClass('cordova-app');
+
+        //--- This flag is for native only apps
+        ActionAppCore.isNativeApp = true;
+        $('body').addClass('native-app');
+        ActionAppCore.noPushState = true;
+        ActionAppCore.mobileAppVersion = 3;
+
+
+
+        //---- Start Local Server and then App
+        cordova.plugins.CorHttpd.startServer({
+          'www_root': cordova.file.dataDirectory.replace( 'file://', '' ),
+          'port': 33455,
+          'localhost_only': true
+        }, function( url ){
+          ActionAppCore.mobileAppURL = url;
+          onLoadVersionCheck().then(function (theReply) {
+            $('head').append('<base href="http://127.0.0.1:33455/" target="_blank">');
+            console.log("success files: " + ActionAppCore.counterForInitProcess );
+            console.log("failed files: " + ActionAppCore.counterForInitProcessErrs );
+            setup();
+          });
+        
+      
+        }, function( error ){
+        console.log(error);
+      });
+    
+              
+
+      },
+      receivedEvent: function (id) {
+
+      }
+    };
+    app.initialize();
+
+  
+  } catch (ex) {
+
+  }
+
+
+  function setup() {
     try {
       var siteMod = ActionAppCore.module('site');
       ThisApp = new siteMod.CoreApp();
 
-      //--- Items to load when the application loads
-      var tmpRequired = {{REQUIRED-OBJECT}}
+      var tmpRequired = {}
 
-      //--- Use tmpRequiredSpecs to preload more using that example
-      ThisApp.init({ {{INIT_OPTIONS}} pages: thePages, plugins: thePlugins, required: tmpRequired }).then(function (theReply) {
+      ThisApp.init({ customHeader: true,  pages: tmpPageNames, plugins: tmpPluginNames, required: tmpRequired }).then(function (theReply) {
         ThisApp.getByAttr$({ appuse: "app-loader" }).remove();
+        $.extend(ThisApp.common, {})
 
-        //--- Extend common with your app specific stuff
-        $.extend(ThisApp.common, {{EXTEND-OBJECT}})
-        
       });
     } catch (ex) {
+
       console.error("Unexpected Error " + ex);
     }
   }
 
-{{OPTIONAL-APP-CODE}}
+  
+  
+  // function getLocalConfig(){
+  //   var dfd = jQuery.Deferred();
+  //   //ToDo: Hard coded to false to run everytime  
+  //   tmpSyncObj = {setup:true};
+  //   dfd.resolve(tmpSyncObj); 
+    
+  //   return dfd.promise();
+  // }
 
+  function getLocalConfig(){
+    var dfd = jQuery.Deferred();
+
+    
+
+    window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, function (fs) {
+      console.log('file system open to create dir: ' + fs.name);
+      ActionAppCore.fsData = fs;
+      
+      
+      ActionAppCore.fsData.root.getFile("setupdone.json", { create: false, exclusive: false }, function (fileEntry) {
+        var tmpReply = {setup:true};
+        dfd.resolve(tmpReply);
+      }, function(){
+        console.log("error getting file",arguments)
+        dfd.resolve(false);
+      });
+    
+
+
+
+    }, function(){
+      console.error("Error in opening fs",arguments)     
+      dfd.resolve(false);   
+    });
+
+    
+    return dfd.promise();
+  }
+
+
+  function saveInitialLocalConfig(){
+    console.log("saveInitialLocalConfig start")
+    var dfd = jQuery.Deferred();
+
+    ActionAppCore.fsData.root.getFile("setupdone.json", { create: true, exclusive: false }, function (fileEntry) {
+      fileEntry.createWriter(function (fileWriter) {
+
+          fileWriter.onwriteend = function() {
+              dfd.resolve(true);
+          };
+
+          fileWriter.onerror = function (e) {
+              dfd.resolve(false);
+          };
+
+          dataObj = new Blob(['{setup:true}'], { type: 'application/json' });
+          fileWriter.write(dataObj);
+      });
+
+    }, function(){
+      dfd.resolve(false);
+    });
+
+    return dfd.promise();
+  }
+
+  function doMobileAppStartup(){
+    console.log('doMobileAppStartup start');
+    
+    
+    var dfd = jQuery.Deferred();
+    var tmpURL = './res/versions.json?open';
+    
+    $.ajax({
+      cache: false,
+      url: tmpURL,
+      loading: false,
+      method: 'GET'
+    }).then(function (theReply) {
+      if( typeof(theReply) == 'string'){
+        theReply = JSON.parse(theReply);
+      }
+
+      ActionAppCore.versionInfo = theReply;
+
+      doInitalSetup().then(function(){
+        console.log('init setup done');
+        doVersionSync().then(function(){
+          dfd.resolve(true)
+        })
+      })
+    })
+    
+    return dfd.promise();
+    }
+    
+    
+    //--- To Do - Cleaner Method Needed .. 
+    //...  use $.when.apply method
+    //..   resolve for directory location as needed insetad of storing directory handles / memory -vs- performance?
+    function createDirectories() {
+      var dfd = jQuery.Deferred();
+    
+      window.resolveLocalFileSystemURL(cordova.file.dataDirectory, function (theDataDir) {
+    
+      var rootDirEntry = theDataDir; 
+      
+    
+        rootDirEntry.getDirectory('app/', { create: true }, function (dirEntry) {
+          ActionAppCore.dirIndex['app/'] = dirEntry;
+          dirEntry.getDirectory('pages/', { create: true }, function (subDirEntry) {
+          ActionAppCore.dirIndex['app/pages/'] = subDirEntry;
+          subDirEntry.getDirectory('ContentSite', { create: true }, function (thePageDir) {
+            ActionAppCore.dirIndex['app/pages/ContentSite/'] = thePageDir;
+            thePageDir.getDirectory('html', { create: true }, function (theHTMLDir) {
+              ActionAppCore.dirIndex['app/pages/ContentSite/html/'] = theHTMLDir;
+              thePageDir.getDirectory('controls', { create: true }, function (theCtlDir) {
+                ActionAppCore.dirIndex['app/pages/ContentSite/controls/'] = theCtlDir;		
+                
+                theCtlDir.getDirectory('ActivityCards05271645', { create: true }, function (theActDir) {
+                  ActionAppCore.dirIndex['app/pages/ContentSite/controls/ActivityCards05271645/'] = theActDir;
+                  theCtlDir.getDirectory('CafeCards05281340', { create: true }, function (theCafeDir) {
+                    ActionAppCore.dirIndex['app/pages/ContentSite/controls/CafeCards05281340/'] = theCafeDir;
+                    theCtlDir.getDirectory('ContentPanel', { create: true }, function (theCPanelDir) {
+                      ActionAppCore.dirIndex['app/pages/ContentSite/controls/ContentPanel/'] = theCPanelDir;
+                      theCtlDir.getDirectory('SpeakerCard0813211505', { create: true }, function (theSpkCardsDir) {
+                        ActionAppCore.dirIndex['app/pages/ContentSite/controls/SpeakerCard0813211505/'] = theSpkCardsDir;
+    
+                        thePageDir.getDirectory('panels', { create: true }, function (thePanelDir) {
+                          ActionAppCore.dirIndex['app/pages/ContentSite/panels/'] = thePanelDir;						
+                          thePageDir.getDirectory('tpl', { create: true }, function (theCtlDir) {
+                            ActionAppCore.dirIndex['app/pages/ContentSite/tpl/'] = theCtlDir;	
+                            rootDirEntry.getDirectory('res', { create: true }, function (theResDir) {
+                              ActionAppCore.dirIndex['res/'] = theResDir;						
+                              theResDir.getDirectory('sponsors', { create: true }, function (theResSponDir) {
+                                ActionAppCore.dirIndex['res/sponsors/'] = theResSponDir;
+                                ActionAppCore.dirIndex['app/'].getDirectory('css', { create: true }, function (theAppCSSDir) {
+                                  ActionAppCore.dirIndex['app/css/'] = theAppCSSDir;
+
+                                  dirEntry.getDirectory('local/', { create: true }, function (theLocalDataDir) {
+                                    ActionAppCore.dirIndex['local/'] = theLocalDataDir;
+                                    dfd.resolve();
+                                  })
+                                })
+                              });
+                            });          
+                          })
+                        })
+                      })  
+                    })  
+                  })  
+                })
+              })
+            })
+          }, function(){
+            dfd.resolve(false);
+          });
+            }, function(){
+              dfd.resolve(false);
+            });
+        }, function(){
+          dfd.resolve(false);
+        });
+    
+      }, function(){
+        dfd.resolve(false);
+      });
+
+      return dfd.promise();
+    }
+   
+   
+    
+    function doInitalSetup(){
+      var dfd = jQuery.Deferred();
+      ActionAppCore.counterForInitProcess = 0;
+      ActionAppCore.counterForInitProcessErrs = 0;
+
+      window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, function (fs) {
+        //console.log('file system open to create dir: ' + fs.name);
+        // ActionAppCore.fsData = fs;
+        if( ActionAppCore.nativeAppSetup == true){
+          dfd.resolve(true);
+          return dfd.promise();
+        }
+    
+        alert("Please wait as we do first time setup");
+        createDirectories().then(function(){
+          //console.log('ActionAppCore.dirIndex', ActionAppCore.dirIndex);
+          var tmpAllReq = [];
+          var tmpFiles = ActionAppCore.versionInfo.files;
+
+          for( var tmpName  in tmpFiles){
+            var tmpFN = cordova.file.applicationDirectory + 'www/' + tmpName;
+            var tmpNameArray = tmpName.split('.');
+            var tmpFileExtn = tmpNameArray[tmpNameArray.length - 1];
+            var tmpFileType = ActionAppCore.extnIndex[tmpFileExtn];
+            
+            var tmpNameArray = tmpName.split('/');
+            var tmpDirName = '';  
+            for( var iPart = 0 ; iPart < tmpNameArray.length - 1; iPart++ ){
+              var tmpPartName = tmpNameArray[iPart];
+              if( tmpDirName != "" ){
+                tmpDirName += '/';
+              }
+              tmpDirName += tmpPartName;
+            }
+            tmpDirName += '/';
+            
+            var tmpName = tmpNameArray[tmpNameArray.length - 1];
+            var tmpDirObject = ActionAppCore.dirIndex[tmpDirName];
+            if( !tmpDirObject ){
+              console.log('**** missing directory for ' + tmpDirName)
+            } else {
+              tmpAllReq.push(copyFileToDataArea(tmpFN, tmpName,tmpDirObject,tmpFileType));
+            }
+          }
+          //--- Process all files before moving on ...
+          whenAll(tmpAllReq).then(
+            function(){
+              saveInitialLocalConfig().then(function(){
+                dfd.resolve(true)
+              })
+            }
+          );
+        })
+      }, function(){
+        console.error("Error in opening fs",arguments)     
+        dfd.resolve(false);   
+      });
+    
+     return dfd.promise();
+    }
+    
+    
+    function onLoadVersionCheck(){
+      var dfd = jQuery.Deferred();
+      
+        var tmpLocalConfig = {setup:false};
+        getLocalConfig().then(function(theConfig){
+          console.log('getLocalConfig done',theConfig);
+          tmpLocalConfig = theConfig;
+          
+          if( tmpLocalConfig.setup != true){
+            ActionAppCore.nativeAppSetup = false;    
+          } else {
+            ActionAppCore.nativeAppSetup = true;
+          }
+    
+          doMobileAppStartup().then(function(){
+            console.log('doMobileAppStartup done');
+            dfd.resolve(true);  
+          })
+        });
+      
+     
+    
+    
+    
+    
+    
+    return dfd.promise();
+    }
+
+    
+
+  function whenAll(theArrayOfRequests){
+    var dfd = jQuery.Deferred();
+    $.when.apply($,theArrayOfRequests).done(
+      function(){
+      dfd.resolve(true);
+    });
+    return dfd.promise();
+  }
+
+
+  //--- Provide utilities globally to the entire app
+  ActionAppCore.mutils = {
+    whenAll: whenAll
+  };
+
+  ActionAppCore.extnIndex = {
+    "js": "text/javascript",
+    "json": "application/json",
+    "bmp": "image/bmp",
+    "gif": "image/gif",
+    "jpeg": "image/jpeg",
+    "jpg": "image/jpeg",
+    "svg": "image/svg+xml",
+    "tif": "image/tiff",
+    "ico": "image/x-icon",
+    "png": "image/png",
+    "txt": "text/plain",
+    "html": "text/html",
+    "htm": "text/html",
+    "css": "text/css",
+    "mp4": "video/mp4",
+    "pdf": "application/pdf",
+    "doc": "application/msword",
+    "zip": "application/zip"
+  }
+
+  ActionAppCore.doVersionSync = doVersionSync;
+  ActionAppCore.doVersionSync = doVersionSync;
+  function doVersionSync(theVerboseFlag){
+    var dfd = jQuery.Deferred();
+    
+    var tmpURL = 'https://staging.sae-glc.org/res/versions.json';
+
+    $.ajax({
+        cache: false,
+        url: tmpURL,
+        loading: false,
+        timeout: 4000,
+        error: function(xhr,status,error){
+          ActionAppCore.versionInfoCurrent = false;
+          console.log('No Internet Connection - Skip Update Process',xhr,status,error);
+          if( theVerboseFlag === true){
+            alert("Please connect and verify your internet connection and try again.", "No Internet Connection", "i")
+          }
+          dfd.resolve(true); 
+        },
+        method: 'GET'
+      }).then(function (theReply) {
+        if( typeof(theReply) == 'string'){
+          theReply = JSON.parse(theReply);
+        }
+        ActionAppCore.versionInfoCurrent = theReply;
+
+        //--- Get Local Data Version
+        $.ajax({cache: false,
+          url: './res/versions.json',
+          loading: false,
+          timeout: 4000}).then(function(theCurrentLocalVersion){
+            if( typeof(theCurrentLocalVersion) == 'string'){
+                theCurrentLocalVersion = JSON.parse(theCurrentLocalVersion);
+            }
+            ActionAppCore.versionInfoCurrentLocal = theCurrentLocalVersion;
+            console.log('ActionAppCore.versionInfoCurrent.version',ActionAppCore.versionInfoCurrent.version);
+            console.log('ActionAppCore.versionInfoCurrentLocal.version',ActionAppCore.versionInfoCurrentLocal.version);
+
+            if( ActionAppCore.versionInfoCurrent.version != ActionAppCore.versionInfoCurrentLocal.version){
+              doSyncProcess(theVerboseFlag).then(function(){
+                if( theVerboseFlag === true){
+                  alert("In order to see updated content, please exit (not close) your application and reopen it.  <br /><b>Details: </b>To exit an application, first show the list of apps on your device, find the GLC application and swipe up to close.  Once exited, reopen the application using the icon on any screen or in the application list. ", "Content Updated", 's').then(function(){
+                    dfd.resolve(true);
+                  })
+                } else {
+                  dfd.resolve(true);
+                }
+              })
+            } else {
+              if( theVerboseFlag === true){
+                alert("All content is up to date", "No Update Needed", "c");
+              }
+              dfd.resolve(true); 
+            }
+          })
+      })
+      return dfd.promise();
+  }
+
+
+  function getVersionDifferences(){
+    var tmpUpdateList = [];
+    var tmpMyVersion = ActionAppCore.versionInfoCurrentLocal.version;
+
+    var tmpCurr = ActionAppCore.versionInfoCurrent.files;
+    var tmpLocal = ActionAppCore.versionInfoCurrentLocal.files;
+
+    for( var aFN in tmpCurr ){
+      var tmpDetails = tmpCurr[aFN];
+      //--- If the files is newer or we don't have it, add it
+      if( tmpDetails.ver > tmpMyVersion ){
+        tmpUpdateList.push(aFN);
+      } else if( !(tmpLocal[aFN]) ){
+        tmpUpdateList.push(aFN);
+      }
+    }
+    return tmpUpdateList;
+  }
+  //ToDo: Update Local With Newer Files
+  function doSyncProcess(){
+    console.log('doSyncProcess start');
+    var dfd = jQuery.Deferred();
+    var tmpNewFileList = getVersionDifferences();
+
+    var tmpAllFileReq = [];
+
+    if( tmpNewFileList && tmpNewFileList.length > 0){
+      tmpNewFileList.push('res/versions.json');
+
+      for( var iPos in tmpNewFileList ){
+        var tmpName = tmpNewFileList[iPos];
+        var tmpNameOnly = tmpName.split('/').pop();
+        var tmpDirOnly = tmpName.replace(tmpNameOnly,'');
+        var tmpExtn = tmpNameOnly.split('.').pop();
+        var tmpType = ActionAppCore.extnIndex[tmpExtn];
+        var tmpSourceURL = 'https://staging.sae-glc.org/' + tmpName;
+        
+        if( tmpType ){
+          tmpAllFileReq.push(copyFileToDataArea(tmpSourceURL,tmpNameOnly,tmpDirOnly,tmpType))
+        } else {
+          console.error("Unknown file type, not pulling new version " + tmpName);
+        }
+      }
+    }
+    
+    whenAll(tmpAllFileReq).then(function(){
+      console.log('sync files is complete:',tmpNewFileList);
+      dfd.resolve(true);
+    })
+
+    return dfd.promise();
+  }
+
+  function copyFileToDataArea(theSourceURL,theName,theDir,theType) {
+    var dfd = jQuery.Deferred();
+    var tmpNeedResolve = (typeof(theDir) == 'string');
+    var tmpDirToResolve = '/app';
+    if( tmpNeedResolve ){
+      tmpDirToResolve = theDir;
+    }
+    tmpDirToResolve = cordova.file.dataDirectory + '/' + tmpDirToResolve;
+    window.resolveLocalFileSystemURL(tmpDirToResolve, function (theResolvedDir) {
+      if( tmpNeedResolve ){
+        theDir = theResolvedDir;
+      }
+      var blob = null;
+      var xhr = new XMLHttpRequest();
+      xhr.open("GET", theSourceURL);
+      xhr.setRequestHeader("Cache-Control", "no-cache, no-store, max-age=0");
+      
+      var tmpTypeParts = theType.split("/");
+      if( tmpTypeParts[0] == 'image' || tmpTypeParts[0] == 'application' || tmpTypeParts[0] == 'video'){
+        //force the HTTP response, response-type header to be blob
+        xhr.responseType = "blob";
+      }
+      xhr.onload = function()
+      {
+          blob = xhr.response;
+          theDir.getFile(theName, { create: true, exclusive: false }, function (fileEntry) {
+            //console.log('theName ',fileEntry);
+              fileEntry.createWriter(function (fileWriter) {
+                  fileWriter.onwriteend = function() {
+                    //console.log("fileEntry url",fileEntry, fileEntry.toURL());
+                    ActionAppCore.counterForInitProcess++;
+                    dfd.resolve(true);             
+                  };
+          
+                  fileWriter.onerror = function (e) {
+                      console.log("Failed file write: " + e.toString());
+                      ActionAppCore.counterForInitProcessErrs++;
+                      dfd.resolve(false);
+                  };
+          
+                  if (!blob) {
+                    ActionAppCore.counterForInitProcessErrs++;
+                    dfd.resolve(false);
+                    return;
+                  }
+          
+                  fileWriter.write(blob);
+              });
+        }, function(){
+          console.log("unknown error saving file", arguments);
+          dfd.resolve(false);
+        });
+    
+        
+      }
+      xhr.send();
+
+    }, function(){
+      console.log('error resolving directory ', arguments);
+      dfd.resolve(false);
+    })
+    
+    return dfd.promise();
+  }
+  
+
+
+  function getUrlParameter(sParam) {
+    var sPageURL = window.location.search.substring(1),
+    sURLVariables = sPageURL.split('&'),
+    sParameterName,
+    i;
+  
+    for (i = 0; i < sURLVariables.length; i++) {
+      sParameterName = sURLVariables[i].split('=');
+  
+      if (sParameterName[0] === sParam) {
+        return sParameterName[1] === undefined ? true: decodeURIComponent(sParameterName[1]);
+      }
+    }
+  };
 
 })();
+

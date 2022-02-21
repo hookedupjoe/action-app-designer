@@ -129,12 +129,15 @@ module.exports.setup = function setup(scope) {
                 tmpSaveFN = tmpDeployBase + 'CordovaApp/www/app/app.js';
                 var tmpSaveText = '';
 
+                // //--- No Longer Save App - Use Build Version
+                // tmpKeepAppText = '';
+                
                 if( tmpKeepAppText != ''){
                     tmpSaveText = tmpKeepAppText;
                     $.await($.fs.writeFile(tmpSaveFN,tmpSaveText));
-                    console.log("saving new app file from content from app side",tmpKeepAppFN,tmpKeepAppText);
+                    //console.log("saving new app file from content from app side",tmpKeepAppFN,tmpKeepAppText);
                 } else {
-                    console.log("No content, keeping");
+                    //console.log("No content, keeping");
                 }
                 
                 var tmpRet = {
