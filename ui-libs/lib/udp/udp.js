@@ -97,7 +97,7 @@
 
     function getBroadcastIP(message, callback, optionlAltPort) {
         var dfd = jQuery.Deferred();
-        if( networkinterface && typeof(networkinterface.getIPAddress == 'function')){
+        if( typeof(networkinterface) == 'object' && typeof(networkinterface.getIPAddress == 'function')){
             networkinterface.getIPAddress(function (theDetails) { 
                 var tmpLocalIP = theDetails.ip;
                 var tmpParts = tmpLocalIP.split('.');
@@ -121,8 +121,22 @@
         var port = optionlAltPort || this.port,
             buffer = UDP.Buffer.fromString(message);
             
+            var address = "255.255.255.255";
+            UDP.createSocket(address, port, function (socket, udp) {
+                try {
+                    chrome.sockets.udp.setBroadcast(socket.socketId, true, function (theResult) {
+                        udp.send(socket.socketId, buffer, address, port, function (info) {
+                            callback(info);
+                            udp.close(socket.socketId);
+                        });
+                    })
+                } catch (error) {
+                    alert("Error " + error.toString())
+                }
+            });
+            
             getBroadcastIP().then(function(theBroadcastIP){
-                theBroadcastIP = "255.255.255.255";
+                //theBroadcastIP = "255.255.255.255";
                 console.log('debug theBroadcastIP',theBroadcastIP);
                 var address = theBroadcastIP;
                 UDP.createSocket(address, port, function (socket, udp) {
