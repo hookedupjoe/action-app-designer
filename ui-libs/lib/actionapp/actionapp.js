@@ -4720,19 +4720,36 @@ License: MIT
                 tmpNo = "No";
                 tmpCancel = (tmpButtons == 'ync');
             } else if (typeof (tmpButtons) == 'object') {
+                tmpYes = "Yes";
+                tmpNo = "No";
                 if (tmpButtons.yes) {
                     tmpYes = tmpButtons.yes;
+                } else if( tmpButtons.yes === false){
+                    tmpYes = false;
                 }
                 if (tmpButtons.no) {
                     tmpNo = tmpButtons.no;
+                } else if( tmpButtons.no === false){
+                    tmpNo = false;
                 }
                 if (typeof (tmpButtons.cancel) === 'boolean') {
                     tmpCancel = tmpButtons.cancel;
                 }
             }
 
-            me.promptDialogYes.html(tmpYes);
-            me.promptDialogNo.html(tmpNo);
+            if( tmpYes == false ){
+                me.promptDialogYes.hide();
+            } else {
+                me.promptDialogYes.html(tmpYes);
+                me.promptDialogYes.show();
+            }
+            if( tmpNo == false ){
+                me.promptDialogNo.hide();
+            } else {
+                me.promptDialogNo.html(tmpNo);
+                me.promptDialogNo.show();
+            }
+            
             if (tmpCancel) {
                 me.promptDialogCancel.show();
             } else {
