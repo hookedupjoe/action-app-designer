@@ -1458,6 +1458,7 @@ window.ActionAppCore = window.ActionAppCore || ActionAppCore;
      * 
      * @return {$el} [jQuery element collection (which may be one)]
      */
+    me.getByAttr = me.getByAttr$;
     me.getByAttr$ = function (theItems, theParent, theExcludeBlanks) {
         if (!theItems) {
             return false;
