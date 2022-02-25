@@ -4353,7 +4353,7 @@ License: MIT
 
         tmpHTML.push('<div appuse="_prompter:prompt-dialog" class="ui modal">');
         tmpHTML.push('	<div appuse="_prompter:prompt-dialog-title" class="header"></div>');
-        tmpHTML.push('	<div class="scrolling content">');
+        tmpHTML.push('	<div appuse="_prompter:prompt-dialog-scroller" class="NOTscrolling content">');
         tmpHTML.push('	<div appuse="_prompter:prompt-dialog-text-top" class="forms-top-content"></div>');
         tmpHTML.push('	<div appuse="_prompter:prompt-dialog-text" class="app-layout-pane">');
         tmpHTML.push('  </div>');
@@ -4601,13 +4601,15 @@ License: MIT
             me.promptDialog = me.promptDialog.modal(
                 {
                     closable: false,
-                    allowMultiple: true,
+                    allowMultiple: false,
                     onHidden: me.onHiddenPrompt.bind(me)
                 }
             );
         }
 
 
+        me.promptDialogScroller = ThisApp.getByAttr$({ appuse: "_prompter:prompt-dialog-scroller" });
+        me.promptDialogBody = ThisApp.getByAttr$({ appuse: "_prompter:prompt-dialog" });
         me.promptDialogTitle = ThisApp.getByAttr$({ appuse: "_prompter:prompt-dialog-title" });
         me.promptDialogTextTop = ThisApp.getByAttr$({ appuse: "_prompter:prompt-dialog-text-top" });
         me.promptDialogText = ThisApp.getByAttr$({ appuse: "_prompter:prompt-dialog-text" });
