@@ -5440,7 +5440,6 @@ License: MIT
         var tmpTitle = tmpGetFrom('title');
         var tmpSubmitLabel = tmpGetFrom('submitLabel');
         var tmpCancelLabel = tmpGetFrom('cancelLabel');
-
         var tmpIsNew = tmpOptions.isNew === true;
         //--- Use new values if present
         if (tmpIsNew) {
@@ -5451,6 +5450,13 @@ License: MIT
             tmpTitle = tmpTitleNew || tmpTitle;
             tmpSubmitLabel = tmpSubmitLabelNew || tmpSubmitLabel;
             tmpCancelLabel = tmpCancelLabelNew || tmpCancelLabel;
+        }
+
+        if( tmpOptions.submitLabel === false){
+            tmpSubmitLabel = false;
+        }
+        if( tmpOptions.cancelLabel === false){
+            tmpCancelLabel = false;
         }
 
         var tmpDoc = tmpOptions.doc || {};
