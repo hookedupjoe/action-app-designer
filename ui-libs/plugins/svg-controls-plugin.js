@@ -79,8 +79,13 @@ SVG controls Plugin:
 
     me.svgDefsTemplateName = thisCompActionPrefix + ":defs";
 
-    //---ToDo: Duplicate, pull from somewhere unified?
+    //---ToDo: Duplicate, pull from somewhere unified or speciffy?
+    var tmpCurr = new URL(location);
+    
     me.controlsBaseURL = "./svg-catalog/controls/";
+    if( (tmpCurr) && tmpCurr.port && tmpCurr.port == 33460){
+        me.controlsBaseURL = "/svg-catalog/controls/";
+    };    
     me.defsId = 'control-manager-defs-svg';
     //var controlCreateFunctions = {};
     var controlPromises = {};

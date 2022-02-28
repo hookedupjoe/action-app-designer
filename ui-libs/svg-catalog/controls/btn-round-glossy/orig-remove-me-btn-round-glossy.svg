@@ -14,7 +14,7 @@
    sodipodi:docname="btn-round-glossy.svg"
    viewBox="0 0 400 400"
    version="1.1"
-   inkscape:version="0.92.3 (2405546, 2018-03-11)"
+   inkscape:version="0.92.1 r15371"
    width="426.66666"
    height="426.66666">
   <defs
@@ -232,16 +232,16 @@
      inkscape:pageshadow="2"
      inkscape:window-y="-8"
      pagecolor="#ffffff"
-     inkscape:window-height="705"
+     inkscape:window-height="837"
      inkscape:window-maximized="1"
      inkscape:zoom="0.98994949"
      inkscape:window-x="-8"
      showgrid="false"
      borderopacity="1.0"
      inkscape:current-layer="layer1"
-     inkscape:cx="61.870771"
-     inkscape:cy="312.08532"
-     inkscape:window-width="1280"
+     inkscape:cx="234.10178"
+     inkscape:cy="231.27312"
+     inkscape:window-width="1600"
      inkscape:pageopacity="0.0"
      inkscape:document-units="px"
      objecttolerance="1"
@@ -257,29 +257,27 @@
        cy="802.42096"
        cx="150.18582"
        style="fill:#999999;stroke-width:2.8282311"
-       id="btn-round-glossy-obj-02"
-       inkscape:label="#btn-round-glossy-obj-02" />
+       id="path7148" />
     <circle
        r="147.84946"
        cy="802.4361"
        cx="150.19084"
        style="fill:url(#linearGradient4662);stroke-width:2.78773403"
-       id="btn-round-glossy-obj-03" />
+       id="path7150" />
     <circle
        r="53.035713"
        cy="346.11218"
        cx="303.75"
        transform="matrix(2.5377501,0,0,2.5377501,-620.65277,-75.91874)"
        style="fill:#ececec;filter:url(#btn-round-glossy-filter6126)"
-       id="btn-round-glossy-obj-04" />
+       id="path7152" />
     <circle
        r="53.035713"
        cy="346.11218"
        cx="303.75"
        transform="matrix(2.4355777,0,0,2.4355777,-589.62339,-40.563673)"
        style="fill:#999999;filter:url(#btn-round-glossy-filter6126)"
-       id="btn-round-glossy-obj-05"
-       inkscape:label="#btn-round-glossy-obj-05" />
+       id="path7154" />
     <circle
        r="124.16365"
        cy="802.41333"
@@ -294,14 +292,14 @@
        cy="808.27625"
        cx="153.84236"
        style="fill:url(#btn-round-glossy-radialGradient11752);fill-opacity:1.0;stroke-width:2.20279217"
-       id="btn-round-glossy-obj-06" />
+       id="path7158" />
     <path
        d="m 147.28137,685.68228 c -38.72789,0.87353 -76.07295,21.37572 -96.844415,57.35248 -22.34109,38.69593 -19.50455,85.02066 3.353938,120.07069 2.478225,-77.07811 61.390577,-135.13073 134.575857,-130.88638 23.99293,1.39175 46.63847,9.29661 66.40768,22.05204 -9.46424,-21.64242 -25.61456,-40.53486 -47.62621,-53.24177 -18.84451,-10.87989 -39.58199,-15.80171 -59.8683,-15.34416 z"
        inkscape:connector-curvature="0"
        style="opacity:0.31771001;fill:url(#btn-round-glossy-linearGradient11820);stroke-width:2.90510011"
-       id="btn-round-glossy-obj-07" />
+       id="path7160" />
     <g
-       id="btn-round-glossy-obj-01"
+       id="g4660"
        transform="translate(-306.83383,-43.56283)"
        style="opacity:0.64200003">
       <g
@@ -359,7 +357,7 @@
             <dc:title>Openclipart</dc:title>
           </cc:Agent>
         </dc:publisher>
-        <dc:title />
+        <dc:title></dc:title>
         <dc:date>2011-02-26T02:58:54</dc:date>
         <dc:description />
         <dc:source>https://openclipart.org/detail/122725/glossy-blue-button-by-ricardomaia</dc:source>
