@@ -2,3 +2,9 @@ cordova plugin add cordova-plugin-chrome-apps-sockets-udp
 cordova plugin add cordova-plugin-ionic-webview
 cordova plugin add cordova-plugin-networkinterface
 cordova plugin add ionic-plugin-keyboard@2.2.1
+
+cordova plugin add https://github.com/floatinghotpot/cordova-httpd.git
+
+no longer used for later cordova versions
+cordova plugin add cordova-plugin-cleartext
+
