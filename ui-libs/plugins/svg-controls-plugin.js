@@ -83,7 +83,7 @@ SVG controls Plugin:
     var tmpCurr = new URL(location);
     
     me.controlsBaseURL = "./svg-catalog/controls/";
-    if( (tmpCurr) && tmpCurr.port && tmpCurr.port == 33460){
+    if( (tmpCurr) && tmpCurr.port && tmpCurr.port == 33461){
         me.controlsBaseURL = "/svg-catalog/controls/";
     };    
     me.defsId = 'control-manager-defs-svg';
