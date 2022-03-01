@@ -2239,6 +2239,8 @@ window.ActionAppCore = window.ActionAppCore || ActionAppCore;
         if (tmpBody.length > 0) {
             var tmpBodyDom = tmpBody.get(0);
             tmpBody.on("click", itemClicked);
+            //--- Add ability to trigger action on item change
+            tmpBody.on("change", itemClicked);
             tmpBodyDom.ontouchend = itemTouchEnd;
             tmpBodyDom.ontouchstart = ThisApp.util.itemTouchStart.bind(this);
         }
@@ -2302,7 +2304,25 @@ window.ActionAppCore = window.ActionAppCore || ActionAppCore;
     }
     //---- Internal: Catch a click item to look for the action
     itemClicked = ActionAppCore.debounce(onItemClicked, 50);
+    // itemChanged = ActionAppCore.debounce(onItemChanged, 50);
 
+    // function onItemChanged(theEvent) {
+    //     var tmpObj = theEvent.target || theEvent.currentTarget || theEvent.delegetTarget || {};
+    //     var tmpActionDetails = me.getActionFromObj(tmpObj);
+    //     if (!((tmpActionDetails.hasOwnProperty('action') || tmpActionDetails.hasOwnProperty('action')) && tmpActionDetails.hasOwnProperty('el'))) {
+    //         //--- OK, just clicked somewhere with nothing to catch it, but not an action
+    //         return;
+    //     }
+    //     var tmpAction = tmpActionDetails.action;
+    //     tmpObj = tmpActionDetails.el;
+
+    //     if (tmpAction) {
+    //         ThisApp.runAppAction(tmpAction, tmpObj);
+    //         theEvent.preventDefault();
+    //         theEvent.stopPropagation();
+    //     }
+    //     return false;
+    // }
     function onItemClicked(theEvent) {
         var tmpObj = theEvent.target || theEvent.currentTarget || theEvent.delegetTarget || {};
         var tmpActionDetails = me.getActionFromObj(tmpObj);
