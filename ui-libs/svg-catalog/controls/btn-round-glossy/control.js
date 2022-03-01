@@ -63,7 +63,6 @@
     me.init = init;
 
     me.onClick = function (e) {
-        //console.log("click", e);
         if (e && e.detail && e.ctrlKey !== true) {
             this.setSwitchStatus(!this.switchStatus);
         }
@@ -75,7 +74,6 @@
         tmpOptions.controlName = thisControlName;
         tmpOptions.controlTitle = thisControlTitle;
         tmpOptions.onClick = this.onClick.bind(this);
-        //tmpOptions.onContextMenu = this.onContextMenu.bind(this);
 
         this.oid = theOptions.oid || '';
         this.svg = theParentSVG;
