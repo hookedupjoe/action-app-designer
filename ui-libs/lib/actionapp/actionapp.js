@@ -2643,6 +2643,31 @@ window.ActionAppCore = window.ActionAppCore || ActionAppCore;
             tmpFOFade.addClass('hidden');
             ThisApp.getByAttr$({ appuse: 'flyover' }).addClass('hidden');
         });
+        if( typeof(me.fullScreenFlyoverCallback) == 'function'){
+            var tmpFunc = me.fullScreenFlyoverCallback;
+            delete me.fullScreenFlyoverCallback;
+            tmpFunc();
+        }
+        ThisApp.flyoverOpen = false;
+        console.log("flyover closed");
+    }
+
+    me.fullScreenFlyover = fullScreenFlyover;
+    function fullScreenFlyover(theHTML, theOptions){
+        var tmpOptions = theOptions || {};
+        if( typeof(tmpOptions.onClose) == 'function'){
+            me.fullScreenFlyoverCallback = tmpOptions.onClose;
+        }
+        ThisApp.loadSpot('flyover-menu', theHTML);
+        var tmpMask = ThisApp.getByAttr$({ appuse: 'flyovermask' });
+        var tmpFOFade = ThisApp.getByAttr$({ appuse: 'flyoverfade' });
+        tmpMask.css('background-color','white');
+        tmpMask.animate({ scrollTop: 0 }, 2, function () {
+          tmpMask.removeClass('hidden');
+          tmpFOFade.removeClass('hidden');
+          ThisApp.getByAttr$({ appuse: 'flyover' }).removeClass('hidden');
+        });
+        ThisApp.flyoverOpen = true;
     }
 
     me.toggleMe = toggleMe;
