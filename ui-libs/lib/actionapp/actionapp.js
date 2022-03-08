@@ -2634,6 +2634,7 @@ window.ActionAppCore = window.ActionAppCore || ActionAppCore;
         ThisApp.refreshLayouts();
     };
 
+    me.closeFlyover = clearFlyover;
     me.clearFlyover = clearFlyover;
     function clearFlyover(theParams, theTarget, theOptionalParent) {
         var tmpMask = ThisApp.getByAttr$({ appuse: 'flyovermask' });
@@ -2648,8 +2649,8 @@ window.ActionAppCore = window.ActionAppCore || ActionAppCore;
             delete me.fullScreenFlyoverCallback;
             tmpFunc();
         }
+        tmpMask.css('background-color','transparent');
         ThisApp.flyoverOpen = false;
-        console.log("flyover closed");
     }
 
     me.fullScreenFlyover = fullScreenFlyover;
