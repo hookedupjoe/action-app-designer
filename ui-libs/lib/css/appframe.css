@@ -268,8 +268,8 @@ input[readonly], .ui.disabled.dropdown {
 .flyover  {
   position: relative;
   z-index: 22;
-  top: 10px;
-  left: 10px;
+  top: 0px;
+  left: 0px;
   background-color:white;
 }
 

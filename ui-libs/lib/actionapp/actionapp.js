@@ -2659,14 +2659,22 @@ window.ActionAppCore = window.ActionAppCore || ActionAppCore;
         if( typeof(tmpOptions.onClose) == 'function'){
             me.fullScreenFlyoverCallback = tmpOptions.onClose;
         }
-        ThisApp.loadSpot('flyover-menu', theHTML);
+        if( theHTML ){
+            ThisApp.loadSpot('flyover-menu', theHTML);
+        }
+        var tmpBG = 'white';
+        if( tmpOptions.backgrouColor ){
+            tmpBG = tmpOptions.backgrouColor;
+        }
         var tmpMask = ThisApp.getByAttr$({ appuse: 'flyovermask' });
         var tmpFOFade = ThisApp.getByAttr$({ appuse: 'flyoverfade' });
-        tmpMask.css('background-color','white');
+        var tmpBody = ThisApp.getByAttr$({ appuse: 'flyover' });
+        tmpMask.css('background-color',tmpBG);
+        tmpBody.css('background-color',tmpBG);
         tmpMask.animate({ scrollTop: 0 }, 2, function () {
           tmpMask.removeClass('hidden');
           tmpFOFade.removeClass('hidden');
-          ThisApp.getByAttr$({ appuse: 'flyover' }).removeClass('hidden');
+          tmpBody.removeClass('hidden');
         });
         ThisApp.flyoverOpen = true;
     }
@@ -3136,7 +3144,7 @@ window.ActionAppCore = window.ActionAppCore || ActionAppCore;
 
     function initFlyoverMarkup() {
         var tmpHTML = [];
-        tmpHTML.push('<div appuse="flyovermask" action="clearFlyover" class="pagemask hidden">');
+        tmpHTML.push('<div appuse="flyovermask" class="pagemask hidden">');
         tmpHTML.push('	<div appuse="flyover" class="flyover hidden">');
         tmpHTML.push('		<div class="ui content form">');
         tmpHTML.push('			<div class="ui field" spot="flyover-menu">');
