@@ -2655,6 +2655,7 @@ window.ActionAppCore = window.ActionAppCore || ActionAppCore;
 
     me.fullScreenFlyover = fullScreenFlyover;
     function fullScreenFlyover(theHTML, theOptions){
+
         var tmpOptions = theOptions || {};
         if( typeof(tmpOptions.onClose) == 'function'){
             me.fullScreenFlyoverCallback = tmpOptions.onClose;
