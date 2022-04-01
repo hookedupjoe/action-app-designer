@@ -97,7 +97,7 @@
 
     function getBroadcastIP(message, callback, optionlAltPort) {
         var dfd = jQuery.Deferred();
-        if( typeof(networkinterface) == 'object' && typeof(networkinterface.getIPAddress == 'function')){
+        if( (networkinterface) && typeof(networkinterface.getIPAddress == 'function')){
             networkinterface.getIPAddress(function (theDetails) { 
                 var tmpLocalIP = theDetails.ip;
                 var tmpParts = tmpLocalIP.split('.');
