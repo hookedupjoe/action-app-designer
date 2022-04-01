@@ -2664,8 +2664,8 @@ window.ActionAppCore = window.ActionAppCore || ActionAppCore;
             ThisApp.loadSpot('flyover-menu', theHTML);
         }
         var tmpBG = 'white';
-        if( tmpOptions.backgrouColor ){
-            tmpBG = tmpOptions.backgrouColor;
+        if( tmpOptions.backgroundColor ){
+            tmpBG = tmpOptions.backgroundColor;
         }
         var tmpMask = ThisApp.getByAttr$({ appuse: 'flyovermask' });
         var tmpFOFade = ThisApp.getByAttr$({ appuse: 'flyoverfade' });
