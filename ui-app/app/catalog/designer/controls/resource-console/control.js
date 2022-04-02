@@ -191,7 +191,10 @@ License: MIT
 	//--- Run before
 	function preLoad(theDetails) {
 		// var tmpPageName = theDetails.pagename || '';
-		// var tmpAppName = theDetails.appname || '';
+		 var tmpAppName = theDetails.appname || '';
+		 var tmpAppCSS = '<link rel="stylesheet" href="//localhost:33461/' + tmpAppName + '/app/css/app.css">'
+		 $('head').append(tmpAppCSS)
+
 		// var tmpResName = theDetails.resname || '';
 		// var tmpResType = theDetails.restype || '';
 
