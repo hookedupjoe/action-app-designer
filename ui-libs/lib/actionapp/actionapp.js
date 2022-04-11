@@ -6033,6 +6033,7 @@ License: MIT
             } else {
                 var tmpThisOptions = this.getConfig().options || {};
                 var tmpIsReadOnly = tmpFieldSpecs.readonly || tmpThisOptions.readonly || false;
+                tmpControl.setFieldValue.bind(this);
                 if (tmpControl.setFieldValue(tmpFieldEl, theValue, tmpFieldSpecs, tmpIsReadOnly)) {
                     if (!tmpSetOnly) {
                         tmpFieldEl.trigger('change');
@@ -6406,6 +6407,7 @@ License: MIT
             }
         }
         this.refreshControl();
+        this.publish('data-loaded');
     }
 
     meInstance.getIndex = function () {
