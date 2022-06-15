@@ -19,6 +19,15 @@ var ActionAppCore = {
     dir: {
         catalogs: {
             common: '/catalogs/common/'
+        },
+        sources: {
+
+        }
+    },
+    addSources: function(theSourcesObject){
+        for (var iName in theSourcesObject) {
+            //console.log(`${iName}: ${theSourcesObject[iName]}`);
+            this.dir.sources[iName] = theSourcesObject[iName];
         }
     },
     //--- Debounce resize / rapid firing events
