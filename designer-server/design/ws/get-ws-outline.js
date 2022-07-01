@@ -248,7 +248,7 @@ module.exports.setup = function setup(scope) {
                     var tmpCat = {
                         "ctl": "tbl-ol-node",
                         "type": "catalog",
-                        "item": tmpTitle + "",
+                        "item": tmpCatName + "",
                         attr: {
                             catname: tmpCatName,
                             cattitle: tmpTitle,
