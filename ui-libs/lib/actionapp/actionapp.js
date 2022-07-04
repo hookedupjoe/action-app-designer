@@ -4952,7 +4952,6 @@ License: MIT
         return 'layout-' + meInstance.layoutCounter;
     }
 
-
     //--- Private Actions
     var act = {};
 
@@ -5462,6 +5461,8 @@ License: MIT
         return tmpObj
     }
 
+
+
     /*  
     Prompt options: 
        doc: the object that contains the data
@@ -5947,6 +5948,16 @@ License: MIT
         ThisApp.refreshLayouts();
     }
 
+    meInstance.getParentPage = function () {
+        if( this.context && this.context.page && this.context.page.controller){
+            return this.context.page.controller;    
+        }
+        return false;
+    }
+
+    meInstance.getIndex = function () {
+        return this.controlConfig.index;
+    }
 
     meInstance.getItem = function (theItemName) {
         var tmpEl = this.getElByName$(theItemName, 'item')
