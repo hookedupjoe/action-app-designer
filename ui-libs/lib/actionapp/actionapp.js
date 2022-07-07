@@ -5842,7 +5842,6 @@ License: MIT
         if (tmpOptions.doc) {
             tmpConfig.options.doc = tmpOptions.doc;
         }
-
         return this.loadToElement(this.parentEl, tmpOptions);
     }
 
@@ -7075,8 +7074,16 @@ License: MIT
                             if( ActionAppCore.dir.catalogs[tmpCatalog] ){
                                 tmpCatalog = ActionAppCore.dir.catalogs[tmpCatalog];
                                 tmpCatalog += tmpAppComp + 's/';
+                                tmpControlName = tmpCatalog + tmpControlName;
+                            } else {
+                                var tmpControlType = "Control";
+                                if( tmpAppComp == 'panel'){
+                                    tmpControlType = "Panel";
+                                }
+                                if( ActionAppCore.dir.catalogs.getResourceURL ){
+                                    tmpControlName = ActionAppCore.dir.catalogs.getResourceURL(tmpCatalog,tmpControlType,tmpControlName)
+                                }
                             }
-                            tmpControlName = tmpCatalog + tmpControlName;
                         }
                         tmpIndex.required[tmpCtl] = tmpIndex.required[tmpCtl] || {};
                         tmpIndex.required[tmpCtl].list = tmpIndex.required[tmpCtl].list || [];
@@ -7945,6 +7952,11 @@ License: MIT
             if (theControlName == 'panel') {
                 tmpAppComp = 'panel'
             }
+            //--- ToDo: Use get common name call here
+            var tmpControlType = 'Control';
+            if( tmpAppComp == 'panel'){
+                tmpControlType = 'Panel';
+            }
             var tmpItem = tmpObject;
 
             var tmpCatalog = tmpItem.catalog || tmpItem.source || '';
@@ -7952,8 +7964,12 @@ License: MIT
                 if( ActionAppCore.dir.catalogs[tmpCatalog] ){
                     tmpCatalog = ActionAppCore.dir.catalogs[tmpCatalog];
                     tmpCatalog += tmpAppComp + 's/';
+                    tmpControlName = tmpCatalog + tmpControlName;
+                } else {
+                    if( ActionAppCore.dir.catalogs.getResourceURL ){
+                        tmpControlName = ActionAppCore.dir.catalogs.getResourceURL(tmpCatalog,tmpControlType,tmpControlName)
+                    }
                 }
-                tmpControlName = tmpCatalog + tmpControlName;
             }
             var tmpMyAttr = ' name="' + tmpName + '" ctlcomp="' + tmpAppComp + '" ' + 'controlname="' + tmpControlName + '" '
             tmpHTML.push('<div ' + getItemAttrString(theObject) + ' class="' + tmpClasses + '" style="' + tmpStyles + '" ' + tmpMyAttr + '></div>')
