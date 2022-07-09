@@ -26,7 +26,6 @@ var ActionAppCore = {
     },
     addSources: function(theSourcesObject){
         for (var iName in theSourcesObject) {
-            //console.log(`${iName}: ${theSourcesObject[iName]}`);
             this.dir.sources[iName] = theSourcesObject[iName];
         }
     },
@@ -44,6 +43,58 @@ var ActionAppCore = {
             timeout = setTimeout(later, wait);
             if (callNow) func.apply(context, args);
         };
+    },
+    apiCall: function(theOptions) {
+        //--- For use on initial load only, use ThisApp.apiCall to have loading options
+        var dfd = $.Deferred();
+
+        if (!theOptions) {
+            dfd.reject("No api call details provided");
+            return;
+        }
+
+        var tmpOptions = theOptions || '';
+        if (typeof (tmpOptions) == 'string') {
+            tmpOptions = { url: tmpOptions };
+        }
+        if( ActionAppCore.apiCallOptions && typeof(ActionAppCore.apiCallOptions.filterOptions) == 'function'){
+            ActionAppCore.apiCallOptions.filterOptions(tmpOptions);
+        }
+
+        var tmpAsForm = (tmpOptions.formSubmit === true);
+
+        var tmpURL = tmpOptions.url;
+        if (!tmpURL) {
+            throw "No URL provided"
+        }
+
+        tmpOptions.cache = false;
+        var tmpLoadingEl = false;
+        // if (tmpOptions.loading !== false) {
+        //     if (ThisApp.util.isjQuery(tmpOptions.loading))
+        //         tmpLoadingEl = tmpOptions.loading;
+        // }
+        var tmpLoaderOptions = { el: tmpLoadingEl };
+        tmpSuccess = function (theResponse) {
+            //ThisApp.hideLoading(tmpLoaderOptions);
+            dfd.resolve(theResponse);
+        }
+        tmpError = function (theError) {
+            //ThisApp.hideLoading(tmpLoaderOptions);
+            dfd.reject(theError)
+        }
+
+
+        //--- Auto Detect data, convert data and use POST
+        if (tmpOptions.data) {
+            tmpOptions.method = 'POST';
+            if (typeof (tmpOptions.data) == 'object') {
+                tmpOptions.data = JSON.stringify(tmpOptions.data);
+            }
+            tmpOptions.contentType = 'application/json';
+        }
+        $.ajax(tmpOptions).then(tmpSuccess, tmpError);
+        return dfd.promise();
     }
 };
 
@@ -600,7 +651,7 @@ window.ActionAppCore = window.ActionAppCore || ActionAppCore;
 
                 tmpRequests.push(tmpURI);
                 tmpDefs.push(
-                    $.ajax({
+                    ThisApp.apiCall({
                         url: tmpURL,
                         method: 'GET',
                         datatype: 'text'
@@ -1147,7 +1198,7 @@ window.ActionAppCore = window.ActionAppCore || ActionAppCore;
         } else {
             //--- load it up then ... 
             var tmpURL = './app/pages/' + tmpPageName + '/index.js?open'
-            $.ajax({
+            ThisApp.apiCall({
                 url: tmpURL,
                 dataType: "script"
             }).then(function () {
@@ -2544,7 +2595,9 @@ window.ActionAppCore = window.ActionAppCore || ActionAppCore;
                 if (!(tmpPage)) {
                     var tmpPageBase = theAppConfig.pageBaseURL || './app/pages/';
                     var tmpURL = tmpPageBase + tmpPageName + '/index.js?open'
-                    tmpDefs.push($.ajax({
+                    //--- For initial load only, allows for additional hooks on app load
+                    //  - vs just using $.ajax
+                    tmpDefs.push(ActionAppCore.apiCall({
                         url: tmpURL,
                         dataType: "script"
                     }));
@@ -4514,10 +4567,9 @@ License: MIT
 
             ThisApp.delay(100).then(function () {
                 me.alertDialog.modal('hide');
-
                 ThisApp.delay(100).then(function () {
-
                     me.alertDialog.modal('show');
+                    ThisApp.prompter.alertDialog[0].scrollIntoView();
                 })
 
             })
@@ -4665,7 +4717,7 @@ License: MIT
             me.promptDialog = me.promptDialog.modal(
                 {
                     closable: false,
-                    allowMultiple: false,
+                    allowMultiple: true,
                     onHidden: me.onHiddenPrompt.bind(me)
                 }
             );
@@ -6401,7 +6453,19 @@ License: MIT
             if (tmpFirstInvalid && isStr(tmpFirstInvalid)) {
                 me.gotoField(tmpControl, tmpFirstInvalid)
             }
-            alert(tmpInvalidControlMessage || tmpOptions.requiredMessage || "Please complete all required fields");
+            var tmpIsInPrompt = ThisApp.prompter.promptDialog.hasClass('visible');
+            if(tmpIsInPrompt){
+                ThisApp.prompter.promptDialog.css('display','none')
+                ThisApp.prompter.promptDialog.removeClass('visible');
+            }
+            alert(tmpInvalidControlMessage || tmpOptions.requiredMessage || "Please complete all required fields").then(function(){
+                if( tmpIsInPrompt ){
+                    ThisApp.prompter.promptDialog.css('display','block')
+                    ThisApp.prompter.promptDialog.addClass('visible');
+                    me.gotoField(tmpControl, tmpFirstInvalid);
+                }
+                
+            });
         }
 
         return { isValid: tmpIsValid, fields: tmpRetFields };
