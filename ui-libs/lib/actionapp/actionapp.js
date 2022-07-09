@@ -5829,7 +5829,27 @@ License: MIT
         var tmpPromLayoutReq = true;
         var tmpLayoutReq = this.getContentRequired();
         var tmpInitReq = ThisApp.loadResources.bind(this);
-
+        //--- Do not cache controls that have ? as they are dynamic calls
+        if( tmpLayoutReq && tmpLayoutReq.panel && tmpLayoutReq.panel.list ){
+            for( var iPos in tmpLayoutReq.panel.list ){
+                var tmpControlName = tmpLayoutReq.panel.list[iPos];
+                if( tmpControlName && tmpControlName.includes && tmpControlName.includes('?') ){
+                    if( ThisApp.resCache.panels && ThisApp.resCache.panels[tmpControlName]){
+                        delete ThisApp.resCache.panels[tmpControlName];
+                    }                
+                }
+            }
+        }
+        if( tmpLayoutReq && tmpLayoutReq.control && tmpLayoutReq.control.list ){
+            for( var iPos in tmpLayoutReq.control.list ){
+                var tmpControlName = tmpLayoutReq.control.list[iPos];
+                if( tmpControlName && tmpControlName.includes && tmpControlName.includes('?') ){
+                    if( ThisApp.resCache.controls && ThisApp.resCache.controls[tmpControlName]){
+                        delete ThisApp.resCache.controls[tmpControlName];
+                    }                
+                }
+            }
+        }
         if (tmpLayoutReq) {
             tmpPromLayoutReq = tmpInitReq(tmpLayoutReq, { nsParent: this.parentControl })
         }
