@@ -5001,7 +5001,13 @@ License: MIT
     me.layoutCounter = 0;
     me.getNextLayoutName = function () {
         me.layoutCounter++;
-        return 'layout-' + meInstance.layoutCounter;
+        return 'layout-' + me.layoutCounter;
+    }
+
+    me.genericCounter = 0;
+    me.getNextCounter = function () {
+        me.genericCounter++;
+        return me.genericCounter;
     }
 
     //--- Private Actions
