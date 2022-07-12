@@ -856,7 +856,14 @@ window.ActionAppCore = window.ActionAppCore || ActionAppCore;
                         var tmpBaseMapURL = tmpBaseURL;
 
                         if (isObj(tmpEntryName)) {
-                            tmpBaseMapURL = tmpEntryName.source || tmpBaseMapURL;
+                            if( tmpEntryName.source ){
+                                if( ActionAppCore.dir.catalogs[tmpEntryName.source]){
+                                    tmpBaseMapURL = ActionAppCore.dir.catalogs[tmpEntryName.source] + theType + '/';
+                                } else {
+                                    tmpBaseMapURL = tmpEntryName.source;
+                                }
+                            } 
+                            
                             tmpEntryName = tmpEntryName.name;
                         }
                         if (tmpBaseMapURL) {
