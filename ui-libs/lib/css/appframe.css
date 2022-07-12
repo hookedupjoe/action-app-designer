@@ -360,7 +360,7 @@ table.outline > tbody > tr > td.tbl-details {
 
 
 
-.ui-layout-pane {
+.ui-layout-container > .ui-layout-pane {
   padding: 0px;
 }
 
