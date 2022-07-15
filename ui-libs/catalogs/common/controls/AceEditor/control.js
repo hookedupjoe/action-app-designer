@@ -23,8 +23,9 @@ License: MIT
 		this.parentEl = theParentEl;
 	}
 	
-	ControlCode.resizeToParent = ActionAppCore.debounce(resizeToParentRun, 50);	
-	function resizeToParentRun(theParentEl) {
+	ControlCode.resizeToParent = resizeToParent;
+	function resizeToParent(theParentEl) {
+		window.tmpLastEditor = this;
 		var tmpSpot = this.getSpot$('code-editor');
 		tmpSpot.height($(tmpSpot.context).height());
 
@@ -46,7 +47,7 @@ License: MIT
 
 		if (this.codeEditorEl && this.codeEditor) {
 			this.codeEditorEl
-			.css('height', '' + (tmpH) + 'px')
+			.css('height', '' + tmpH + 'px')
 			.css('width', '' + tmpW + 'px')
 			.css('position', 'relative');
 			this.codeEditor.resize(true);
@@ -76,8 +77,9 @@ License: MIT
 		this.codeEditor.session.setTabSize(2);
 
 		this.codeEditor.setValue(ThisApp.json({}));
-		this.parent.subscribe('resized', this.resizeToParent.bind(this) );
-		
+		if( this.context && this.context.page && this.context.page.controller ){
+			this.parent.subscribe('resized', this.resizeToParent.bind(this) );
+		}
 
 	}
 
