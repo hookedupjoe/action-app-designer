@@ -152,8 +152,6 @@ window.ActionAppCore = window.ActionAppCore || ActionAppCore;
 /**
      * subscribe / unsubscribe / publish
     *     - Standard Pub / Sub functionality
-    * 
-    * 
     * @return void
     * 
     */
@@ -170,20 +168,30 @@ window.ActionAppCore = window.ActionAppCore || ActionAppCore;
     }
     var me = ThisExtention;
 
-    me.subscribe = function () {
-        this.events.on.apply(this.events, arguments);
-    };
+    //--- Global counter for this module
+    var subCounter = 0;
+    function getNextCounter(){
+        subCounter++;
+        return subCounter;
+    }
 
-    me.unsubscribe = function () {
-        this.events.off.apply(this.events, arguments);
+    me.subscribe = function (theEvent, theHandler) {
+        var tmpID = getNextCounter();
+        var tmpEvent = theEvent + '.' + tmpID;
+        this.__events.on.apply(this.__events, [tmpEvent, theHandler]);
+        return tmpEvent;
+    };
+    
+    me.unsubscribe = function (theEvent, theHandler) {
+        this.__events.off.apply(this.__events, arguments);
     };
 
     me.publish = function () {
-        this.events.trigger.apply(this.events, arguments);
+        this.__events.trigger.apply(this.__events, arguments);
     };
 
     me.initPubSub = function () {
-        this.events = $({});
+        this.__events = $({});
     };
 
     //--- return the prototype to be marged with prototype of target object
@@ -194,6 +202,45 @@ window.ActionAppCore = window.ActionAppCore || ActionAppCore;
 
 })(ActionAppCore, $);
 
+
+
+
+//--- UsePubSub Functionality, designed to automatically track subscribe calls to unsubscribe
+(function (ActionAppCore, $) {
+    var ExtendMod = ActionAppCore.module("extension");
+
+    //--- Base class for application pages
+    function ThisExtention() {
+
+    }
+    var me = ThisExtention;
+
+    me.subscribeEvent = function (theTarget, theEvent, theHandler) {
+        var tmpEventKey = theTarget.subscribe(theEvent, theHandler);
+        this.__subcriptions[tmpEventKey] = theTarget;
+        return tmpEventKey;
+    };
+    
+    me.unsubscribeEvent = function (theEventKey) {
+        var tmpTarget = this.__subcriptions[theEventKey];
+        if( tmpTarget && tmpTarget.unsubscribe ){
+            tmpTarget.unsubscribe(theEventKey);
+        }
+        delete this.__subcriptions[theEventKey];
+    };
+    me.unsubscribeAllEvents = function () {
+        for( var iKey in this.__subcriptions){
+            this.unsubscribeEvent(iKey)
+        }
+    };
+
+    me.initUsePubSub = function () {
+        this.__subcriptions = {};
+    };
+
+    ExtendMod.UsePubSub = me;
+
+})(ActionAppCore, $);
 
 
 /**
@@ -415,30 +462,32 @@ window.ActionAppCore = window.ActionAppCore || ActionAppCore;
             me.publish("message:sent", tmpMsgObj);
         };
 
-        /**
-          * subscribe / unsubscribe / publish
-          *     - Standard Pub / Sub functionality
-         * 
-         * 
-         * @return void
-         * 
-         */
-        me.subscribe = function () {
-            ThisApp.events.on.apply(ThisApp.events, arguments);
-        };
+        // /**
+        //   * subscribe / unsubscribe / publish
+        //   *     - Standard Pub / Sub functionality
+        //  * 
+        //  * 
+        //  * @return void
+        //  * 
+        //  */
+        // me.subscribe = function () {
+        //     ThisApp.events.on.apply(ThisApp.events, arguments);
+        // };
 
-        me.unsubscribe = function () {
-            ThisApp.events.off.apply(ThisApp.events, arguments);
-        };
+        // me.unsubscribe = function () {
+        //     ThisApp.events.off.apply(ThisApp.events, arguments);
+        // };
 
-        me.publish = function () {
-            ThisApp.events.trigger.apply(ThisApp.events, arguments);
-        };
+        // me.publish = function () {
+        //     ThisApp.events.trigger.apply(ThisApp.events, arguments);
+        // };
 
     }
 
 
     $.extend(me, ExtendMod.SetDisplay);
+    $.extend(me, ExtendMod.PubSub);
+    me.initPubSub();
 
     //--- Know if we have initialized a control by site URI
     me.resourceInitFlags = {};
@@ -3175,6 +3224,9 @@ window.ActionAppCore = window.ActionAppCore || ActionAppCore;
 
     //--- Loop up until the next layout pane and set height to 100%
     function resizeToParent(theEl) {
+        if (!isjQuery(theEl)) {
+            theEl = $(theEl);
+        }
         var tmpMax = 20;
         var tmpAtEl = theEl.parent();
 
@@ -3427,9 +3479,31 @@ window.ActionAppCore = window.ActionAppCore || ActionAppCore;
             theRect.y <= theY && theY <= theRect.y + theRect.height;
     }
 
+    function removeItemOnce(arr, value) {
+        var index = arr.indexOf(value);
+        if (index > -1) {
+          arr.splice(index, 1);
+        }
+        return arr;
+      }
+      
+      function removeItemAll(arr, value) {
+        var i = 0;
+        while (i < arr.length) {
+          if (arr[i] === value) {
+            arr.splice(i, 1);
+          } else {
+            ++i;
+          }
+        }
+        return arr;
+      }
+
     //ThisApp.util...
     var utilFunctions = {
         MIN_TOUCH_DISTANCE: 20,
+        removeItemOnce: removeItemOnce,
+        removeItemAll: removeItemAll,
         itemTouchStart: itemTouchStart,
         touchIsClick: touchIsClick,
         isPage: isPage,
@@ -3738,16 +3812,13 @@ License: MIT
 
         $.when(tmpPromRequired, tmpPromLayoutReq).then(function (theReply) {
             tmpThis.initLayout();
-            //comeback
             tmpThis.initAppComponents();
             ThisApp.delay(100).then(function (theReply) {
-                // if( me.siteLayout ){
-                //     ThisApp.siteLayout.resizeAll();                    
-                // };
                 tmpThis.publish('resized', {});
                 ThisApp.refreshLayouts();
+                dfd.resolve(true);
             })
-            dfd.resolve(true);
+            
         })
 
         return dfd.promise();
@@ -5689,6 +5760,7 @@ License: MIT
     function ControlInstance(theControlSpec, theControlName, theOptions) {
         var tmpOptions = theOptions || {};
         this.initPubSub();
+        this.initUsePubSub();
 
         this.controlSpec = theControlSpec;
         var tmpConfig = this.controlSpec.controlConfig;
@@ -5756,7 +5828,9 @@ License: MIT
                             }
 
                         }).bind(this);
-                        this.context.page.controller.subscribe('resizeLayout', tmpOnResize);
+                        //no longer publish this --> this.context.page.controller.subscribe('resizeLayout', tmpOnResize);
+                        //--- On page resize would work, but what about controls not on a page?
+                        //this.context.page.controller.subscribe('resized', tmpOnResize);
                     } else {
                         console.warn('this.context.page.controller no subscribe');
                     }
@@ -5799,6 +5873,8 @@ License: MIT
     var meInstance = ControlInstance.prototype;
 
     $.extend(meInstance, ExtendMod.PubSub)
+    $.extend(meInstance, ExtendMod.UsePubSub);
+    
 
 
     meInstance.extend = function (theNewFunctionality) {
@@ -6814,6 +6890,12 @@ License: MIT
                 if (this.liveIndex.checkbox) {
                     this.liveIndex.checkbox.checkbox('destroy');
                 }
+            }
+            if( this._onDestroy ){
+                this._onDestroy();
+            }
+            if( this.unsubscribeAllEvents ){
+                this.unsubscribeAllEvents();
             }
         } catch (ex) {
 
