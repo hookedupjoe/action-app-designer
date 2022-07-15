@@ -587,21 +587,7 @@ License: MIT
 
 
 	function _onParentResize() {
-		console.log('_onParentResize')
-		this.aceEditor.resizeToParent();
-		// var tmpThis = this;
-		// ThisApp.delay(200).then(function (theReply) {
-		// 	if (tmpThis.aceEditorEl) {
-		// 		var tmpH = tmpThis.aceEditorEl.closest('.ui-layout-pane').height();
-		// 		if (tmpThis.aceEditorEl && tmpThis.aceEditor) {
-		// 			tmpThis.aceEditorEl
-		// 				.css('height', '' + tmpH + 'px')
-		// 				.css('position', 'relative')
-		// 			tmpThis.aceEditor.resize(true);
-		// 		}
-		// 	}
-
-		// })
+		
 
 	}
 
