@@ -2475,6 +2475,7 @@ window.ActionAppCore = window.ActionAppCore || ActionAppCore;
         if (ThisApp.siteLayout) {
             ThisApp.siteLayout.resizeAll();
         }
+        ThisApp.publish('resize');
     }, 200);
 
     me.resizeLayouts = function (name, $pane, paneState) {
@@ -4548,7 +4549,8 @@ License: MIT
 
         tmpHTML.push('<div appuse="_prompter:prompt-dialog" class="ui modal">');
         tmpHTML.push('	<div appuse="_prompter:prompt-dialog-title" class="header"></div>');
-        tmpHTML.push('	<div appuse="_prompter:prompt-dialog-scroller" class="NOTscrolling content">');
+        //ToDo: remove scrolling content class for cordova apps (bug in scrolling)
+        tmpHTML.push('	<div appuse="_prompter:prompt-dialog-scroller" class="scrolling content">');
         tmpHTML.push('	<div appuse="_prompter:prompt-dialog-text-top" class="forms-top-content"></div>');
         tmpHTML.push('	<div appuse="_prompter:prompt-dialog-text" class="app-layout-pane">');
         tmpHTML.push('  </div>');
@@ -7609,6 +7611,54 @@ License: MIT
 
 
     //----   COMMON ITEM CONTROLS =================================
+    me.getLayoutHTML = function(theSpecs, theSpotPrefix){
+        var tmpObject = theSpecs || {};
+        
+        var tmpHTML = [];
+        var tmpHidden = '';
+        if (tmpObject.hidden === true) {
+            tmpHidden = 'display:none;';
+        }
+        var tmpStyle = tmpObject.style || tmpObject.styles || tmpObject.css || '';
+        if (tmpHidden) {
+            tmpStyle += tmpHidden;
+        }
+        if (tmpStyle) {
+            tmpStyle = ' style="' + tmpStyle + '" '
+        }
+    
+        var tmpClasses = ''
+        tmpHTML.push('<div ctlcomp="layout" ' + getItemAttrString(tmpObject) + ' class="' + tmpClasses + ' " ' + tmpStyle + '>')
+    
+        var tmpRegions = ['center', 'north', 'south', 'east', 'west'];
+        for (var i = 0; i < tmpRegions.length; i++) {
+            var tmpRegion = tmpRegions[i];
+            var tmpRegionConfig = tmpObject[tmpRegion] || '';
+            var tmpUseDefault = false;
+            if (tmpRegionConfig === true) {
+                tmpUseDefault = true;
+            } else if ((!(tmpRegionConfig)) && tmpRegion == 'center') {
+                //--- Always use a center
+                tmpUseDefault = true;
+            }
+    
+            if (tmpUseDefault) {
+                tmpHTML.push('<div spot="' + theSpotPrefix + '-' + tmpRegion + '" class="ui-layout-' + tmpRegion + '"></div>')
+            } else if (tmpRegionConfig) {
+                if (!Array.isArray(tmpRegionConfig)) {
+                    tmpRegionConfig = [tmpRegionConfig]
+                }
+                tmpHTML.push('<div class="ui-layout-' + tmpRegion + '">')
+                tmpHTML.push('<div spot="' + theSpotPrefix + '-' + tmpRegion + '"></div>')
+                tmpHTML.push('</div>')
+            }
+        }
+    
+        tmpHTML.push('</div>')
+    
+        tmpHTML = tmpHTML.join('');
+        return tmpHTML;
+    }
 
     me.ControlLayout = {
         getHTML: function (theControlName, theObject, theControlObj) {
