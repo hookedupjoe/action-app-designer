@@ -5051,26 +5051,7 @@ License: MIT
 
     me.detailsIndex = {
         "getDetails": function (theName) {
-            return this[this.getUnifiedName(theName)];
-        },
-        "getUnifiedName": function (theName) {
-            if (!isStr(theName)) {
-                return "";
-            }
-            var tmpNameCheck = theName.toLowerCase();
-            if (tmpNameCheck == 'control' || tmpNameCheck == 'controls') {
-                return 'Control';
-            }
-            if (tmpNameCheck == 'panel' || tmpNameCheck == 'panels') {
-                return 'Panel';
-            }
-            if (tmpNameCheck == 'html') {
-                return 'HTML';
-            }
-            if (tmpNameCheck == 'template' || tmpNameCheck == 'templates') {
-                return 'Template';
-            }
-
+            return this[getUnifiedName(theName)];
         },
         "Control": { name: "Control", category: 'Controls', dir: "controls", icon: 'newspaper', lang: 'javascript' },
         "Panel": { name: "Panel", category: 'Panels', dir: "panels", icon: 'newspaper outline', lang: 'javascript', type: 'json' },
@@ -5082,6 +5063,27 @@ License: MIT
     me.getNextLayoutName = function () {
         me.layoutCounter++;
         return 'layout-' + me.layoutCounter;
+    }
+
+    me.getUnifiedName = getUnifiedName;
+    function getUnifiedName(theName) {
+        if (!isStr(theName)) {
+            return "";
+        }
+        var tmpNameCheck = theName.toLowerCase();
+        if (tmpNameCheck == 'control' || tmpNameCheck == 'controls') {
+            return 'Control';
+        }
+        if (tmpNameCheck == 'panel' || tmpNameCheck == 'panels') {
+            return 'Panel';
+        }
+        if (tmpNameCheck == 'html') {
+            return 'HTML';
+        }
+        if (tmpNameCheck == 'template' || tmpNameCheck == 'templates') {
+            return 'Template';
+        }
+
     }
 
     me.genericCounter = 0;
