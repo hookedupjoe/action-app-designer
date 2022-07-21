@@ -6971,6 +6971,28 @@ License: MIT
             }
         }
 
+        var tmpTplCtls = ThisApp.getByAttr$({ ctlcomp: 'template' }, tmpEl);
+        if (tmpTplCtls.length) {
+            for (var iControl = 0; iControl < tmpTplCtls.length; iControl++) {
+                var tmpControlEl = $(tmpTplCtls[iControl]);
+                var tmpControlName = tmpControlEl.attr('controlname');
+                var tmpTplName = tmpControlEl.attr('templatename') || '';
+                tmpDefs.push(this.loadTemplate(tmpControlName, tmpTplName, tmpControlEl));
+            }
+        }
+
+        var tmpHTMLs = ThisApp.getByAttr$({ ctlcomp: 'html' }, tmpEl);
+        if (tmpHTMLs.length) {
+            for (var iControl = 0; iControl < tmpHTMLs.length; iControl++) {
+                var tmpControlEl = $(tmpHTMLs[iControl]);
+                var tmpControlName = tmpControlEl.attr('controlname');
+                if (tmpControlName) {
+                    this.parts[tmpPartName] = tmpPart;                    
+                    tmpDefs.push(this.loadHTML(tmpControlName, tmpControlEl));
+                }
+            }
+        }
+
         var tmpDDs = ThisApp.getByAttr$({ ctlcomp: 'dropdown' }, tmpEl);
 
         if (tmpDDs.length) {
@@ -7034,6 +7056,28 @@ License: MIT
         $.whenAll(tmpDefs).then(function (theReply) {
             //--- Tell the app to resize it's layouts
             ThisApp.resizeLayouts();
+            dfd.resolve(true);
+        })
+        return dfd.promise();
+    }
+
+    meInstance.loadTemplate = function(theControlName, theTplName, theControlEl){
+        var dfd = jQuery.Deferred();        
+        ThisApp.apiCall(theControlName).then(function(theReply){
+            if( theTplName ){
+                ThisApp.addTemplate(theTplName, theReply);
+            } else {
+                $(theControlEl).html(theReply);
+            }
+            dfd.resolve(true);
+        })
+        return dfd.promise();
+    }
+
+    meInstance.loadHTML = function(theControlName, theControlEl){
+        var dfd = jQuery.Deferred();
+        ThisApp.apiCall(theControlName).then(function(theReply){
+            $(theControlEl).html(theReply);
             dfd.resolve(true);
         })
         return dfd.promise();
@@ -8168,7 +8212,7 @@ License: MIT
         getHTML: function (theControlName, theObject, theControlObj) {
             var tmpObject = theObject || {};
             var tmpName = tmpObject.name || tmpObject.control || 'control-spot';
-            var tmpControlName = tmpObject.controlname || tmpObject.name || '';
+            var tmpControlName = tmpObject.controlname || tmpObject.resourcename || tmpObject.name || '';
 
             if (!(tmpControlName)) {
                 console.warn("Could not create control, no control name or name. ", theControlName, theObject)
@@ -8179,15 +8223,12 @@ License: MIT
             
             var tmpHTML = [];
 
-            var tmpAppComp = 'control'
-            if (theControlName == 'panel') {
-                tmpAppComp = 'panel'
+            if (tmpObject.hidden === true) {
+                tmpClasses += ' hidden ';
             }
-            //--- ToDo: Use get common name call here
-            var tmpControlType = 'Control';
-            if( tmpAppComp == 'panel'){
-                tmpControlType = 'Panel';
-            }
+
+            var tmpAppComp = theControlName;
+            var tmpControlType = ThisApp.controls.getUnifiedName(tmpAppComp);
             var tmpItem = tmpObject;
 
             var tmpCatalog = tmpItem.catalog || tmpItem.source || '';
@@ -8203,6 +8244,9 @@ License: MIT
                 }
             }
             var tmpMyAttr = ' name="' + tmpName + '" ctlcomp="' + tmpAppComp + '" ' + 'controlname="' + tmpControlName + '" '
+            if( tmpItem.templatename ){
+                tmpMyAttr += ' templatename="' + tmpItem.templatename + '"'
+            }
             tmpHTML.push('<div ' + getItemAttrString(theObject) + ' class="' + tmpClasses + '" style="' + tmpStyles + '" ' + tmpMyAttr + '></div>')
             tmpHTML = tmpHTML.join('');
             return tmpHTML;
@@ -9257,6 +9301,8 @@ License: MIT
     //=== Root Common Web Controls ..
     me.webControls.add('control', me.ControlPanelAndControl);
     me.webControls.add('panel', me.ControlPanelAndControl);
+    me.webControls.add('template', me.ControlPanelAndControl);
+    me.webControls.add('html', me.ControlPanelAndControl);
 
     me.webControls.add('pagespot', me.ControlSpot);
     me.webControls.add('spot', me.ControlSpot);
