@@ -96,9 +96,10 @@ function setup() {
                 pages: tmpWSDirectory + "catalog/pages/",
                 serverApps: tmpWSDirectory + "designer-servers/"
             }
-            
+
             app.use(express.static(scope.locals.path.root + '/ui-libs'));
             app.use(express.static(scope.locals.path.root + '/common'));
+            app.use(express.static(tmpWSDirectory));
             app.use(express.static(scope.locals.path.root + tmpStaticDir));
 
             //--- Plug in application routes
@@ -157,6 +158,7 @@ function setup() {
             preview.use(express.static(scope.locals.path.root + '/ui-libs'));
             preview.use(express.static(scope.locals.path.root + '/common'));
             preview.use(express.static(tmpWSDirectory + '/ui-apps'));
+            preview.use(express.static(tmpWSDirectory));
 
                         //--- Plug in application routes
             require('./preview-server/start').setup(preview, previewScope);
