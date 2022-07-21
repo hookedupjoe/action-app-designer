@@ -211,7 +211,7 @@ License: MIT
 		var tmpResName = theDetails.resname || '';
 		var tmpResType = theDetails.restype || '';
 
-		tmpResType = ThisApp.controls.detailsIndex.getUnifiedName(tmpResType);
+		tmpResType = ThisApp.controls.getUnifiedName(tmpResType);
 
 		var tmpSource = tmpOptions.source || 'ws';
 
