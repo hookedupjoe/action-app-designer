@@ -18,7 +18,13 @@ var ActionAppCore = {
     //--- Directory of where stuff is located
     dir: {
         catalogs: {
-            common: '/catalogs/common/'
+            common: '/catalogs/common/',
+            getResourceCatalogURL: function(theCatName, theResType, theResName){
+                var tmpBaseURL = '/';
+                var tmpResType = ThisApp.controls.getUnifiedPluralName(theResType);
+                var tmpURL = tmpBaseURL + "catalogs/" + theCatName + '/' + tmpResType + '/' + theResName;
+                return tmpURL
+            }
         },
         sources: {
 
@@ -5065,6 +5071,35 @@ License: MIT
         return 'layout-' + me.layoutCounter;
     }
 
+    var generalCounter = 0;
+    me.getGlobalCounter = function () {
+        generalCounter++;
+        return generalCounter;
+    }
+
+    me.getUnifiedPluralName = getUnifiedPluralName;
+    function getUnifiedPluralName(theName){
+        if (!isStr(theName)) {
+            return "";
+        }
+        
+        var tmpNameCheck = getUnifiedName(theName);
+        if (tmpNameCheck == 'Control') {
+            return 'controls';
+        }
+        if (tmpNameCheck == 'Panel') {
+            return 'panels';
+        }
+        if (tmpNameCheck == 'HTML') {
+            return 'html';
+        }
+        if (tmpNameCheck == 'Template' || tmpNameCheck == 'templates') {
+            return 'templates';
+        }
+
+        
+        
+    }
     me.getUnifiedName = getUnifiedName;
     function getUnifiedName(theName) {
         if (!isStr(theName)) {
@@ -6929,6 +6964,9 @@ License: MIT
         var dfd = jQuery.Deferred();
         var tmpEl = this.parentEl;
         var tmpDefs = [];
+        try {
+            
+        
         var tmpControls = ThisApp.getByAttr$({ ctlcomp: 'control' }, tmpEl);
         if (tmpControls.length) {
             for (var iControl = 0; iControl < tmpControls.length; iControl++) {
@@ -6939,7 +6977,7 @@ License: MIT
 
                     var tmpCtl = this.parentControl.getControl(tmpControlName);
                     if (!(tmpCtl)) {
-                        var tmpCached = ThisApp.resCache['controls'][tmpControlName];
+                        //var tmpCached = ThisApp.resCache['controls'][tmpControlName];
                         console.warn("initControlComponents Could not find parent control " + tmpControlName)
                     } else {
                         var tmpPart = tmpCtl.create(tmpPartName, {parent:this});
@@ -6961,11 +6999,12 @@ License: MIT
                     var tmpCtl = this.parentControl.getPanel(tmpControlName);
                     if (!(tmpCtl)) {
                         console.warn("Could not find parent control " + tmpControlName)
-                        return false;
+                        
+                    } else {
+                        var tmpPart = tmpCtl.create(tmpPartName, {parent:this});
+                        this.parts[tmpPartName] = tmpPart;
+                        tmpDefs.push(tmpPart.loadToElement(tmpControlEl));
                     }
-                    var tmpPart = tmpCtl.create(tmpPartName, {parent:this});
-                    this.parts[tmpPartName] = tmpPart;
-                    tmpDefs.push(tmpPart.loadToElement(tmpControlEl));
                 }
 
             }
@@ -7052,7 +7091,9 @@ License: MIT
                 this.liveIndex.layouts['layout-' + this.layoutCount] = tmpControlLayout;
             }
         }
-
+    } catch (theError) {
+            console.error('error in control init',theError);
+    }
         $.whenAll(tmpDefs).then(function (theReply) {
             //--- Tell the app to resize it's layouts
             ThisApp.resizeLayouts();
@@ -7108,10 +7149,11 @@ License: MIT
         
         tmpThis.getConfig().options = tmpThis.getConfig().options || {};
 
-
         this.assureRequired().then(function () {
         
-            tmpThis.initControlComponents().then(function (theReply) {
+            var tmpProm = tmpThis.initControlComponents();
+           
+            tmpProm.then(function (theReply) {
 
                 if (isFunc(tmpThis._onInit)) {
                     tmpThis._onInit();
@@ -7307,8 +7349,11 @@ License: MIT
                                 if( tmpAppComp == 'panel'){
                                     tmpControlType = "Panel";
                                 }
+                                
                                 if( ActionAppCore.dir.catalogs.getResourceURL ){
                                     tmpControlName = ActionAppCore.dir.catalogs.getResourceURL(tmpCatalog,tmpControlType,tmpControlName)
+                                } else {
+                                    tmpControlName = ActionAppCore.dir.catalogs.getResourceCatalogURL(tmpCatalog,tmpControlType,tmpControlName)
                                 }
                             }
                         }
@@ -8211,7 +8256,7 @@ License: MIT
     me.ControlPanelAndControl = {
         getHTML: function (theControlName, theObject, theControlObj) {
             var tmpObject = theObject || {};
-            var tmpName = tmpObject.name || tmpObject.control || 'control-spot';
+            var tmpName = tmpObject.name || tmpObject.controlname || ('control-res-' + me.getGlobalCounter());
             var tmpControlName = tmpObject.controlname || tmpObject.resourcename || tmpObject.name || '';
 
             if (!(tmpControlName)) {
@@ -8240,6 +8285,8 @@ License: MIT
                 } else {
                     if( ActionAppCore.dir.catalogs.getResourceURL ){
                         tmpControlName = ActionAppCore.dir.catalogs.getResourceURL(tmpCatalog,tmpControlType,tmpControlName)
+                    } else {
+                        tmpControlName = ActionAppCore.dir.catalogs.getResourceCatalogURL(tmpCatalog,tmpControlType,tmpControlName)
                     }
                 }
             }
