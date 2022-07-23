@@ -6921,7 +6921,7 @@ License: MIT
                 this.parentEl.off('change');
                 this.parentEl.off('click');
             }
-            //--- ToDo: Destory panel and control objects
+            
             if (this.liveIndex) {
                 if (this.liveIndex.dropdown) {
                     this.liveIndex.dropdown.dropdown('destroy');
