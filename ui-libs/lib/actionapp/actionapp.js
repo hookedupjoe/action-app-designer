@@ -6930,6 +6930,16 @@ License: MIT
                     this.liveIndex.checkbox.checkbox('destroy');
                 }
             }
+
+            if( this.parts ){
+                for( var aPart in this.parts ){
+                    var tmpPart = this.parts[aPart]
+                    if( tmpPart && tmpPart.destroy ){
+                        tmpPart.destroy();
+                    }
+                }
+            }
+
             if( this._onDestroy ){
                 this._onDestroy();
             }
