@@ -630,6 +630,28 @@ window.ActionAppCore = window.ActionAppCore || ActionAppCore;
         return tmpResource;
     }
 
+    me.getResourceFromSource = function(theType, theName, theSource, theSourceResName){
+        var dfd = jQuery.Deferred();
+        var tmpName = theName;
+        var tmpSourceName = theSourceResName || tmpName;
+        var tmpType = ThisApp.controls.getUnifiedPluralName(theType);
+        var tmpReq = {};
+        var tmpMapEntry = {name:tmpName}
+        if( theSource ){
+            tmpMapEntry.source = theSource;            
+        }
+        var tmpMap = {};
+        tmpMap[tmpSourceName] = tmpMapEntry;
+        tmpReq[tmpType] = {map:tmpMap};
+        console.log('getResourceFromSource tmpReq',tmpReq);
+        var tmpThis = this;
+        this.loadResources(tmpReq).then(function(){
+            //-- Return resource object
+            dfd.resolve(tmpThis.getResourceForType(tmpType, theName))
+        })
+        return dfd.promise();
+    }
+
     me.getControl = function (theName) {
         return this.getResourceForType('controls', theName);
     }
@@ -868,12 +890,6 @@ window.ActionAppCore = window.ActionAppCore || ActionAppCore;
 
     //--- theType: (controls, panels, html or templates)
     me.getResourceURIsForType = function (theType, theSpecs) {
-
-
-        // if( theType == 'panel' || theType == 'control'){
-        //     theType += 's';
-        // }
-
         var tmpRet = [];
         var tmpSpecs = theSpecs;
         if (!(Array.isArray(tmpSpecs))) {
@@ -911,11 +927,12 @@ window.ActionAppCore = window.ActionAppCore || ActionAppCore;
                         var tmpBaseMapURL = tmpBaseURL;
 
                         if (isObj(tmpEntryName)) {
-                            if( tmpEntryName.source ){
-                                if( ActionAppCore.dir.catalogs[tmpEntryName.source]){
-                                    tmpBaseMapURL = ActionAppCore.dir.catalogs[tmpEntryName.source] + theType + '/';
+                            var tmpSource = tmpEntryName.source || tmpEntryName.catalog;
+                            if( tmpSource ){
+                                if( ActionAppCore.dir.catalogs[tmpSource]){
+                                    tmpBaseMapURL = ActionAppCore.dir.catalogs[tmpSource] + theType + '/';
                                 } else {
-                                    tmpBaseMapURL = tmpEntryName.source;
+                                    tmpBaseMapURL = tmpSource;
                                 }
                             } 
                             
@@ -5956,6 +5973,7 @@ License: MIT
         var tmpPromRequired = true;
         var tmpPromLayoutReq = true;
         var tmpLayoutReq = this.getContentRequired();
+        
         var tmpInitReq = ThisApp.loadResources.bind(this);
         //--- Do not cache controls that have ? as they are dynamic calls
         if( tmpLayoutReq && tmpLayoutReq.panel && tmpLayoutReq.panel.list ){
