@@ -51,12 +51,13 @@ var ActionAppCore = {
         };
     },
     apiCall: function(theOptions) {
-        //--- For use on initial load only, use ThisApp.apiCall to have loading options
+        //--- For use on initial load only, use ThisApp.apiCall for normal application operations
+        //--- This excludes loader and automatic resolution features
         var dfd = $.Deferred();
 
         if (!theOptions) {
             dfd.reject("No api call details provided");
-            return;
+            return dfd.promise();
         }
 
         var tmpOptions = theOptions || '';
@@ -73,14 +74,7 @@ var ActionAppCore = {
         if (!tmpURL) {
             throw "No URL provided"
         }
-
         tmpOptions.cache = false;
-        var tmpLoadingEl = false;
-        // if (tmpOptions.loading !== false) {
-        //     if (ThisApp.util.isjQuery(tmpOptions.loading))
-        //         tmpLoadingEl = tmpOptions.loading;
-        // }
-        var tmpLoaderOptions = { el: tmpLoadingEl };
         tmpSuccess = function (theResponse) {
             //ThisApp.hideLoading(tmpLoaderOptions);
             dfd.resolve(theResponse);
@@ -94,10 +88,19 @@ var ActionAppCore = {
         //--- Auto Detect data, convert data and use POST
         if (tmpOptions.data) {
             tmpOptions.method = 'POST';
-            if (typeof (tmpOptions.data) == 'object') {
-                tmpOptions.data = JSON.stringify(tmpOptions.data);
+
+            if (tmpAsForm) {
+                if (typeof (tmpOptions.data) == 'object') {
+                    tmpOptions.data = ActionAppCore.util.getObjectAsEncodedForm(tmpOptions.data);
+                }
+                tmpOptions.contentType = 'application/x-www-form-urlencoded';
+            } else {
+                if (typeof (tmpOptions.data) == 'object') {
+                    tmpOptions.data = JSON.stringify(tmpOptions.data);
+                }
+                tmpOptions.contentType = 'application/json';
             }
-            tmpOptions.contentType = 'application/json';
+            
         }
         $.ajax(tmpOptions).then(tmpSuccess, tmpError);
         return dfd.promise();
@@ -106,6 +109,33 @@ var ActionAppCore = {
 
 //--- Global Spot
 window.ActionAppCore = window.ActionAppCore || ActionAppCore;
+
+//--- Extend global object
+(function (ActionAppCore, $) {
+    
+    ActionAppCore.util = ActionAppCore.util || {};
+
+    ActionAppCore.util.getObjectAsEncodedForm = getObjectAsEncodedForm;
+    function getObjectAsEncodedForm(theObject) {
+        //--- for 'application/x-www-form-urlencoded' submit
+        var tmpObject = theObject;
+        if (typeof (tmpObject) == 'string') {
+            tmpObject = JSON.parse(tmpObject);
+        }
+        var tmpEncoded = "";
+        var tmpEncodedPairs = [];
+        for (var aName in tmpObject) {
+            tmpEncodedPairs.push(encodeURIComponent(aName) + '=' + encodeURIComponent(tmpObject[aName]));
+        }
+        tmpEncoded = tmpEncodedPairs.join('&').replace(/%20/g, '+');
+        return tmpEncoded;
+    }
+
+    
+})(ActionAppCore, $);
+
+
+
 
 //--- Base module and simple module system --- --- --- --- --- --- --- --- --- --- --- --- 
 (function (ActionAppCore, $) {
@@ -643,7 +673,6 @@ window.ActionAppCore = window.ActionAppCore || ActionAppCore;
         var tmpMap = {};
         tmpMap[tmpSourceName] = tmpMapEntry;
         tmpReq[tmpType] = {map:tmpMap};
-        console.log('getResourceFromSource tmpReq',tmpReq);
         var tmpThis = this;
         this.loadResources(tmpReq).then(function(){
             //-- Return resource object
@@ -2273,73 +2302,112 @@ window.ActionAppCore = window.ActionAppCore || ActionAppCore;
         return commonDialog;
     }
 
-
-
-
-
-
-
     me.apiCall = apiCall;
     function apiCall(theOptions) {
         var dfd = $.Deferred();
 
-        if (!theOptions) {
-            dfd.reject("No api call details provided");
-            return;
+        
+        if( !(theOptions) ){
+            dfd.reject("No options provided");
+            return dfd.promise();
+        }
+        if( theOptions._retryCounter && theOptions._retryCounter > 1){
+            dfd.reject("Too many failures");
+            return dfd.promise();
         }
 
         var tmpOptions = theOptions || '';
         if (typeof (tmpOptions) == 'string') {
             tmpOptions = { url: tmpOptions };
         }
-        if( ActionAppCore.apiCallOptions && typeof(ActionAppCore.apiCallOptions.filterOptions) == 'function'){
-            ActionAppCore.apiCallOptions.filterOptions(tmpOptions);
+        
+        //--- Start with no pre-action needed
+        var tmpDoPreActionPromise = true;
+        if( ActionAppCore.apiCallOptions && typeof(ActionAppCore.apiCallOptions.onBeforeRun) == 'function'){
+            tmpDoPreActionPromise = ActionAppCore.apiCallOptions.onBeforeRun();
         }
-
-        var tmpAsForm = (tmpOptions.formSubmit === true);
-
-        var tmpURL = tmpOptions.url;
-        if (!tmpURL) {
-            throw "No URL provided"
-        }
-
-        tmpOptions.cache = false;
-        var tmpLoadingEl = false;
-        if (tmpOptions.loading !== false) {
-            if (ThisApp.util.isjQuery(tmpOptions.loading))
-                tmpLoadingEl = tmpOptions.loading;
-        }
-        var tmpLoaderOptions = { el: tmpLoadingEl };
-        tmpSuccess = function (theResponse) {
-            ThisApp.hideLoading(tmpLoaderOptions);
-            dfd.resolve(theResponse);
-        }
-        tmpError = function (theError) {
-            ThisApp.hideLoading(tmpLoaderOptions);
-            dfd.reject(theError)
-        }
-
-
-        //--- Auto Detect data, convert data and use POST
-        if (tmpOptions.data) {
-            tmpOptions.method = 'POST';
-            if (tmpAsForm) {
-                if (typeof (tmpOptions.data) == 'object') {
-                    tmpOptions.data = ThisApp.util.getObjectAsEncodedForm(tmpOptions.data);
-                }
-                tmpOptions.contentType = 'application/x-www-form-urlencoded';
-            } else {
-                if (typeof (tmpOptions.data) == 'object') {
-                    tmpOptions.data = JSON.stringify(tmpOptions.data);
-                }
-                tmpOptions.contentType = 'application/json';
+        $.when(tmpDoPreActionPromise).then(function () {
+            //--- This may change the filter options, so do this after the onBeforeRun
+            if( ActionAppCore.apiCallOptions && typeof(ActionAppCore.apiCallOptions.filterOptions) == 'function'){
+                ActionAppCore.apiCallOptions.filterOptions(tmpOptions);
             }
-        }
-        if ((tmpOptions.loading !== false)) {
-            ThisApp.showLoading(tmpLoaderOptions);
-        }
 
-        $.ajax(tmpOptions).then(tmpSuccess, tmpError);
+            //--- Done with onBeforeLoad if called .. do the api call now
+            var tmpAsForm = (tmpOptions.formSubmit === true);
+
+            var tmpURL = tmpOptions.url;
+            if (!tmpURL) {
+                throw "No URL provided"
+            }
+    
+            tmpOptions.cache = false;
+            var tmpLoadingEl = false;
+            if (tmpOptions.loading !== false) {
+                if (ThisApp.util.isjQuery(tmpOptions.loading))
+                    tmpLoadingEl = tmpOptions.loading;
+            }
+            var tmpLoaderOptions = { el: tmpLoadingEl };
+            tmpSuccess = function (theResponse) {
+                ThisApp.hideLoading(tmpLoaderOptions);
+                dfd.resolve(theResponse);
+            }
+            tmpError = function (theError) {
+                ThisApp.hideLoading(tmpLoaderOptions);
+                
+                if( theError.status == 403 || theError.status == 401 ){
+                    
+                    if( ActionAppCore.apiFailAction ){
+                        var tmpPromise = ActionAppCore.apiFailAction();
+                        if( tmpPromise && tmpPromise.then ){
+                            tmpPromise.then(function(){
+                                if( theOptions._retryCounter ){
+                                    theOptions._retryCounter++
+                                } else {
+                                    theOptions._retryCounter = 1;
+                                }
+                                ThisApp.apiCall(theOptions).then(function(theRetryResp){
+                                    //--- ToDo: Check for second failure?
+                                    ThisApp.hideLoading(tmpLoaderOptions);
+                                    dfd.resolve(theRetryResp);
+                                })
+                            })
+                        } else {
+                            //--- ToDo: If function does not know to wait, do what?
+    
+                        }
+                    }
+                } else {
+                    console.error('error in api call',theError);                
+                    dfd.reject(theError)
+                }
+                
+            }
+    
+    
+            //--- Auto Detect data, convert data and use POST
+            if (tmpOptions.data) {
+                tmpOptions.method = 'POST';
+                if (tmpAsForm) {
+                    if (typeof (tmpOptions.data) == 'object') {
+                        tmpOptions.data = ThisApp.util.getObjectAsEncodedForm(tmpOptions.data);
+                    }
+                    tmpOptions.contentType = 'application/x-www-form-urlencoded';
+                } else {
+                    if (typeof (tmpOptions.data) == 'object') {
+                        tmpOptions.data = JSON.stringify(tmpOptions.data);
+                    }
+                    tmpOptions.contentType = 'application/json';
+                }
+            }
+            if ((tmpOptions.loading !== false)) {
+                ThisApp.showLoading(tmpLoaderOptions);
+            }
+    
+            $.ajax(tmpOptions).then(tmpSuccess, tmpError);
+        }, function(theError){
+            dfd.reject(theError);
+        })
+        
         return dfd.promise();
     }
 
@@ -3467,20 +3535,7 @@ window.ActionAppCore = window.ActionAppCore || ActionAppCore;
         }
     }
 
-    function getObjectAsEncodedForm(theObject) {
-        //--- for 'application/x-www-form-urlencoded' submit
-        var tmpObject = theObject;
-        if (typeof (tmpObject) == 'string') {
-            tmpObject = JSON.parse(tmpObject);
-        }
-        var tmpEncoded = "";
-        var tmpEncodedPairs = [];
-        for (var aName in tmpObject) {
-            tmpEncodedPairs.push(encodeURIComponent(aName) + '=' + encodeURIComponent(tmpObject[aName]));
-        }
-        tmpEncoded = tmpEncodedPairs.join('&').replace(/%20/g, '+');
-        return tmpEncoded;
-    }
+    
 
     function itemTouchStart(theEvent) {
         //var tmpTarget = theEvent.target || theEvent.currentTarget || theEvent.delegetTarget || {};
@@ -3541,7 +3596,7 @@ window.ActionAppCore = window.ActionAppCore || ActionAppCore;
         getUrlParameter: getUrlParameter,
         stringToFunction: stringToFunction,
         functionToString: functionToString,
-        getObjectAsEncodedForm: getObjectAsEncodedForm,
+        getObjectAsEncodedForm: ActionAppCore.util.getObjectAsEncodedForm,
         convertToJsonLive: convertToJsonLive,
         convertFromJsonLive: convertFromJsonLive,
         clone: function (theObj) {
@@ -9647,5 +9702,3 @@ License: MIT
 
 
 })(ActionAppCore, $);
-
-
