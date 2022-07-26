@@ -6965,7 +6965,23 @@ License: MIT
             return;
         }
         var tmpToRun = this.actions[tmpAction] || this[tmpAction] || ThisApp[tmpAction];
-
+        if( !isFunc(tmpToRun) ){
+            if( this.parentControl ){
+                var tmpPCtr = 0;
+                var tmpParent = this.parentControl;
+                while ((tmpParent && !isFunc(tmpToRun))) {
+                    tmpToRun = tmpParent.actions[tmpAction] || tmpParent[tmpAction] ;
+                    if( isFunc(tmpToRun) ){
+                        break;
+                    }
+                    tmpParent = this.parentControl || false;
+                    if(tmpPCtr > 50){
+                        console.error('too many attempts to find parent');
+                        return;
+                    }
+                }
+            }
+        }
         if (isFunc(tmpToRun)) {
             //---  run in a way that it binds to this control when run
             //       and run with this control as the optional parent item
