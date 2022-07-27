@@ -957,23 +957,38 @@ window.ActionAppCore = window.ActionAppCore || ActionAppCore;
 
                         if (isObj(tmpEntryName)) {
                             var tmpSource = tmpEntryName.source || tmpEntryName.catalog;
+                            var tmpEntrySpecs = tmpEntryName;
+                            tmpEntryName = tmpEntryName.name;
                             if( tmpSource ){
                                 if( ActionAppCore.dir.catalogs[tmpSource]){
                                     tmpBaseMapURL = ActionAppCore.dir.catalogs[tmpSource] + theType + '/';
                                 } else {
-                                    tmpBaseMapURL = tmpSource;
+                                    var tmpControlType = ThisApp.controls.getUnifiedName(theType);
+                                    var tmpControlURL = '';
+                                    var tmpControlName = tmpEntryName; 
+                                    if( ActionAppCore.dir.catalogs.getResourceURL ){
+                                        tmpControlURL = ActionAppCore.dir.catalogs.getResourceURL(tmpSource,tmpControlType,tmpControlName)
+                                    } else if(ActionAppCore.dir.catalogs.getResourceCatalogURL) {
+                                        tmpControlURL = ActionAppCore.dir.catalogs.getResourceCatalogURL(tmpSource,tmpControlType,tmpControlName)
+                                    }
+                                    if (tmpControlURL){
+                                        aURI = tmpControlURL;
+                                    } else {
+                                        console.error("Developer error - no control found.",tmpEntrySpecs);
+                                        aURI = false;
+                                    }
                                 }
-                            } 
-                            
-                            tmpEntryName = tmpEntryName.name;
+                            }
                         }
-                        if (tmpBaseMapURL) {
+                        if (aURI && tmpBaseMapURL) {
                             if (!(tmpBaseMapURL.endsWith('/'))) {
                                 tmpBaseMapURL += '/';
                             }
                             aURI = tmpBaseMapURL + aURI;
                         }
-                        tmpRet.push({ type: theType, uri: aURI, name: tmpEntryName })
+                        if( aURI ){
+                            tmpRet.push({ type: theType, uri: aURI, name: tmpEntryName })
+                        }
                     }
                 }
             }
