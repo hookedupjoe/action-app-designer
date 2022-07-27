@@ -7286,7 +7286,7 @@ License: MIT
                     tmpThis._onInit();
                 }
                 
-                if( tmpThis.parentControl ){
+                if( tmpThis.parentControl && tmpThis.parentControl.subscribe){
                     tmpThis.subscribeEvent(tmpThis.parentControl, 'resized', tmpThis._onParentResizeEvent.bind(tmpThis) );
                 } else if( tmpThis.context && tmpThis.context.page && tmpThis.context.page.controller ){
                     tmpThis.subscribeEvent(tmpThis.context.page.controller, 'resized', tmpThis._onParentResizeEvent.bind(tmpThis) );
