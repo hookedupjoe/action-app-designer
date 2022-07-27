@@ -6980,6 +6980,7 @@ License: MIT
             return;
         }
         var tmpToRun = this.actions[tmpAction] || this[tmpAction] || ThisApp[tmpAction];
+        var tmpToBind = false;
         if( !isFunc(tmpToRun) ){
             if( this.parentControl ){
                 var tmpPCtr = 0;
@@ -6987,6 +6988,7 @@ License: MIT
                 while ((tmpParent && !isFunc(tmpToRun))) {
                     tmpToRun = tmpParent.actions[tmpAction] || tmpParent[tmpAction] ;
                     if( isFunc(tmpToRun) ){
+                        tmpToBind = tmpParent;
                         break;
                     }
                     tmpParent = this.parentControl || false;
@@ -7000,6 +7002,11 @@ License: MIT
         if (isFunc(tmpToRun)) {
             //---  run in a way that it binds to this control when run
             //       and run with this control as the optional parent item
+            if(tmpToBind){
+                tmpToRun = tmpToRun.bind(tmpToBind);
+            }
+            
+            //return tmpToRun.call(theAction, theTarget, this.getEl());
             return tmpToRun.apply(this, [theAction, theTarget, this.getEl()]);
         } else {
             console.warn("Action not found for " + tmpAction)
