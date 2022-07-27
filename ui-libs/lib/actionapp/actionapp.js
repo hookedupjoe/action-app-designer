@@ -7245,6 +7245,12 @@ License: MIT
         return dfd.promise();
     }
 
+    meInstance._onParentResizeEvent = function(){
+        if( this.refreshSubLayouts){
+            this.refreshSubLayouts();
+        }
+    }
+    
     meInstance.loadToElement = function (theEl, theOptions) {
         
         var dfd = jQuery.Deferred();
@@ -7278,6 +7284,12 @@ License: MIT
 
                 if (isFunc(tmpThis._onInit)) {
                     tmpThis._onInit();
+                }
+                
+                if( tmpThis.parentControl ){
+                    tmpThis.subscribeEvent(tmpThis.parentControl, 'resized', tmpThis._onParentResizeEvent.bind(tmpThis) );
+                } else if( tmpThis.context && tmpThis.context.page && tmpThis.context.page.controller ){
+                    tmpThis.subscribeEvent(tmpThis.context.page.controller, 'resized', tmpThis._onParentResizeEvent.bind(tmpThis) );
                 }
 
                 tmpThis.refreshControl();
