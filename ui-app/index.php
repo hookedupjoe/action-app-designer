@@ -81,6 +81,9 @@
   <!-- <script src="/lib/jsTree/jstree.min.js"></script> -->
 
   <script src="<?php echo ACTAPP_CORE_LIB_URL ?>/lib/tabulator/js/tabulator.min.js"></script>
+  <script src="<?php echo ACTAPP_CORE_LIB_URL ?>/lib/tabulator/addons/moment.2.24.js"></script>
+  <script src="<?php echo ACTAPP_CORE_LIB_URL ?>/lib/tabulator/addons/xlsx.full.min.js"></script>
+
   <!-- <script src="<?php echo ACTAPP_CORE_LIB_URL ?>/lib/tabulator/js/jquery_wrapper.min.js"></script> -->
 
 

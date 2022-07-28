@@ -84,7 +84,9 @@
 				"<link rel=\"stylesheet\" href=\"{{LIBRARY-LOCATION}}/lib/tabulator/css/tabulator.min.css\">"
 			],
 			"js": [
-				"<script src=\"{{LIBRARY-LOCATION}}/lib/tabulator/js/tabulator.min.js\"></script>"
+				"<script src=\"{{LIBRARY-LOCATION}}/lib/tabulator/js/tabulator.min.js\"></script>",
+				"<script src=\"{{LIBRARY-LOCATION}}/lib/tabulator/addons/moment.2.24.js\"></script>",
+				"<script src=\"{{LIBRARY-LOCATION}}/lib/tabulator/addons/xlsx.full.min.js\"></script>"
 			]
 		},
 		{
