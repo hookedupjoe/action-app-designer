@@ -7655,7 +7655,11 @@ License: MIT
             if( tmpList.source && ThisApp.controls.sources.hasOwnProperty(tmpList.source) ){
                 tmpSource = ThisApp.controls.sources[tmpList.source];
                 tmpList = tmpSource;
+            } else if( ActionAppCore.dir.sources && ActionAppCore.dir.sources.hasOwnProperty(tmpList.source) ){
+                tmpSource = ActionAppCore.dir.sources[tmpList.source];
+                tmpList = tmpSource;
             }
+
             if( !(tmpSource) ){
                 console.error("Passed invalid object for list type, no valid source provided.  Source: " + tmpList.source);
                 tmpList = '';
