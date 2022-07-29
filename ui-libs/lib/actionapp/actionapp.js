@@ -2364,14 +2364,20 @@ window.ActionAppCore = window.ActionAppCore || ActionAppCore;
             var tmpLoaderOptions = { el: tmpLoadingEl };
             tmpSuccess = function (theResponse) {
                 ThisApp.hideLoading(tmpLoaderOptions);
+                ThisApp._apiCallFailCount = 0;
                 dfd.resolve(theResponse);
             }
             tmpError = function (theError) {
                 ThisApp.hideLoading(tmpLoaderOptions);
-                
+                if(!(ThisApp._apiCallFailCount)){
+                    ThisApp._apiCallFailCount = 1;
+                } else {
+                    ThisApp._apiCallFailCount++;
+                }
                 if( theError.status == 403 || theError.status == 401 ){
                     
-                    if( ActionAppCore.apiFailAction ){
+                    //--- Do not keep running fail action
+                    if( ThisApp._apiCallFailCount < 2 && ActionAppCore.apiFailAction ){
                         var tmpPromise = ActionAppCore.apiFailAction();
                         if( tmpPromise && tmpPromise.then ){
                             tmpPromise.then(function(){
