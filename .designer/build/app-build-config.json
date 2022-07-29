@@ -121,7 +121,8 @@
 			"name": "Ace",
 			"label": "Ace Editor",
 			"js": [
-				"<script src=\"{{LIBRARY-LOCATION}}/lib/ace/ace.js\"></script>"
+				"<script src=\"{{LIBRARY-LOCATION}}/lib/ace/ace.js\"></script>",
+				"<script src=\"{{LIBRARY-LOCATION}}/lib/ace/addons/actapp-ace-plugin.js\"></script>"
 			]
 		},
 		{
