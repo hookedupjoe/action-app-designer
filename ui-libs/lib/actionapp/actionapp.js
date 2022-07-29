@@ -6800,7 +6800,32 @@ License: MIT
             if (tmpOnChange) {
                 if (isObj(tmpOnChange)) {
                     var tmpActionName = tmpOnChange.run;
-                    var tmpAction = me.actions.get(tmpActionName)
+                    var tmpAction = me.actions.get(tmpActionName) || me[tmpActionName];
+                    var tmpToBind = false;
+                    if( !tmpAction ){
+                        var tmpToRun = false;
+                        var tmpPCtr = 0;
+                        var tmpParent = this.parentControl;
+                        while ((tmpParent && !isFunc(tmpToRun))) {
+                            tmpPCtr++;
+                            tmpToRun = tmpParent.actions[tmpActionName] || tmpParent[tmpActionName] ;
+                            if( isFunc(tmpToRun) ){
+                                tmpToBind = tmpParent;
+                                break;
+                            }
+                            tmpParent = this.parentControl || false;
+                            if(tmpPCtr > 50){
+                                console.error('too many attempts to find parent');
+                                return;
+                            }
+                        }
+                        if( isFunc(tmpToRun) ){
+                            tmpAction = tmpToRun;
+                        }
+                    }
+                    if(tmpToBind){
+                        tmpAction = tmpAction.bind(tmpToBind);
+                    }
                     if (isFunc(tmpAction)) {
                         //--- Run it
                         tmpAction(tmpFN, this.getFieldValue(tmpFN), this, tmpOnChange)
@@ -6986,6 +7011,7 @@ License: MIT
                 var tmpPCtr = 0;
                 var tmpParent = this.parentControl;
                 while ((tmpParent && !isFunc(tmpToRun))) {
+                    tmpPCtr++;
                     tmpToRun = tmpParent.actions[tmpAction] || tmpParent[tmpAction] ;
                     if( isFunc(tmpToRun) ){
                         tmpToBind = tmpParent;
