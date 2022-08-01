@@ -3214,6 +3214,12 @@ window.ActionAppCore = window.ActionAppCore || ActionAppCore;
         me.showSubPage = showSubPage;
         me.selectMe = showSubPage
 
+        //--- Add action="clickMyInput" to any icon next to a field to click that field.  
+        //--- For read only fields with icon.
+        me.clickMyInput = function(theParams, theTarget){
+            $($(theTarget).siblings('input')).trigger('click');
+        }
+
         //--- Allows a div to work like a link
         me.openhref = function (theParams, theTarget) {
             var tmpParams = ThisApp.getActionParams(theParams, theTarget, ['href']);
