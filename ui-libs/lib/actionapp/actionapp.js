@@ -585,6 +585,30 @@ window.ActionAppCore = window.ActionAppCore || ActionAppCore;
                 .checkbox();
         }
 
+        var tmpCBs = me.getByAttr$({ appcomp: 'date' }, theOptionalTarget);
+
+        if (tmpCBs && tmpCBs.length) {
+            
+            for( var iPos = 0 ; iPos < tmpCBs.length ; iPos++ ){
+                var tmpCB = $(tmpCBs.get(iPos));
+                var tmpDateFormat = tmpCB.attr('dateformat') || '';
+            
+                var tmpOptions = {
+                    "show_icon": false,
+                    navigation: ['<i class="left arrow icon"></i>', '<i class="right arrow icon"></i>', '<i class="up arrow icon"></i>', '<i class="down arrow icon"></i>']
+                }
+                if( tmpDateFormat == 'time' ){
+                 tmpOptions.format = 'h:i a';
+                } else if (tmpDateFormat == 'datetime') {
+                    tmpOptions.format = 'm/d/Y h:i a';
+                } else {
+                    tmpOptions.format = 'm/d/Y';
+                }
+
+                var tmpPicker = tmpCB.attr('appcomp', '').Zebra_DatePicker(tmpOptions)
+            }
+        }
+
 
 
         var tmpLayouts = me.getByAttr$({ appcomp: 'layout' }, theOptionalTarget);
@@ -7125,7 +7149,7 @@ License: MIT
         var tmpDefs = [];
         try {
             
-        
+        ThisApp.initAppComponents(tmpEl);
         var tmpControls = ThisApp.getByAttr$({ ctlcomp: 'control' }, tmpEl);
         if (tmpControls.length) {
             for (var iControl = 0; iControl < tmpControls.length; iControl++) {
@@ -8533,6 +8557,23 @@ License: MIT
             var tmpObject = theObject || {};
             var tmpHTML = [];
             //---> ToDo: Add value and default value to other fields *****
+            var tmpAutoIcon = '';
+            var tmpAppComp = '';
+            var tmpIsDate = false;
+            
+
+            if( theControlName == 'date'){
+                tmpAutoIcon = 'calendar';
+            } else if( theControlName == 'time'){
+                tmpAutoIcon = 'clock';
+            } else if( theControlName == 'datetime'){
+                tmpAutoIcon = 'calendar outline';
+            }
+            if( tmpAutoIcon ){
+                tmpIsDate = true;
+                tmpAppComp = 'date';
+            }
+            
             
             var tmpValue = tmpObject.default || '';
 
@@ -8542,7 +8583,7 @@ License: MIT
             }
             tmpValue = tmpObject.value || tmpValue;
 
-            var tmpIcon = tmpObject.icon || '';
+            var tmpIcon = tmpObject.icon || tmpAutoIcon || '';
 
             var tmpSizeName = '';
             if (tmpObject.size && tmpObject.size > 0 && tmpObject.size < 17) {
@@ -8567,6 +8608,10 @@ License: MIT
             }
             var tmpInputClasses = tmpObject.inputClasses || '';
             tmpInputClasses += getValueIfTrue(theObject, ['fit']);
+            if( tmpIsDate ){
+                tmpInputClasses += ' showborder';
+            }
+            
             if (tmpInputClasses) {
                 tmpInputClasses = ' class="' + tmpInputClasses + '" '
             }
@@ -8606,10 +8651,6 @@ License: MIT
                 tmpStyle = "";
             } else if (theControlName == 'number') {
                 tmpFieldType = 'number';
-            } else if (theControlName == 'date') {
-                tmpFieldType = 'date';
-            } else if (theControlName == 'datetime') {
-                tmpFieldType = 'datetime-local';
             } else if (theControlName == 'color') {
                 tmpFieldType = 'color';
             }
@@ -8627,6 +8668,20 @@ License: MIT
                 tmpClasses += ' input icon';
             }
 
+            var tmpAttrs = '';
+            if( tmpObject.attrs && typeof(tmpObject.attrs) == 'string' ){
+                tmpAttrs = tmpAttrs;
+            }
+            if( tmpAppComp ){
+                tmpAttrs += ' appcomp="' + tmpAppComp + '"';
+                if( tmpIsDate ){
+                    tmpAttrs += ' dateformat="' + theControlName + '"';
+                    
+                }
+            }
+
+
+
             tmpHTML.push('<div controls fieldwrap name="' + theObject.name + '" class="' + tmpClasses + tmpSizeName + tmpReq + ' ui ' + tmpFieldOrInput + '" ' + tmpStyle + '>');
             if (theObject.label) {
                 tmpHTML.push('<label>');
@@ -8640,7 +8695,7 @@ License: MIT
                 }
                 tmpPH = ' placeholder="' + tmpPH + ' ';
             }
-            tmpHTML.push('<input ' + tmpReadOnly + tmpInputClasses + ' type="' + tmpFieldType + '" controls field ' + tmpValue + ' name="' + theObject.name + '" ' + tmpIsMultiFlag + tmpPH + '">')
+            tmpHTML.push('<input ' + tmpAttrs + tmpReadOnly + tmpInputClasses + ' type="' + tmpFieldType + '" controls field ' + tmpValue + ' name="' + theObject.name + '" ' + tmpIsMultiFlag + tmpPH + '">')
             tmpHTML.push('</input>')
             if( tmpIcon ){
                 tmpHTML.push('<i class="' + tmpIcon + ' icon"></i>');
@@ -9553,6 +9608,7 @@ License: MIT
     me.webControls.add('number', me.ControlField);
     me.webControls.add('date', me.ControlField);
     me.webControls.add('datetime', me.ControlField);
+    me.webControls.add('time', me.ControlField);
     me.webControls.add('color', me.ControlField);
 
     me.webControls.add('dropdown', me.ControlDropDown);
