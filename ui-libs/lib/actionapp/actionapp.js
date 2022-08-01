@@ -8542,6 +8542,8 @@ License: MIT
             }
             tmpValue = tmpObject.value || tmpValue;
 
+            var tmpIcon = tmpObject.icon || '';
+
             var tmpSizeName = '';
             if (tmpObject.size && tmpObject.size > 0 && tmpObject.size < 17) {
                 tmpSizeName = getNumName(tmpObject.size)
@@ -8561,7 +8563,7 @@ License: MIT
             }
             //--- All input fields with content (buttons) are input style
             if (tmpItems && tmpItems.length > 0) {
-                tmpFieldOrInput = 'input'
+                tmpFieldOrInput = 'input';
             }
             var tmpInputClasses = tmpObject.inputClasses || '';
             tmpInputClasses += getValueIfTrue(theObject, ['fit']);
@@ -8616,6 +8618,15 @@ License: MIT
             if (tmpObject.multiple === true) {
                 tmpIsMultiFlag = ' multiple="multiple" ';
             }
+
+            if (tmpIcon || (tmpItems && tmpItems.length > 0)) {
+                tmpHTML.push('<div class="ui field">');
+            }
+
+            if( tmpIcon ){
+                tmpClasses += ' input icon';
+            }
+
             tmpHTML.push('<div controls fieldwrap name="' + theObject.name + '" class="' + tmpClasses + tmpSizeName + tmpReq + ' ui ' + tmpFieldOrInput + '" ' + tmpStyle + '>');
             if (theObject.label) {
                 tmpHTML.push('<label>');
@@ -8631,9 +8642,16 @@ License: MIT
             }
             tmpHTML.push('<input ' + tmpReadOnly + tmpInputClasses + ' type="' + tmpFieldType + '" controls field ' + tmpValue + ' name="' + theObject.name + '" ' + tmpIsMultiFlag + tmpPH + '">')
             tmpHTML.push('</input>')
+            if( tmpIcon ){
+                tmpHTML.push('<i class="' + tmpIcon + ' icon"></i>');
+            }
             tmpHTML.push(getNoteMarkup(theObject));
             tmpHTML.push(getContentHTML(theControlName, tmpItems, theControlObj));
             tmpHTML.push('</div>');
+            if (tmpIcon || (tmpItems && tmpItems.length > 0)) {
+                tmpHTML.push('</div>');
+            }
+
             tmpHTML = tmpHTML.join('');
             return tmpHTML;
         },
