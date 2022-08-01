@@ -94,7 +94,7 @@ iframe.full-frame {
   display:none;
 }
 
-input[readonly], .ui.disabled.dropdown {
+input[readonly]:not(.showborder), .ui.disabled.dropdown {
   border: none !important;
   font-weight: bolder;
   cursor:default;
