@@ -181,6 +181,36 @@ window.ActionAppCore = window.ActionAppCore || ActionAppCore;
         };
     }
 
+    
+    if( !String.prototype.escapeHTML ){
+        String.prototype.escapeHTML = function() {
+            var tagsToReplace = {
+                '&': '&amp;',
+                '<': '&lt;',
+                '>': '&gt;'
+            };
+            return this.replace(/[&<>]/g, function(tag) {
+                return tagsToReplace[tag] || tag;
+            });
+        };
+    }
+    
+    
+    if( !String.prototype.unescapeHTML ){
+        String.prototype.unescapeHTML = function() {
+            var tagsToReplace = {
+                '&amp;': '&',
+                '&lt;': '<',
+                '&gt;': '>'
+            };
+            return this.replace(/(&amp;|&lt;|&gt;)/g, function(tag) {
+                return tagsToReplace[tag] || tag;
+            });
+        };
+    }
+    
+    
+
 })(ActionAppCore, $);
 
 //--- Common Functionality Extensions
