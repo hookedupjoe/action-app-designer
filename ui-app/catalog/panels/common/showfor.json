@@ -13,9 +13,9 @@
 			"color": "blue",
 			"size": "large",
 			"onClick": {
-				"run":"publish",
+				"run": "publish",
 				"event": "submit",
-				"validate":true
+				"validate": true
 			},
 			"labeled": true,
 			"right": true,
@@ -27,7 +27,7 @@
 			"ctl": "button",
 			"size": "large",
 			"onClick": {
-				"run":"publish",
+				"run": "publish",
 				"event": "cancel"
 			},
 			"basic": true,
@@ -38,7 +38,7 @@
 		{
 			"ctl": "divider",
 			"color": "blue",
-			"size": "medium", 
+			"size": "medium",
 			"text": "Welcome",
 			"clearing": true
 		},
@@ -47,11 +47,12 @@
 			"ctl": "radiolist",
 			"name": "showmore",
 			"onChange": {
-				"run": "showfor",				
+				"run": "showfor",
 				"values": {
 					"": "welcome-info",
 					"Yes": [
 						"name-info",
+						"dates-info",
 						"yes-info",
 						"options-row",
 						"selections-row",
@@ -76,7 +77,6 @@
 			"text": "Just say anything, no need to say who you are",
 			"hidden": true
 		},
-		
 		{
 			"ctl": "message",
 			"color": "violet",
@@ -86,7 +86,6 @@
 			"name": "welcome-info",
 			"text": "Welcome, will you tell us more? <br /><br />Already answered this? <a class='ui link' href=\"#\">Login here</a> instead."
 		},
-		
 		{
 			"ctl": "message",
 			"size": "large",
@@ -109,6 +108,7 @@
 			"req": true,
 			"items": [
 				{
+					"ctl": "field",
 					"placeholder": "First Name",
 					"name": "first",
 					"onValidate": {
@@ -118,12 +118,33 @@
 					"req": true
 				},
 				{
+					"ctl": "field",
 					"placeholder": "Last Name",
 					"name": "last",
 					"onValidate": {
 						"run": "minlen",
 						"min": 5
 					}
+				}
+			]
+		},
+		{
+			"ctl": "fieldrow",
+			"label": "Your Dates",
+			"name": "dates-info",
+			"req": false,
+			"items": [
+				{
+					"ctl": "date",
+					"placeholder": "Birtdate",
+					"name": "birthdate",
+					"req": false
+				},
+				{
+					"ctl": "time",
+					"placeholder": "When do you wake up?",
+					"name": "wakuptime",
+					"req": false
 				}
 			]
 		},
@@ -184,5 +205,6 @@
 			"ctl": "textarea",
 			"rows": 2
 		}
-	]
+	],
+	"options": {}
 }
