@@ -8351,6 +8351,48 @@ License: MIT
     }
 
 
+    me.SemanticElement = {
+        getHTML: function (theControlName, theObject, theControlObj, theIsUI) {
+            var tmpObject = theObject || {};
+            var tmpHTML = [];
+            var tmpHidden = '';
+            if (tmpObject.hidden === true) {
+                tmpHidden = 'display:none;';
+            }
+            var tmpStyle = tmpObject.style || tmpObject.styles || tmpObject.css || '';
+            if (tmpHidden) {
+                tmpStyle += tmpHidden;
+            }
+            if (tmpStyle) {
+                tmpStyle = ' style="' + tmpStyle + '" '
+            }
+
+            var tmpClass = tmpObject.class || '';
+            var tmpControlClass = tmpClass || theControlName;
+            var tmpClasses = tmpObject.classes || '';
+            tmpClasses += getValueIfTrue(theObject, ['dividing', 'block', 'link', 'fluid', 'placeholder', 'raised', 'tall', 'stacked', 'piled', 'vertical', 'loading', 'inverted', 'bottom', 'top', 'attached', 'padded', 'slim', 'compact', 'secondary', 'tertiary', 'circular', 'clearing', 'right', 'left', 'center', 'aligned', 'basic']);
+            tmpClasses += getValueIfThere(theObject, ['color', 'icon', 'size', 'alignment', 'attached']);
+
+            var tmpUI = (theIsUI!==false) ? 'ui ' : '';
+
+            tmpHTML = [];
+            tmpHTML.push('<div ' + getItemAttrString(theObject) + ' class="' + tmpUI + ' ' + tmpControlClass + ' ' + tmpClasses + '" ' + tmpStyle + '>')
+
+            tmpHTML.push(tmpObject.text || tmpObject.html || '')
+
+            var tmpItems = tmpObject.items || tmpObject.content || [];
+            if (tmpItems) {
+                tmpHTML.push(getContentHTML(theControlName, tmpItems, theControlObj))
+            }
+
+            tmpHTML.push('</div>')
+            tmpHTML = tmpHTML.join('');
+            return tmpHTML;
+
+        },
+        isField: false
+    }
+
     me.ControlElement = {
         getHTML: function (theControlName, theObject, theControlObj, theIsUI) {
             var tmpObject = theObject || {};
@@ -8371,7 +8413,7 @@ License: MIT
             var tmpControlClass = tmpClass || theControlName;
             var tmpClasses = tmpObject.classes || '';
 
-            var tmpUI = theIsUI ? 'ui ' : '';
+            var tmpUI = (theIsUI!==false) ? 'ui ' : '';
 
             tmpHTML = [];
             tmpHTML.push('<div ' + getItemAttrString(theObject) + ' class="' + tmpUI + ' ' + tmpControlClass + ' ' + tmpClasses + '" ' + tmpStyle + '>')
@@ -9594,6 +9636,10 @@ License: MIT
 
 
     //=== Root Common Web Controls ..
+    me.webControls.add('message', me.SemanticElement);
+    me.webControls.add('header', me.SemanticElement);
+
+    //=== Root Common Web Controls ..
     me.webControls.add('control', me.ControlPanelAndControl);
     me.webControls.add('panel', me.ControlPanelAndControl);
     me.webControls.add('template', me.ControlPanelAndControl);
@@ -9622,7 +9668,6 @@ License: MIT
     me.webControls.add('title', me.ControlDivider);
     me.webControls.add('sep', me.ControlDivider);
     me.webControls.add('divider', me.ControlDivider);
-    me.webControls.add('message', me.ControlMessage);
     me.webControls.add('button', me.ControlButton);
     me.webControls.add('segment', me.ControlPanel);
     me.webControls.add('segments', me.ControlPanel);
@@ -9631,7 +9676,6 @@ License: MIT
     me.webControls.add('card', me.ControlElement);
     me.webControls.add('cards', me.ControlPanel);
     me.webControls.add('content', me.ControlElement);
-    me.webControls.add('header', me.ControlElement);
     me.webControls.add('meta', me.ControlElement);
     me.webControls.add('description', me.ControlElement);
     me.webControls.add('extra', me.ControlElement);
