@@ -512,8 +512,8 @@ cursor: not-allowed !important;
 .ui.segment[group] {
   padding-top:8px;
 }
-.ui.form .grouped.fields {
-  margin-left:15px;
+.ui.form .fields .grouped.fields {
+  margin-left:7px;
 }
 .ace-editor { 
   position: absolute;
@@ -740,6 +740,10 @@ position: inherit !important;
 .vakata-context { z-index:10052 !important; }
 
 .hidden {
+  display: none !important;
+}
+
+.hidden-des {
   display: none !important;
 }
 
