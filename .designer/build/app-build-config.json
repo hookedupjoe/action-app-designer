@@ -43,7 +43,7 @@
 		{
 			"name": "app",
 			"label": "In Application",
-			"prefix": ""
+			"prefix": "."
 		},
 		{
 			"name": "mobile",
