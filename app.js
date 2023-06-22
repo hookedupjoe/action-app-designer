@@ -73,19 +73,36 @@ function setup() {
             var tmpWSDirectory = '';
             //--- See if setup, if not, do the setup screen
             if (tmpSettingsDir) {
-                
-                await(fs.ensureDir(tmpSettingsDir));
+                await fs.ensureDir(tmpSettingsDir);
 
-                var tmpSetup = await(bld.getJsonFile(tmpSettingsDir + '/setup.json'));
+                var tmpSetup = await bld.getJsonFile(tmpSettingsDir + '/setup.json');
+                
+
                 if (tmpSetup && tmpSetup.rootDir){
                     tmpWSDirectory = tmpSetup.rootDir
                 } else {
-                    tmpStaticDir = '/ui-setup';
+                    //--- Build Initial Confiruration and Directories
+                    var tmpRootDir = ($.os.homedir() + '/actapp/');
+                    tmpRootDir = tmpRootDir.replace('[home]', $.os.homedir());
+
+                    if( !(tmpRootDir.endsWith('/'))){
+                        tmpRootDir += '/';
+                    }
+                    var tmpSetupDetails = {
+                        rootDir: tmpRootDir
+                    }
+                    
+                    tmpWSDirectory = tmpRootDir;
+
+                    const tmpSettingsDir = bld.settingsHome();
+                    await $.fs.ensureDir(tmpSettingsDir);
+                    await bld.saveJsonFile(tmpSettingsDir + 'setup.json', tmpSetupDetails);
+                
+                    await $.fs.ensureDir(tmpSetupDetails.rootDir);
+                    await $.fs.ensureDir(tmpSetupDetails.rootDir + 'ui-apps/');
+                    await $.fs.ensureDir(tmpSetupDetails.rootDir + 'server-apps/');
                 }
             }
-
-            //--- Deprecated - remove
-            // scope.locals.path.workspace = tmpWSDirectory;
 
             scope.locals.path.ws = {
                 root: tmpWSDirectory,
