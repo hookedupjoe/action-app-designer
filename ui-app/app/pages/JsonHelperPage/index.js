@@ -81,7 +81,11 @@ var ThisPage = new SiteMod.SitePage(thisPageSpecs);
             ThisPage.aceEditor.session.setTabSize(2);
 
             resizeEditor();
+            window.tmpAce = ThisPage.aceEditor;
+            window.tmpPage = ThisPage;
             loadJson({});
+            ThisPage.refreshLayouts();
+            
             //~_onFirstLoad~//~
                 ThisPage._onActivate();
             }
@@ -121,7 +125,19 @@ function resizeEditor() {
 
 actions.clearJson = clearJson;
 function clearJson(){
-    ThisPage.aceEditor.setValue('');
+    ThisPage.aceEditor.setValue('{}');
+    actions.selectAll();
+}
+
+actions.selectAll = selectAll;
+function selectAll(){
+    ThisPage.aceEditor.selectAll();
+    ThisPage.aceEditor.focus()
+}
+actions.toClipboard = toClipboard;
+function toClipboard(){
+    navigator.clipboard.writeText(ThisPage.aceEditor.getValue());
+    ThisPage.aceEditor.focus()
 }
 
 actions.formatJson = formatJson;
@@ -143,8 +159,8 @@ function formatJson(){
             console.error("formatJson err",ex)
             alert("Invalid JSON", "Format Error", "e");
         }
-        
     }
+    ThisPage.aceEditor.clearSelection();
     
 };
 
@@ -201,8 +217,6 @@ function loadJsonClipboardSelected(theParams, theTarget){
     }
     loadJson(tmpData);
 };
-
-
 
 actions.clearClipboardList = clearClipboardList;
 function clearClipboardList(){
@@ -271,24 +285,21 @@ function loadClipboardList() {
 }
 
 function refreshClipboardList() {
-    var tmpList = [];
+    var tmpList = '';
     if(!(ThisPage.contextData.jsonClipboardIndex)){
         //ToDo: Show message about nothin gin index
         return;
     }
-
     var tmpIndex = ThisPage.contextData.jsonClipboardIndex;
     for( var aName in tmpIndex){
         var tmpEntry = tmpIndex[aName];
         tmpList.push(aName);        
     }
-
     tmpList.sort();
     ThisPage.contextData.jsonClipboardList = tmpList;
     if( ThisPage.parts && ThisPage.parts.controls ){
         ThisPage.parts.controls.refreshUI();
     }
-
 }
 
 //~YourPageCode~//~

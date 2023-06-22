@@ -13,12 +13,12 @@ License: MIT
 				"ctl":"button",
 				"text": "Format JSON",
 				"color": "purple",
-				"pageaction": "formatJson",
+				"pageaction": "formatJson"
 			},
 			{
 				"ctl":"button",
 				"text": "Clear JSON",
-				"pageaction": "clearJson",
+				"pageaction": "clearJson"
 			},
 			{
 				"ctl":"sep",
@@ -26,46 +26,66 @@ License: MIT
 			},
 			{
 				"ctl":"button",
-				"text": "Save JSON",
-				"fluid": true,
+				"text": "Copy to Clipbaord",
 				"color": "blue",
-				"pageaction": "saveJson",
-			},
-			{
-				"ctl":"divider",
-				"label": "Clipboard",
-				"size":"small",
-				"color": "blue"
-			},
-			{
-				"ctl":"dropdown",
-				"label": "Saved JSON",
-				"name":"json-clipboard",
-				"list": {
-					"[computed]": "context.page.data.jsonClipboardList || ''"
-				}
-			},
-			{
-				"ctl":"button",
-				"text": "Load Selected",
-				"disabled": true,
-				"name": "btn-load-selected",
 				"fluid": true,
-				"color": "green",
-				"pageaction": "loadJsonClipboardSelected",
+				"pageaction": "toClipboard"
+			},
+			{
+				"ctl":"sep",
+				"clearing": true,
+				'fitted': true
 			},
 			{
 				"ctl":"button",
-				"text": "Delete All Saved",
-				"fluid": true,						
-				"disabled": true,
-				"color": "red",							
-				"name": "btn-delete-all-saved",
-				"pageaction": "clearClipboardList",
+				"text": "Select All",
+				"color": "blue",
+				"fluid": true,
+				"pageaction": "selectAll"
 			}
 		]
 	}
 
+	var tmpOptional = [
+		{
+			"ctl":"button",
+			"text": "Save JSON",
+			"fluid": true,
+			"color": "blue",
+			"pageaction": "saveJson"
+		},
+		{
+			"ctl":"divider",
+			"label": "Clipboard",
+			"size":"small",
+			"color": "blue"
+		},
+		{
+			"ctl":"dropdown",
+			"label": "Saved JSON",
+			"name":"json-clipboard",
+			"list": {
+				"[computed]": "context.page.data.jsonClipboardList || ''"
+			}
+		},
+		{
+			"ctl":"button",
+			"text": "Load Selected",
+			"disabled": true,
+			"name": "btn-load-selected",
+			"fluid": true,
+			"color": "green",
+			"pageaction": "loadJsonClipboardSelected"
+		},
+		{
+			"ctl":"button",
+			"text": "Delete All Saved",
+			"fluid": true,						
+			"disabled": true,
+			"color": "red",							
+			"name": "btn-delete-all-saved",
+			"pageaction": "clearClipboardList"
+		}]
 		var ControlCode = {};
 	var ThisControl = {specs: ControlSpecs, options: { proto: ControlCode, parent: ThisApp }};
 
