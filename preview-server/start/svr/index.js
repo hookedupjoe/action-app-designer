@@ -8,7 +8,7 @@ module.exports.setup = function setup(scope) {
     let $ = scope.locals.$;
     scope.locals.path.api = scope.locals.path.start + "/svr"
     
-    return $.async(function processReq(req, res, next) {
+    return  async function processReq(req, res, next) {
         
         var tmpType = req.params.type || ''
         var tmpName = req.params.name || ''
@@ -39,6 +39,6 @@ module.exports.setup = function setup(scope) {
         } catch (ex) {
             res.json({status:false, error: ex.toString()})
         }
-    });
+    };
 
 };

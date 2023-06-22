@@ -18,7 +18,7 @@ module.exports.setup = function setup(scope) {
     //--- Load the prototype
     base.run = function (req, res, next) {
         var self = this;
-        return new Promise($.async(function (resolve, reject) {
+        return new Promise( async function (resolve, reject) {
             try {
                 var tmpWSDir = scope.locals.path.ws.uiApps;
                 var tmpDeployDir = scope.locals.path.ws.deploy;
@@ -43,7 +43,7 @@ module.exports.setup = function setup(scope) {
                 }
               
                 var tmpAppBase = tmpWSDir + tmpAppName + '/';
-                var tmpAppDetails = $.await($.bld.getJsonFile(tmpAppBase + 'app-info.json'))
+                var tmpAppDetails = await($.bld.getJsonFile(tmpAppBase + 'app-info.json'))
                 var tmpAppTitle = tmpAppDetails.title || '';
 
                 if( !(tmpAppTitle) ){
@@ -54,7 +54,7 @@ module.exports.setup = function setup(scope) {
 
                 var tmpDeployBase = tmpDeployDir + tmpAppName + '/';
                 
-                $.await($.fs.ensureDir(tmpDeployBase));
+                await($.fs.ensureDir(tmpDeployBase));
 
                 var tmpServerFilesLoc = scope.locals.path.designer + '/build/tpl-servers/cordova/';
  
@@ -64,18 +64,18 @@ module.exports.setup = function setup(scope) {
                 var tmpKeepConfigFN = tmpDeployBase + 'CordovaApp/config.xml';
                 var tmpKeepPackageFN = tmpDeployBase + 'CordovaApp/package.json';
 
-                var tmpKeepAppText = $.await($.bld.getTextFile(tmpKeepAppFN));
-                var tmpKeepConfigText = $.await($.bld.getTextFile(tmpKeepConfigFN));
-                var tmpKeepPackageText = $.await($.bld.getTextFile(tmpKeepPackageFN));
+                var tmpKeepAppText = await($.bld.getTextFile(tmpKeepAppFN));
+                var tmpKeepConfigText = await($.bld.getTextFile(tmpKeepConfigFN));
+                var tmpKeepPackageText = await($.bld.getTextFile(tmpKeepPackageFN));
 
-                $.await($.fs.copy(tmpServerFilesLoc,tmpDeployBase));
+                await($.fs.copy(tmpServerFilesLoc,tmpDeployBase));
 
-                $.await($.fs.ensureDir(tmpDeployBase + '/CordovaApp/www'));
-                $.await($.fs.copy(tmpAppBase,tmpDeployBase + '/CordovaApp/www'));
+                await($.fs.ensureDir(tmpDeployBase + '/CordovaApp/www'));
+                await($.fs.copy(tmpAppBase,tmpDeployBase + '/CordovaApp/www'));
 
-                $.await($.fs.remove(tmpDeployBase + '/CordovaApp/www/.git/'));
+                await($.fs.remove(tmpDeployBase + '/CordovaApp/www/.git/'));
 
-                $.await($.fs.copy(scope.locals.path.uilibs + '/',tmpDeployBase + '/CordovaApp/www'));
+                await($.fs.copy(scope.locals.path.uilibs + '/',tmpDeployBase + '/CordovaApp/www'));
 
                 //--- Only do this one time or if forced
                 //Todo: force option *
@@ -86,13 +86,13 @@ module.exports.setup = function setup(scope) {
                 if( tmpKeepConfigText != ''){
                     tmpSaveText = tmpKeepConfigText;
                 } else {
-                    tmpSaveText = $.await($.bld.getTextFile(tmpSaveFN));
+                    tmpSaveText = await($.bld.getTextFile(tmpSaveFN));
                     tmpSaveText = replacePlaceholders(tmpSaveText, tmpAppDetails);
                 }
 
                 //tmpSaveText = replacePlaceholders(tmpSaveText, tmpAppDetails);
                 
-                $.await($.fs.writeFile(tmpSaveFN,tmpSaveText))
+                await($.fs.writeFile(tmpSaveFN,tmpSaveText))
 
               
 
@@ -100,31 +100,31 @@ module.exports.setup = function setup(scope) {
                 if( tmpKeepPackageText != ''){
                     tmpSaveText = tmpKeepPackageText;
                 } else {
-                    tmpSaveText = $.await($.bld.getTextFile(tmpSaveFN));
+                    tmpSaveText = await($.bld.getTextFile(tmpSaveFN));
                     tmpSaveText = replacePlaceholders(tmpSaveText, tmpAppDetails);
                 }
-                $.await($.fs.writeFile(tmpSaveFN,tmpSaveText))
+                await($.fs.writeFile(tmpSaveFN,tmpSaveText))
 
                 tmpSaveFN = tmpDeployBase + 'package.json';
-                tmpSaveText = $.await($.bld.getTextFile(tmpSaveFN));
+                tmpSaveText = await($.bld.getTextFile(tmpSaveFN));
                 tmpSaveText = replacePlaceholders(tmpSaveText, tmpAppDetails);
 
-                //                tmpSaveText = $.await($.bld.getTextFile(tmpSaveFN));
+                //                tmpSaveText = await($.bld.getTextFile(tmpSaveFN));
                 //                tmpSaveText = replacePlaceholders(tmpSaveText, tmpAppDetails);
-                $.await($.fs.writeFile(tmpSaveFN,tmpSaveText))
+                await($.fs.writeFile(tmpSaveFN,tmpSaveText))
 
                 // var tmpSaveFN = tmpDeployBase + 'CordovaApp/config.xml';
-                // var tmpSaveText = $.await($.bld.getTextFile(tmpSaveFN));
+                // var tmpSaveText = await($.bld.getTextFile(tmpSaveFN));
                 // tmpSaveText = tmpSaveText
                 //     .replace('xxxxxxxx', yyyyyyyyyyy);
-                // $.await($.fs.writeFile(tmpSaveFN,tmpSaveText))
+                // await($.fs.writeFile(tmpSaveFN,tmpSaveText))
 
-                //var tmpManifestText = $.await($.bld.getTextFile(tmpDeployBase + 'manifest.yml'));
+                //var tmpManifestText = await($.bld.getTextFile(tmpDeployBase + 'manifest.yml'));
                 //tmpManifestText = tmpManifestText.replace('{{URL-PREFIX}}', tmpPrefix);
-                //$.await($.fs.writeFile(tmpDeployBase + 'manifest.yml',tmpManifestText))
+                //await($.fs.writeFile(tmpDeployBase + 'manifest.yml',tmpManifestText))
 
                 //--- Rebuild using defaults
-                $.await($.bld.buildApp(tmpAppName,scope,{cdn:'mobile', deploy:true, deployType: 'cordova'}));
+                await($.bld.buildApp(tmpAppName,scope,{cdn:'mobile', deploy:true, deployType: 'cordova'}));
 
                 tmpSaveFN = tmpDeployBase + 'CordovaApp/www/app/app.js';
                 var tmpSaveText = '';
@@ -134,7 +134,7 @@ module.exports.setup = function setup(scope) {
                 
                 if( tmpKeepAppText != ''){
                     tmpSaveText = tmpKeepAppText;
-                    $.await($.fs.writeFile(tmpSaveFN,tmpSaveText));
+                    await($.fs.writeFile(tmpSaveFN,tmpSaveText));
                     //console.log("saving new app file from content from app side",tmpKeepAppFN,tmpKeepAppText);
                 } else {
                     //console.log("No content, keeping");
@@ -153,7 +153,7 @@ module.exports.setup = function setup(scope) {
                 reject(error);                
             }
 
-        }));
+        });
 
         
 
@@ -188,10 +188,10 @@ module.exports.setup = function setup(scope) {
 
     //====== IMPORTANT --- --- --- --- --- --- --- --- --- --- 
     //====== End of Module / setup ==== Nothing new below this
-    return $.async(function processReq(req, res, next) {
+    return async function processReq(req, res, next) {
         try {
             var tmpRoute = new Route();
-            var tmpResults = $.await(tmpRoute.run(req, res, next));
+            var tmpResults = await(tmpRoute.run(req, res, next));
 
             //--- Getting documents to use directly by source, 
             //    .. do not wrap the success flag
@@ -199,7 +199,7 @@ module.exports.setup = function setup(scope) {
         } catch (ex) {
             res.json({ status: false, error: ex.toString() })
         }
-    })
+    }
 };
 
 

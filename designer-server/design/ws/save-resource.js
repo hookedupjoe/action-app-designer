@@ -17,7 +17,7 @@ module.exports.setup = function setup(scope) {
     //--- Load the prototype
     base.run = function (req, res, next) {
         var self = this;
-        return new Promise($.async(function (resolve, reject) {
+        return new Promise( async function (resolve, reject) {
             try {
                 var tmpBody = req.body || {};
                 if (typeof (tmpBody) == 'string') {
@@ -61,7 +61,7 @@ module.exports.setup = function setup(scope) {
                 if( tmpAppName ){
                     var tmpAppBase = tmpWSDir + tmpAppName + '/';
 
-                    var tmpAppDetails = $.await($.bld.getJsonFile(tmpAppBase + 'app-info.json'))
+                    var tmpAppDetails = await($.bld.getJsonFile(tmpAppBase + 'app-info.json'))
                     var tmpAppTitle = tmpAppDetails.title || '';
     
                     if (!(tmpAppTitle)) {
@@ -72,7 +72,7 @@ module.exports.setup = function setup(scope) {
                 } else if( tmpCatName ){
                     var tmpCatBase = tmpCatDir + tmpCatName + '/';
 
-                    var tmpCatDetails = $.await($.bld.getJsonFile(tmpCatBase + 'cat-info.json'))
+                    var tmpCatDetails = await($.bld.getJsonFile(tmpCatBase + 'cat-info.json'))
                     var tmpCatTitle = tmpCatDetails.title || '';
     
                     if (!(tmpCatTitle)) {
@@ -86,7 +86,7 @@ module.exports.setup = function setup(scope) {
                 if( tmpPageName ){
                     tmpPagesBase = tmpAppBase + 'app/pages/';
 
-                    var tmpPages = $.await($.bld.getDirFiles(tmpPagesBase))
+                    var tmpPages = await($.bld.getDirFiles(tmpPagesBase))
 
                     if (tmpPages.indexOf(tmpPageName) == -1) {
                         throw "Page " + tmpPageName + " does not exists"
@@ -97,12 +97,12 @@ module.exports.setup = function setup(scope) {
 
                 var tmpContentBase = tmpResBase + '/' + tmpResDetails.dir;
 
-                $.await($.fs.ensureDir(tmpContentBase + '/'));
+                await($.fs.ensureDir(tmpContentBase + '/'));
 
                 var tmpFN = tmpContentBase + '/' + tmpResName;
 
                 if( tmpResDetails.name == "Control" ){
-                    $.await($.fs.ensureDir(tmpFN + '/'));
+                    await($.fs.ensureDir(tmpFN + '/'));
                 }
 
                 if( tmpResDetails.name == "Control"){
@@ -120,7 +120,7 @@ module.exports.setup = function setup(scope) {
                 if( !(tmpReq.content) ){
                     tmpReq.content = $.bld.getDefaultContentForResource(tmpResDetails.name);
                 }
-                $.await($.fs.writeFile(tmpFN, tmpReq.content));
+                await($.fs.writeFile(tmpFN, tmpReq.content));
 
                 var tmpRet = {
                     status: true,
@@ -136,7 +136,7 @@ module.exports.setup = function setup(scope) {
                 reject(error);
             }
 
-        }));
+        });
 
 
 
@@ -148,10 +148,10 @@ module.exports.setup = function setup(scope) {
 
     //====== IMPORTANT --- --- --- --- --- --- --- --- --- --- 
     //====== End of Module / setup ==== Nothing new below this
-    return $.async(function processReq(req, res, next) {
+    return  async function processReq(req, res, next) {
         try {
             var tmpRoute = new Route();
-            var tmpResults = $.await(tmpRoute.run(req, res, next));
+            var tmpResults = await(tmpRoute.run(req, res, next));
 
             //--- Getting documents to use directly by source, 
             //    .. do not wrap the success flag
@@ -159,7 +159,7 @@ module.exports.setup = function setup(scope) {
         } catch (ex) {
             res.json({ status: false, error: ex.toString() })
         }
-    })
+    }
 
 
     function wrapIt(theString) {

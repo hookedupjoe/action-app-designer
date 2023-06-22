@@ -18,7 +18,7 @@ module.exports.setup = function setup(scope) {
     //--- Load the prototype
     base.run = function (req, res, next) {
         var self = this;
-        return new Promise($.async(function (resolve, reject) {
+        return new Promise( async function (resolve, reject) {
             try {
                 var tmpWSDir = scope.locals.path.ws.uiApps;
                 var tmpDeployDir = scope.locals.path.ws.deploy;
@@ -42,7 +42,7 @@ module.exports.setup = function setup(scope) {
                 }
               
                 var tmpAppBase = tmpWSDir + tmpAppName + '/';
-                var tmpAppDetails = $.await($.bld.getJsonFile(tmpAppBase + 'app-info.json'))
+                var tmpAppDetails = await($.bld.getJsonFile(tmpAppBase + 'app-info.json'))
                 var tmpAppTitle = tmpAppDetails.title || '';
 
                 if( !(tmpAppTitle) ){
@@ -54,37 +54,37 @@ module.exports.setup = function setup(scope) {
                 var tmpDeployBase = tmpDeployDir + tmpAppName + '/';
                 var tmpDeployTemp = tmpDeployDir + "temp_files" + '/';
 
-                $.await($.fs.ensureDir(tmpDeployBase));
-                $.await($.fs.ensureDir(tmpDeployBase + '/ui-app'));
+                await($.fs.ensureDir(tmpDeployBase));
+                await($.fs.ensureDir(tmpDeployBase + '/ui-app'));
 
-                $.await($.fs.ensureDir(tmpDeployTemp));
-                $.await($.fs.emptyDir(tmpDeployTemp));
+                await($.fs.ensureDir(tmpDeployTemp));
+                await($.fs.emptyDir(tmpDeployTemp));
                 
                 //--- Copy to a TEMP location, remove the .git repo 
                 //... if present before doig the copy to deploy, 
                 //...   so it can be repo'd as well for FTP pushes, etc
-                $.await($.fs.copy(tmpAppBase,tmpDeployTemp));
+                await($.fs.copy(tmpAppBase,tmpDeployTemp));
                 
                 var tmpDeployGIT = tmpDeployTemp + ".git/";
                 //-- Create if does not exists, so we can clean remove it
-                $.await($.fs.ensureDir(tmpDeployGIT));
-                $.await($.fs.remove(tmpDeployGIT));
+                await($.fs.ensureDir(tmpDeployGIT));
+                await($.fs.remove(tmpDeployGIT));
 
-                $.await($.fs.copy(tmpDeployTemp,tmpDeployBase + '/ui-app'));
+                await($.fs.copy(tmpDeployTemp,tmpDeployBase + '/ui-app'));
                 
-                $.await($.fs.remove(tmpDeployTemp));
+                await($.fs.remove(tmpDeployTemp));
 
                 var tmpServerFilesLoc = scope.locals.path.designer + '/build/tpl-servers/ui-app/';
 
 
-                $.await($.fs.copy(tmpServerFilesLoc,tmpDeployBase));
-                var tmpManifestText = $.await($.bld.getTextFile(tmpDeployBase + 'manifest.yml'));
+                await($.fs.copy(tmpServerFilesLoc,tmpDeployBase));
+                var tmpManifestText = await($.bld.getTextFile(tmpDeployBase + 'manifest.yml'));
                 tmpManifestText = tmpManifestText.replace('{{URL-PREFIX}}', tmpPrefix);
-                $.await($.fs.writeFile(tmpDeployBase + 'manifest.yml',tmpManifestText))
+                await($.fs.writeFile(tmpDeployBase + 'manifest.yml',tmpManifestText))
 
                 //--- Rebuild using defaults
-                // $.await($.bld.buildApp(tmpAppName,scope));
-                $.await($.bld.buildApp(tmpAppName,scope,{cdn:'cloud', deploy:true}));
+                // await($.bld.buildApp(tmpAppName,scope));
+                await($.bld.buildApp(tmpAppName,scope,{cdn:'cloud', deploy:true}));
 
                 var tmpRet = {
                     status: true,
@@ -99,22 +99,18 @@ module.exports.setup = function setup(scope) {
                 reject(error);
             }
 
-        }));
+        });
 
 
 
     }
 
-
-
-
-
     //====== IMPORTANT --- --- --- --- --- --- --- --- --- --- 
     //====== End of Module / setup ==== Nothing new below this
-    return $.async(function processReq(req, res, next) {
+    return async function processReq(req, res, next) {
         try {
             var tmpRoute = new Route();
-            var tmpResults = $.await(tmpRoute.run(req, res, next));
+            var tmpResults = await(tmpRoute.run(req, res, next));
 
             //--- Getting documents to use directly by source, 
             //    .. do not wrap the success flag
@@ -122,7 +118,7 @@ module.exports.setup = function setup(scope) {
         } catch (ex) {
             res.json({ status: false, error: ex.toString() })
         }
-    })
+    }
 };
 
 

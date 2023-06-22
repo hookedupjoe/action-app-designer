@@ -18,7 +18,7 @@ module.exports.setup = function setup(scope) {
     //--- Load the prototype
     base.run = function (req, res, next) {
         var self = this;
-        return new Promise($.async(function (resolve, reject) {
+        return new Promise( async function (resolve, reject) {
             try {
                 bld.restartServer();
                 resolve(true);                
@@ -29,7 +29,7 @@ module.exports.setup = function setup(scope) {
                 reject(error);
             }
 
-        }));
+        });
 
 
 
@@ -41,10 +41,10 @@ module.exports.setup = function setup(scope) {
 
     //====== IMPORTANT --- --- --- --- --- --- --- --- --- --- 
     //====== End of Module / setup ==== Nothing new below this
-    return $.async(function processReq(req, res, next) {
+    return async function processReq(req, res, next) {
         try {
             var tmpRoute = new Route();
-            var tmpResults = $.await(tmpRoute.run(req, res, next));
+            var tmpResults = await(tmpRoute.run(req, res, next));
 
             //--- Getting documents to use directly by source, 
             //    .. do not wrap the success flag
@@ -52,7 +52,7 @@ module.exports.setup = function setup(scope) {
         } catch (ex) {
             res.json({ status: false, error: ex.toString() })
         }
-    })
+    }
 };
 
 

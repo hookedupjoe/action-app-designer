@@ -17,7 +17,7 @@ module.exports.setup = function setup(scope) {
     //--- Load the prototype
     base.run = function (req, res, next) {
         var self = this;
-        return new Promise($.async(function (resolve, reject) {
+        return new Promise( async function (resolve, reject) {
             try {
                 var tmpCatName = req.query.catname || '';
                 var tmpAppName = req.query.appname || '';
@@ -28,7 +28,7 @@ module.exports.setup = function setup(scope) {
                 var tmpCatsDir = scope.locals.path.ws.catalogs;
 
                 //todo: scope.locals.ports.preview on init not here
-                var tmpPreviewPort = process.env.PREVIEWPORT || 33461;
+                var tmpPreviewPort = process.env.PREVIEWPORT || 33471;
                 scope.locals.ports = scope.locals.ports || {};
                 scope.locals.ports.preview = tmpPreviewPort;
 
@@ -50,7 +50,7 @@ module.exports.setup = function setup(scope) {
                         "group": "workspace-outline",
                         "content": []
                     }
-                    tmpResponse = $.await(getPagesNode({ appname: tmpAppName }));
+                    tmpResponse = await(getPagesNode({ appname: tmpAppName }));
 
                     tmpBase.content = tmpResponse.content;
 
@@ -70,7 +70,7 @@ module.exports.setup = function setup(scope) {
                     var tmpRes = false;
 
                     var tmpCatBase = tmpCatsDir + tmpCatName + '/';
-                    tmpRes = $.await(getWSResourcesNode({baseURL: tmpCatBase, catname: tmpCatName}));
+                    tmpRes = await(getWSResourcesNode({baseURL: tmpCatBase, catname: tmpCatName}));
 
                     //--- To assure proper css applied to outline
                     tmpRes.classes = "ws-outline"
@@ -89,11 +89,11 @@ module.exports.setup = function setup(scope) {
 
                     if( tmpPageName ){
                         var tmpPageBase = tmpPagesDir + tmpPageName + '/';
-                        tmpRes = $.await(getWSResourcesNode({baseURL: tmpPageBase, appname: tmpAppName, pagename: tmpPageName}));
+                        tmpRes = await(getWSResourcesNode({baseURL: tmpPageBase, appname: tmpAppName, pagename: tmpPageName}));
                       
                     }  else {
                         var tmpAppBase = tmpWSDir + tmpAppName + '/';
-                        tmpRes = $.await(getWSResourcesNode({baseURL: tmpAppBase + 'catalog/', appname: tmpAppName}));
+                        tmpRes = await(getWSResourcesNode({baseURL: tmpAppBase + 'catalog/', appname: tmpAppName}));
                     }
 
                     //--- To assure proper css applied to outline
@@ -108,7 +108,7 @@ module.exports.setup = function setup(scope) {
 
                     resolve(tmpRet);
                 } else {
-                    tmpResponse = $.await(getFullWorkspace(req, res, next))
+                    tmpResponse = await(getFullWorkspace(req, res, next))
                     tmpResponse.options.extra = {previewPort:tmpPreviewPort};
                     resolve(tmpResponse);
                 }
@@ -122,13 +122,13 @@ module.exports.setup = function setup(scope) {
                 reject(error);
             }
 
-        }));
+        });
     }
 
 
     function getFullWorkspace(req, res, next) {
         var self = this;
-        return new Promise($.async(function (resolve, reject) {
+        return new Promise( async function (resolve, reject) {
             try {
 
 
@@ -148,15 +148,15 @@ module.exports.setup = function setup(scope) {
                     "content": []
                 }
 
-                var tmpAppsNode = $.await(getApplicationsNode());
+                var tmpAppsNode = await(getApplicationsNode());
                 tmpBase.content.push(tmpAppsNode);
-                var tmpCatsNode = $.await(getCatalogsNode());
+                var tmpCatsNode = await(getCatalogsNode());
                 tmpBase.content.push(tmpCatsNode);
-                // var tmpCataNode = $.await(getCatalogsNode());
+                // var tmpCataNode = await(getCatalogsNode());
                 // tmpBase.content.push(tmpCataNode);
-                // var tmpWSNode = $.await(getWSResourcesNode());
+                // var tmpWSNode = await(getWSResourcesNode());
                 // tmpBase.content.push(tmpWSNode);
-                // var tmpPagesNode = $.await(getPagesNode());
+                // var tmpPagesNode = await(getPagesNode());
                 // tmpBase.content.push(tmpPagesNode);
 
                 var tmpRet = {
@@ -212,13 +212,13 @@ module.exports.setup = function setup(scope) {
                 reject(error);
             }
 
-        }));
+        });
     }
 
 
     function getCatalogsNode() {
         var self = this;
-        return new Promise($.async(function (resolve, reject) {
+        return new Promise( async function (resolve, reject) {
             try {
 
 
@@ -237,12 +237,12 @@ module.exports.setup = function setup(scope) {
 
                 var tmpBaseDir = scope.locals.path.ws.catalogs;
 
-                var tmpFiles = $.await($.bld.getDirFiles(tmpBaseDir))
+                var tmpFiles = await($.bld.getDirFiles(tmpBaseDir))
 
                 for (var index in tmpFiles) {
                     var tmpCatName = tmpFiles[index];
                     var tmpBasePath = tmpBaseDir + tmpCatName + '/';
-                    var tmpDetails = $.await($.bld.getJsonFile(tmpBasePath + 'cat-info.json'))
+                    var tmpDetails = await($.bld.getJsonFile(tmpBasePath + 'cat-info.json'))
                     var tmpTitle = tmpDetails.title || "(untitled)";
 
                     var tmpCat = {
@@ -272,7 +272,7 @@ module.exports.setup = function setup(scope) {
                 reject(error);
             }
 
-        }));
+        });
 
 
 
@@ -281,7 +281,7 @@ module.exports.setup = function setup(scope) {
 
     function getApplicationsNode() {
         var self = this;
-        return new Promise($.async(function (resolve, reject) {
+        return new Promise( async function (resolve, reject) {
             try {
 
 
@@ -300,12 +300,12 @@ module.exports.setup = function setup(scope) {
 
                 var tmpWSDir = scope.locals.path.ws.uiApps;
 
-                var tmpFiles = $.await($.bld.getDirFiles(tmpWSDir))
+                var tmpFiles = await($.bld.getDirFiles(tmpWSDir))
 
                 for (var index in tmpFiles) {
                     var tmpAppName = tmpFiles[index];
                     var tmpAppBase = tmpWSDir + tmpAppName + '/';
-                    var tmpAppDetails = $.await($.bld.getJsonFile(tmpAppBase + 'app-info.json'))
+                    var tmpAppDetails = await($.bld.getJsonFile(tmpAppBase + 'app-info.json'))
                     var tmpAppTitle = tmpAppDetails.title || "(untitled)";
 
                     var tmpApp = {
@@ -335,7 +335,7 @@ module.exports.setup = function setup(scope) {
                 reject(error);
             }
 
-        }));
+        });
 
 
 
@@ -344,7 +344,7 @@ module.exports.setup = function setup(scope) {
 
     function getAllApplicationsDetailsNode() {
         var self = this;
-        return new Promise($.async(function (resolve, reject) {
+        return new Promise( async function (resolve, reject) {
             try {
 
 
@@ -363,12 +363,12 @@ module.exports.setup = function setup(scope) {
 
                 var tmpWSDir = scope.locals.path.ws.uiApps;
 
-                var tmpFiles = $.await($.bld.getDirFiles(tmpWSDir))
+                var tmpFiles = await($.bld.getDirFiles(tmpWSDir))
 
                 for (var index in tmpFiles) {
                     var tmpAppName = tmpFiles[index];
                     var tmpAppBase = tmpWSDir + tmpAppName + '/';
-                    var tmpAppDetails = $.await($.bld.getJsonFile(tmpAppBase + 'app-info.json'))
+                    var tmpAppDetails = await($.bld.getJsonFile(tmpAppBase + 'app-info.json'))
                     var tmpAppTitle = tmpAppDetails.title || "(untitled)";
 
                     var tmpApp = {
@@ -388,10 +388,10 @@ module.exports.setup = function setup(scope) {
                         "group": "workspace-outline"
                     }
 
-                    var tmpPagesNode = $.await(getPagesNode({ appname: tmpAppName }));
+                    var tmpPagesNode = await(getPagesNode({ appname: tmpAppName }));
                     tmpApp.content.push(tmpPagesNode);
 
-                    var tmpAppRes = $.await(getWSResourcesNode({baseURL: tmpAppBase + 'catalog/', appname: tmpAppName}));
+                    var tmpAppRes = await(getWSResourcesNode({baseURL: tmpAppBase + 'catalog/', appname: tmpAppName}));
 
                     if (tmpAppRes && tmpAppRes.content && tmpAppRes.content.length) {
                         tmpApp.content.push(tmpAppRes);
@@ -411,7 +411,7 @@ module.exports.setup = function setup(scope) {
                 reject(error);
             }
 
-        }));
+        });
 
 
 
@@ -421,7 +421,7 @@ module.exports.setup = function setup(scope) {
 
 
 
-        return new Promise($.async(function (resolve, reject) {
+        return new Promise( async function (resolve, reject) {
             try {
 
                 var tmpOptions = theOptions || {};
@@ -455,7 +455,7 @@ module.exports.setup = function setup(scope) {
                 }
 
 
-                var tmpFiles = $.await($.bld.getDirFiles(tmpPagesDir))
+                var tmpFiles = await($.bld.getDirFiles(tmpPagesDir))
 
                 var tmpAppName = '';
                 if (tmpOptions.appname) {
@@ -490,8 +490,8 @@ module.exports.setup = function setup(scope) {
                         content: []
                     }
 
-                    //var tmpPageRes = $.await(getWSResourcesNode(tmpPageBase, tmpPage, tmpAppName, tmpPageName));
-                    var tmpPageRes = $.await(getWSResourcesNode({baseURL: tmpPageBase, appname: tmpAppName, pagename: tmpPageName, baseObject: tmpPage}));
+                    //var tmpPageRes = await(getWSResourcesNode(tmpPageBase, tmpPage, tmpAppName, tmpPageName));
+                    var tmpPageRes = await(getWSResourcesNode({baseURL: tmpPageBase, appname: tmpAppName, pagename: tmpPageName, baseObject: tmpPage}));
 
                     if (tmpPageRes && tmpPageRes.content && tmpPageRes.content.length) {
                         //tmpPage.content.push(tmpPageRes);
@@ -513,7 +513,7 @@ module.exports.setup = function setup(scope) {
                 reject(error);
             }
 
-        }));
+        });
 
 
 
@@ -524,7 +524,7 @@ module.exports.setup = function setup(scope) {
     function getWSResourcesNode(theOptions) {
        
         
-        return new Promise($.async(function (resolve, reject) {
+        return new Promise( async function (resolve, reject) {
             try {
 
                 var tmpOptions = theOptions || {};
@@ -596,7 +596,7 @@ module.exports.setup = function setup(scope) {
                         tmpBaseDir = tmpCatsDir + '/' + tmpCatName + '/' + tmpType.dir + '/';
                     }
 
-                    var tmpFiles = $.await($.bld.getDirFiles(tmpBaseDir));
+                    var tmpFiles = await($.bld.getDirFiles(tmpBaseDir));
                     for (var index in tmpFiles) {
                         var tmpFileName = tmpFiles[index];
                         var tmpShowName = tmpFileName
@@ -671,7 +671,7 @@ module.exports.setup = function setup(scope) {
                 reject(error);
             }
 
-        }));
+        });
 
 
 
@@ -682,10 +682,10 @@ module.exports.setup = function setup(scope) {
 
     //====== IMPORTANT --- --- --- --- --- --- --- --- --- --- 
     //====== End of Module / setup ==== Nothing new below this
-    return $.async(function processReq(req, res, next) {
+    return  async function processReq(req, res, next) {
         try {
             var tmpRoute = new Route();
-            var tmpResults = $.await(tmpRoute.run(req, res, next));
+            var tmpResults = await(tmpRoute.run(req, res, next));
 
             //--- Getting documents to use directly by source, 
             //    .. do not wrap the success flag
@@ -693,7 +693,7 @@ module.exports.setup = function setup(scope) {
         } catch (ex) {
             res.json({ status: false, error: ex.toString() })
         }
-    })
+    }
 };
 
 

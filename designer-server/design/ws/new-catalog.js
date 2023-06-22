@@ -18,7 +18,7 @@ module.exports.setup = function setup(scope) {
     //--- Load the prototype
     base.run = function (req, res, next) {
         var self = this;
-        return new Promise($.async(function (resolve, reject) {
+        return new Promise( async function (resolve, reject) {
             try {
 
                 var tmpBody = req.body || {};
@@ -40,24 +40,24 @@ module.exports.setup = function setup(scope) {
                 var tmpWSDir = scope.locals.path.ws.catalogs;
                 var tmpCatBase = tmpWSDir + tmpCatName + '/';
 
-                // var tmpBuildCfg = $.await($.bld.getBuildConfigJson(scope));
+                // var tmpBuildCfg = await($.bld.getBuildConfigJson(scope));
                 // var tmpFromDir = scope.locals.path.root + '/' + tmpBuildCfg.applicationTemplateLocation + tmpTemplate + '/';
                 // var tmpToDir = tmpCatBase;
 
-                // $.await($.fs.copy(tmpFromDir,tmpToDir));
+                // await($.fs.copy(tmpFromDir,tmpToDir));
 
-                $.await($.fs.ensureDir(tmpCatBase));
-                $.await($.fs.ensureDir(tmpCatBase + 'panels/'));
-                $.await($.fs.ensureDir(tmpCatBase + 'controls/'));
-                $.await($.fs.ensureDir(tmpCatBase + 'tpl/'));
-                $.await($.fs.ensureDir(tmpCatBase + 'html/'));
+                await($.fs.ensureDir(tmpCatBase));
+                await($.fs.ensureDir(tmpCatBase + 'panels/'));
+                await($.fs.ensureDir(tmpCatBase + 'controls/'));
+                await($.fs.ensureDir(tmpCatBase + 'tpl/'));
+                await($.fs.ensureDir(tmpCatBase + 'html/'));
 
-                var tmpCatDetails = $.await($.bld.getJsonFile(tmpCatBase + 'cat-info.json'));
+                var tmpCatDetails = await($.bld.getJsonFile(tmpCatBase + 'cat-info.json'));
                 tmpCatDetails.title = tmpCatTitle;
                 tmpCatDetails.details = tmpCatDesc || '';
                 tmpCatDetails.name = tmpCatName;
                 
-                $.await($.bld.saveJsonFile(tmpCatBase + 'cat-info.json', tmpCatDetails))
+                await($.bld.saveJsonFile(tmpCatBase + 'cat-info.json', tmpCatDetails))
 
                 // $.bld.buildApp(tmpCatName, scope).then(function(theReply){
                 //     var tmpRet = {status: true};
@@ -73,7 +73,7 @@ module.exports.setup = function setup(scope) {
                 reject(error);
             }
 
-        }));
+        });
 
 
 
@@ -85,10 +85,10 @@ module.exports.setup = function setup(scope) {
 
     //====== IMPORTANT --- --- --- --- --- --- --- --- --- --- 
     //====== End of Module / setup ==== Nothing new below this
-    return $.async(function processReq(req, res, next) {
+    return  async function processReq(req, res, next) {
         try {
             var tmpRoute = new Route();
-            var tmpResults = $.await(tmpRoute.run(req, res, next));
+            var tmpResults = await(tmpRoute.run(req, res, next));
 
             //--- Getting documents to use directly by source, 
             //    .. do not wrap the success flag
@@ -96,7 +96,7 @@ module.exports.setup = function setup(scope) {
         } catch (ex) {
             res.json({ status: false, error: ex.toString() })
         }
-    })
+    }
 };
 
 

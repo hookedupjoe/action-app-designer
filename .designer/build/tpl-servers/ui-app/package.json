@@ -1,12 +1,11 @@
 {
-  "name": "com-hookedup-action-app-change-this-name",
-  "version": "1.0.2",
+  "name": "actapp-change-this-name",
+  "version": "1.0.0",
   "scripts": {
     "init": "npm install",
     "start": "node app.js"
   },
   "dependencies": {
-    "asyncawait": "^1.0.6",
     "body-parser": "^1.15.2",
     "child_process": "^1.0.2",
     "cookie-parser": "^1.4.3",

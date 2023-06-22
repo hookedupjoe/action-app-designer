@@ -17,7 +17,7 @@ module.exports.setup = function setup(scope) {
     //--- Load the prototype
     base.run = function (req, res, next) {
         var self = this;
-        return new Promise($.async(function (resolve, reject) {
+        return new Promise( async function (resolve, reject) {
             try {
                 var tmpWSDir = scope.locals.path.ws.uiApps;
 
@@ -25,11 +25,11 @@ module.exports.setup = function setup(scope) {
                 tmpAppName = tmpAppName
                     .replace('.json', '')
                 var tmpAppBase = tmpWSDir + tmpAppName + '/';
-                var tmpAppDetails = $.await($.bld.getJsonFile(tmpAppBase + 'app-info.json'))
+                var tmpAppDetails = await($.bld.getJsonFile(tmpAppBase + 'app-info.json'))
                 var tmpAppTitle = tmpAppDetails.title || "(untitled)";
 
                 var tmpPagesBase = tmpAppBase + '/app/pages/';
-                var tmpPages = $.await($.bld.getDirFiles(tmpPagesBase))
+                var tmpPages = await($.bld.getDirFiles(tmpPagesBase))
               
                 var tmpApp = {
                     "ctl": "tbl-ol-node",                    
@@ -120,7 +120,7 @@ module.exports.setup = function setup(scope) {
                 reject(error);
             }
 
-        }));
+        });
 
 
 
@@ -132,10 +132,10 @@ module.exports.setup = function setup(scope) {
 
     //====== IMPORTANT --- --- --- --- --- --- --- --- --- --- 
     //====== End of Module / setup ==== Nothing new below this
-    return $.async(function processReq(req, res, next) {
+    return  async function processReq(req, res, next) {
         try {
             var tmpRoute = new Route();
-            var tmpResults = $.await(tmpRoute.run(req, res, next));
+            var tmpResults = await(tmpRoute.run(req, res, next));
 
             //--- Getting documents to use directly by source, 
             //    .. do not wrap the success flag
@@ -143,7 +143,7 @@ module.exports.setup = function setup(scope) {
         } catch (ex) {
             res.json({ status: false, error: ex.toString() })
         }
-    })
+    }
 };
 
 

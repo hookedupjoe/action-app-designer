@@ -17,7 +17,7 @@ module.exports.setup = function setup(scope) {
     //--- Load the prototype
     base.run = function (req, res, next) {
         var self = this;
-        return new Promise($.async(function (resolve, reject) {
+        return new Promise( async function (resolve, reject) {
             try {
                 var tmpWSDir = scope.locals.path.ws.uiApps;
                 var tmpReq = {
@@ -52,14 +52,14 @@ module.exports.setup = function setup(scope) {
                 var tmpThisPageSpecsText = 'var thisPageSpecs = ' + JSON.stringify(tmpSpecs, null, '\t');
 
                 var tmpAppBase = tmpWSDir + tmpAppName + '/';
-                var tmpAppDetails = $.await($.bld.getJsonFile(tmpAppBase + 'app-info.json'))
+                var tmpAppDetails = await($.bld.getJsonFile(tmpAppBase + 'app-info.json'))
                 var tmpAppTitle = tmpAppDetails.title || '';
 
                 if (!(tmpAppTitle)) {
                     throw ("Application " + tmpAppName + " not found");
                 }
                 var tmpPagesBase = tmpAppBase + '/app/pages/';
-                var tmpPages = $.await($.bld.getDirFiles(tmpPagesBase))
+                var tmpPages = await($.bld.getDirFiles(tmpPagesBase))
 
                 if (tmpPages.indexOf(tmpPageName) > -1) {
                     //  throw "Page " + tmpPageName + " already exists"
@@ -67,7 +67,7 @@ module.exports.setup = function setup(scope) {
 
 
                 var tmpPartsLoc = scope.locals.path.designer + '/build/tpl-page/';
-                var tmpTpl = $.await($.bld.getTextFile(tmpPartsLoc + 'tpl-index.js'))
+                var tmpTpl = await($.bld.getTextFile(tmpPartsLoc + 'tpl-index.js'))
 
                 var tmpTplParts = tmpTpl.split("//~");
                 var tmpTplIndex = {
@@ -107,8 +107,8 @@ module.exports.setup = function setup(scope) {
 
                 var tmpNewPageBase = tmpPagesBase + tmpPageName + '/';
 
-                $.await($.fs.ensureDir(tmpNewPageBase))
-                $.await($.fs.writeFile(tmpNewPageBase + 'index.js', tmpNewPage))
+                await($.fs.ensureDir(tmpNewPageBase))
+                await($.fs.writeFile(tmpNewPageBase + 'index.js', tmpNewPage))
 
                 var tmpRet = {
                     status: true,
@@ -123,7 +123,7 @@ module.exports.setup = function setup(scope) {
                 reject(error);
             }
 
-        }));
+        });
 
 
 
@@ -135,10 +135,10 @@ module.exports.setup = function setup(scope) {
 
     //====== IMPORTANT --- --- --- --- --- --- --- --- --- --- 
     //====== End of Module / setup ==== Nothing new below this
-    return $.async(function processReq(req, res, next) {
+    return  async function processReq(req, res, next) {
         try {
             var tmpRoute = new Route();
-            var tmpResults = $.await(tmpRoute.run(req, res, next));
+            var tmpResults = await(tmpRoute.run(req, res, next));
 
             //--- Getting documents to use directly by source, 
             //    .. do not wrap the success flag
@@ -146,7 +146,7 @@ module.exports.setup = function setup(scope) {
         } catch (ex) {
             res.json({ status: false, error: ex.toString() })
         }
-    })
+    }
 
 
     function wrapIt(theString) {

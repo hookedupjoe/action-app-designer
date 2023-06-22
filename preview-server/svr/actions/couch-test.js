@@ -19,7 +19,7 @@ module.exports.setup = function setup(scope) {
     //--- Load the prototype
     base.run = function (req, res, next) {
         var self = this;
-        return new Promise($.async(function (resolve, reject) {
+        return new Promise( async function (resolve, reject) {
             try {
 
              
@@ -35,7 +35,7 @@ module.exports.setup = function setup(scope) {
                 reject(error);
             }
 
-        }));
+        });
 
 
 
@@ -49,10 +49,10 @@ module.exports.setup = function setup(scope) {
 
     //====== IMPORTANT --- --- --- --- --- --- --- --- --- --- 
     //====== End of Module / setup ==== Nothing new below this
-    return $.async(function processReq(req, res, next) {
+    return  async function processReq(req, res, next) {
         try {
             var tmpRoute = new Route();
-            var tmpResults = $.await(tmpRoute.run(req, res, next));
+            var tmpResults = await(tmpRoute.run(req, res, next));
 
             var tmpNoSQLAccountInfo = {
                 "url": "http://localhost:5984/",
@@ -64,7 +64,7 @@ module.exports.setup = function setup(scope) {
             var tmpViewURI  = '/_design/report-all-mock/_view/docs'; //'/_design/sys_view_doctypes/_view/all'
             
             var tmpDB = accountDefault.getDatabase(tmpDBName);
-            var tmpFoundDocs = $.await(tmpDB.getDocumentsByViewKeys(tmpViewURI ));
+            var tmpFoundDocs = await(tmpDB.getDocumentsByViewKeys(tmpViewURI ));
 
             res.json({
                 nosql:true,
@@ -76,5 +76,5 @@ module.exports.setup = function setup(scope) {
         } catch (ex) {
             res.json({ status: false, error: ex.toString() })
         }
-    })
+    }
 };

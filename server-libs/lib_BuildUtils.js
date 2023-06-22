@@ -150,7 +150,7 @@ function getDirApps() {
 function updateCatSetup(theName, theSetupDetails, scope) {
     // console.log( 'updateCatSetup', theName, theSetupDetails);
     var self = this;
-    return new Promise($.async(function (resolve, reject) {
+    return new Promise( async function (resolve, reject) {
         try {
             var bld = $.bld;
             var tmpName = theName || '';
@@ -162,8 +162,8 @@ function updateCatSetup(theName, theSetupDetails, scope) {
 
             var tmpAppBase = tmpWSDir + tmpName + '/';
             // console.log( 'Saving to ', tmpAppBase, theSetupDetails);
-            $.await(utils.saveJsonFile(tmpAppBase + 'cat-info.json', theSetupDetails))
-            //$.await(buildApp(tmpName, scope));
+            await(utils.saveJsonFile(tmpAppBase + 'cat-info.json', theSetupDetails))
+            //await(buildApp(tmpName, scope));
 
             var tmpRet = {
                 status: true,
@@ -178,7 +178,7 @@ function updateCatSetup(theName, theSetupDetails, scope) {
             reject(error);
         }
 
-    }));
+    });
 
 
 
@@ -187,7 +187,7 @@ function updateCatSetup(theName, theSetupDetails, scope) {
 function updateAppSetup(theAppName, theSetupDetails, scope) {
     // console.log( 'updateAppSetup', theAppName, theSetupDetails);
     var self = this;
-    return new Promise($.async(function (resolve, reject) {
+    return new Promise( async function (resolve, reject) {
         try {
             var bld = $.bld;
             var tmpAppName = theAppName || '';
@@ -199,8 +199,8 @@ function updateAppSetup(theAppName, theSetupDetails, scope) {
 
             var tmpAppBase = tmpWSDir + tmpAppName + '/';
             // console.log( 'Saving to ', tmpAppBase, theSetupDetails);
-            $.await(utils.saveJsonFile(tmpAppBase + 'app-info.json', theSetupDetails))
-            $.await(buildApp(tmpAppName, scope));
+            await(utils.saveJsonFile(tmpAppBase + 'app-info.json', theSetupDetails))
+            await(buildApp(tmpAppName, scope));
 
             var tmpRet = {
                 status: true,
@@ -215,7 +215,7 @@ function updateAppSetup(theAppName, theSetupDetails, scope) {
             reject(error);
         }
 
-    }));
+    });
 
 
 
@@ -223,7 +223,7 @@ function updateAppSetup(theAppName, theSetupDetails, scope) {
 
 function buildApp(theAppName, scope, theOptions) {
     var self = this;
-    return new Promise($.async(function (resolve, reject) {
+    return new Promise( async function (resolve, reject) {
         try {
             var tmpOptions = theOptions || {};
 
@@ -237,18 +237,18 @@ function buildApp(theAppName, scope, theOptions) {
             var tmpDeployDir = scope.locals.path.ws.deploy;
 
             var tmpAppBase = tmpWSDir + tmpAppName + '/';
-            var tmpAppDetails = $.await(utils.getJsonFile(tmpAppBase + 'app-info.json'))
+            var tmpAppDetails = await(utils.getJsonFile(tmpAppBase + 'app-info.json'))
 
             if (tmpOptions.deployType === 'cordova') {
                 tmpDeployDir += 'cordova/';
                 tmpDeployDir += tmpAppName + '/CordovaApp/www/';
-                $.await($.fs.ensureDir(tmpDeployDir));
+                await($.fs.ensureDir(tmpDeployDir));
             } else {
                 tmpDeployDir += tmpAppName + '/ui-app/';
-                $.await($.fs.ensureDir(tmpDeployDir));
+                await($.fs.ensureDir(tmpDeployDir));
             }
 
-            var tmpBuildCfg = $.await(utils.getBuildConfigJson(scope));
+            var tmpBuildCfg = await(utils.getBuildConfigJson(scope));
 
             if (typeof (tmpOptions.cdn) === 'string') {
                 tmpAppDetails.cdn = tmpOptions.cdn;
@@ -261,8 +261,8 @@ function buildApp(theAppName, scope, theOptions) {
             if (tmpOptions.deployType === 'cordova') {
                 tmpPartsLoc += 'cordova/';
             }
-            var tmpIndex = $.await(utils.getTextFile(tmpPartsLoc + 'tpl-index.html'))
-            var tmpApp = $.await(utils.getTextFile(tmpPartsLoc + 'tpl-app-js.txt'))
+            var tmpIndex = await(utils.getTextFile(tmpPartsLoc + 'tpl-index.html'))
+            var tmpApp = await(utils.getTextFile(tmpPartsLoc + 'tpl-app-js.txt'))
 
             var tmpLibLocs = utils.getIndexFromArray(tmpBuildCfg.libraryLocations, 'name');
             if (tmpOptions.deployType === 'cordova') {
@@ -444,10 +444,10 @@ function buildApp(theAppName, scope, theOptions) {
 
             tmpIndex = utils.replaceFromMap(tmpIndex, tmpIndexMap);
             
-            $.await(utils.replaceFile(tmpAppBase + 'index.html', tmpIndex))
+            await(utils.replaceFile(tmpAppBase + 'index.html', tmpIndex))
 
             tmpApp = utils.replaceFromMap(tmpApp, tmpAppMap);
-            $.await(utils.replaceFile(tmpAppBase + 'app/app.js', tmpApp))
+            await(utils.replaceFile(tmpAppBase + 'app/app.js', tmpApp))
 
             var tmpRet = {
                 status: true,
@@ -462,7 +462,7 @@ function buildApp(theAppName, scope, theOptions) {
             reject(error);
         }
 
-    }));
+    });
 
 
 
@@ -495,7 +495,6 @@ function replaceFromMap(theString, theMap) {
     return tmpRet;
 }
 
-
 function settingsHome() {
     const tmpHomeDir = $.os.homedir();
     return tmpHomeDir + '/.actapp/';
@@ -510,7 +509,7 @@ function getBuildConfigJson(scope) {
 
 //--- Replace File
 function replaceFile(theFilename, theValue) {
-    return new Promise($.async(function (resolve, reject) {
+    return new Promise( async function (resolve, reject) {
         try {
             $.fs.writeFile(theFilename, theValue, 'utf8', function (err, theContent) {
                 if (err) {
@@ -525,12 +524,12 @@ function replaceFile(theFilename, theValue) {
             resolve(false)
         }
 
-    }));
+    });
 }
 
 //--- Like readFile but returns "" if not there
 function getTextFile(theFilename) {
-    return new Promise($.async(function (resolve, reject) {
+    return new Promise( async function (resolve, reject) {
         try {
             $.fs.readFile(theFilename, 'utf8', function (err, theContent) {
                 if (err) {
@@ -544,12 +543,12 @@ function getTextFile(theFilename) {
             resolve("")
         }
 
-    }));
+    });
 }
 
 //--- Like readJson but returns {} if not there
 function getJsonFile(theFilename) {
-    return new Promise($.async(function (resolve, reject) {
+    return new Promise( async function (resolve, reject) {
         try {
             $.fs.readJson(theFilename, function (err, theObj) {
                 if (err) {
@@ -563,7 +562,7 @@ function getJsonFile(theFilename) {
             resolve({})
         }
 
-    }));
+    });
 }
 
 
@@ -579,7 +578,7 @@ function saveJsonFile(theFilename, theObject) {
 
 //--- Like readJson but returns [] if not there
 function getDirFiles(theDirectory) {
-    return new Promise($.async(function (resolve, reject) {
+    return new Promise( async function (resolve, reject) {
         try {
             $.fs.readdir(theDirectory, function (err, files) {
                 if (err) {
@@ -591,13 +590,6 @@ function getDirFiles(theDirectory) {
         catch (error) {
             resolve([])
         }
-    }));
-
-
-
-
+    });
 
 }
-
-
-

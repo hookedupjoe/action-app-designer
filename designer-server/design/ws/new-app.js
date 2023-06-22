@@ -18,7 +18,7 @@ module.exports.setup = function setup(scope) {
     //--- Load the prototype
     base.run = function (req, res, next) {
         var self = this;
-        return new Promise($.async(function (resolve, reject) {
+        return new Promise( async function (resolve, reject) {
             try {
 
                 
@@ -46,18 +46,18 @@ module.exports.setup = function setup(scope) {
                 var tmpWSDir = scope.locals.path.ws.uiApps;
                 var tmpAppBase = tmpWSDir + tmpAppName + '/';
 
-                var tmpBuildCfg = $.await($.bld.getBuildConfigJson(scope));
+                var tmpBuildCfg = await($.bld.getBuildConfigJson(scope));
                 var tmpFromDir = scope.locals.path.root + '/' + tmpBuildCfg.applicationTemplateLocation + tmpTemplate + '/';
                 var tmpToDir = tmpAppBase;
 
-                $.await($.fs.copy(tmpFromDir,tmpToDir));
+                await($.fs.copy(tmpFromDir,tmpToDir));
 
-                var tmpAppDetails = $.await($.bld.getJsonFile(tmpAppBase + 'app-info.json'));
+                var tmpAppDetails = await($.bld.getJsonFile(tmpAppBase + 'app-info.json'));
                 tmpAppDetails.title = tmpAppTitle;
                 tmpAppDetails.details = tmpAppDesc || '';
                 tmpAppDetails.name = tmpAppName;
                 
-                $.await($.bld.saveJsonFile(tmpAppBase + 'app-info.json', tmpAppDetails))
+                await($.bld.saveJsonFile(tmpAppBase + 'app-info.json', tmpAppDetails))
 
                 $.bld.buildApp(tmpAppName, scope).then(function(theReply){
                     var tmpRet = {status: true};
@@ -71,7 +71,7 @@ module.exports.setup = function setup(scope) {
                 reject(error);
             }
 
-        }));
+        });
 
 
 
@@ -83,10 +83,10 @@ module.exports.setup = function setup(scope) {
 
     //====== IMPORTANT --- --- --- --- --- --- --- --- --- --- 
     //====== End of Module / setup ==== Nothing new below this
-    return $.async(function processReq(req, res, next) {
+    return  async function processReq(req, res, next) {
         try {
             var tmpRoute = new Route();
-            var tmpResults = $.await(tmpRoute.run(req, res, next));
+            var tmpResults = await(tmpRoute.run(req, res, next));
 
             //--- Getting documents to use directly by source, 
             //    .. do not wrap the success flag
@@ -94,7 +94,7 @@ module.exports.setup = function setup(scope) {
         } catch (ex) {
             res.json({ status: false, error: ex.toString() })
         }
-    })
+    }
 };
 
 

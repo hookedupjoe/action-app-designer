@@ -60,7 +60,7 @@ function homeDir() {
 
 //--- Replace File
 function replaceFile(theFilename, theValue){
-  return new Promise($.async(function (resolve, reject) {
+  return new Promise( async function (resolve, reject) {
     try {
         $.fs.writeFile(theFilename, theValue, 'utf8', function (err, theContent) {
             if (err) {
@@ -74,12 +74,12 @@ function replaceFile(theFilename, theValue){
         resolve(false)
     }
   
-  }));
+  });
 }
 
 //--- Like readFile but returns "" if not there
 function getTextFile(theFilename){
-  return new Promise($.async(function (resolve, reject) {
+  return new Promise( async function (resolve, reject) {
     try {
         $.fs.readFile(theFilename, 'utf8', function (err, theContent) {
             if (err) {
@@ -93,12 +93,12 @@ function getTextFile(theFilename){
         resolve("")
     }
   
-  }));
+  });
 }
 
 //--- Like readJson but returns {} if not there
 function getJsonFile(theFilename){
-  return new Promise($.async(function (resolve, reject) {
+  return new Promise( async function (resolve, reject) {
     try {
         $.fs.readJson(theFilename, function (err, theObj) {
             if (err) {
@@ -112,7 +112,7 @@ function getJsonFile(theFilename){
         resolve({})
     }
   
-  }));
+  });
 }
 
 
@@ -128,7 +128,7 @@ function saveJsonFile(theFilename, theObject){
 
 //--- Like readJson but returns [] if not there
 function getDirFiles(theDirectory){
-  return new Promise($.async(function (resolve, reject) {
+  return new Promise( async function (resolve, reject) {
     try {
         $.fs.readdir(theDirectory, function (err, files) {
             if (err) {
@@ -140,11 +140,7 @@ function getDirFiles(theDirectory){
     catch (error) {
       resolve([])
     }
-  }));
-
-  
-
- 
+  });
 
 }
 

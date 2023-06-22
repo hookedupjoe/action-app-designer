@@ -17,7 +17,7 @@ module.exports = function(theScope){
 
 
 function runTest(){
-  return new Promise($.async(function (resolve, reject) {
+  return new Promise( async function (resolve, reject) {
     try {
     
       resolve( true );
@@ -27,7 +27,7 @@ function runTest(){
     catch (error) {
       resolve(false)
     }
-  }));
+  });
 
   
 

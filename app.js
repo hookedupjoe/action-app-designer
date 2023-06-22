@@ -66,7 +66,7 @@ app.all('*', function(req, res, next) {
 
 function setup() {
 
-    return new Promise($.async(function (resolve, reject) {
+    return new Promise( async function (resolve, reject) {
         try {
             var tmpSettingsDir = bld.settingsHome();
             var tmpStaticDir = '/ui-app';
@@ -74,9 +74,9 @@ function setup() {
             //--- See if setup, if not, do the setup screen
             if (tmpSettingsDir) {
                 
-                $.await(fs.ensureDir(tmpSettingsDir));
+                await(fs.ensureDir(tmpSettingsDir));
 
-                var tmpSetup = $.await(bld.getJsonFile(tmpSettingsDir + '/setup.json'));
+                var tmpSetup = await(bld.getJsonFile(tmpSettingsDir + '/setup.json'));
                 if (tmpSetup && tmpSetup.rootDir){
                     tmpWSDirectory = tmpSetup.rootDir
                 } else {
@@ -200,7 +200,7 @@ function setup() {
             resolve("")
         }
 
-    }));
+    });
 }
 
 
