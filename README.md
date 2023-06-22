@@ -10,6 +10,6 @@ Designed to build applications using the Action App environment
 * npm start
 
 # For More Information
-* See details about the action app library at [Action App](https://actionapp.hoookedup.com/).
-* See WordPress version at [Action App WordPress](https://wp.actionapp.hoookedup.com/).
+* See WordPress version at [Action App WordPress](https://wp.actionapp.hookedup.com/).
+* See (older) details about the action app library at [Action App](https://actionapp.hookedup.com/).
 * TBD: Designer Documentation
