@@ -25,14 +25,208 @@ var ActionAppCore = {
                 var tmpURL = tmpBaseURL + "catalogs/" + theCatName + '/' + tmpResType + '/' + theResName;
                 return tmpURL
             }
-        },
-        sources: {
-
         }
     },
+    sources: {
+        yesno: 'Yes,No',
+        states: 'Alabama|AL,Alaska|AK,Arizona|AZ,Arkansas|AR,California|CA,Colorado|CO,Connecticut|CT,Delaware|DE,District Of Columbia|DC,Florida|FL,Georgia|GA,Hawaii|HI,Idaho|ID,Illinois|IL,Indiana|IN,Iowa|IA,Kansas|KS,Kentucky|KY,Louisiana|LA,Maine|ME,Maryland|MD,Massachusetts|MA,Michigan|MI,Minnesota|MN,Mississippi|MS,Missouri|MO,Montana|MT,Nebraska|NE,Nevada|NV,New Hampshire|NH,New Jersey|NJ,New Mexico|NM,New York|NY,North Carolina|NC,North Dakota|ND,Ohio|OH,Oklahoma|OK,Oregon|OR,Pennsylvania|PA,Rhode Island|RI,South Carolina|SC,South Dakota|SD,Tennessee|TN,Texas|TX,Utah|UT,Vermont|VT,Virginia|VA,Washington|WA,West Virginia|WV,Wisconsin|WI,Wyoming|WY',
+        countries: 'Afghanistan|AF,Åland Islands|AX,Albania|AL,Algeria|DZ,American Samoa|AS,Andorra|AD,Angola|AO,Anguilla|AI,Antarctica|AQ,Antigua and Barbuda|AG,Argentina|AR,Armenia|AM,Aruba|AW,Australia|AU,Austria|AT,Azerbaijan|AZ,Bahamas|BS,Bahrain|BH,Bangladesh|BD,Barbados|BB,Belarus|BY,Belgium|BE,Belize|BZ,Benin|BJ,Bermuda|BM,Bhutan|BT,Bolivia, Plurinational State of|BO,Bonaire, Sint Eustatius and Saba|BQ,Bosnia and Herzegovina|BA,Botswana|BW,Bouvet Island|BV,Brazil|BR,British Indian Ocean Territory|IO,Brunei Darussalam|BN,Bulgaria|BG,Burkina Faso|BF,Burundi|BI,Cambodia|KH,Cameroon|CM,Canada|CA,Cape Verde|CV,Cayman Islands|KY,Central African Republic|CF,Chad|TD,Chile|CL,China|CN,Christmas Island|CX,Cocos (Keeling) Islands|CC,Colombia|CO,Comoros|KM,Congo|CG,Congo, the Democratic Republic of the|CD,Cook Islands|CK,Costa Rica|CR,Côte d\'Ivoire|CI,Croatia|HR,Cuba|CU,Curaçao|CW,Cyprus|CY,Czech Republic|CZ,Denmark|DK,Djibouti|DJ,Dominica|DM,Dominican Republic|DO,Ecuador|EC,Egypt|EG,El Salvador|SV,Equatorial Guinea|GQ,Eritrea|ER,Estonia|EE,Ethiopia|ET,Falkland Islands (Malvinas|FK,Faroe Islands|FO,Fiji|FJ,Finland|FI,France|FR,French Guiana|GF,French Polynesia|PF,French Southern Territories|TF,Gabon|GA,Gambia|GM,Georgia|GE,Germany|DE,Ghana|GH,Gibraltar|GI,Greece|GR,Greenland|GL,Grenada|GD,Guadeloupe|GP,Guam|GU,Guatemala|GT,Guernsey|GG,Guinea|GN,Guinea-Bissau|GW,Guyana|GY,Haiti|HT,Heard Island and McDonald Islands|HM,Holy See (Vatican City State|VA,Honduras|HN,Hong Kong|HK,Hungary|HU,Iceland|IS,India|IN,Indonesia|ID,Iran, Islamic Republic of|IR,Iraq|IQ,Ireland|IE,Isle of Man|IM,Israel|IL,Italy|IT,Jamaica|JM,Japan|JP,Jersey|JE,Jordan|JO,Kazakhstan|KZ,Kenya|KE,Kiribati|KI,Korea, Democratic People\'s Republic of|KP,Korea, Republic of|KR,Kuwait|KW,Kyrgyzstan|KG,Lao People\'s Democratic Republic|LA,Latvia|LV,Lebanon|LB,Lesotho|LS,Liberia|LR,Libya|LY,Liechtenstein|LI,Lithuania|LT,Luxembourg|LU,Macao|MO,Macedonia, the former Yugoslav Republic of|MK,Madagascar|MG,Malawi|MW,Malaysia|MY,Maldives|MV,Mali|ML,Malta|MT,Marshall Islands|MH,Martinique|MQ,Mauritania|MR,Mauritius|MU,Mayotte|YT,Mexico|MX,Micronesia, Federated States of|FM,Moldova, Republic of|MD,Monaco|MC,Mongolia|MN,Montenegro|ME,Montserrat|MS,Morocco|MA,Mozambique|MZ,Myanmar|MM,Namibia|NA,Nauru|NR,Nepal|NP,Netherlands|NL,New Caledonia|NC,New Zealand|NZ,Nicaragua|NI,Niger|NE,Nigeria|NG,Niue|NU,Norfolk Island|NF,Northern Mariana Islands|MP,Norway|NO,Oman|OM,Pakistan|PK,Palau|PW,Palestinian Territory, Occupied|PS,Panama|PA,Papua New Guinea|PG,Paraguay|PY,Peru|PE,Philippines|PH,Pitcairn|PN,Poland|PL,Portugal|PT,Puerto Rico|PR,Qatar|QA,Réunion|RE,Romania|RO,Russian Federation|RU,Rwanda|RW,Saint Barthélemy|BL,Saint Helena, Ascension and Tristan da Cunha|SH,Saint Kitts and Nevis|KN,Saint Lucia|LC,Saint Martin (French part|MF,Saint Pierre and Miquelon|PM,Saint Vincent and the Grenadines|VC,Samoa|WS,San Marino|SM,Sao Tome and Principe|ST,Saudi Arabia|SA,Senegal|SN,Serbia|RS,Seychelles|SC,Sierra Leone|SL,Singapore|SG,Sint Maarten (Dutch part|SX,Slovakia|SK,Slovenia|SI,Solomon Islands|SB,Somalia|SO,South Africa|ZA,South Georgia and the South Sandwich Islands|GS,South Sudan|SS,Spain|ES,Sri Lanka|LK,Sudan|SD,Suriname|SR,Svalbard and Jan Mayen|SJ,Swaziland|SZ,Sweden|SE,Switzerland|CH,Syrian Arab Republic|SY,Taiwan, Province of China|TW,Tajikistan|TJ,Tanzania, United Republic of|TZ,Thailand|TH,Timor-Leste|TL,Togo|TG,Tokelau|TK,Tonga|TO,Trinidad and Tobago|TT,Tunisia|TN,Turkey|TR,Turkmenistan|TM,Turks and Caicos Islands|TC,Tuvalu|TV,Uganda|UG,Ukraine|UA,United Arab Emirates|AE,United Kingdom|GB,United States|US,United States Minor Outlying Islands|UM,Uruguay|UY,Uzbekistan|UZ,Vanuatu|VU,Venezuela, Bolivarian Republic of|VE,Viet Nam|VN,Virgin Islands, British|VG,Virgin Islands, U.S|VI,Wallis and Futuna|WF,Western Sahara|EH,Yemen|YE,Zambia|ZM,Zimbabwe|ZW'
+    },
+        /**
+     * getListSource
+    *  - Returns a source list use for dropdown and other like controls
+    * 
+    * Example: 
+    * ThisApp.controls.getListSource('states'); //Returns array of arrays [["Alabama", "AL"],...]
+    * ThisApp.controls.getListSource('states','objects'); //Returns array of objects [{name: "Alabama", value: "AL", text: "Alabama"},...]
+    * 
+    * @param  {String} theName   [The name of the source to return]
+    * @param  {String} theReturnType   [<blank>,objects] Default: <blank>
+    *  "array" or <blank> 
+    *  "object" or "objects"
+    * @return Array
+    * 
+    */    
+    getListSource: function(theName, theReturnType){
+        if(!this.sources.hasOwnProperty(theName)){
+            return '';
+        }
+        var tmpSource = this.sources[theName];
+        if( theReturnType == 'string' ){
+            return tmpSource;
+        }
+        if( theReturnType == 'objects'|| theReturnType == 'object' ){
+            return ActionAppCore.getListAsObjects(tmpSource);
+        }
+        return ActionAppCore.getListAsArrays(tmpSource);
+    },
+    //--- Returns HTML element based on the specs passed
+    /*
+    var tmpSpecChG1 = {
+        type: 'div',
+        className: 'content',
+        attr: {name: 'G1'},
+        text: 'I am content'
+    }
+    var tmpSpecCh1 = {
+        type: 'div',
+        className: ['ui','card'],
+        style: {border: "dashed 2px red", 'font-size': "14px"},
+        attr: {appuse: 'testing', name: 'Debbie'},
+        text: 'Debbie'
+    }
+    var tmpSpecCh2 = {
+        type: 'div',
+        className: 'ui card',
+        style: 'border: dashed 2px blue;font-size:14px',
+        attr: {appuse: 'testing', name: 'John'},
+        children: [tmpSpecChG1],
+    }
+    var tmpSpecs = {
+        type: 'div',
+        className:'ui cards',
+        attr: {appuse:'testing',name:'mom'},
+        children: [tmpSpecCh1,tmpSpecCh2]
+    }
+    var tmpTE1 = ActionAppCore.el(tmpSpecs)
+    tmpTE1 // show content on console
+    //--- in console
+    <div class="ui cards" appuse="testing" name="mom">
+        <div class="ui card" appuse="testing" name="Debbie" style="border: 2px dashed red; font-size: 14px;">Debbie</div>
+        <div class="ui card" appuse="testing" name="John" style="border: 2px dashed blue; font-size: 14px;">
+            <div class="content" name="G1">I am content</div>
+        </div>
+    </div>
+    */
+    el: function(theSpecs){
+        var tmpSpecs = theSpecs || {};
+        var tmpType = tmpSpecs.type || 'div';
+        var tmpRet = document.createElement(tmpType)
+        var tmpContent = tmpSpecs.content || '';
+        if( tmpSpecs.className ){
+            var tmpClasses = tmpSpecs.className;
+            var tmpClassText = tmpClasses;
+            if( Array.isArray(tmpClasses)){
+                tmpClassText = '';
+                tmpClassTextHit = false;
+                for( var iPos in tmpClasses ){
+                    var tmpClassName = tmpClasses[iPos];
+                    if( tmpClassName ){
+                        if(!tmpClassTextHit){
+                            tmpClassTextHit = true;
+                        } else {
+                            tmpClassText += " ";                             
+                        }
+                        tmpClassText += tmpClassName.trim();
+                    }
+                }
+                tmpStyles = this.util.getStylesAsObject(tmpStyles);
+            }
+            tmpRet.className = tmpClassText;
+        }
+        var tmpStyles = tmpSpecs.style || tmpSpecs.styles;
+        if( tmpStyles){
+            if( typeof(tmpStyles) == 'string'){
+                tmpStyles = this.util.getStylesAsObject(tmpStyles);
+            }
+            if( typeof(tmpStyles) == 'object'){
+                for( var iName in tmpStyles){
+                    tmpRet.style[iName] = tmpStyles[iName];
+                }
+            }
+        }
+        var tmpAttrs = tmpSpecs.attr;
+        if( typeof(tmpAttrs) == 'object'){
+            for( var iName in tmpAttrs ){
+                var tmpAttrVal = tmpAttrs[iName];
+                if( (iName) && typeof(tmpAttrVal) == 'string' ){
+                    tmpRet.setAttribute(iName,tmpAttrVal);
+                } else if( (iName) && typeof(tmpAttrVal) == 'function' ){
+                    //--- For onchange type events
+                    //ToDo: Another way
+                    tmpRet[iName.toLowerCase()] = tmpAttrVal;                    
+                }
+            }
+        }
+        var tmpTextContent = tmpSpecs.text || tmpSpecs.html;
+        var tmpContent = tmpSpecs.children || tmpSpecs.content;
+        if( tmpTextContent ){
+            tmpRet.innerHTML = tmpTextContent;
+        }
+        if( tmpContent ){
+            if( Array.isArray(tmpContent)){
+                for( var iPos in tmpContent ){
+                    var tmpChild = tmpContent[iPos];
+                    if(typeof(tmpChild) == 'object'){
+                        var tmpCE = this.el(tmpChild);
+                        tmpRet.appendChild(tmpCE);
+                    }
+                }
+            } else {
+            //--- children/content will override incorrectly duplicate text value in text/html
+            tmpRet.innerHTML = tmpContent;
+            }
+        }
+        return tmpRet;
+    },    
+    util: {
+        getStylesAsObject(theString){
+            var regex = /([\w-]*)\s*:\s*([^;]*)/g;
+            var match, properties={};
+            while(match=regex.exec(theString)) properties[match[1]] = match[2].trim();
+            return properties;
+        },
+        getAttrAsObject(theString){
+            var tmpEntries = theString.split(' ');
+            var tmpRet = {};
+            for( var iPos in tmpEntries){
+                var tmpEntry = tmpEntries[iPos];
+                tmpEntry = tmpEntry.trim();
+                if( tmpEntry ){
+                    var tmpParts = tmpEntry.split('=');
+                    var tmpVal = tmpParts[1];
+                    if( !(tmpVal)){
+                        tmpRet[tmpParts[0]] = '';
+                    } else {
+                        if( tmpVal.substring(0,1) == '"'){
+                            tmpVal = tmpVal.substring(1);
+                            tmpVal = tmpVal.slice(0, -1);
+                        }
+                        tmpRet[tmpParts[0]] = tmpVal;
+                    }
+                    
+                }
+            }
+            return tmpRet;
+        },
+        isStr: function(theItem) {
+            return (typeof (theItem) == 'string')
+        },
+        isFunc: function(theItem) {
+            return (typeof (theItem) == 'function')
+        },
+        isObj:  function(theItem) {
+            return (typeof (theItem) == 'object')
+        },
+        getObjectAsEncodedForm: function (theObject) {
+            //--- for 'application/x-www-form-urlencoded' submit
+            var tmpObject = theObject;
+            if (typeof (tmpObject) == 'string') {
+                tmpObject = JSON.parse(tmpObject);
+            }
+            var tmpEncoded = "";
+            var tmpEncodedPairs = [];
+            for (var aName in tmpObject) {
+                tmpEncodedPairs.push(encodeURIComponent(aName) + '=' + encodeURIComponent(tmpObject[aName]));
+            }
+            tmpEncoded = tmpEncodedPairs.join('&').replace(/%20/g, '+');
+            return tmpEncoded;
+        }
+    },
+    controlScope:{},
     addSources: function(theSourcesObject){
         for (var iName in theSourcesObject) {
-            this.dir.sources[iName] = theSourcesObject[iName];
+            this.sources[iName] = theSourcesObject[iName];
         }
     },
     //--- Debounce resize / rapid firing events
@@ -104,38 +298,75 @@ var ActionAppCore = {
         }
         $.ajax(tmpOptions).then(tmpSuccess, tmpError);
         return dfd.promise();
+    },
+    getListAsObjects: function (theList) {
+        var tmpList = this.getListAsArrays(theList);
+        var tmpRet = []
+
+        if (tmpList && tmpList.length > 0) {
+            for (var index = 0; index < tmpList.length; index++) {
+                var tmpEntry = tmpList[index] || '';
+                if (tmpEntry) {
+                    var tmpText = tmpEntry;
+                    var tmpVal = tmpEntry;
+                    if ( (typeof(tmpEntry) != 'string') && tmpEntry.length == 2) {
+                        //--- This is an array, get values
+                        tmpText = tmpEntry[0]
+                        tmpVal = tmpEntry[1]
+                    }
+                    tmpRet.push(
+                        {
+                            name: tmpText,
+                            value: tmpVal,
+                            text: tmpText
+                        }
+                    )
+
+                }
+            }
+        }
+        return tmpRet;
+
+    },
+    getListAsArrays: function(theList) {
+        var tmpList = theList;
+        if( this.util.isObj(tmpList) ){
+            var tmpSource = false;
+            if( ActionAppCore.sources && ActionAppCore.sources.hasOwnProperty(tmpList.source) ){
+                tmpSource = ActionAppCore.sources[tmpList.source];
+                tmpList = tmpSource;
+            }
+
+            if( !(tmpSource) ){
+                console.error("Passed invalid object for list type, no valid source provided.  Source: " + tmpList.source);
+                tmpList = '';
+            }
+        }
+        if (this.util.isStr(tmpList)) {
+            tmpList = tmpList.split(",");
+        }
+        if (tmpList && tmpList.length > 0) {
+            for (var index = 0; index < tmpList.length; index++) {
+                var tmpEntry = tmpList[index] || '';
+                if (tmpEntry) {
+                    if (this.util.isStr(tmpEntry)) {
+                        var tmpVals = tmpEntry.split("|");
+                        //--- If we have alias values, add them as an array
+                        //--    if not, leave the string value there as is
+                        if (tmpVals.length > 1) {
+                            tmpList[index] = tmpVals
+                        }
+                    }
+                }
+            }
+        }
+        return tmpList;
+
     }
 };
 
 //--- Global Spot
 window.ActionAppCore = window.ActionAppCore || ActionAppCore;
-
-//--- Extend global object
-(function (ActionAppCore, $) {
-    
-    ActionAppCore.util = ActionAppCore.util || {};
-
-    ActionAppCore.util.getObjectAsEncodedForm = getObjectAsEncodedForm;
-    function getObjectAsEncodedForm(theObject) {
-        //--- for 'application/x-www-form-urlencoded' submit
-        var tmpObject = theObject;
-        if (typeof (tmpObject) == 'string') {
-            tmpObject = JSON.parse(tmpObject);
-        }
-        var tmpEncoded = "";
-        var tmpEncodedPairs = [];
-        for (var aName in tmpObject) {
-            tmpEncodedPairs.push(encodeURIComponent(aName) + '=' + encodeURIComponent(tmpObject[aName]));
-        }
-        tmpEncoded = tmpEncodedPairs.join('&').replace(/%20/g, '+');
-        return tmpEncoded;
-    }
-
-    
-})(ActionAppCore, $);
-
-
-
 
 //--- Base module and simple module system --- --- --- --- --- --- --- --- --- --- --- --- 
 (function (ActionAppCore, $) {
@@ -167,9 +398,60 @@ window.ActionAppCore = window.ActionAppCore || ActionAppCore;
     ActionAppCore.createModule("extension");
 })(ActionAppCore, $);
 
-//--- PolyFill
+//--- jQuery utility additions --- --- --- --- --- --- --- --- --- --- --- --- 
 (function (ActionAppCore, $) {
 
+    //--- Creates two overlays, 
+    // - one to cover the content to protect and make semitransparent
+    // - the other over that to hold conent that should not be semi-transparent
+    $.fn.overlayMask = function (action) {
+        if( this.selector == ""){
+            return;
+        }
+        if(this && this.length){
+            if( this.length > 1 ){
+                console.error( 'Do not call overlay mask on more than one element at a time', this);
+                return;
+            }
+        }
+        var mask = this.data('maskel');
+        var maskContent = this.data('maskcontent');
+      if (!mask) {
+        this.css({position: 'relative'});
+        var tmpNewMask = $('<div class="actapp-overlay-mask"></div>');
+        tmpNewMask = tmpNewMask.css({
+            position: 'absolute',width: '100%',height: '100%',
+            top: '0px',left: '0px',zIndex: 99
+          }).appendTo(this);
+        this.data('maskel',tmpNewMask);
+        mask = tmpNewMask;
+
+        var tmpNewMaskContent = $('<div class="actapp-overlay-content"></div>');
+        tmpNewMaskContent = tmpNewMaskContent.css({
+            position: 'absolute',width: '100%',height: '100%',
+            top: '0px',left: '0px',zIndex: 100
+          }).appendTo(this);
+        this.data('maskcontent',tmpNewMaskContent);
+        maskContent = tmpNewMaskContent;
+      }
+  
+      if (!action || action === 'show') {
+        mask.show();
+        maskContent.show();
+      } else if (action === 'hide') {
+        mask.hide();
+        maskContent.hide();
+      } else if (action === 'remove') {
+        mask.remove();
+        maskContent.remove();
+      }
+  
+      return this;
+    };
+
+})(ActionAppCore, $);
+//--- PolyFill
+(function (ActionAppCore, $) {
     if (typeof String.prototype.endsWith !== 'function') {
         String.prototype.endsWith = function (suffix) {
             return this.indexOf(suffix, this.length - suffix.length) !== -1;
@@ -221,8 +503,6 @@ window.ActionAppCore = window.ActionAppCore || ActionAppCore;
     * @return void
     * 
     */
-
-
 //--- PubSub Functionality
 (function (ActionAppCore, $) {
 
@@ -1068,6 +1348,7 @@ window.ActionAppCore = window.ActionAppCore || ActionAppCore;
             resizable: true,
             togglerLength_open: 100,
             togglerLength_closed: 100,
+            center__maskContents:	true,
             south__resizable: false,
             south__closable: false,
             south__slidable: false,
@@ -1086,6 +1367,7 @@ window.ActionAppCore = window.ActionAppCore || ActionAppCore;
             resizable: true,
             togglerLength_open: 100,
             togglerLength_closed: 100,
+            center__maskContents:	true,
             south__resizable: false,
             south__closable: false,
             south__slidable: false,
@@ -1096,6 +1378,7 @@ window.ActionAppCore = window.ActionAppCore || ActionAppCore;
             north__slidable: false,
             north__togglerLength_open: 0,
             north__spacing_open: 0,
+            center__maskContents:	true,
             center__paneSelector: ".middle-center",
             north__paneSelector: ".middle-north",
             south__paneSelector: ".middle-south",
@@ -1114,6 +1397,7 @@ window.ActionAppCore = window.ActionAppCore || ActionAppCore;
             resizable: true,
             togglerLength_open: 100,
             togglerLength_closed: 100,
+            center__maskContents:	true,
             south__resizable: false,
             south__closable: false,
             south__slidable: false,
@@ -1134,6 +1418,7 @@ window.ActionAppCore = window.ActionAppCore || ActionAppCore;
             resizable: true,
             togglerLength_open: 100,
             togglerLength_closed: 100,
+            center__maskContents:	true,
             south__resizable: false,
             south__closable: false,
             south__slidable: false,
@@ -1154,6 +1439,7 @@ window.ActionAppCore = window.ActionAppCore || ActionAppCore;
             resizable: true,
             togglerLength_open: 100,
             togglerLength_closed: 100,
+            center__maskContents:	true,
             south__resizable: false,
             south__closable: false,
             south__slidable: false,
@@ -1211,17 +1497,20 @@ window.ActionAppCore = window.ActionAppCore || ActionAppCore;
        * 
        * Example: ThisApp.loadSpot('myarea:out', '', 'tpl-some-registered-template');
        *   - This loads the spot <div spot="myarea:out" ... with a rendered template 'tpl-some-registered-template'
-       *
        * 
        * Note:  theContent is usually HTML if no template name passed
        *        theContent can be blank, a string value or an objet to be passed into the template for rendering
-       *        if there is a string value for theOptionalTemplateName, 
-       *         ... theOptionalTemplateName is used to render the content and theContent passed as the input
+       *        if there is a string value for theRenderer, 
+       *         ... theRenderer is used to render the content and theContent passed as the input
+       *        if there is an object value for theRenderer, 
+       *         ... theRenderer is expected to be a React component to render using the data as props
+       *        if there is an function value for theRenderer, 
+       *         ... theRenderer function is run, passing in theName and theContent and uses the return value
        * 
        * 
        * @param  {String} theName   [The name of the spot to load]
        * @param  {String} theContent   [The content to load or object to use when rendering the template]
-       * @param  {String} theOptionalTemplateName   [The content to load or object to use when rendering the template]
+       * @param  {String} theRenderer   [The rendering agent for this content if applicable]
        * @param  {String} theOptionalParent$   [The jQuery element to use instead of global]
        * @param  {String} theOptionalTagName   [The tag name to use (i.e. pagespot)]
        * 
@@ -1229,20 +1518,42 @@ window.ActionAppCore = window.ActionAppCore || ActionAppCore;
        * 
        * 
        */
-    me.loadSpot = function (theName, theContent, theOptionalTemplateName, theOptionalParent$, theOptionalTagName) {
-        var tmpTagName = theOptionalTagName || 'spot';
+    me.loadSpot = function (theName, theContent, theRenderer, theOptionalParent$, theOptionalTagName) {
         var tmpContent = theContent || '';
-        if (theOptionalTemplateName) {
-            tmpContent = me.getTemplatedContent(theOptionalTemplateName, tmpContent);
+        if (theRenderer) {
+            if( typeof(theRenderer) == 'string'){
+                tmpContent = me.getTemplatedContent(theRenderer, tmpContent);
+            } else if( this.util.isReactClass(theRenderer) ){
+                tmpContent = ThisApp.react.createElement(theRenderer, theContent);
+            } else if( typeof(theRenderer) == 'function'){
+                tmpContent = theRenderer(theName, theContent);
+            } else {
+                console.error('ActionApp loadSpot: Unknown content type',typeof(theContent), theContent);
+                return false;
+            }
         }
         var tmpSpot = me.getSpot$(theName, theOptionalParent$, theOptionalTagName)
         if (tmpSpot) {
             try {
-                tmpSpot.html(tmpContent);
+                if( typeof(tmpContent) == 'object'){
+                    for( var iPos = 0 ; iPos < tmpSpot.length ; iPos++){
+                        var tmpSpotEl = tmpSpot[iPos];
+                        var tmpData = $(tmpSpotEl).data();
+                        if( tmpData && tmpData._reel ){
+                            ThisApp.react.unmountComponentAtNode(tmpSpotEl);
+                            delete tmpData._reel;
+                        }
+                        var tmpReelObj = ThisApp.react.render(tmpContent, tmpSpotEl);
+                        $(tmpSpotEl).data({_reel:true, _reobj: tmpReelObj});
+                    }
+                } else {
+                    tmpSpot.html(tmpContent);
+                }
             } catch (ex) {
+                console.error("loadSpot error",ex);
+                return false;
                 //--- ToDo: Global error handling
             }
-
         }
         return tmpSpot;
     }
@@ -1256,7 +1567,7 @@ window.ActionAppCore = window.ActionAppCore || ActionAppCore;
        * 
        * @param  {String} theName   [The name of the spot to append/prepend to]
        * @param  {String} theContent   [The content to load or object to use when rendering the template]
-       * @param  {String} theOptionalTemplateName   [The content to load or object to use when rendering the template]
+       * @param  {String} theRenderer   [The rendering agent for this content if applicable (React not allowed for append operation)]
        * @param  {String} thePrepend   [true to prepend, blank or false to append (default)]
        * @param  {String} theOptionalParent$   [The jQuery element to use instead of global]
        * @param  {String} theOptionalTagName   [The tag name to use (i.e. pagespot)]
@@ -1265,17 +1576,29 @@ window.ActionAppCore = window.ActionAppCore || ActionAppCore;
        * 
        */
 
-    me.addToSpot = function (theName, theContent, theOptionalTemplateName, thePrepend, theOptionalParent$, theOptionalTagName) {
+    me.addToSpot = function (theName, theContent, theRenderer, thePrepend, theOptionalParent$, theOptionalTagName) {
         var tmpContent = theContent || '';
-        if (theOptionalTemplateName) {
-            tmpContent = me.getTemplatedContent(theOptionalTemplateName, tmpContent);
+        if (theRenderer) {
+            if(typeof(theRenderer) == 'string'){
+                tmpContent = me.getTemplatedContent(theRenderer, tmpContent);
+            } else if( typeof(theRenderer) == 'function'){
+                tmpContent = theRenderer(theName, theContent);
+            } else {
+                tmpContent = $R.createElement(theRenderer, theContent);
+            }
         }
         var tmpSpot = me.getSpot$(theName, theOptionalParent$, theOptionalTagName)
-        if (thePrepend === true) {
-            tmpSpot.prepend(tmpContent);
+        if( typeof(tmpContent) == 'object'){
+            //ToDo: Allow this?
+            console.error("Can not append to spot using React controls, one per spot");
         } else {
-            tmpSpot.append(tmpContent);
+            if (thePrepend === true) {
+                tmpSpot.prepend(tmpContent);
+            } else {
+                tmpSpot.append(tmpContent);
+            }
         }
+
         return tmpSpot;
     }
 
@@ -2211,7 +2534,6 @@ window.ActionAppCore = window.ActionAppCore || ActionAppCore;
     * @return void
     */
     me.getContext = function () {
-        var tmpOptions = theOptions || {};
         var tmpRet = {}
         tmpRet.app = ThisApp.context
         return tmpRet;
@@ -2750,7 +3072,7 @@ window.ActionAppCore = window.ActionAppCore || ActionAppCore;
 
         me.isSetup = true;
         //--- Init Required Plugins
-        me.useModuleComponents('plugin', ['ObjectManager', 'Prompter', 'Controls']);
+        me.useModuleComponents('plugin', ['ObjectManager', 'Prompter', 'Controls', 'React']);
         me.om = me.getComponent("plugin:ObjectManager");
         me.prompter = me.getComponent("plugin:Prompter");
         //--- General Util Functions
@@ -2763,7 +3085,8 @@ window.ActionAppCore = window.ActionAppCore || ActionAppCore;
 
         //--- Add controls plugin at the app level
         // ..... as global entrypoint for controls module
-        me.controls = me.getComponent("plugin:Controls");
+        me.controls = me.getComponent("plugin:Controls");        
+        me.react = me.getComponent("plugin:React");        
 
         var tmpPromRequired = true;
         var tmpPromConfigReqired = true;
@@ -3229,6 +3552,7 @@ window.ActionAppCore = window.ActionAppCore || ActionAppCore;
 
 
         var tmpLOSpecs = {
+            center__maskContents:	true,
             center__paneSelector: ".site-layout-center"
             , north__spacing_open: 0
             , north__spacing_closed: 0
@@ -3659,9 +3983,24 @@ window.ActionAppCore = window.ActionAppCore || ActionAppCore;
         return arr;
       }
 
+      function isReactClass(component){
+        if(typeof(component) === 'function' && component.prototype && !!(component.prototype.isReactComponent)){
+            return true;
+        }
+        //--ToDo: Do not assume every object is React
+        if(typeof(component) === 'object'){
+            if( typeof(component.$$typeof) == 'sympbol'){
+                //This is a ref?
+            }
+            return true;
+        }
+        return false;
+      }
+      
     //ThisApp.util...
     var utilFunctions = {
         MIN_TOUCH_DISTANCE: 20,
+        isReactClass: isReactClass,
         removeItemOnce: removeItemOnce,
         removeItemAll: removeItemAll,
         itemTouchStart: itemTouchStart,
@@ -3802,9 +4141,9 @@ License: MIT
             //             ).bind(this);
 
             //--- Extend with new layout related spot functions
-            this.addToRegion = function (theRegion, theContent, theOptionalTemplateName, thePrepend) {
+            this.addToRegion = function (theRegion, theContent, theRenderer, thePrepend) {
                 var tmpRegionSpotName = this.layoutOptions.spotPrefix + ":" + theRegion;
-                ThisApp.addToSpot(tmpRegionSpotName, theContent, theOptionalTemplateName, thePrepend, this.getParent$())
+                ThisApp.addToSpot(tmpRegionSpotName, theContent, theRenderer, thePrepend, this.getParent$())
             }
 
             this.createInstance = function (theControl, theInstanceName) {
@@ -3822,9 +4161,9 @@ License: MIT
                 var tmpInstance = this.createInstance(theControl, (theInstanceName || theRegion));
                 tmpInstance.loadToElement(tmpRegionSpotName);
             }
-            this.loadRegion = function (theRegion, theContent, theOptionalTemplateName) {
+            this.loadRegion = function (theRegion, theContent, theRenderer) {
                 var tmpRegionSpotName = this.layoutOptions.spotPrefix + ":" + theRegion;
-                ThisApp.loadSpot(tmpRegionSpotName, theContent, theOptionalTemplateName, this.getParent$())
+                ThisApp.loadSpot(tmpRegionSpotName, theContent, theRenderer, this.getParent$())
             }
         }
 
@@ -4299,15 +4638,15 @@ License: MIT
     me.focus = me.open;
 
     //--- Will prefix with this.pageName as needed
-    me.loadLayoutSpot = function (theRegionName, theContent, theOptionalTemplateName) {
+    me.loadLayoutSpot = function (theRegionName, theContent, theRenderer) {
         var tmpName = theRegionName || 'center';
         tmpName = this.pageName + ":" + tmpName;
-        return this.loadSpot(tmpName, theContent, theOptionalTemplateName);
+        return this.loadSpot(tmpName, theContent, theRenderer);
     }
 
     //--- Calls parent loadSpot within this page DOM and refreshes layouts
-    me.loadSpot = function (theName, theContent, theOptionalTemplateName) {
-        ThisApp.loadSpot(theName, theContent, theOptionalTemplateName, this.getParent$(), 'pagespot');
+    me.loadSpot = function (theName, theContent, theRenderer) {
+        ThisApp.loadSpot(theName, theContent, theRenderer, this.getParent$(), 'pagespot');
         try {
             this.refreshLayouts();
         } catch (error) {
@@ -4316,8 +4655,8 @@ License: MIT
     }
 
     //--- Calls parent loadSpot within this page DOM and refreshes layouts
-    me.addToSpot = function (theName, theContent, theOptionalTemplateName, thePrepend) {
-        ThisApp.addToSpot(theName, theContent, theOptionalTemplateName, thePrepend, this.getParent$(), 'pagespot');
+    me.addToSpot = function (theName, theContent, theRenderer, thePrepend) {
+        ThisApp.addToSpot(theName, theContent, theRenderer, thePrepend, this.getParent$(), 'pagespot');
         try {
             this.refreshLayouts();
         } catch (error) {
@@ -4991,7 +5330,7 @@ License: MIT
                 return true;
             }
             //-- Pass true to run validation
-            var tmpFormObj = this.getControlDetails();
+            var tmpFormObj = this.getWebControlDetails();
             //See if valid,if so - save the data to resolve when done
             var tmpValidation = this.validate();
             var tmpIsValid = tmpValidation && tmpValidation.isValid === true;
@@ -5137,38 +5476,6 @@ License: MIT
 
 
 //=========     Controls Plugin
-
-//=== === === === === === === === === === === === === === === === === 
-//=== === === === === === === === === === === === === === === === === 
-//=== === === === === === === === === === === === === === === === === 
-//=== === === === === === === === === === === === === === === === === 
-//=== === === === === === === === === === === === === === === === === 
-//=== === === === === === === === === === === === === === === === === 
-//=== === === === === === === === === === === === === === === === === 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//=== === === === === === === === === === === === === === === === === 
-//=== === === === === === === === === === === === === === === === === 
-//=== === === === === === === === === === === === === === === === === 
-//=== === === === === === === === === === === === === === === === === 
-//=== === === === === === === === === === === === === === === === === 
-//=== === === === === === === === === === === === === === === === === 
-
-
-
 /*
 Author: Joseph Francis
 License: MIT
@@ -5356,8 +5663,8 @@ License: MIT
 
 
 
-    me.getControlEl$ = getControlEl$;
-    function getControlEl$(theControlName) {
+    me.getWebControlEl$ = getWebControlEl$;
+    function getWebControlEl$(theControlName) {
         return ThisApp.getByAttr$({ controls: '', control: '', name: theControlName })
     }
 
@@ -5434,7 +5741,7 @@ License: MIT
 
         var tmpControlEl = theControlNameOrEl;
         if (isStr(tmpControlEl)) {
-            tmpControlEl = getControlEl$(theControlNameOrEl);
+            tmpControlEl = getWebControlEl$(theControlNameOrEl);
         }
 
         var tmpEl = ThisApp.getByAttr$(tmpAttr, tmpControlEl);
@@ -5486,7 +5793,7 @@ License: MIT
         }
         tmpAttr[tmpType] = '';
 
-        var tmpControlEl = isStr(theControlNameOrEl) ? getControlEl$(theControlNameOrEl) : theControlNameOrEl;
+        var tmpControlEl = isStr(theControlNameOrEl) ? getWebControlEl$(theControlNameOrEl) : theControlNameOrEl;
         return ThisApp.getByAttr$(tmpAttr, tmpControlEl);
     }
 
@@ -5577,13 +5884,13 @@ License: MIT
 
     }
 
-    me._getControlDetails = function (theControlNameOrEl) {
+    me._getWebControlDetails = function (theControlNameOrEl) {
         var tmpFieldsIndex = {};
         var tmpItemsIndex = {};
 
         var tmpControl = theControlNameOrEl;
         if (typeof (tmpControl) == 'string') {
-            tmpControl = getControlEl$(theControlNameOrEl);
+            tmpControl = getWebControlEl$(theControlNameOrEl);
         }
 
         if (tmpControl && tmpControl.length == 1) {
@@ -5719,8 +6026,7 @@ License: MIT
     function Index() {
         this.index = {};
     }
-    meIndex = Index.prototype
-    meIndex.index = {};
+    var meIndex = Index.prototype
     meIndex.get = function (theName) {
         return this.index[theName]
     }
@@ -5922,8 +6228,8 @@ License: MIT
         return '';
     }
 
-    meControl.getControlEl$ = function () {
-        return getControlEl$(this.getControlName())
+    meControl.getWebControlEl$ = function () {
+        return getWebControlEl$(this.getControlName())
     }
 
     meControl.getHTML = function (theControlName, theInstance) {
@@ -6171,7 +6477,11 @@ License: MIT
     meInstance.getEl = function () {
         return this.parentEl
     }
-
+    meInstance.showAll = function(){
+        for( var iName in this.getIndex().all ){
+            this.setEntryDisplay(iName, true);
+        }
+    }
     meInstance.setItemDisabled = function (theEntryName, theIsDisabled) {
         var tmpEl = this.getItemEl(theEntryName) || this.getFieldEl(theEntryName);
         var tmpHasClass = tmpEl.hasClass('disabled');
@@ -6242,8 +6552,8 @@ License: MIT
 
 
     //--- Calls parent loadSpot with this instance DOM and refreshes layouts
-    meInstance.loadSpot = function (theName, theContent, theOptionalTemplateName) {
-        ThisApp.loadSpot(theName, theContent, theOptionalTemplateName, this.getParent$(), 'myspot');
+    meInstance.loadSpot = function (theName, theContent, theRenderer) {
+        ThisApp.loadSpot(theName, theContent, theRenderer, this.getParent$(), 'myspot');
         try {
             this.refreshLayouts();
         } catch (error) {
@@ -6251,8 +6561,8 @@ License: MIT
         }
     }
     //--- Calls parent loadSpot with this instance DOM and refreshes layouts
-    meInstance.addToSpot = addToSpot = function (theName, theContent, theOptionalTemplateName, thePrepend) {
-        ThisApp.addToSpot(theName, theContent, theOptionalTemplateName, thePrepend, this.getParent$(), 'myspot');
+    meInstance.addToSpot = addToSpot = function (theName, theContent, theRenderer, thePrepend) {
+        ThisApp.addToSpot(theName, theContent, theRenderer, thePrepend, this.getParent$(), 'myspot');
         try {
             this.refreshLayouts();
         } catch (error) {
@@ -6339,7 +6649,7 @@ License: MIT
     meInstance.getFieldSpecs = function (theFieldName) {
         try {
             var tmpConfig = this.getConfig();
-            return tmpConfig.index.fields[theFieldName];
+            return tmpConfig.index.all[theFieldName];
         } catch (ex) {
             console.error("Error getting field, not found " + theFieldName);
             return {}
@@ -6464,6 +6774,26 @@ License: MIT
         return this;
     }
 
+    meInstance.getDefaultValue = function (theFieldName, theOptionalSpecs) {
+        var tmpI = this.getIndex();
+        var tmpFieldSpecs = this.getFieldSpecs(theFieldName);
+        if( tmpFieldSpecs && tmpFieldSpecs.hasOwnProperty('default') ){
+            return tmpFieldSpecs.default;
+        }
+        var tmpDT = tmpFieldSpecs.datatype;
+        if( tmpFieldSpecs.ctl == 'checkbox'){
+            tmpDT = 'boolean';
+        }
+        if( tmpFieldSpecs.ctl == 'number'){
+            tmpDT = 'object';
+        }        
+        if( tmpDT ){
+            if( 'boolean' == tmpDT){return false;}
+            if( 'number' == tmpDT){return 0;}
+            if( 'object' == tmpDT){return {};}
+        }
+        return '';
+    }
 
     meInstance.getFieldValue = function (theFieldName) {
         var tmpRet = '';
@@ -6471,23 +6801,60 @@ License: MIT
 
         if (!(tmpFieldEls)) { return ''; }
 
+        var tmpFieldSpecs = this.getFieldSpecs(theFieldName);
+        if( !(tmpFieldSpecs)){
+            console.warn( 'getFieldValue found no specs, scope issue?', theFieldName);
+            return me._getControlData(this.getEl(), theFieldName);
+        }
         if (this.getFieldDisplay(theFieldName) === false) {
             //--- Do not return values of unavailable fields (hidden via programming)
-            return '';
+            return this.getDefaultValue(theFieldName, tmpFieldSpecs);
         }
 
-        var tmpFieldSpecs = this.getFieldSpecs(theFieldName);
+        var tmpCtl = tmpFieldSpecs.ctl || 'field';
+        var tmpControl = me.webControls.get(tmpCtl);
 
-        if (tmpFieldSpecs) {
-            var tmpCtl = tmpFieldSpecs.ctl || 'field';
-            var tmpControl = me.webControls.get(tmpCtl);
-            if (!(tmpControl.getFieldValue)) {
-                tmpRet = me._getControlData(this.getEl(), theFieldName);
-            } else {
-                tmpRet = tmpControl.getFieldValue(this.getEl(), tmpFieldSpecs);
+        if( typeof(tmpFieldSpecs.value) == 'object' ){
+            
+            var tmpCompKey = '[computed]';
+            var tmpObj = tmpFieldSpecs.value;
+            
+            if (isObj(tmpObj) && tmpObj.hasOwnProperty(tmpCompKey)) {
+                var tmpComputed = tmpObj[tmpCompKey];
+                
+                if (isStr(tmpComputed)) {
+                    tmpComputed = {
+                        "context": tmpComputed
+                    }
+                }
+
+                if (isObj(tmpComputed)) {
+                    var tmpCompValue = '';
+                    var tmpCompContext = tmpComputed.context || '';
+                    if (tmpCompContext) {
+                        try {
+                            //--- Variables used in the eval statement, do not remove
+                            var context = this.context;
+                            var thisControl = this;
+                            tmpCompValue = eval(tmpCompContext)
+                        } catch (ex) {
+                            console.warn("Attempt to us computed context value failed ", ex)
+                        }
+                    } else {
+                        console.warn("No context passed for computed value, see documentation for details.")
+                    }
+                    tmpRet = tmpCompValue;
+                }
             }
-        } else {
+        } else if (!(tmpControl.getFieldValue)) {
             tmpRet = me._getControlData(this.getEl(), theFieldName);
+        } else {
+            tmpRet = tmpControl.getFieldValue(this.getEl(), tmpFieldSpecs);
+        }
+        //--- Account for value and default on hidden fields
+        //--- ToDo: What if default is not blank and we want blank value?
+        if( typeof(tmpRet) !== 'boolean' && !(tmpRet) && tmpFieldSpecs && tmpFieldSpecs.ctl == 'hidden' && (tmpFieldSpecs.value || tmpFieldSpecs.default)){
+            tmpRet = tmpFieldSpecs.value || tmpFieldSpecs.default;                
         }
         return tmpRet;
     }
@@ -6552,22 +6919,74 @@ License: MIT
         this.refreshForField(theName);
         return tmpRet;
     }
-    meInstance.setAnyDisplay = function (theName, theIsVis, theAnimOptions) {
-        me.setFieldDisplay(this.getEl(), theName, theIsVis, theAnimOptions)
-        me.setItemDisplay(this.getEl(), theName, theIsVis, theAnimOptions)
+    
+    meInstance.setEntryDisplay = function (theName, theIsVis, theAnimOptions) {
+        if( this.hasField(theName)){
+            me.setFieldDisplay(this.getEl(), theName, theIsVis, theAnimOptions)
+        } else {
+            me.setItemDisplay(this.getEl(), theName, theIsVis, theAnimOptions)
+        }
         return true;
     }
 
+    meInstance.gotoTab = function (theAttrObj) {
+        var tmpDetails = theAttrObj;
+        if( typeof(tmpDetails) !== 'object'){
+            return false;
+        }
+        tmpDetails = ThisApp.clone(tmpDetails);
+        tmpDetails.parent = this.getEl();
+        return ThisApp.gotoTab(tmpDetails);
+    }
+
+    meInstance.setState = function (theStateObject) {
+        if( !(theStateObject) ){
+            return;
+        }
+        var tmpTabs = theStateObject.tabs;
+        if( tmpTabs ){
+            for( var iPos in tmpTabs ){
+                var tmpEntry = tmpTabs[iPos];
+                this.gotoTab(tmpEntry);
+            }
+        }
+        if( this._onSetState ){this._onSetState(theStateObject)};
+    }
+
+    meInstance.getState = function (theOptions) {
+        var tmpRet = {};
+        var tmpActiveTabs = $('[appuse="tablinks"][item][group].active', this.getEl());
+        var tmpTabs = [];
+        if( tmpActiveTabs && tmpActiveTabs.length > 0 ){
+            tmpActiveTabs.each(function(){
+                var tmpEl = $(this);
+                tmpTabs.push({item:tmpEl.attr('item'),group:tmpEl.attr('group')})
+            })
+        }
+        tmpRet.tabs = tmpTabs;
+        if( this._onGetState ){this._onGetState(tmpRet)};
+        return tmpRet;
+    }
 
 
-    meInstance.getData = function () {
+    meInstance.getData = function (theOptions) {
         try {
+            var tmpOptions = theOptions || {};
+            var tmpNoHidden = (tmpOptions.excludeHidden === true);
+            var tmpNoDefaults = (tmpOptions.excludeDefaults === true);
             var tmpData = {};
             var tmpList = this.getConfig().index.fieldsList;
             for (var iPos = 0; iPos < tmpList.length; iPos++) {
                 var tmpFN = tmpList[iPos];
-                tmpData[tmpFN] = this.getFieldValue(tmpFN) || '';
-
+                if (!(tmpNoHidden && this.getFieldDisplay(tmpFN) === false)) {
+                    var tmpFV = this.getFieldValue(tmpFN);;
+                    if( tmpNoDefaults ){
+                        var tmpDefault = this.getDefaultValue(tmpFN);
+                        if( tmpDefault != tmpFV){tmpData[tmpFN] = tmpFV;}
+                    } else {
+                        tmpData[tmpFN] = tmpFV;
+                    }
+                }
             }
         } catch (ex) {
             console.error("Error getting data ", ex)
@@ -6575,8 +6994,8 @@ License: MIT
 
         return tmpData;
     }
-    meInstance.getControlDetails = function () {
-        var tmpDetails = me._getControlDetails(this.getEl());
+    meInstance.getWebControlDetails = function () {
+        var tmpDetails = me._getWebControlDetails(this.getEl());
         tmpDetails.data = this.getData();
         return tmpDetails;
     }
@@ -6609,7 +7028,7 @@ License: MIT
 
     meInstance.validate = function (theOptions) {
         var tmpOptions = theOptions || {};
-        var tmpDetails = this.getControlDetails();
+        var tmpDetails = this.getWebControlDetails();
         var tmpControl = this.getEl();
         var tmpConfig = this.getConfig();
         tmpControl.find('.error').removeClass('error');
@@ -6631,7 +7050,7 @@ License: MIT
             var tmpFieldIsValid = true;
             var tmpReasonText = '';
             if (tmpIsAvail) {
-                var tmpFieldSpec = tmpConfig.index.fields[tmpFN];
+                var tmpFieldSpec = tmpConfig.index.all[tmpFN];
                 if (tmpFieldSpec.req === true) {
                     var tmpFieldData = tmpDetails.data[tmpFN];
                     if (!(tmpFieldData)) {
@@ -6777,12 +7196,22 @@ License: MIT
         var tmpList = this.getConfig().index.fieldsList;
         for (var iPos = 0; iPos < tmpList.length; iPos++) {
             var tmpFN = tmpList[iPos];
-            this.setFieldValue(tmpFN, '');
+            //--- ToDo: Set to default field value from specs or value based on data type of know by control
+            var tmpFS = this.getFieldSpecs(tmpFN);
+            if( tmpFS && tmpFS.default ){
+                this.setFieldValue(tmpFN, tmpFS.default);
+            } else {
+                this.setFieldValue(tmpFN, '');
+            }
+            
 
         }
     }
 
-    meInstance.loadData = function (theData) {
+    meInstance.loadData = function (theData, theClearFirstFlag) {
+        if( theClearFirstFlag !== false){
+            this.clear();
+        }
         var tmpList = this.getConfig().index.fieldsList;
         var tmpData = theData || {};
         for (var iPos = 0; iPos < tmpList.length; iPos++) {
@@ -6802,39 +7231,50 @@ License: MIT
             return false;
         }
     }
+
+    meInstance.getWebControlSpecs = function (theFN) {
+        try {
+            if( this.hasField(theFN) ){
+                return this.getFieldSpecs(theFN);
+            }
+            if( this.hasItem(theFN) ){
+                return this.getItemSpecs(theFN);
+            }
+        } catch (ex) {
+            return false;
+        }
+        return false;
+    }
+
     meInstance.getFieldSpecs = function (theFN) {
         try {
-            return this.getConfig().index.fields[theFN];
+            return this.getConfig().index.all[theFN];
         } catch (ex) {
             return false;
         }
     }
     meInstance.getItemSpecs = function (theFN) {
         try {
-            return this.getConfig().index.items[theFN];
+            return this.getConfig().index.all[theFN];
         } catch (ex) {
             return false;
         }
     }
     meInstance.hasField = function (theName) {
         try {
-            if (isObj(this.getConfig().index.fields[theName])) {
-                return true;
-            }
+            var tmpPos = this.getIndex().fieldsList.indexOf(theName);
+            return (tmpPos > -1);
         } catch (ex) {
             return false;
         }
-        return false;
     }
     meInstance.hasItem = function (theName) {
         try {
-            if (isObj(this.getConfig().index.items[theName])) {
-                return true;
-            }
+            var tmpPos = this.getIndex().itemsList.indexOf(theName);
+            return (tmpPos > -1);
         } catch (ex) {
             return false;
         }
-        return false;
     }
     meInstance.hasAny = function (theName) {
         if (this.hasField(theName)) {
@@ -6845,20 +7285,407 @@ License: MIT
         }
         return false;
     }
-    meInstance.getAny = function (theName) {
+
+    meInstance.moveModeEnd = function(){
+        //-- ToDo: Just update styling (add/remove classes?)
+        this.setDesignMode(false);
+        this.setDesignMode(true);
+
+        //---ToDo: DO this another way
+        this.getByAttr$({controls:'',fieldwrap:''}).removeClass('hidden');
+    }
+
+    meInstance.moveModeStart = function(){
+        //ToDo: Use classes to add/remove instead?
+        var tmpOverlayStyles = {'background-color':'black','color': 'white', 'opacity':.1};
+        var tmpOverlayHTML = '<div appuse="actapp-design-wrap-target" class="ui message green right aligned" style="height:100%;margin:auto;background-color:transparent;border-width:2px;"><div class="ui header right aligned green medium" style="height:auto;"><div class="ui button icon green" ><i class="icon  target"</div></div></div>';
+        var tmpEl = this.getEl();
+        var tmpAppWraps = ThisApp.getByAttr$({appuse:"actapp-design-wrap"},tmpEl);
+
+        //---ToDo: DO this another way
+        this.getByAttr$({controls:'',fieldwrap:''}).addClass('hidden');
+
+        function tmpDropIt(theIndex){
+            var tmpWrap = $(this);
+            var tmpName = tmpWrap.attr('name');
+            if( ''+tmpName !== 'undefined' ){
+                //var tmpTitle = tmpWrap.find('[appuse="actapp-design-wrap-titlebar"],[name="' + tmpName + '"]')
+                var tmpTitle = ThisApp.getByAttr$({appuse:"actapp-design-wrap-titlebar",name:tmpName},tmpWrap);
+                var tmpToOverlay = $(tmpTitle);
+                tmpToOverlay.overlayMask().css({margin:'2px'})
+                var tmpME = tmpToOverlay.data('maskel');
+                var tmpMC = tmpToOverlay.data('maskcontent');
+                tmpME.css(tmpOverlayStyles);
+                tmpMC.html(tmpOverlayHTML)
+                tmpMC.css('margin','-10px','-10px');
+                tmpMC.css('height','calc(100% + 20px)');
+                tmpMC.css('width','calc(100% + 20px)');
+            } else {
+                console.error("Developer: Could not wrap element, make sure field wrap has name attribute.",tmpEl)
+            }
+        }
+        
+        tmpAppWraps.css({margin:'15px'})
+        tmpAppWraps.each(tmpDropIt);
+    }
+
+    meInstance.getOutterEls = function (theName) {
         var tmpAll = []
         if (this.hasField(theName)) {
-            tmpAll.push(this.getField(theName))
+            var tmpEl = this.getFieldEl(theName);
+            if( tmpEl ){
+                var tmpWrapEl = $(tmpEl).closest('[fieldwrap]');
+                if( tmpWrapEl ){
+                    tmpEl = tmpWrapEl;
+                }
+                tmpAll.push(tmpEl)
+            }
         }
         if (this.hasItem(theName)) {
-            tmpAll.push(this.getItem(theName))
+            tmpAll.push(this.getItemEl(theName))
         }
         return tmpAll;
     }
 
+    meInstance.getOutterEl = function (theName) {
+        var tmpAll = this.getOutterEls(theName);
+        if( tmpAll && tmpAll.length == 1){
+            return $(tmpAll[0]);
+        }
+        return true;
+    }
 
-    meInstance.refreshForField = function (theFN) {
+    meInstance.entrySelection = function (theOptions) {
+        var tmpIndex = this.getIndex();
+        var tmpOnOff = false;
+        if( typeof(theOptions) == 'boolean'){
+            tmpOnOff = theOptions;
+        }
+        for( var iPos in tmpIndex.entryList ){
+            var tmpName = tmpIndex.entryList[iPos]
+            this.setEntrySelected(tmpName,tmpOnOff);
+        }
+    }
+    
+    meInstance.setEntrySelected = function (theName, theIsOn, theOptions) {
+        if( !(theName) || 'string' != typeof(theName) ){
+            console.error("no name provided");
+            return;
+        }
+        var tmpDesEl = this.getDesignerEl(theName);
+        var tmpIsSel = tmpDesEl.data('selected');
+        if( typeof(theIsOn) !== 'boolean'){
+            if( tmpIsSel == undefined ){
+                theIsOn = true;
+            } else {
+                theIsOn = !tmpIsSel;
+            }
+        }
+        tmpDesEl.data('selected',theIsOn);
 
+        var tmpIsOn = (theIsOn !== false);
+        if( tmpIsOn ){
+            //--- Show Selected UI Changes
+            tmpDesEl.css('border','dotted 4px orange');
+        } else {
+            //--- Show Deselected UI Changes
+            tmpDesEl.css('border','none');
+        }
+    }
+
+    meInstance.refreshDesignerUI = function (theName, theIsOn, theOptions) {
+        //ToDo: Refresh UI selections, etc - based on status 
+        //         for redraw.
+    }
+
+    meInstance.setControlMoveMode = function (theName, theIsOn, theOptions) {
+        if( !(theName) || 'string' != typeof(theName) ){
+            console.error("no name provided");
+            return;
+        }
+        var tmpDesEl = this.getDesignerEl(theName);
+        var tmpIsSel = tmpDesEl.data('movemode');
+        if( typeof(theIsOn) !== 'boolean'){
+            if( tmpIsSel == undefined ){
+                theIsOn = true;
+            } else {
+                theIsOn = !tmpIsSel;
+            }
+        }
+        tmpDesEl.data('movemode',theIsOn);
+
+        var tmpIsOn = (theIsOn !== false);
+        if( tmpIsOn ){
+            //--- Show Selected UI Changes
+            tmpDesEl.css('margin','10px');
+        } else {
+            //--- Show Deselected UI Changes
+            tmpDesEl.css('margin','0px');
+        }
+    }
+
+    meInstance.setControlDesignMode = function (theName, theIsOn, theOptions) {
+        if( !(theName) || 'string' != typeof(theName) ){
+            console.error("no name provided");
+            return;
+        }
+        var tmpIsOn = (theIsOn !== false);
+        if( tmpIsOn ){
+            this._designSelected = false;
+            this.wrapControl(theName, theOptions);
+        } else {
+            delete this._designSelected;
+            this.unWrapControl(theName, theOptions);
+        }
+    }
+
+    meInstance.setDesignMode = function (theIsOn, theOptions) {
+        var tmpIndex = this.getIndex();
+        this._designModeFlag = theIsOn;
+        for( var iName in tmpIndex.all){
+            this.setControlDesignMode(iName,theIsOn, theOptions)
+        }
+        if( theIsOn ){
+            //=== Show all fields for editing
+            //= *onChange events disabled in design mode
+            this.showAll();
+            //--- clearSelections
+
+        } else {
+            //=== Refresh onChange Events
+            this.refreshControl()
+        }
+        
+    }
+
+    //meInstance.defaultDesignAction = 'actappControlSelected';
+    // meInstance.getControlConfigLocation = function(theName, theStartParent){
+    //     var tmpName = theName;
+    //     var tmpParent = theStartParent || this.getConfig()
+    //     var tmpParentArray = tmpParent.content || tmpParent.items || tmpParent.tabs;
+    //     var tmpRet = {};
+    //     for( var iPos in tmpParentArray ){
+    //         var tmpEntry = tmpParentArray[iPos];
+    //         if( tmpEntry && tmpEntry.name && tmpEntry.name == tmpName ){
+    //             return {
+    //                 pos: iPos,
+    //                 array: tmpParentArray,
+    //                 parent: tmpParent
+    //             }
+                
+    //         }
+    //         var tmpSubParent = tmpEntry.content || tmpEntry.items || tmpEntry.tabs;
+    //         if( tmpSubParent ){
+    //             tmpRet = this.getControlConfigLocation(theName, tmpEntry);
+    //             if (tmpRet){
+    //                 return tmpRet;
+    //             }
+    //         }
+    //     }
+        
+
+    // }
+
+    
+    meInstance.wrapControl = function (theName, theOptions) {
+        var tmpOptions = theOptions || {};
+        var tmpAddOverlay = false;
+        var tmpStylesDef = tmpOptions.maskstyles;
+        var tmpMaskContent = tmpOptions.maskcontent;
+        var tmpStylesDefContent = tmpOptions.maskcontentstyles;
+        var tmpStylesDefWrap = tmpOptions.wrapstyles;
+        var tmpAction = false;
+        var tmpActionAdd = '';
+
+        if( (tmpOptions.myaction) ){
+            tmpAction = tmpOptions.myaction;
+            tmpActionAdd = ' myaction="' + tmpAction + '" ';
+        } else if( (tmpOptions.action) ){
+            tmpAction = tmpOptions.action;
+            tmpActionAdd = ' action="' + tmpAction + '" ';
+        }
+
+        //--- If not turned off and an object is not supplied, set default styling
+        if( tmpStylesDef !== false ){
+            if(typeof(tmpStylesDef) !== 'object'){
+                tmpStylesDef = {'background-color':'grey','color': 'black', 'opacity':.05};
+            }
+        }
+
+        if( tmpStylesDefContent !== false ){
+            if(typeof(tmpStylesDefContent) !== 'object'){
+                tmpStylesDefContent = {border:'dashed 3px #b08298',margin:'2px',padding:'2px'};
+            }
+        }
+        if( tmpStylesDefWrap !== false ){
+            if(typeof(tmpStylesDefWrap) !== 'object'){
+                tmpStylesDefWrap = {margin:'2px', padding:'7px',border:'dashed 2px black'};
+            }
+        }
+
+        tmpAddOverlay = false;
+        var tmpAll = this.getOutterEls(theName);
+        var tmpUpdated = 0;
+        var tmpWrapper = tmpOptions.wrapper || 'designmode';
+        var tmpThisControl = this;
+
+        $(tmpAll).each(function( theIndex ) {
+            var thisEl = $(this);
+            var tmpName = thisEl.attr('name');
+            var tmpThisSpec = tmpThisControl.getWebControlSpecs(tmpName);
+            
+
+            var tmpControlDisp = tmpThisSpec.ctl;
+            
+            var tmpFieldHolder = '<div name="' + tmpName + '" appuse="actapp-design-body-wrap"></div>';
+            
+            if( (tmpWrapper == 'designmode')){
+                tmpWrapper = '<div ' + tmpActionAdd + ' class="ui field" name="' + tmpName + '" appuse="actapp-design-wrap"></div>';
+            }
+            if( !(this.data('actappdesignWrap'))){
+                this.wrap(tmpWrapper)
+                    .wrap(tmpFieldHolder)
+                    .data('actappdesignWrap',true);                
+
+                this.closest('[appuse="actapp-design-wrap"]')
+                    .prepend('<div appuse="actapp-design-details"></div>')
+                    .prepend('<div name="' + theName + '" appuse="actapp-design-wrap-titlebar" class="ui message black mar2 pad5 fluid" style="border:ridge 3px white;"><div class="ui black basic circular horizontal label">' + tmpControlDisp + '</div><b>' + theName + '</b></div>')
+
+                tmpUpdated++;
+            }
+        });
+        
+
+        if( tmpOptions.overlay === true || tmpOptions.mask === true ){
+            tmpAddOverlay = true;
+        }
+        
+        var tmpWrapperEl = this.getWrapperEl(theName);
+        if( tmpWrapperEl ){
+            tmpWrapperEl.data('name',theName);
+            tmpWrapperEl.data('specs',this.getWebControlSpecs(theName));
+            tmpWrapperEl.data('control',this);
+
+            if(tmpAddOverlay){
+                tmpWrapperEl.overlayMask();
+                tmpMaskEl = tmpWrapperEl.data('maskel');
+                tmpMaskContentEl = tmpWrapperEl.data('maskcontent');
+                
+                if(tmpStylesDef){
+                    tmpMaskEl.css(tmpStylesDef)
+                }
+                // if( !(tmpMaskContent) ){
+                //     tmpMaskContent = '&nbsp;';
+                // }
+                if(tmpMaskContent){
+                    tmpMaskContentEl.html(tmpMaskContent);
+                }
+                if(tmpStylesDefContent){
+                    tmpMaskContentEl.css(tmpStylesDefContent);
+                }
+                
+                // this.overlayMaskEl = tmpWrapperEl.data('maskel');
+                // this.overlayMaskContent = tmpWrapperEl.data('maskcontent');
+                
+                // if(tmpStylesDef){
+                //     this.overlayMaskEl.css(tmpStylesDef)
+                // }
+                // if( !(tmpMaskContent) ){
+                //     tmpMaskContent = '&nbsp;';
+                // }
+                // if(tmpMaskContent){
+                //     this.overlayMaskContent.html(tmpMaskContent);
+                // }
+                // if(tmpStylesDefContent){
+                //     this.overlayMaskContent.css(tmpStylesDefContent);
+                // }
+                
+                // if( tmpAction ){
+                //     this.overlayMaskContent.attr('action',tmpAction);
+                // }
+                
+                
+                tmpWrapperEl.data('mask',true);
+            }
+        }
+        var tmpNewEl = this.getWrapperEl(theName);
+        if( tmpStylesDefWrap ){
+            tmpNewEl.css(tmpStylesDefWrap);
+        }
+
+        //tmpNewEl.append('<div appuse="actapp-design-wrap-part" style="clear:both;padding:4px;"></div>')
+        //tmpNewEl.prepend('<div name="' + theName + '" appuse="actapp-design-wrap-titlebar" class="ui message black mar2 pad5">Name: <b>' + theName + '</b></div>');
+
+
+        return tmpNewEl;
+
+    }
+    meInstance.unWrapControl = function (theName) {
+        var tmpAll = this.getOutterEls(theName);
+        var tmpUpdated = 0;
+        var tmpEl = this.getEl();
+        var tmpWrapperEl = this.getWrapperEl(theName);        
+        if( tmpWrapperEl ){
+            tmpWrapperEl.overlayMask('remove');
+        }
+        $(tmpAll).each(function( theIndex ) {
+            if( (this.data('actappdesignWrap') === true)){
+                this.unwrap()
+                .unwrap()
+                .data('actappdesignWrap',false);
+                tmpUpdated++;
+            }
+        });
+        //--- ToDo: Reduce scope and refactor
+        //--- Note: When left, good start for drop points for insertion
+        ThisApp.getByAttr$({appuse:"actapp-design-wrap-titlebar"},tmpEl).remove();
+        ThisApp.getByAttr$({appuse:"actapp-design-wrap-part"},tmpEl).remove();
+        ThisApp.getByAttr$({appuse:"actapp-design-wrap-target"},tmpEl).remove();
+        return tmpUpdated;
+    }
+    meInstance.getDesignerEl = function (theName) {
+        var tmpEl = $(this.getOutterEl(theName).parent());
+        var tmpDesWrap = tmpEl.closest('[appuse=actapp-design-wrap]')
+        tmpDesWrap.data('wrapel',tmpEl);
+        return $(tmpDesWrap);
+    }
+    meInstance.getWrapperEl = function (theName) {
+        return $(this.getOutterEl(theName).parent());
+    }
+    meInstance.getDesignerFieldEl = function (theName) {
+        var tmpEl = $(this.getOutterEl(theName).parent());
+        var tmpDesWrap = tmpEl.closest('[appuse=actapp-design-body-wrap]')
+        return $(tmpDesWrap);
+    }
+    meInstance.getWebControlEls = function (theName) {
+        var tmpAll = []
+        if (this.hasField(theName)) {
+            tmpAll.push(this.getFieldEl(theName))
+        }
+        if (this.hasItem(theName)) {
+            tmpAll.push(this.getItemEl(theName))
+        }
+        return tmpAll;
+    }
+
+    //--- Returns only one el if exists, else array (should be one per, validate that)
+    meInstance.getWebControlEl = function (theName) {
+        var tmpAll = this.getWebControlEls(theName);
+        if( tmpAll && tmpAll.length == 1){
+            return $(tmpAll[0]);
+        }
+        return tmpAll;
+    }
+
+    meInstance.inDesignMode = function(){
+        return (this._designModeFlag === true);
+    }
+
+    meInstance.refreshForField = function(theFN){
+        if( this.inDesignMode() ){
+            return;
+        }
+        
         var tmpFN = theFN;
         var tmpSpecs = this.getFieldSpecs(tmpFN);
         if (tmpSpecs) {
@@ -6871,7 +7698,8 @@ License: MIT
                     if( !tmpAction ){
                         var tmpToRun = false;
                         var tmpPCtr = 0;
-                        var tmpParent = this.parentControl;
+                        //was var tmpParent = this.parentControl;
+                        var tmpParent = this;
                         while ((tmpParent && !isFunc(tmpToRun))) {
                             tmpPCtr++;
                             tmpToRun = tmpParent.actions[tmpActionName] || tmpParent[tmpActionName] ;
@@ -6894,16 +7722,17 @@ License: MIT
                     }
                     if (isFunc(tmpAction)) {
                         //--- Run it
-                        tmpAction(tmpFN, this.getFieldValue(tmpFN), this, tmpOnChange)
+                        var tmpVal = this.getFieldValue(tmpFN);
+                        tmpAction(tmpFN, tmpVal, this, tmpOnChange)
                     }
                 }
             }
         }
+        //new from base
         this.publish('field-change', [this, tmpFN, this.getFieldValue(tmpFN)])
     }
 
     meInstance.refreshControl = function () {
-
         var tmpIndex = this.getIndex();
         if (tmpIndex && tmpIndex.fieldsList && tmpIndex.fieldsList.length) {
             for (var iPos = 0; iPos < tmpIndex.fieldsList.length; iPos++) {
@@ -6924,11 +7753,6 @@ License: MIT
             tmpEl.removeClass('mobile');
         }
     }
-    // function inRect(theRect, theX, theY) {
-    //     return theRect.x <= theX && theX <= theRect.x + theRect.width &&
-    //     theRect.y <= theY && theY <= theRect.y + theRect.height;
-    // }
-
 
     function itemTouchEnd(theEvent) {
         var tmpTarget = theEvent.target || theEvent.currentTarget || theEvent.delegetTarget || {};
@@ -7173,140 +7997,138 @@ License: MIT
         }
     }
 
-    meInstance.initControlComponents = function () {
+    meInstance.initControlComponents = function (theOptionalEl) {
         var dfd = jQuery.Deferred();
-        var tmpEl = this.parentEl;
+        var tmpEl = theOptionalEl || this.parentEl;
         var tmpDefs = [];
         try {
-            
-        ThisApp.initAppComponents(tmpEl);
-        var tmpControls = ThisApp.getByAttr$({ ctlcomp: 'control' }, tmpEl);
-        if (tmpControls.length) {
-            for (var iControl = 0; iControl < tmpControls.length; iControl++) {
-                var tmpControlEl = $(tmpControls[iControl]);
-                var tmpControlName = tmpControlEl.attr('controlname');
-                var tmpPartName = tmpControlEl.attr('partname') || tmpControlEl.attr('name') || tmpControlName;
-                if (tmpControlName && tmpPartName) {
+            ThisApp.initAppComponents(tmpEl);
+            var tmpControls = ThisApp.getByAttr$({ ctlcomp: 'control' }, tmpEl);
+            if (tmpControls.length) {
+                for (var iControl = 0; iControl < tmpControls.length; iControl++) {
+                    var tmpControlEl = $(tmpControls[iControl]);
+                    var tmpControlName = tmpControlEl.attr('controlname');
+                    var tmpPartName = tmpControlEl.attr('partname') || tmpControlEl.attr('name') || tmpControlName;
+                    if (tmpControlName && tmpPartName) {
 
-                    var tmpCtl = this.parentControl.getControl(tmpControlName);
-                    if (!(tmpCtl)) {
-                        //var tmpCached = ThisApp.resCache['controls'][tmpControlName];
-                        console.warn("initControlComponents Could not find parent control " + tmpControlName)
-                    } else {
-                        var tmpPart = tmpCtl.create(tmpPartName, {parent:this});
-                        this.parts[tmpPartName] = tmpPart;
-                        tmpDefs.push(tmpPart.loadToElement(tmpControlEl));
+                        var tmpCtl = false;
+                        if(this.parentControl && this.parentControl.getControl){
+                            tmpCtl = this.parentControl.getControl(tmpControlName);
+                        }
+                        if (!(tmpCtl)) {
+                            //var tmpCached = ThisApp.resCache['controls'][tmpControlName];
+                            console.warn("initControlComponents Could not find parent control " + tmpControlName)
+                        } else {
+                            var tmpPart = tmpCtl.create(tmpPartName, {parent:this});
+                            this.parts[tmpPartName] = tmpPart;
+                            tmpDefs.push(tmpPart.loadToElement(tmpControlEl));
+                        }
                     }
                 }
             }
-        }
-        var tmpPanels = ThisApp.getByAttr$({ ctlcomp: 'panel' }, tmpEl);
-        if (tmpPanels.length) {
-            for (var iControl = 0; iControl < tmpPanels.length; iControl++) {
-                var tmpControlEl = $(tmpPanels[iControl]);
-                var tmpControlName = tmpControlEl.attr('controlname');
+            var tmpPanels = ThisApp.getByAttr$({ ctlcomp: 'panel' }, tmpEl);
+            if (tmpPanels.length) {
+                for (var iControl = 0; iControl < tmpPanels.length; iControl++) {
+                    var tmpControlEl = $(tmpPanels[iControl]);
+                    var tmpControlName = tmpControlEl.attr('controlname');
 
-                var tmpPartName = tmpControlEl.attr('partname') || tmpControlEl.attr('name') || tmpControlName;
-                if (tmpControlName && tmpPartName) {
+                    var tmpPartName = tmpControlEl.attr('partname') || tmpControlEl.attr('name') || tmpControlName;
+                    if (tmpControlName && tmpPartName) {
 
-                    var tmpCtl = this.parentControl.getPanel(tmpControlName);
-                    if (!(tmpCtl)) {
-                        console.warn("Could not find parent control " + tmpControlName)
-                        
-                    } else {
-                        var tmpPart = tmpCtl.create(tmpPartName, {parent:this});
-                        this.parts[tmpPartName] = tmpPart;
-                        tmpDefs.push(tmpPart.loadToElement(tmpControlEl));
+                        var tmpCtl = this.parentControl.getPanel(tmpControlName);
+                        if (!(tmpCtl)) {
+                            console.warn("Could not find parent control " + tmpControlName)
+                            
+                        } else {
+                            var tmpPart = tmpCtl.create(tmpPartName, {parent:this});
+                            this.parts[tmpPartName] = tmpPart;
+                            tmpDefs.push(tmpPart.loadToElement(tmpControlEl));
+                        }
+                    }
+
+                }
+            }
+
+            var tmpTplCtls = ThisApp.getByAttr$({ ctlcomp: 'template' }, tmpEl);
+            if (tmpTplCtls.length) {
+                for (var iControl = 0; iControl < tmpTplCtls.length; iControl++) {
+                    var tmpControlEl = $(tmpTplCtls[iControl]);
+                    var tmpControlName = tmpControlEl.attr('controlname');
+                    var tmpTplName = tmpControlEl.attr('templatename') || '';
+                    tmpDefs.push(this.loadTemplate(tmpControlName, tmpTplName, tmpControlEl));
+                }
+            }
+
+            var tmpHTMLs = ThisApp.getByAttr$({ ctlcomp: 'html' }, tmpEl);
+            if (tmpHTMLs.length) {
+                for (var iControl = 0; iControl < tmpHTMLs.length; iControl++) {
+                    var tmpControlEl = $(tmpHTMLs[iControl]);
+                    var tmpControlName = tmpControlEl.attr('controlname');
+                    if (tmpControlName) {
+                        this.parts[tmpPartName] = tmpPart;                    
+                        tmpDefs.push(this.loadHTML(tmpControlName, tmpControlEl));
                     }
                 }
-
             }
-        }
 
-        var tmpTplCtls = ThisApp.getByAttr$({ ctlcomp: 'template' }, tmpEl);
-        if (tmpTplCtls.length) {
-            for (var iControl = 0; iControl < tmpTplCtls.length; iControl++) {
-                var tmpControlEl = $(tmpTplCtls[iControl]);
-                var tmpControlName = tmpControlEl.attr('controlname');
-                var tmpTplName = tmpControlEl.attr('templatename') || '';
-                tmpDefs.push(this.loadTemplate(tmpControlName, tmpTplName, tmpControlEl));
+            var tmpDDs = ThisApp.getByAttr$({ ctlcomp: 'dropdown' }, tmpEl);
+
+            if (tmpDDs.length) {
+                this.liveIndex.dropdown = tmpDDs;
+                tmpDDs.dropdown({
+                    showOnFocus: false
+                })
+                    .attr('ctlcomp', '')
+                    .attr('appcomp', '');
             }
-        }
 
-        var tmpHTMLs = ThisApp.getByAttr$({ ctlcomp: 'html' }, tmpEl);
-        if (tmpHTMLs.length) {
-            for (var iControl = 0; iControl < tmpHTMLs.length; iControl++) {
-                var tmpControlEl = $(tmpHTMLs[iControl]);
-                var tmpControlName = tmpControlEl.attr('controlname');
-                if (tmpControlName) {
-                    this.parts[tmpPartName] = tmpPart;                    
-                    tmpDefs.push(this.loadHTML(tmpControlName, tmpControlEl));
+            var tmpCBs = ThisApp.getByAttr$({ ctlcomp: 'checkbox' }, tmpEl);
+
+            if (tmpCBs.length) {
+                this.liveIndex.checkbox = tmpCBs;
+                tmpCBs.checkbox()
+                    .attr('ctlcomp', '')
+                    .attr('appcomp', '');
+            }
+
+            var tmpLayouts = ThisApp.getByAttr$({ ctlcomp: 'layout' }, tmpEl);
+
+            if (tmpLayouts.length) {
+                this.layoutElements = tmpLayouts;
+                tmpLayouts
+                    .addClass('ctl-layout-frame')
+                    .css('min-height', '200px')
+                    .attr('ctlcomporig', 'layout')
+                    .attr('ctlcomp', '')
+                    ;
+                //--- Assure all the elements to the next pane are 100%
+                //ToDo: Verify still needed ***
+                ThisApp.util.resizeToParent(this.layoutElements);
+                //--- Assure layouts index is in there
+                this.liveIndex.layouts = this.liveIndex.layouts || {};
+                //--- Loop to create each one, getting details if needed from el
+                for (var iLayout = 0; iLayout < tmpLayouts.length; iLayout++) {
+                    var tmpLayoutEntry = $(tmpLayouts.get(iLayout));
+                    var tmpLayoutTemplateName = tmpLayoutEntry.attr('template') || '';
+                    var tmpLayoutOptions = defaultLayoutOptions;
+                    if (tmpLayoutTemplateName && StaticApp.layoutTemplates[tmpLayoutTemplateName]) {
+                        //--- Using custom template
+                        tmpLayoutOptions = StaticApp.layoutTemplates[tmpLayoutTemplateName];
+                    }
+                    this.controlLayoutChanged = ActionAppCore.debounce(function () {
+                        this.publish('resized', this);
+                    }, 200).bind(this);
+
+                    tmpLayoutOptions.onresize_end = this.controlLayoutChanged;
+                    this.layoutCount = this.layoutCount || 0;
+                    this.layoutCount++;
+                    var tmpControlLayout = tmpLayoutEntry.layout(tmpLayoutOptions);
+                    this.liveIndex.layouts['layout-' + this.layoutCount] = tmpControlLayout;
                 }
             }
-        }
-
-        var tmpDDs = ThisApp.getByAttr$({ ctlcomp: 'dropdown' }, tmpEl);
-
-        if (tmpDDs.length) {
-            this.liveIndex.dropdown = tmpDDs;
-            tmpDDs.dropdown({
-                showOnFocus: false
-            })
-                .attr('ctlcomp', '')
-                .attr('appcomp', '');
-        }
-
-        var tmpCBs = ThisApp.getByAttr$({ ctlcomp: 'checkbox' }, tmpEl);
-
-        if (tmpCBs.length) {
-            this.liveIndex.checkbox = tmpCBs;
-            tmpCBs.checkbox()
-                .attr('ctlcomp', '')
-                .attr('appcomp', '');
-        }
-
-        var tmpLayouts = ThisApp.getByAttr$({ ctlcomp: 'layout' }, tmpEl);
-
-        if (tmpLayouts.length) {
-            this.layoutElements = tmpLayouts;
-
-            tmpLayouts
-                .addClass('ctl-layout-frame')
-                .css('min-height', '200px')
-                .attr('ctlcomporig', 'layout')
-                .attr('ctlcomp', '')
-                ;
-            //--- Assure all the elements to the next pane are 100%
-            //ToDo: Verify still needed ***
-            ThisApp.util.resizeToParent(this.layoutElements);
-            //comeback2
-
-
-            //--- Assure layouts index is in there
-            this.liveIndex.layouts = this.liveIndex.layouts || {};
-            //--- Loop to create each one, getting details if needed from el
-            for (var iLayout = 0; iLayout < tmpLayouts.length; iLayout++) {
-                var tmpLayoutEntry = $(tmpLayouts.get(iLayout));
-                var tmpLayoutTemplateName = tmpLayoutEntry.attr('template') || '';
-                var tmpLayoutOptions = defaultLayoutOptions;
-                if (tmpLayoutTemplateName && StaticApp.layoutTemplates[tmpLayoutTemplateName]) {
-                    //--- Using custom template
-                    tmpLayoutOptions = StaticApp.layoutTemplates[tmpLayoutTemplateName];
-                }
-                this.controlLayoutChanged = ActionAppCore.debounce(function () {
-                    this.publish('resized', this);
-                }, 200).bind(this);
-
-                tmpLayoutOptions.onresize_end = this.controlLayoutChanged;
-                this.layoutCount = this.layoutCount || 0;
-                this.layoutCount++;
-                var tmpControlLayout = tmpLayoutEntry.layout(tmpLayoutOptions);
-                this.liveIndex.layouts['layout-' + this.layoutCount] = tmpControlLayout;
-            }
-        }
-    } catch (theError) {
+        } catch (theError) {
             console.error('error in control init',theError);
-    }
+        }
         $.whenAll(tmpDefs).then(function (theReply) {
             //--- Tell the app to resize it's layouts
             ThisApp.resizeLayouts();
@@ -7459,6 +8281,12 @@ License: MIT
         return tmpHTML;
     }
 
+    
+    me.getContentDomSpecs = getContentDomSpecs;
+    function getContentDomSpecs(theControlName, theItems, theControlObj) {
+        var tmpRet = {}
+        return tmpRet;
+    }
     me.getContentHTML = getContentHTML;
     function getContentHTML(theControlName, theItems, theControlObj) {
         var tmpHTML = [];
@@ -7472,7 +8300,10 @@ License: MIT
             if (tmpCtl == 'tabs') {
                 var tmpTabs = [];
                 var tmpTabName = tmpItem.name || 'tabs';
-                tmpTabName = theControlName + "-" + tmpTabName;
+                tmpTabCtlName = tmpTabName;
+                if( theControlName ){
+                    tmpTabName = theControlName + "-" + tmpTabName;
+                }
                 var tmpTabsHTML = [];
                 var tmpColor = 'blue';
                 if (tmpItem.color) {
@@ -7507,8 +8338,9 @@ License: MIT
                 }
                 tmpTabsHTML.push('</div>');
                 tmpTabs = tmpTabs.join('');
+                
                 if (tmpTabs) {
-                    tmpTabs = '<div controls tabs class="pad0 ui top attached tabular menu ' + tmpSlim + '" style="">' + tmpTabs + '</div>';
+                    tmpTabs = '<div name="' + tmpTabName + '" item="' + tmpTabCtlName + '" controls tabs class="mar0 pad0 ui top attached tabular menu ' + tmpSlim + '" style="">' + tmpTabs + '</div>';
                     if (tmpUseLayout) {
                         tmpTabs = '<div ctlcomp="layout"><div class="ui-layout-north">' + tmpTabs + '</div>';
                     }
@@ -7528,18 +8360,28 @@ License: MIT
         return tmpHTML;
     }
 
+    var ctlCounter = 0;
+    function getNextCounter(){
+        ctlCounter++;
+        return ctlCounter;
+    }
+    me.getNextCounter = getNextCounter;
 
+    
     //--- Internal use - creates index of all fields and items with a name;
     me._loadContentIndex = function (theItems, theOptionalIndex, theOptionalOutline) {
+
         var tmpIndex = theOptionalIndex || {
             fieldsList: [],
             itemsList: [],
-            fields: {},
-            items: {},
             controls: {},
             required: {},
             outline: []
         }
+        tmpIndex.errors = tmpIndex.errors || [];
+        tmpIndex.locs = tmpIndex.locs || {};
+        tmpIndex.all = tmpIndex.all || {};
+        tmpIndex.entryList = tmpIndex.entryList || [];
         var tmpOL = theOptionalOutline || tmpIndex.outline;
         var tmpItems = theItems || [];
         if (!(tmpItems && tmpItems.length)) {
@@ -7547,6 +8389,18 @@ License: MIT
         }
         for (var iPos = 0; iPos < tmpItems.length; iPos++) {
             var tmpItem = tmpItems[iPos];
+            if( !(tmpItem.name) ){
+                var tmpItemName = 'untitled-' + getNextCounter();
+                //tmpItem.tagname = tmpItemName;
+                //--- Autoset missing name
+                tmpItem.name = tmpItemName;
+                tmpIndex.errors.push({errnum:1, text: 'All fields and items require a unique name for control.',tagname:'' + tmpItem.tagname, specs:tmpItem});
+            }
+            if( !(tmpItem.ctl) ){
+                tmpItem.ctl = 'field';
+                //tmpItem.tagname = tmpItem.name || tmpItem.tagname;
+                tmpIndex.errors.push({errnum:2, text: 'All fields and items require a web control name (ctl).',tabname:'' + tmpItem.tagname});
+            }
             var tmpCtl = tmpItem.ctl || 'field';
             var tmpThisObj = {
                 ctl: tmpCtl,
@@ -7556,8 +8410,13 @@ License: MIT
             var tmpControl = me.getWebControl(tmpCtl)
             var tmpType = me.getControlType(tmpCtl)
             tmpType = tmpType + 's';
+            
+
             if (tmpItem.name) {
                 var tmpName = tmpItem.name;
+
+                tmpIndex.locs[tmpItem.name] = {in:theItems,pos:iPos};
+
                 if (tmpCtl == 'control' || tmpCtl == 'panel') {
                     var tmpAppComp = tmpCtl;
                     tmpIndex.controls[tmpName] = tmpItem;
@@ -7588,15 +8447,18 @@ License: MIT
                     }
                 }
                 var tmpToAdd = tmpItem;
-                if (tmpIndex[tmpType][tmpName]) {
-                    tmpIndex[tmpType][tmpName] = [tmpIndex[tmpType][tmpName]];
-                    console.warn("Control content has the same name more than once for " + tmpName);
-                    tmpIndex[tmpType][tmpName].push(tmpToAdd);
+                if (tmpIndex.all[tmpName]) {
+                    tmpIndex.all[tmpName] = [tmpIndex.all[tmpName]];
+                    console.error("Control content has the same name more than once for " + tmpName);
+                    tmpIndex.errors.push({text: 'All fields and items require a control name (ctl).',name:'' + tmpItem.name});
+                    tmpIndex.all[tmpName].push(tmpToAdd);
                 } else {
-                    tmpIndex[tmpType][tmpName] = tmpToAdd;
+                    tmpIndex.all[tmpName] = tmpToAdd;
                     tmpIndex[tmpType + 'List'].push(tmpName)
+                    tmpIndex.entryList.push(tmpName)
                 }
             }
+            
             var tmpContentItems = ['items', 'tabs', 'content', 'center', 'north', 'south', 'east', 'west'];
             for (var aIndex in tmpContentItems) {
                 var tmpContentItem = tmpContentItems[aIndex];
@@ -7606,6 +8468,8 @@ License: MIT
                 }
             }
         }
+        tmpIndex.fields = tmpIndex.all;
+        tmpIndex.items = tmpIndex.all;
         return tmpIndex;
     }
 
@@ -7648,26 +8512,32 @@ License: MIT
         } else if (isStr(theObject.attr)) {
             tmpAttr += ' ' + theObject.attr + ' ';
         }
-
         tmpAttr = tmpAttr + ' controls item ';
         if (tmpName) {
             tmpName = ' name="' + tmpName + '" ';
         }
         tmpRet += tmpAttr + tmpName;
-
-        return tmpRet
-
+        return tmpRet;
+    }
+    me.getItemAttrObj = getItemAttrObj
+    function getItemAttrObj(theObject) {
+        if (!(theObject)) { return {} };
+        return ActionAppCore.util.getAttrAsObject(getItemAttrString(theObject));
     }
 
-    me.sources = {
-        yesno: 'Yes,No',
-        system_grid_sizes: 'None|0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16',
-        system_sizes: 'Mini|mini,Tiny|tiny,Small|small,Large|large,Big|big,Huge|huge,Massive|massive',
-        system_colors: 'Red|red,Orange|orange,Yellow|yellow,Olive|olive,Green|green,Teal|teal,Blue|blue,Violet|violet,Purple|purple,Pink|pink,Brown|brown,Black|black',
-        states: 'Alabama|AL,Alaska|AK,Arizona|AZ,Arkansas|AR,California|CA,Colorado|CO,Connecticut|CT,Delaware|DE,District Of Columbia|DC,Florida|FL,Georgia|GA,Hawaii|HI,Idaho|ID,Illinois|IL,Indiana|IN,Iowa|IA,Kansas|KS,Kentucky|KY,Louisiana|LA,Maine|ME,Maryland|MD,Massachusetts|MA,Michigan|MI,Minnesota|MN,Mississippi|MS,Missouri|MO,Montana|MT,Nebraska|NE,Nevada|NV,New Hampshire|NH,New Jersey|NJ,New Mexico|NM,New York|NY,North Carolina|NC,North Dakota|ND,Ohio|OH,Oklahoma|OK,Oregon|OR,Pennsylvania|PA,Rhode Island|RI,South Carolina|SC,South Dakota|SD,Tennessee|TN,Texas|TX,Utah|UT,Vermont|VT,Virginia|VA,Washington|WA,West Virginia|WV,Wisconsin|WI,Wyoming|WY',
-        countries: 'Afghanistan|AF,Åland Islands|AX,Albania|AL,Algeria|DZ,American Samoa|AS,Andorra|AD,Angola|AO,Anguilla|AI,Antarctica|AQ,Antigua and Barbuda|AG,Argentina|AR,Armenia|AM,Aruba|AW,Australia|AU,Austria|AT,Azerbaijan|AZ,Bahamas|BS,Bahrain|BH,Bangladesh|BD,Barbados|BB,Belarus|BY,Belgium|BE,Belize|BZ,Benin|BJ,Bermuda|BM,Bhutan|BT,Bolivia, Plurinational State of|BO,Bonaire, Sint Eustatius and Saba|BQ,Bosnia and Herzegovina|BA,Botswana|BW,Bouvet Island|BV,Brazil|BR,British Indian Ocean Territory|IO,Brunei Darussalam|BN,Bulgaria|BG,Burkina Faso|BF,Burundi|BI,Cambodia|KH,Cameroon|CM,Canada|CA,Cape Verde|CV,Cayman Islands|KY,Central African Republic|CF,Chad|TD,Chile|CL,China|CN,Christmas Island|CX,Cocos (Keeling) Islands|CC,Colombia|CO,Comoros|KM,Congo|CG,Congo, the Democratic Republic of the|CD,Cook Islands|CK,Costa Rica|CR,Côte d\'Ivoire|CI,Croatia|HR,Cuba|CU,Curaçao|CW,Cyprus|CY,Czech Republic|CZ,Denmark|DK,Djibouti|DJ,Dominica|DM,Dominican Republic|DO,Ecuador|EC,Egypt|EG,El Salvador|SV,Equatorial Guinea|GQ,Eritrea|ER,Estonia|EE,Ethiopia|ET,Falkland Islands (Malvinas|FK,Faroe Islands|FO,Fiji|FJ,Finland|FI,France|FR,French Guiana|GF,French Polynesia|PF,French Southern Territories|TF,Gabon|GA,Gambia|GM,Georgia|GE,Germany|DE,Ghana|GH,Gibraltar|GI,Greece|GR,Greenland|GL,Grenada|GD,Guadeloupe|GP,Guam|GU,Guatemala|GT,Guernsey|GG,Guinea|GN,Guinea-Bissau|GW,Guyana|GY,Haiti|HT,Heard Island and McDonald Islands|HM,Holy See (Vatican City State|VA,Honduras|HN,Hong Kong|HK,Hungary|HU,Iceland|IS,India|IN,Indonesia|ID,Iran, Islamic Republic of|IR,Iraq|IQ,Ireland|IE,Isle of Man|IM,Israel|IL,Italy|IT,Jamaica|JM,Japan|JP,Jersey|JE,Jordan|JO,Kazakhstan|KZ,Kenya|KE,Kiribati|KI,Korea, Democratic People\'s Republic of|KP,Korea, Republic of|KR,Kuwait|KW,Kyrgyzstan|KG,Lao People\'s Democratic Republic|LA,Latvia|LV,Lebanon|LB,Lesotho|LS,Liberia|LR,Libya|LY,Liechtenstein|LI,Lithuania|LT,Luxembourg|LU,Macao|MO,Macedonia, the former Yugoslav Republic of|MK,Madagascar|MG,Malawi|MW,Malaysia|MY,Maldives|MV,Mali|ML,Malta|MT,Marshall Islands|MH,Martinique|MQ,Mauritania|MR,Mauritius|MU,Mayotte|YT,Mexico|MX,Micronesia, Federated States of|FM,Moldova, Republic of|MD,Monaco|MC,Mongolia|MN,Montenegro|ME,Montserrat|MS,Morocco|MA,Mozambique|MZ,Myanmar|MM,Namibia|NA,Nauru|NR,Nepal|NP,Netherlands|NL,New Caledonia|NC,New Zealand|NZ,Nicaragua|NI,Niger|NE,Nigeria|NG,Niue|NU,Norfolk Island|NF,Northern Mariana Islands|MP,Norway|NO,Oman|OM,Pakistan|PK,Palau|PW,Palestinian Territory, Occupied|PS,Panama|PA,Papua New Guinea|PG,Paraguay|PY,Peru|PE,Philippines|PH,Pitcairn|PN,Poland|PL,Portugal|PT,Puerto Rico|PR,Qatar|QA,Réunion|RE,Romania|RO,Russian Federation|RU,Rwanda|RW,Saint Barthélemy|BL,Saint Helena, Ascension and Tristan da Cunha|SH,Saint Kitts and Nevis|KN,Saint Lucia|LC,Saint Martin (French part|MF,Saint Pierre and Miquelon|PM,Saint Vincent and the Grenadines|VC,Samoa|WS,San Marino|SM,Sao Tome and Principe|ST,Saudi Arabia|SA,Senegal|SN,Serbia|RS,Seychelles|SC,Sierra Leone|SL,Singapore|SG,Sint Maarten (Dutch part|SX,Slovakia|SK,Slovenia|SI,Solomon Islands|SB,Somalia|SO,South Africa|ZA,South Georgia and the South Sandwich Islands|GS,South Sudan|SS,Spain|ES,Sri Lanka|LK,Sudan|SD,Suriname|SR,Svalbard and Jan Mayen|SJ,Swaziland|SZ,Sweden|SE,Switzerland|CH,Syrian Arab Republic|SY,Taiwan, Province of China|TW,Tajikistan|TJ,Tanzania, United Republic of|TZ,Thailand|TH,Timor-Leste|TL,Togo|TG,Tokelau|TK,Tonga|TO,Trinidad and Tobago|TT,Tunisia|TN,Turkey|TR,Turkmenistan|TM,Turks and Caicos Islands|TC,Tuvalu|TV,Uganda|UG,Ukraine|UA,United Arab Emirates|AE,United Kingdom|GB,United States|US,United States Minor Outlying Islands|UM,Uruguay|UY,Uzbekistan|UZ,Vanuatu|VU,Venezuela, Bolivarian Republic of|VE,Viet Nam|VN,Virgin Islands, British|VG,Virgin Islands, U.S|VI,Wallis and Futuna|WF,Western Sahara|EH,Yemen|YE,Zambia|ZM,Zimbabwe|ZW'
-    };
-
+    me.sources = ActionAppCore.sources;
+    ActionAppCore.addSources({sys_grid_sizes: 'Default|,0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16',
+    sys_sizes_header: 'Default|,Tiny|tiny,Small|small,Medium|medium,Large|large,Huge|huge',
+    sys_sizes: 'Default|,Mini|mini,Tiny|tiny,Small|small,Medium|medium,Large|large,Big|big,Huge|huge,Massive|massive',
+    sys_colors: 'Default|,Red|red,Orange|orange,Yellow|yellow,Olive|olive,Green|green,Teal|teal,Blue|blue,Violet|violet,Purple|purple,Pink|pink,Brown|brown,Black|black',
+    sys_alignment: 'Default|,Center|center aligned,Left|left aligned,Right|right aligned',
+    sys_lralignment: 'Default|,Left|left aligned,Right|right aligned',
+    sys_valignment: 'Default|,Top|top aligned,Middle|middle aligned,Bottom|bottom aligned',
+    sys_float: 'Default|,Floated Left|floated left,Floated Right|floated right',
+    sys_tofloat: 'Default|,Float Left|toleft,Float Right|toright',
+    sys_attached: 'Default|,Top|top attached,Middle|attached,Bottom|bottom attached'
+    });
+    
     /**
      * addListSource
     *  - Returns a source list use for dropdown and other like controls
@@ -7683,105 +8553,7 @@ License: MIT
     me.addListSource = function(theName, theSourceString ){
         me.sources[theName] = theSourceString;
     }
-    /**
-     * getListSource
-    *  - Returns a source list use for dropdown and other like controls
-    * 
-    * Example: 
-    * ThisApp.controls.getListSource('states'); //Returns array of arrays [["Alabama", "AL"],...]
-    * ThisApp.controls.getListSource('states','objects'); //Returns array of objects [{name: "Alabama", value: "AL", text: "Alabama"},...]
-    * 
-    * @param  {String} theName   [The name of the source to return]
-    * @param  {String} theReturnType   [<blank>,objects] Default: <blank>
-    *  "array" or <blank> 
-    *  "object" or "objects"
-    * @return Array
-    * 
-    */    
-    me.getListSource = function(theName, theReturnType){
-        if(!me.sources.hasOwnProperty(theName)){
-            return '';
-        }
-        var tmpSource = me.sources[theName];
-        if( theReturnType == 'string' ){
-            return tmpSource;
-        }
-        if( theReturnType == 'objects'|| theReturnType == 'object' ){
-            return getListAsObjects(tmpSource);
-        }
-        return getListAsArrays(tmpSource);
-    }
-
-    me.getListAsObjects = getListAsObjects;
-    function getListAsObjects(theList) {
-        var tmpList = getListAsArrays(theList);
-        var tmpRet = []
-
-        if (tmpList && tmpList.length > 0) {
-            for (var index = 0; index < tmpList.length; index++) {
-                var tmpEntry = tmpList[index] || '';
-                if (tmpEntry) {
-                    var tmpText = tmpEntry;
-                    var tmpVal = tmpEntry;
-                    if (!isStr(tmpEntry) && tmpEntry.length == 2) {
-                        //--- This is an array, get values
-                        tmpText = tmpEntry[0]
-                        tmpVal = tmpEntry[1]
-                    }
-                    tmpRet.push(
-                        {
-                            name: tmpText,
-                            value: tmpVal,
-                            text: tmpText
-                        }
-                    )
-
-                }
-            }
-        }
-        return tmpRet;
-
-    }
-    me.getListAsArrays = getListAsArrays
-    function getListAsArrays(theList) {
-        var tmpList = theList;
-        
-        if( isObj(tmpList) ){
-            var tmpSource = false;
-            if( tmpList.source && ThisApp.controls.sources.hasOwnProperty(tmpList.source) ){
-                tmpSource = ThisApp.controls.sources[tmpList.source];
-                tmpList = tmpSource;
-            } else if( ActionAppCore.dir.sources && ActionAppCore.dir.sources.hasOwnProperty(tmpList.source) ){
-                tmpSource = ActionAppCore.dir.sources[tmpList.source];
-                tmpList = tmpSource;
-            }
-
-            if( !(tmpSource) ){
-                console.error("Passed invalid object for list type, no valid source provided.  Source: " + tmpList.source);
-                tmpList = '';
-            }
-        }
-        if (isStr(tmpList)) {
-            tmpList = tmpList.split(",");
-        }
-        if (tmpList && tmpList.length > 0) {
-            for (var index = 0; index < tmpList.length; index++) {
-                var tmpEntry = tmpList[index] || '';
-                if (tmpEntry) {
-                    if (isStr(tmpEntry)) {
-                        var tmpVals = tmpEntry.split("|");
-                        //--- If we have alias values, add them as an array
-                        //--    if not, leave the string value there as is
-                        if (tmpVals.length > 1) {
-                            tmpList[index] = tmpVals
-                        }
-                    }
-                }
-            }
-        }
-        return tmpList;
-
-    }
+    me.getListSource = ActionAppCore.getListSource;
 
     me.processDynamicContent = processDynamicContent
     function processDynamicContent(theControlName, theObject, theControlObj) {
@@ -7790,9 +8562,9 @@ License: MIT
         for (var aFN in tmpRet) {
             var tmpObj = tmpRet[aFN];
             var tmpCompKey = '[computed]';
+            
             if (isObj(tmpObj) && tmpObj.hasOwnProperty(tmpCompKey)) {
                 var tmpComputed = tmpObj[tmpCompKey];
-
                 if (isStr(tmpComputed)) {
                     tmpComputed = {
                         "context": tmpComputed
@@ -7804,8 +8576,9 @@ License: MIT
                     var tmpCompContext = tmpComputed.context || '';
                     if (tmpCompContext) {
                         try {
-                            //--- This is used in the eval statement, do not remove
+                            //--- Variables used in the eval statement, do not remove
                             var context = tmpContext;
+                            var thisControl = theControlObj;
                             tmpCompValue = eval(tmpCompContext)
                         } catch (ex) {
                             console.warn("Attempt to us computed context value failed ", ex)
@@ -7822,9 +8595,19 @@ License: MIT
         return tmpRet
     }
 
+    me.getDomSpecsForControl = getDomSpecsForControl
+    function getDomSpecsForControl(theControlName, theObject, theControlObj) {
+        var tmpDataObject = me.processDynamicContent(theControlName, theObject, theControlObj);
+        var tmpControl = me.webControls.get(theControlName);
+        if (!(tmpControl && tmpControl.getDomSpecs)) {
+            console.error("No getDomSpecs for " + theControlName)
+            return '';
+        }
+        return tmpControl.getDomSpecs(theControlName, tmpDataObject, theControlObj);
+    }
+
     me.getHTMLForControl = getHTMLForControl
     function getHTMLForControl(theControlName, theObject, theControlObj) {
-
         var tmpHTML = [];
         tmpHTML.push('')
         if (!(theControlName)) {
@@ -7837,7 +8620,7 @@ License: MIT
 
         var tmpControl = me.webControls.get(theControlName);
         if (!(tmpControl && tmpControl.getHTML)) {
-            console.warn("No HTML for " + theControlName)
+            console.error("No HTML for " + theControlName)
             return '';
         }
 
@@ -7852,15 +8635,15 @@ License: MIT
     // //----   COMMON ITEM CONTROLS - INFORMATION =================================
     //    **** No longer using this method for self docs
 
-    // me.catalogInfo = new Index();
-    // me.catalogInfo.add('color', {
-    //     name: "color",
-    //     label: "Semantic Color List",
-    //     type: "string",
-    //     ctl: "dropdown",
-    //     list: ["red", "orange", "yellow", "olive", "green", "teal", "blue", "violet", "purple", "pink", "brown", "black"],
-    //     notes: "No other options are valid for colors"
-    // })
+    me.catalogInfo = new Index();
+    me.catalogInfo.add('color', {
+        name: "color",
+        label: "Select Color",
+        datatype: "string",
+        ctl: "dropdown",
+        list: {source: 'sys_colors'},
+        note: "No other options are valid for colors"
+    })
     // me.catalogInfo.add('hidden', {
     //     name: "hidden",
     //     label: "Hidden",
@@ -8160,6 +8943,10 @@ License: MIT
     }
 
     me.ControlButton = {
+        getDesignSpecs: function(theControlName, theOptions, theControlObj){ 
+            var tmpPropList = ['name','ctl','classes','styles','hidden','text','color', 'size', 'basic']; 
+			return tmpPropList
+		},
         getHTML: function (theControlName, theObject, theControlObj) {
             var tmpObject = theObject || {};
 
@@ -8180,7 +8967,7 @@ License: MIT
                 tmpStyle = ' style="' + tmpStyle + '" '
             }
 
-            var tmpClasses = ''
+            var tmpClasses = '';
             tmpClasses += getValueIfTrue(theObject, ['basic', 'compact', 'fluid', 'right', 'labeled', 'circular', 'disabled']);
             tmpClasses += getValueIfThere(theObject, ['color', 'size', 'floated']);
             if ((tmpObject.toright || tmpObject.toRight) === true) {
@@ -8206,7 +8993,7 @@ License: MIT
                 tmpAction = ' myaction="' + tmpObject.myaction.trim() + '" ';
             }
 
-            tmpHTML.push('<button type="button" ' + tmpAction + getItemAttrString(theObject) + ' class="ui button ' + tmpClasses + ' " ' + tmpStyle + '>')
+            tmpHTML.push('<button desuse="disable" type="button" ' + tmpAction + getItemAttrString(theObject) + ' class="ui button ' + tmpClasses + ' " ' + tmpStyle + '>')
 
             if (tmpObject.icon && !(tmpObject.right)) {
                 tmpHTML.push('<i class="' + tmpObject.icon + ' icon"></i> ');
@@ -8230,6 +9017,10 @@ License: MIT
     }
 
     me.ControlDivider = {
+        getDesignSpecs: function(theControlName, theOptions, theControlObj){ 
+            var tmpPropList = ['name','ctl','classes','styles','hidden','text','color', 'size', 'alignment']; 
+			return tmpPropList
+		},
         getHTML: function (theControlName, theObject, theControlObj) {
             var tmpObject = theObject || {};
             var tmpLevel = '';
@@ -8382,42 +9173,103 @@ License: MIT
 
 
     me.SemanticElement = {
-        getHTML: function (theControlName, theObject, theControlObj, theIsUI) {
+        getDesignSpecs: function(theControlName, theOptions, theControlObj){ 
+			//var tmpPropList = ['name','ctl','classes','styles','hidden','text','color', 'icon', 'size', 'alignment', 'attached', 'clearing','floating', 'dividing', 'block', 'link', 'fluid', 'placeholder', 'raised', 'tall', 'stacked', 'piled', 'vertical', 'loading', 'inverted', 'bottom', 'top', 'attached', 'padded', 'slim', 'compact', 'secondary', 'tertiary', 'circular', 'clearing', 'right', 'left', 'center', 'aligned', 'basic']; 
+            var tmpPropList = ['name','ctl','classes','styles','hidden','text','color', 'size', 'alignment']; 
+			return tmpPropList
+		},
+        //--- Concept of returning details to use in the designer
+        //  --- for stuff that can't be gleaned from the specs
+        // ----** Maybe add to the specs instead to save a call?
+        getDesignerDetails: function (theControlName, theObject, theControlObj, theIsUI){
+            return {}
+        },
+        getHTMLForDesign: function (theControlName, theObject, theControlObj, theIsUI){
+            return "DEIGN"
+        },
+        getDomSpecs: function (theControlName, theObject, theControlObj, theIsUI) {
             var tmpObject = theObject || {};
-            var tmpHTML = [];
+            var tmpRet = {};
+            var tmpStyles = {};
             var tmpHidden = '';
             if (tmpObject.hidden === true) {
-                tmpHidden = 'display:none;';
+                tmpStyles.display = 'none';
             }
             var tmpStyle = tmpObject.style || tmpObject.styles || tmpObject.css || '';
             if (tmpHidden) {
                 tmpStyle += tmpHidden;
             }
             if (tmpStyle) {
-                tmpStyle = ' style="' + tmpStyle + '" '
+                tmpRet.style = tmpStyle;
             }
 
-            var tmpClass = tmpObject.class || '';
-            var tmpControlClass = tmpClass || theControlName;
+            var tmpControlClass = theControlName;
             var tmpClasses = tmpObject.classes || '';
-            tmpClasses += getValueIfTrue(theObject, ['dividing', 'block', 'link', 'fluid', 'placeholder', 'raised', 'tall', 'stacked', 'piled', 'vertical', 'loading', 'inverted', 'bottom', 'top', 'attached', 'padded', 'slim', 'compact', 'secondary', 'tertiary', 'circular', 'clearing', 'right', 'left', 'center', 'aligned', 'basic']);
+            tmpClasses += getValueIfTrue(theObject, ['floating', 'dividing', 'block', 'link', 'fluid', 'placeholder', 'raised', 'tall', 'stacked', 'piled', 'vertical', 'loading', 'inverted', 'bottom', 'top', 'attached', 'padded', 'slim', 'compact', 'secondary', 'tertiary', 'circular', 'clearing', 'right', 'left', 'center', 'aligned', 'basic']);
             tmpClasses += getValueIfThere(theObject, ['color', 'icon', 'size', 'alignment', 'attached']);
-
-            var tmpUI = (theIsUI!==false) ? 'ui ' : '';
-
-            tmpHTML = [];
-            tmpHTML.push('<div ' + getItemAttrString(theObject) + ' class="' + tmpUI + ' ' + tmpControlClass + ' ' + tmpClasses + '" ' + tmpStyle + '>')
-
-            tmpHTML.push(tmpObject.text || tmpObject.html || '')
-
-            var tmpItems = tmpObject.items || tmpObject.content || [];
-            if (tmpItems) {
-                tmpHTML.push(getContentHTML(theControlName, tmpItems, theControlObj))
+            if( theIsUI!==false ){
+                tmpClasses += ' ui';
             }
+            tmpClasses += ' ' + tmpControlClass;
+            tmpRet.className = tmpClasses.trim(); //string ok
 
-            tmpHTML.push('</div>')
-            tmpHTML = tmpHTML.join('');
-            return tmpHTML;
+            var tmpType = 'div';
+            var tmpAttrs = getItemAttrObj(theObject);
+            if( tmpAttrs ){
+                tmpRet.attr = tmpAttrs;
+            }
+            var tmpTextContent = tmpObject.text || tmpObject.html || '';
+            var tmpContentArray = tmpObject.items || tmpObject.content;
+            var tmpContentSpecs = false;
+            if (tmpContentArray) {
+                tmpContentSpecs = getContentDomSpecs(theControlName, tmpContentArray, theControlObj);
+                tmpRet.children = tmpContentSpecs;
+            }
+            tmpRet.text = tmpTextContent;
+            return tmpRet;
+        },
+        getHTML: function (theControlName, theObject, theControlObj, theIsUI) {
+            //--> Concept of having the control send alternate output for designer
+            // if( theControlObj.__inDesignMode ){
+            //     return this.getHTMLForDesign(theControlName, theObject, theControlObj, theIsUI)
+            // }
+            var tmpDomSpecs = this.getDomSpecs(theControlName, theObject, theControlObj, theIsUI);
+            return ActionAppCore.el(tmpDomSpecs).outerHTML
+            // var tmpObject = theObject || {};
+            // var tmpHTML = [];
+            // var tmpHidden = '';
+            // if (tmpObject.hidden === true) {
+            //     tmpHidden = 'display:none;';
+            // }
+            // var tmpStyle = tmpObject.style || tmpObject.styles || tmpObject.css || '';
+            // if (tmpHidden) {
+            //     tmpStyle += tmpHidden;
+            // }
+            // if (tmpStyle) {
+            //     tmpStyle = ' style="' + tmpStyle + '" '
+            // }
+
+            // var tmpClass = tmpObject.class || '';
+            // var tmpControlClass = theControlName;
+            // var tmpClasses = tmpObject.classes || '';
+            // tmpClasses += getValueIfTrue(theObject, ['floating', 'dividing', 'block', 'link', 'fluid', 'placeholder', 'raised', 'tall', 'stacked', 'piled', 'vertical', 'loading', 'inverted', 'bottom', 'top', 'attached', 'padded', 'slim', 'compact', 'secondary', 'tertiary', 'circular', 'clearing', 'right', 'left', 'center', 'aligned', 'basic']);
+            // tmpClasses += getValueIfThere(theObject, ['color', 'icon', 'size', 'alignment', 'attached']);
+
+            // var tmpUI = (theIsUI!==false) ? 'ui ' : '';
+
+            // tmpHTML = [];
+            // tmpHTML.push('<div ' + getItemAttrString(theObject) + ' class="' + tmpUI + ' ' + tmpControlClass + ' ' + tmpClasses + '" ' + tmpStyle + '>')
+
+            // tmpHTML.push(tmpObject.text || tmpObject.html || '')
+
+            // var tmpItems = tmpObject.items || tmpObject.content || [];
+            // if (tmpItems) {
+            //     tmpHTML.push(getContentHTML(theControlName, tmpItems, theControlObj))
+            // }
+
+            // tmpHTML.push('</div>')
+            // tmpHTML = tmpHTML.join('');
+            // return tmpHTML;
 
         },
         isField: false
@@ -8463,13 +9315,13 @@ License: MIT
         isField: false
     }
 
-    //--- UI Elements
-    me.ControlElementUI = {
-        getHTML: function (theControlName, theObject, theControlObj) {
-            return me.ControlElement.getHTML(theControlName, theObject, theControlObj, true)
-        },
-        isField: false
-    }
+    // //--- UI Elements
+    // me.ControlElementUI = {
+    //     getHTML: function (theControlName, theObject, theControlObj) {
+    //         return me.ControlElement.getHTML(theControlName, theObject, theControlObj, true)
+    //     },
+    //     isField: false
+    // }
 
 
     me.ControlFieldRow = {
@@ -8565,7 +9417,7 @@ License: MIT
             if( tmpItem.templatename ){
                 tmpMyAttr += ' templatename="' + tmpItem.templatename + '"'
             }
-            tmpHTML.push('<div ' + getItemAttrString(theObject) + ' class="' + tmpClasses + '" style="' + tmpStyles + '" ' + tmpMyAttr + '></div>')
+            tmpHTML.push('<div desuse="hide" ' + getItemAttrString(theObject) + ' class="' + tmpClasses + '" style="' + tmpStyles + '" ' + tmpMyAttr + '></div>')
             tmpHTML = tmpHTML.join('');
             return tmpHTML;
 
@@ -8585,7 +9437,7 @@ License: MIT
             if (theControlName == 'pagespot') {
                 tmpSpotAttr = 'pagespot'
             }
-            tmpHTML.push('<div ' + getItemAttrString(theObject) + ' class="' + tmpClasses + '" style="' + tmpStyles + '" ' + tmpSpotAttr + '="' + tmpName + '">')
+            tmpHTML.push('<div desuse="hide" ' + getItemAttrString(theObject) + ' class="' + tmpClasses + '" style="' + tmpStyles + '" ' + tmpSpotAttr + '="' + tmpName + '">')
 
             tmpHTML.push(tmpObject.text || tmpObject.html || '')
 
@@ -8606,24 +9458,27 @@ License: MIT
     //--- Tabs are handled in code at a higher level ***
     me.ControlTabs = {
         getHTML: function (theControlName, theObject, theControlObj) {
-            var tmpHTML = [];
-            return tmpHTML.join('');
+            return '';
         },
         isField: false
     };
 
     me.ControlTab = {
         getHTML: function (theControlName, theObject, theControlObj) {
-            var tmpHTML = [];
-
-            return tmpHTML.join('');;
+            return '';
         },
         isField: false
     };
 
     //----   COMMON FIELD CONTROLS =================================
-
     me.ControlField = {
+        getDesignSpecs: function(theControlName, theOptions, theControlObj){ 
+            if( theControlName == 'hidden'){
+                return ['name','ctl','default'];
+            }
+			var tmpPropList = ['name','ctl','label','req','classes','styles','hidden','note','noteColor','placeholder']; 
+			return tmpPropList
+		},
         setFieldNote: commonSetFieldNote, setFieldMessage: commonSetFieldMessage,
         getHTML: function (theControlName, theObject, theControlObj) {
             var tmpObject = theObject || {};
@@ -8633,22 +9488,22 @@ License: MIT
             var tmpAppComp = '';
             var tmpIsDate = false;
             
+            var tmpDateType = '';
 
             if( theControlName == 'date'){
-                tmpAutoIcon = 'calendar';
+                tmpDateType = 'date';
             } else if( theControlName == 'time'){
-                tmpAutoIcon = 'clock';
+                tmpDateType = 'time';
             } else if( theControlName == 'datetime'){
-                tmpAutoIcon = 'calendar outline';
+                tmpDateType = 'datetime-local';
             }
             if( tmpAutoIcon ){
                 tmpIsDate = true;
                 tmpAppComp = 'date';
+            } else if( tmpDateType ){
+                tmpIsDate = true;
             }
-            
-            
             var tmpValue = tmpObject.default || '';
-
             //ToDo: Only do this to tmpObject.default ??
             if( tmpValue === undefined || tmpValue === 'undefined'){
                 tmpValue = '';
@@ -8736,8 +9591,9 @@ License: MIT
                 tmpHTML.push('<div class="ui field">');
             }
 
+            var tmpInnerClasses = '';
             if( tmpIcon ){
-                tmpClasses += ' input icon';
+                tmpInnerClasses += ' input icon';
             }
 
             var tmpAttrs = '';
@@ -8747,18 +9603,23 @@ License: MIT
             if( tmpAppComp ){
                 tmpAttrs += ' appcomp="' + tmpAppComp + '"';
                 if( tmpIsDate ){
-                    tmpAttrs += ' dateformat="' + theControlName + '"';
+                    tmpAttrs += ' dateformat="' + tmpDateFormat + '"';
                     
                 }
             }
 
 
+            tmpAttrs += ' desuse="disable" ';
 
             tmpHTML.push('<div controls fieldwrap name="' + theObject.name + '" class="' + tmpClasses + tmpSizeName + tmpReq + ' ui ' + tmpFieldOrInput + '" ' + tmpStyle + '>');
             if (theObject.label) {
                 tmpHTML.push('<label>');
                 tmpHTML.push(theObject.label || '');
                 tmpHTML.push('</label>');
+            }
+            
+            if (tmpIcon){
+                tmpHTML.push('<div class="ui ' + tmpInnerClasses + ' field">');
             }
             var tmpPH = '';
             if ((!tmpDispOnly) && theObject.placeholder !== false) {
@@ -8767,26 +9628,56 @@ License: MIT
                 }
                 tmpPH = ' placeholder="' + tmpPH + ' ';
             }
+            if( tmpIsDate && tmpDateType ){
+                tmpFieldType = tmpDateType;
+            }
             tmpHTML.push('<input ' + tmpAttrs + tmpReadOnly + tmpInputClasses + ' type="' + tmpFieldType + '" controls field ' + tmpValue + ' name="' + theObject.name + '" ' + tmpIsMultiFlag + tmpPH + '">')
             tmpHTML.push('</input>')
             if( tmpIcon ){
                 tmpHTML.push('<i class="' + tmpIcon + ' icon"></i>');
             }
-            tmpHTML.push(getNoteMarkup(theObject));
-            tmpHTML.push(getContentHTML(theControlName, tmpItems, theControlObj));
+            if (theControlName !== 'hidden') {
+                tmpHTML.push(getNoteMarkup(theObject));
+                tmpHTML.push(getContentHTML(theControlName, tmpItems, theControlObj));
+            }
             tmpHTML.push('</div>');
             if (tmpIcon || (tmpItems && tmpItems.length > 0)) {
+                tmpHTML.push('</div>');
+            }
+            if (tmpIcon){
                 tmpHTML.push('</div>');
             }
 
             tmpHTML = tmpHTML.join('');
             return tmpHTML;
         },
+        setFieldValue: function (theFieldEl, theValue, theFieldSpecs) {
+			if( typeof(theValue) == 'object') {
+				theValue = JSON.stringify(theValue);
+			}
+			theFieldEl.val(theValue);
+        },
+        getFieldValue: function (theControlEl, theFieldSpecs) {
+            //ToDo: Check DataType
+            tmpRet = me._getControlData(theControlEl, theFieldSpecs.name);
+            if( typeof(tmpRet == 'string')){
+                if( tmpRet.substr(0,1) == '{'){
+                    try {
+                        tmpRet = JSON.parse(tmpRet);
+                    } catch (error) {}
+                }
+            }
+            return tmpRet;
+        },
         isField: true
     }
 
 
     me.ControlDropDown = {
+        getDesignSpecs: function(theControlName, theOptions, theControlObj){ 
+			var tmpPropList = ['name','ctl','label','req','classes','styles','hidden','note','noteColor','placeholder','list','multi']; 
+			return tmpPropList
+		},
         setFieldNote: commonSetFieldNote, setFieldMessage: commonSetFieldMessage,
         getHTML: function (theControlName, theObject, theControlObj) {
 
@@ -8860,7 +9751,7 @@ License: MIT
             tmpHTML.push('\n                <i class="dropdown icon"></i>')
             tmpHTML.push('\n                <input ' + tmpDefaultValHTML + ' controls field type="hidden" name="' + theObject.name + '" >')
             tmpHTML.push('\n                <div class="menu">')
-            var tmpList = getListAsArrays(theObject.list);
+            var tmpList = ActionAppCore.getListAsArrays(theObject.list);
 
             if (tmpList && tmpList.length > 0) {
                 for (var index = 0; index < tmpList.length; index++) {
@@ -8889,6 +9780,8 @@ License: MIT
             return tmpHTML;
         },
         getFieldValue: function (theControlEl, theFieldSpecs) {
+            //ToDo: Check DataType
+
             //--- Really this can be left out and it will use this by default
             //--   adding this to show how to return values for custom fields that are not based on simple / standard form logic
             if (theControlEl && theFieldSpecs) {
@@ -8917,15 +9810,20 @@ License: MIT
         },
         setFieldValue: function (theFieldEl, theValue, theFieldSpecs) {
             var tmpCtlEl = theFieldEl.closest('[ctlcomp]');
-            if (theFieldSpecs.multi === true) {
-                var tmpValues = theValue || '';
-                if (isStr(tmpValues)) {
-                    tmpValues = tmpValues.split(",")
-                }
-                tmpCtlEl.dropdown('set exactly', tmpValues);
+            if( theValue === ''){
+                tmpCtlEl.dropdown('clear');
             } else {
-                tmpCtlEl.dropdown('set selected', theValue);
+                if (theFieldSpecs.multi === true) {
+                    var tmpValues = theValue || '';
+                    if (isStr(tmpValues)) {
+                        tmpValues = tmpValues.split(",")
+                    }
+                    tmpCtlEl.dropdown('set exactly', tmpValues);
+                } else {
+                    tmpCtlEl.dropdown('set selected', theValue);
+                }
             }
+            
         },
         isField: true
     }
@@ -8933,12 +9831,24 @@ License: MIT
 
 
     me.ControlCheckboxList = {
+        getDesignSpecs: function(theControlName, theOptions, theControlObj){ 
+			var tmpPropList = ['name','ctl','label','req','classes','styles','hidden','note','noteColor','placeholder','list','row']; 
+			return tmpPropList
+		},
         getHTML: getHTMLforCheckboxList,
         setFieldValue: function (theFieldEl, theValue, theFieldSpecs, theIsReadOnly) {
             var tmpValues = theValue || '';
             if (theIsReadOnly) {
                 theFieldEl.val(theValue);
                 return;
+            }
+            if( theFieldSpecs.ctl == 'checkbox'){
+                //ToDo: Change to the only list choice
+                if( tmpValues ){
+                    tmpValues = 'yes';
+                } else {
+                    tmpValues = '';
+                }
             }
             if (isStr(tmpValues)) {
                 tmpValues = tmpValues.split(",")
@@ -8954,11 +9864,30 @@ License: MIT
             }
             return true;
         },
+        getFieldValue: function (theControlEl, theFieldSpecs) {
+            //ToDo: Check DataType
+            tmpRet = me._getControlData(theControlEl, theFieldSpecs.name);
+            if( theFieldSpecs.ctl == 'checkbox'){
+                var tmpCheckVal = tmpRet;
+                if( Array.isArray(tmpCheckVal) ){
+                    tmpCheckVal = tmpCheckVal[0];
+                }
+                if( (tmpCheckVal) ){
+                  return true;  
+                }
+                return false;
+            }
+            return tmpRet;
+        },
         isField: true
     }
 
 
     me.ControlRadioList = {
+        getDesignSpecs: function(theControlName, theOptions, theControlObj){ 
+			var tmpPropList = ['name','ctl','label','req','classes','styles','hidden','note','noteColor','placeholder','list','row']; 
+			return tmpPropList
+		},
         getHTML: getHTMLforCheckboxList,
         setFieldValue: function (theFieldEl, theValue, theFieldSpecs, theIsReadOnly) {
             if (theIsReadOnly) {
@@ -8973,6 +9902,26 @@ License: MIT
                 }
             }
             return true;
+        },
+        getFieldValue: function (theControlEl, theFieldSpecs) {
+            //ToDo: Check DataType
+            tmpRet = me._getControlData(theControlEl, theFieldSpecs.name);
+            if( theFieldSpecs.datatype && theFieldSpecs.datatype == 'boolean' ){
+                var tmpChk = (''+tmpRet);
+                if( tmpChk == '' ){
+                    if( typeof(theFieldSpecs.default) == 'boolean'){
+                        tmpChk = theFieldSpecs.default;
+                    }
+                    return false;
+                }
+                if( tmpChk == 'true' || tmpChk == 'True' || tmpChk == 'yes' || tmpChk == 'Yes' || tmpChk == '1'){
+                    return true;
+                }
+                if( tmpChk == 'false' || tmpChk == 'False' || tmpChk == 'no' || tmpChk == 'No' || tmpChk == '0'){
+                    return false;
+                }
+            }
+            return tmpRet;
         },
         isField: true
     }
@@ -9044,7 +9993,7 @@ License: MIT
 
 
         tmpHTML = [];
-        tmpHTML.push('<div controls="" fieldwrap="" class="fields grouped" ' + tmpStyle + '>')
+        tmpHTML.push('<div controls="" fieldwrap="" name="' + tmpObject.name + '" class="fields grouped" ' + tmpStyle + '>')
 
         if (tmpDispOnly) {
             tmpReq = '';
@@ -9067,7 +10016,7 @@ License: MIT
         } else {
             tmpHTML.push('  <div class="fields ' + tmpGorI + '">')
 
-            var tmpList = getListAsArrays(tmpObject.list || '');
+            var tmpList = ActionAppCore.getListAsArrays(tmpObject.list || '');
 
             if (tmpList && tmpList.length > 0) {
                 for (var index = 0; index < tmpList.length; index++) {
@@ -9108,6 +10057,10 @@ License: MIT
 
 
     me.ControlTextArea = {
+        getDesignSpecs: function(theControlName, theOptions, theControlObj){ 
+			var tmpPropList = ['name','ctl','label','req','classes','styles','hidden','note','noteColor','placeholder','rows']; 
+			return tmpPropList
+		},
         setFieldNote: commonSetFieldNote, setFieldMessage: commonSetFieldMessage,
         getHTML: function (theControlName, theObject, theControlObj) {
 
@@ -9182,7 +10135,7 @@ License: MIT
                 if (tmpObject.rows) {
                     tmpRows = 'rows=' + tmpObject.rows + ' ';
                 }
-                tmpHTML.push('<textarea ' + tmpRows + 'controls field name="' + tmpObject.name + '" ' + tmpPH + '" ></textarea>')
+                tmpHTML.push('<textarea desuse="disable" ' + tmpRows + 'controls field name="' + tmpObject.name + '" ' + tmpPH + '" ></textarea>')
 
                 tmpHTML.push(getNoteMarkup(theObject));
 
@@ -9618,9 +10571,9 @@ License: MIT
     }
 
     me.getValueIfTrue = getValueIfTrue;
-    function getValueIfTrue(theObject, theParamName) {
+    function getValueIfTrue(theObject, theParamName, theReturnArray) {
         var tmpParams = theParamName;
-        var tmpRet = '';
+        var tmpRet = [];
         if (isStr(tmpParams)) {
             tmpParams = [tmpParams];
         }
@@ -9628,27 +10581,29 @@ License: MIT
             var tmpParamName = tmpParams[iPos];
             if (theObject[tmpParamName] === true) {
                 var tmpClassName = tmpParamName;
-                tmpRet += (' ' + tmpClassName + '')
+                tmpRet.push(tmpClassName)
             }
         }
-        return tmpRet
+        if(theReturnArray){return tmpRet};
+        return ' ' + tmpRet.join(' ') + ' ';
     }
 
     me.getValueIfThere = getValueIfThere
-    function getValueIfThere(theObject, theParamName) {
+    function getValueIfThere(theObject, theParamName, theReturnArray) {
 
         var tmpParams = theParamName;
-        var tmpRet = '';
+        var tmpRet = [];
         if (isStr(tmpParams)) {
             tmpParams = [tmpParams];
         }
         for (var iPos = 0; iPos < tmpParams.length; iPos++) {
             var tmpParamName = tmpParams[iPos];
             if (isStr(theObject[tmpParamName])) {
-                tmpRet += (' ' + theObject[tmpParamName] + '').toLowerCase();
+                tmpRet.push((theObject[tmpParamName] + '').toLowerCase());
             }
         }
-        return tmpRet
+        if(theReturnArray){return tmpRet};
+        return ' ' + tmpRet.join(' ');
     }
 
     //---- Functions to extend global pallet
@@ -9682,15 +10637,21 @@ License: MIT
     me.webControls.add('field', me.ControlField);
     me.webControls.add('hidden', me.ControlField);
     me.webControls.add('number', me.ControlField);
+
     me.webControls.add('date', me.ControlField);
     me.webControls.add('datetime', me.ControlField);
     me.webControls.add('time', me.ControlField);
+    // me.webControls.add('datectl', me.ControlField);
+    // me.webControls.add('datetimectl', me.ControlField);
+    // me.webControls.add('timectl', me.ControlField);
+    
     me.webControls.add('color', me.ControlField);
 
     me.webControls.add('dropdown', me.ControlDropDown);
     me.webControls.add('checkboxlist', me.ControlCheckboxList);
     me.webControls.add('radiolist', me.ControlRadioList);
     me.webControls.add('textarea', me.ControlTextArea);
+    me.webControls.add('checkbox', me.ControlCheckboxList);
 
     me.webControls.add('tabs', me.ControlTabs);
     me.webControls.add('tab', me.ControlTab);
@@ -9724,9 +10685,7 @@ License: MIT
     me.webControls.add('td', me.ControlDOM);
 
     me.webControls.add('dropmenu', me.ControlDropMenu);
-    
     me.webControls.add('layout', me.ControlLayout);
-
 
     //=== Special UI Controls
     // me.webControls.add('uisegment', me.UIControlPanel);
@@ -9809,7 +10768,6 @@ License: MIT
         }
     }
 
-
     function actionShowFor(theFieldName, theFieldValue, theControlObj, theParams) {
         var tmpParams = theParams || {};
         var tmpNames = [];
@@ -9862,13 +10820,10 @@ License: MIT
             if (theControlObj.hasField(aFieldName)) {
                 theControlObj.setFieldDisplay(aFieldName, tmpShowFlag);
             }
-
         }
     }
 
-
     function actionShowOrHideIf(theFieldName, theFieldValue, theControlObj, theParams) {
-
         var tmpValue = theParams.value || 'other';
         var tmpShowFlag = (theFieldValue == tmpValue)
         if (theParams.action == 'hideif') {
@@ -9891,16 +10846,10 @@ License: MIT
                 theControlObj.setFieldDisplay(tmpEntryName, tmpShowFlag)
             }
         }
-
     }
     me.actions.add('showif', actionShowOrHideIf);
     me.actions.add('hideif', actionShowOrHideIf);
-
     me.actions.add('showfor', actionShowFor);
-
-
-
-
 
     //==== ==== ==== ==== ==== ==== ==== ==== ==== ==== ==== 
     //--- Common Validations
@@ -9931,14 +10880,195 @@ License: MIT
     }
     me.validations.add('exactlen', exactLen);
 
-
-
-
     //--- =========== =========== =========== =========== =========== ===========
     //---- End Common Controls
     //--- =========== =========== =========== =========== =========== ===========
+
+    //--- =========== =========== =========== =========== =========== ===========
+    //---- Start Designer Helpers
+    //--- =========== =========== =========== =========== =========== ===========
+
+
+    // function elSpecs(theList){
+    //     console.log( 'elSpecs', theList);
+    //     var tmpRet = [];
+    //     for( var iPos in theList ){
+    //         tmpRet.push(elSpec.apply(this,theList[iPos]))
+    //     }
+    //     return tmpRet;
+    // }
+    //--- Create element spec object (domspec)
+    function elSpec(theTag, theOptions, theContent){
+        var tmpRet = {type:theTag};
+        var tmpOptions = theOptions || {};
+        
+        for( var iName in tmpOptions ){
+            var tmpChkName = iName.toLowerCase();
+            var tmpVal = tmpOptions[iName];
+            if( tmpChkName == 'classname'){
+                tmpRet.className = tmpVal;
+            } else if( tmpChkName == 'style' || tmpChkName == 'styles'){
+                tmpRet.style = tmpVal;
+            } else if( tmpChkName == 'children'){
+                tmpRet.children = elSpec(tmpVal)
+            } else {
+                //--- if nothing else, must be an attribute
+                tmpRet.attr = tmpRet.attr || {};
+                tmpRet.attr[iName] = tmpVal;
+            }
+        }
+        if( theContent ){
+            tmpRet.children = theContent;
+        }
+        return tmpRet;
+    }
+
+   var gSelLookup = {
+        _ex: {},
+        'attached': ActionAppCore.sources.sys_attached,
+        'sizeheader': ActionAppCore.sources.sys_sizes_header,
+        'size': ActionAppCore.sources.sys_sizes,
+        'color': ActionAppCore.sources.sys_colors,
+        'alignment': ActionAppCore.sources.sys_alignment,
+        'lralignment': ActionAppCore.sources.sys_lralignment,
+        'valignment': ActionAppCore.sources.sys_valignment,
+        'float': ActionAppCore.sources.sys_float,
+        'tofloat': ActionAppCore.sources.sys_tofloat,
+    };
+
+    me.getSelListFor = getSelListFor;
+    function getSelListFor(thePropName){
+        if( !gSelLookup._ex[thePropName] ){
+            gSelLookup._ex[thePropName] = ActionAppCore.getListAsObjects(gSelLookup[thePropName])
+        }
+        return gSelLookup._ex[thePropName];
+    }
+
+    me.getSelectionFor = function(thePropName, theCurrentValue, theOnChangeEvent){
+        var tmpSelection = getSelListFor(thePropName);
+        if( !(tmpSelection) ){
+            console.error("Unknown property name passed", thePropName);
+            return;
+        }
+        return me.getSelectControl(theCurrentValue,theOnChangeEvent,tmpSelection);
+    }
+
+    me.getSelectControl = function(theValue,theOnChange, theDropDownValues, theOptionalClassName){
+        var tmpRet = {type:'select'};
+
+        tmpRet.attr = tmpRet.attr || {};
+        if( theOptionalClassName ){
+            tmpRet.className = theOptionalClassName;
+        } else {
+            //--- ToDo: Move this to wp blocks only
+            tmpRet.className = 'fluid-field';
+            tmpRet.attr.value = theValue;
+        }
+        if( theOnChange ){
+            //ToDo: Function?
+            tmpRet.attr.onChange = theOnChange;
+        }
+        var tmpKids = [];
+        for( var iPos in theDropDownValues ){
+            var tmpEntry = theDropDownValues[iPos];
+            var tmpOption = {type:'option', text: tmpEntry.text, attr:{value:tmpEntry.value}};
+            if( tmpEntry.value == theValue ){
+                tmpOption.attr.selected = '';
+            }
+            tmpKids.push(tmpOption);
+        }
+        tmpRet.children = tmpKids;
+        return tmpRet;
+        //return elSpec("select", {className:'fluid-field', value:theValue, onChange: theOnChange},theDropDownValues)
+    }
+    me.getTextControl = function(theValue,theOnChange){
+        return elSpec("input", {className:'fluid-field', value:theValue, onChange: theOnChange})
+    }
+
 
     //==== END ===== HTML Control Builder ======  ======  ======  ======  ======  ======  ======  ======  ======  ======     
 
 
 })(ActionAppCore, $);
+
+
+
+//=========     React Plugin
+(function (ActionAppCore, $) {
+    var pluginConfig = {
+        name: "React",
+        ns: "_react"
+    }
+    var MyMod = ActionAppCore.module("plugin");
+    MyMod[pluginConfig.name] = ThisModuleController;
+    var thisComponentID = "plugin:" + pluginConfig.name;
+
+    function render(){
+        if( (this.renderCall) ){
+            return this.renderCall.apply(this, arguments);
+        }
+        return $RD.render.apply(this, arguments);
+    }
+    function createElement(){
+        if( (this.createElementCall) ){
+            return this.createElementCall.apply(this, arguments);
+        }
+        return $R.createElement.apply(this, arguments);
+    }
+    function unmountComponentAtNode(){
+        if( (this.unmountComponentAtNodeCall) ){
+            return this.unmountComponentAtNodeCall.apply(this, arguments);
+        }
+        return $RD.unmountComponentAtNode.apply(this, arguments);
+
+    }
+
+    function setupReact(theOptions){
+        if(!theOptions){return;}
+        if( theOptions.render ){
+            this.renderCall = theOptions.render
+        }
+        if( theOptions.createElement ){
+            this.createElementCall = theOptions.createElement
+        }
+        if( theOptions.unmountComponentAtNode ){
+            this.unmountComponentAtNodeCall = theOptions.unmountComponentAtNode
+        }
+    }
+
+    function ThisModuleController(theOptions) {
+        this.options = theOptions || {};
+        this.catalog = catalog;
+        this.setupReact = setupReact.bind(this);
+        this.render = render.bind(this);
+        this.createElement = createElement.bind(this);
+        this.unmountComponentAtNode = unmountComponentAtNode.bind(this);
+
+        if (typeof (this.options.app) == 'object') {
+            var tmpApp = this.options.app;
+            if (tmpApp && tmpApp.registerComponent) {
+                tmpApp.registerComponent(thisComponentID, this);
+            }
+        }
+    }
+
+    var me = ThisModuleController.prototype;
+
+    function Message(props) {
+        if (!props.warn) {
+            return null;
+        }
+        return $R.createElement("div", { className: "ui message " + props.color }, props.msg || 'Warning');
+    }
+
+    
+    var catalog = {
+        "sys_common": {
+            Message:Message
+        }
+    }
+    //--- Demo controls
+
+
+})(ActionAppCore, $);
+
