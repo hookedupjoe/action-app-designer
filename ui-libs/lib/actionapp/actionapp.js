@@ -13,12 +13,17 @@ License: MIT
 
 */
 
+
 //--- Global Entry Point / Always available functionality
 var ActionAppCore = {
+    ActAppData: {
+        rootPath: './'
+    },
     //--- Directory of where stuff is located
     dir: {
         catalogs: {
-            common: '/catalogs/common/',
+            common: './dir/catalogs/_designer/',
+            _designer: './dir/catalogs/_designer/',
             getResourceCatalogURL: function(theCatName, theResType, theResName){
                 var tmpBaseURL = '/';
                 var tmpResType = ThisApp.controls.getUnifiedPluralName(theResType);

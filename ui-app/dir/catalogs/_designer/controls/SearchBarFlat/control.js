@@ -15,7 +15,6 @@ License: MIT
 				"ctl": "segment",
 				"basic": true,
 				"slim": true,
-				"name": "demo-item",
 				"content": [
 					{
 						"ctl": "field",
@@ -49,17 +48,24 @@ License: MIT
 		]
 	}
 
-  var ControlCode = {
+  	var ControlCode = {
 		runSearch: runSearch,
-		clearSearch: clearSearch
+		clearSearch: clearSearch		
 	};
 
+	//--- Automatically runs when loaded in UI
+	ControlCode["_onInit"] = onInit
 
+	function onInit(){
+		//ToDo: Add autosearch config option that tracks key up with debounce
+		//console.log('init search ctl');
+	}
 	function runSearch() {
-		console.log( 'runSearch', this);		
+		this.publish('search',[this,this.getFieldValue('search')]);
 	}
 	function clearSearch() {
-		console.log( 'clearSearch', this);		
+		this.setFieldValue('search','');
+		this.publish('clear',[this]);
 	}
 
 
