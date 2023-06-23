@@ -8,7 +8,7 @@ License: MIT
 
     var thisPageSpecs = {
         pageName: "ControlBuilderPage",
-        pageTitle: "Builder",
+        pageTitle: "Playground",
         navOptions: {
             topLink: true,
             sideLink: true
@@ -28,11 +28,11 @@ License: MIT
 
     thisPageSpecs.layoutOptions = {
         baseURL: pageBaseURL,
-        center: { partname: "editor", control: "AceEditor", source: "/catalogs/developer/controls"},
-        east: { partname: "preview", panel: "previewPanel", source: "catalog/panels/common"},
+        center: { partname: "editor", control: "AceEditor"},
+        east: { partname: "preview", panel: "PreviewPanel", catalog: "_design"},
         west: { partname: "controls", control: "ControlPanel"},
         north: { html: "north" },
-        south: { partname: "statusBar", control: "StatusBar", source: "catalog/controls/common"}
+        south: { partname: "statusBar", control: "StatusBar", catalog: "_design"}
     }
 
     //--- Customize default layout configuration
