@@ -1,5 +1,5 @@
 /*
-  Commonly Used Global Utilities
+  Commonly Used Global Utilities for Applications
 */
 'use strict';
 

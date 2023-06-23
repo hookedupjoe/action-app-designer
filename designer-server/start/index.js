@@ -18,10 +18,15 @@ module.exports.setup = function (app, scope) {
     
     var designRouter = express.Router(),
     designRoute = require('./design/index').setup(scope);
-
     designRouter.all('/:type/:name*', designRoute);
     designRouter.all('/*', designRoute);
     app.use('/design/',designRouter);
+
+    var dataRouter = express.Router(),
+    dataRoute = require('./appdata/index').setup(scope);
+    dataRouter.all('/:type/:name*', dataRoute);
+    dataRouter.all('/*', designRoute);
+    app.use('/appdata/',dataRouter);
 
 
 };
