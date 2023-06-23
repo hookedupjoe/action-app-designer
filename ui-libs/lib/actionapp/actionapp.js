@@ -7690,6 +7690,8 @@ License: MIT
         
         var tmpFN = theFN;
         var tmpSpecs = this.getFieldSpecs(tmpFN);
+        //var tmpFV = this.getFieldValue(tmpFN);
+        //console.log("erf",this,tmpSpecs)
         if (tmpSpecs) {
             var tmpOnChange = tmpSpecs.onChange || false;
             if (tmpOnChange) {
@@ -7700,7 +7702,6 @@ License: MIT
                     if( !tmpAction ){
                         var tmpToRun = false;
                         var tmpPCtr = 0;
-                        //was var tmpParent = this.parentControl;
                         var tmpParent = this;
                         while ((tmpParent && !isFunc(tmpToRun))) {
                             tmpPCtr++;
@@ -7729,9 +7730,8 @@ License: MIT
                     }
                 }
             }
+            this.publish('field-change', [this, tmpFN, this.getFieldValue(tmpFN)])
         }
-        //new from base
-        this.publish('field-change', [this, tmpFN, this.getFieldValue(tmpFN)])
     }
 
     meInstance.refreshControl = function () {
