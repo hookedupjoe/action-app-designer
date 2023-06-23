@@ -22,11 +22,27 @@ module.exports.setup = function setup(scope) {
         var self = this;
         return new Promise( async function (resolve, reject) {
             try {
-                //demo->>> $.MongoSession.addAccountConfig(tmpAccountInfo);
+
+                /* 
+                //--- Programmatic add
+
+                var tmpNewConfig = {
+                    "id": "aws",
+                    "address": "YOURIP",
+                    "port": "27017",
+                    "username": "USERNAME",
+                    "password": "PASSWORD"
+                }
+                await $.MongoSession.addAccountConfig(tmpNewConfig);
+                */
 
                 // var tmpAccountInfo = await $.MongoSession.getAccountConfig('localadmin');
+              
                 // var accountDefault = new Mongo.MongoAccount(tmpAccountInfo);
-                var tmpAccount = await $.MongoSession.getAccount('localadmin');
+                
+                //var tmpAccountID = 'localadmin';
+                var tmpAccountID = 'aws';
+                var tmpAccount = await $.MongoSession.getAccount(tmpAccountID);
 
                 try {
                     var tmpDBList = await tmpAccount.getDatabaseList();
