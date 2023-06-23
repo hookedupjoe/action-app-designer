@@ -145,7 +145,9 @@ License: MIT
                 //      the page is activated if not already called by above code
                 ThisPage._onActivate();
 
-                
+                if( ThisPage.loadApps !== true){
+                    return;
+                }
 
                 //Todo: Change to when west publishes loaded
                 ThisApp.delay(1000).then(function(){
