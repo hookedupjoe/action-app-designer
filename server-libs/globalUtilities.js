@@ -12,6 +12,7 @@ function mergeWith(theGulpMoney) {
 }
 module.exports.mergeWith = mergeWith;
 
+$.mongo = require('mongodb');
 $.merge = merge;
 $.replace = require('gulp-replace');
 $.path = require('path');
