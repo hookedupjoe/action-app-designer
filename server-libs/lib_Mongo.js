@@ -1,0 +1,125 @@
+/*
+  Standard MongoDB Access Library
+*/
+'use strict';
+
+let $ = require("./globalUtilities").$;
+const { MongoClient } = require('mongodb');
+
+
+//==== MongoAccount === === === === === === === === === === 
+function MongoAccount(theAccountConfig) {
+    this.accountConfig = false;
+    this.loadConfig(theAccountConfig);    
+}
+module.exports.MongoAccount = MongoAccount;
+
+MongoAccount.prototype.loadConfig = function (theAccountConfig) {
+    if (!theAccountConfig) {
+        throw "Config not provided"
+    }
+    var tmpConfig = $.cloneObject(theAccountConfig);
+    if (!tmpConfig.address) {
+        throw "address not provided"
+    }
+    if (!tmpConfig.port) {
+        tmpConfig.username = '27017'; 
+    }
+    if (!tmpConfig.username) {
+        tmpConfig.username = '';
+    }
+    if (!tmpConfig.password) {
+        tmpConfig.password = '';
+    }
+    this.accountConfig = tmpConfig;
+    //--- ToDO: See if running and not allow or reset needed?
+    var tmpAuth = '';
+    if( tmpConfig.username && tmpConfig.password){
+        //ToDo: Need only username?
+        tmpAuth = tmpConfig.username  + ':' + tmpConfig.password;
+    }
+    var tmpConfigOptions = 'retryWrites=true&w=majority';
+    var tmpURI = 'mongodb://' + tmpAuth +'@' + tmpConfig.address + ':' + tmpConfig.port + '/?' + tmpConfigOptions;
+    //--- ToDo: Other options needed for this? 
+    this.client = new MongoClient(tmpURI, { useUnifiedTopology: true });
+};
+
+MongoAccount.prototype.getConfig = function () {
+    return this.accountConfig;
+}
+
+MongoAccount.prototype.getDatabaseList = async function () {
+    let self = this;
+
+    return new Promise(async function (resolve, reject) {
+
+        try {
+            var client = self.client;
+            await client.connect();
+            var databasesList = await client.db().admin().listDatabases();
+            resolve(databasesList);
+        } catch (error) {
+            reject(error);
+        } finally {
+            await client.close();
+        }
+    });
+}
+
+
+//==== MongoDatabase === === === === === === === === === === 
+function MongoDatabase(theDBName) {
+    this.setup(theDBName);
+}
+module.exports.MongoDatabase = MongoDatabase;
+
+MongoDatabase.prototype.setup = function (theDBName) {
+    this.setDBName(theDBName);
+};
+
+MongoDatabase.prototype.setDBName = function (theDBName) {
+    this.dbname = theDBName || '';
+};
+
+MongoDatabase.prototype.getDesignElements = function () {
+    //ToDO: var tmpURI = '/_all_docs?inclusive_end=false&start_key=\"_design\"&end_key=\"_design0\"';
+    //return this.getRows(tmpURI,{valueAsDoc:true})    
+}
+
+//--- Adds a new document (with no _rev) into this database
+MongoDatabase.prototype.addDocument = function (theDoc) {
+    //TODO
+
+    // let tmpConfig = $.cloneObject(this.requestConfig);
+    // tmpConfig.method = 'POST';
+    // tmpConfig.json = theDoc;
+    // tmpConfig.uri = '/' + this.dbname;
+    // let self = this;
+
+    // return new Promise(function (resolve, reject) {
+
+    //     try {
+    //        // console.log('MongoDatabase - addDocument - ' + tmpConfig.uri);
+    //         if (!(self.dbname)) {
+    //             throw 'No Database Found'
+    //         }
+
+    //         $.request(tmpConfig, function (error, response, body) {
+
+    //             if (!error) {
+
+    //                 if (typeof (body) === 'string') {
+    //                     body = JSON.parse(body);
+    //                 }
+    //                 resolve(body);
+    //             }
+    //             else {
+    //                 reject(error);
+    //             }
+    //         });
+
+    //     } catch (error) {
+    //         reject(error);
+    //     }
+    // });
+};

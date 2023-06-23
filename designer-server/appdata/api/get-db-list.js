@@ -5,6 +5,20 @@ const THIS_MODULE_TITLE = 'Data: Get Databases Available';
 module.exports.setup = function setup(scope) {
     var config = scope;
     var $ = config.locals.$;
+    var Mongo = $.Mongo;
+
+    //--- Temp hard code define
+    var tmpAccountInfo = {
+        "address": "127.0.0.1",
+        "port": "27017",
+        "username": "YOURNAME",
+        "password": "YOURPASS"
+    };
+    var accountDefault = new Mongo.MongoAccount(tmpAccountInfo);
+    console.log(accountDefault.getConfig());
+    
+    const { MongoClient } = require('mongodb');
+    var databasesList;
 
     function Route() {
         this.name = THIS_MODULE_NAME;
@@ -14,102 +28,35 @@ module.exports.setup = function setup(scope) {
 
     var $ = config.locals.$;
 
+    async function listDatabases(client){
+        databasesList = await client.db().admin().listDatabases();
+    
+        console.log("Databases:");
+        databasesList.databases.forEach(db => console.log(` - ${db.name}`));
+    };
+    async function createListing(client, newListing){
+        const result = await client.db("airbnb").collection("listingsAndReviews").insertOne(newListing);
+        console.log(`New listing created with the following id: ${result.insertedId}`);
+    };
+    
+
+    
     //--- Load the prototype
-    base.run = function (req, res, next) {
+    base.run = async function (req, res, next) {
         var self = this;
         return new Promise( async function (resolve, reject) {
             try {
 
-                var tmpBase = {
-                    "ctl": "tbl-ol-node",
-                    "type": "workspace",
-                    "name": "workspace",
-                    "item": "workspace",
-                    "details": "Workspace",
-                    "meta": "&#160;",
-                    "classes": "ws-outline",
-                    "level": 2,
-                    "icon": "hdd outline",
-                    "color": "black",
-                    "group": "workspace-outline",
-                    "content": []
+                try {
+                    var tmpDBList = await accountDefault.getDatabaseList();
+                    tmpDBList.databases.forEach(db => console.log(`Name: ${db.name}`));
+                } catch (e) {
+                    console.error(e);
                 }
 
-                var tmpWSDir = scope.locals.path.ws.uiApps;
-                
-                // var tmpFiles = await($.bld.getDirFiles(tmpWSDir))
-
-                // for (var index in tmpFiles) {
-                //     var tmpAppName = tmpFiles[index];
-                //     var tmpAppBase = tmpWSDir + tmpAppName + '/';
-                //     var tmpAppDetails = await($.bld.getJsonFile(tmpAppBase + 'app-info.json'))
-                //     var tmpAppTitle = tmpAppDetails.title || "(untitled)";
-                    
-                //     var tmpApp = {
-                //         "ctl": "tbl-ol-node",
-                //         "type": "app",
-                //         "name": tmpAppName + "",
-                //         "item": tmpAppName + "",
-                //         "details": tmpAppTitle,
-                //         "meta": "&#160;",
-                //         attr: {
-                //             pageaction: 'showAppConsole',
-                //             apptitle: tmpAppTitle,
-                //             appname: tmpAppName
-                //         },
-                //         "level": 1,
-                //         "icon": "globe",
-                //         "color": "blue",
-                //         "group": "workspace-outline"
-                //     }
-
-                //     tmpBase.content.push(tmpApp);
-
-                // }
 
                 var tmpRet = {
-                    "options": {
-                        padding: false,
-                        "css": [
-                            ".ws-outline table.outline > tbody > tr[oluse=\"select\"] {",
-                            "  cursor: pointer;",
-                            "}",
-                            ".ws-outline table.outline > tbody > tr[oluse=\"collapsable\"] {",
-                            "  cursor: pointer;",
-                            "}",
-                            ".ws-outline table.outline > tbody > tr > td.tbl-label {",
-                            "  width:20px;",
-                            "  color:black;",
-                            "  background-color: #eeeeee;",
-                            "}",
-                            ".ws-outline table.outline > tbody > tr.active > td.tbl-label {",
-                            "  background-color: #777777;",
-                            "  color: white;",
-                            "}",
-                            ".ws-outline table.outline > tbody > tr > td.tbl-icon {",
-                            "  width:40px;",
-                            "}",
-                            ".ws-outline table.outline > tbody > tr > td.tbl-icon2 {",
-                            "  width:80px;",
-                            "}",
-                            ".ws-outline table.outline > tbody > tr > td.tbl-details {",
-                            "  font-weight:bolder;",
-                            "  overflow:auto;",
-                            "  width:auto;",
-                            "}",
-                            ".ws-outline table.outline > tbody > tr.active[type=\"page\"] > td.tbl-label {",
-                            "  background-color: #21ba45;",
-                            "}",
-                            ".ws-outline table.outline > tbody > tr.active[type=\"app\"] > td.tbl-label {",
-                            "  background-color: #2185d0;",
-                            "}",
-                            ".ws-outline table.outline > tbody > tr.active[type=\"region\"] > td.tbl-label {",
-                            "  background-color: #a333c8;",
-                            "}"
-                        ]
-                    },
-                    "content": [{"ctl":"div","text":"Hello"}]
-
+                    dbs: tmpDBList
                 }
 
                 resolve(tmpRet);
