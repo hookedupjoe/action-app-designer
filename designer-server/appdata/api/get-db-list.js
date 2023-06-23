@@ -24,11 +24,12 @@ module.exports.setup = function setup(scope) {
             try {
                 //demo->>> $.MongoSession.addAccountConfig(tmpAccountInfo);
 
-                var tmpAccountInfo = await $.MongoSession.getAccountConfig('localadmin');
-                var accountDefault = new Mongo.MongoAccount(tmpAccountInfo);
+                // var tmpAccountInfo = await $.MongoSession.getAccountConfig('localadmin');
+                // var accountDefault = new Mongo.MongoAccount(tmpAccountInfo);
+                var tmpAccount = await $.MongoSession.getAccount('localadmin');
 
                 try {
-                    var tmpDBList = await accountDefault.getDatabaseList();
+                    var tmpDBList = await tmpAccount.getDatabaseList();
                     //tmpDBList.databases.forEach(db => console.log(`Name: ${db.name}`));
                 } catch (e) {
                     console.error(e);

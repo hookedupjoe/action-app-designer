@@ -49,14 +49,45 @@ MongoSession.prototype.getAccountConfig = async function (theID) {
     });
 }
 
+MongoSession.prototype.getAccount = async function (theID) {
+    let self = this;
+    return new Promise(async function (resolve, reject) {
+        try {
+            if( self.accounts[theID] ){
+                console.log('existing account', theID);
+                resolve(self.accounts[theID]);
+            } else {
+                var tmpConfig = await self.getAccountConfig(theID);
+                if( !(tmpConfig)){
+                    console.log("ERROR: NO CONFIG.  Save one for: " + theID);
+                    reject(false);
+                } else {
+                    console.log('new account', theID);
+                    self.accounts[theID] = new MongoAccount(tmpConfig);
+                    resolve(self.accounts[theID]);
+                }
+            }
+        } catch (error) {
+            reject(error);
+        } 
+    });
+}
+
+
+
+
+
+
+
 //==== MongoAccount === === === === === === === === === === 
 function MongoAccount(theAccountConfig) {
     this.accountConfig = false;
-    this.loadConfig(theAccountConfig);    
+    this.loadConfig(theAccountConfig);
+    
 }
 module.exports.MongoAccount = MongoAccount;
 
-MongoAccount.prototype.loadConfig = function (theAccountConfig) {
+MongoAccount.prototype.loadConfig = async function (theAccountConfig) {
     if (!theAccountConfig) {
         throw "Config not provided"
     }
@@ -85,9 +116,19 @@ MongoAccount.prototype.loadConfig = function (theAccountConfig) {
     }
     var tmpConfigOptions = 'retryWrites=true&w=majority';
     var tmpURI = 'mongodb://' + tmpAuth +'@' + tmpConfig.address + ':' + tmpConfig.port + '/?' + tmpConfigOptions;
-    //--- ToDo: Other options needed for this? 
+    //--- ToDo: What are the options and why?
     this.client = new MongoClient(tmpURI, { useUnifiedTopology: true });
+    //--- Stay connected?
+    await this.client.connect();
 };
+
+MongoAccount.prototype.close = async function () {
+    return this.client.close();
+}
+MongoAccount.prototype.connect = async function () {
+    return this.client.connect();
+}
+
 
 MongoAccount.prototype.getConfig = function () {
     return this.accountConfig;
@@ -100,14 +141,12 @@ MongoAccount.prototype.getDatabaseList = async function () {
 
         try {
             var client = self.client;
-            await client.connect();
+            
             var databasesList = await client.db().admin().listDatabases();
             resolve(databasesList);
         } catch (error) {
             reject(error);
-        } finally {
-            await client.close();
-        }
+        } 
     });
 }
 
