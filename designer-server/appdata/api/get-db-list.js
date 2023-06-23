@@ -1,6 +1,6 @@
 'use strict';
 const THIS_MODULE_NAME = 'get-db-list';
-const THIS_MODULE_TITLE = 'Panel: Databases Available';
+const THIS_MODULE_TITLE = 'Data: Get Databases Available';
 
 module.exports.setup = function setup(scope) {
     var config = scope;

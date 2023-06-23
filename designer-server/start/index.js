@@ -28,5 +28,4 @@ module.exports.setup = function (app, scope) {
     dataRouter.all('/*', designRoute);
     app.use('/appdata/',dataRouter);
 
-
 };

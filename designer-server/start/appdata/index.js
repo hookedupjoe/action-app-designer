@@ -1,5 +1,5 @@
 /*
-Entry point for Designer
+Entry point for Application Data
 */
 'use strict';
 
@@ -40,5 +40,6 @@ module.exports.setup = function setup(scope) {
             res.json({status:false, error: ex.toString()})
         }
     };
+
 
 };
