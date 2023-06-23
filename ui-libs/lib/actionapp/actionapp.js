@@ -3809,23 +3809,24 @@ window.ActionAppCore = window.ActionAppCore || ActionAppCore;
                 //--- Do not add or convert
             } else if (isFunc(tmpEntry)) {
                 //--- Convert to string to save
-                tmpRet[aName] = {
-                    "[function]": tmpEntry.toString()
-                };
+                tmpRet[aName] = tmpEntry;
             } else if (isPage(tmpEntry)) {
                 //--- Ignore if page in object    
             } else if (isObj(tmpEntry)) {
+
                 if (tmpIsArray) {
-                    tmpRet.push(myConvertToJsonLive(tmpEntry));
+                    tmpRet.push(myConvertFromJsonLive(tmpEntry));
                 } else {
-                    tmpRet[aName] = myConvertToJsonLive(tmpEntry);
+                    if (tmpEntry['[function]']) {
+                        tmpRet[aName] = stringToFunction(tmpEntry['[function]']);
+                    } else {
+                        tmpRet[aName] = tmpEntry;
+                    }
                 }
+
+
             } else {
-                if (tmpIsArray) {
-                    tmpRet.push(tmpEntry);
-                } else {
-                    tmpRet[aName] = tmpEntry;
-                }
+                tmpRet[aName] = tmpEntry;
             }
         }
         try {
@@ -3840,6 +3841,7 @@ window.ActionAppCore = window.ActionAppCore || ActionAppCore;
                     processEntry(tmpEntry);
                 }
             }
+
         }
         catch (e) {
             throw e;
@@ -11071,4 +11073,5 @@ License: MIT
 
 
 })(ActionAppCore, $);
+
 
