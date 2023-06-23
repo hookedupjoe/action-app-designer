@@ -8,7 +8,7 @@ var thisPageSpecs = {
 	"pageName": "JsonHelperPage",
 	"pageTitle": "JSON",
 	"navOptions": {
-		"topLink": true,
+		"topLink": false,
 		"sideLink": true
 	}
 }

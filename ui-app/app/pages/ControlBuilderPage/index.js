@@ -8,9 +8,9 @@ License: MIT
 
     var thisPageSpecs = {
         pageName: "ControlBuilderPage",
-        pageTitle: "Playground",
+        pageTitle: "Sandbox",
         navOptions: {
-            topLink: true,
+            topLink: false,
             sideLink: true
         }
     };
