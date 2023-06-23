@@ -6,7 +6,7 @@ Entry point for Application Data
 module.exports.setup = function setup(scope) {
 
     let $ = scope.locals.$;
-    scope.locals.path.design = scope.locals.path.start + "/appdata"
+    scope.locals.path.appdata = scope.locals.path.start + "/appdata"
     
     return  async function processReq(req, res, next) {
         
@@ -24,7 +24,7 @@ module.exports.setup = function setup(scope) {
         try {
 
             
-        var tmpFilePath = scope.locals.path.design + '/' + tmpType + '/' + tmpName + '.js';
+        var tmpFilePath = scope.locals.path.appdata + '/' + tmpType + '/' + tmpName + '.js';
         var tmpProcessReq = require(tmpFilePath);
         if (typeof(tmpProcessReq.setup) == 'function') {
             var tmpToRun = tmpProcessReq.setup(scope);

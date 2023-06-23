@@ -25,7 +25,8 @@ module.exports.setup = function (app, scope) {
     var dataRouter = express.Router(),
     dataRoute = require('./appdata/index').setup(scope);
     dataRouter.all('/:type/:name*', dataRoute);
-    dataRouter.all('/*', designRoute);
+    dataRouter.all('/*', dataRoute);
     app.use('/appdata/',dataRouter);
+
 
 };
