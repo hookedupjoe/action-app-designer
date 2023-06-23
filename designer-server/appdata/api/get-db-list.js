@@ -7,19 +7,8 @@ module.exports.setup = function setup(scope) {
     var $ = config.locals.$;
     var Mongo = $.Mongo;
 
-    //--- Temp hard code define
-    var tmpAccountInfo = {
-        "address": "127.0.0.1",
-        "port": "27017",
-        "username": "YOURNAME",
-        "password": "YOURPASS"
-    };
-    var accountDefault = new Mongo.MongoAccount(tmpAccountInfo);
-    console.log(accountDefault.getConfig());
     
-    const { MongoClient } = require('mongodb');
-    var databasesList;
-
+    
     function Route() {
         this.name = THIS_MODULE_NAME;
         this.title = THIS_MODULE_TITLE;
@@ -28,36 +17,26 @@ module.exports.setup = function setup(scope) {
 
     var $ = config.locals.$;
 
-    async function listDatabases(client){
-        databasesList = await client.db().admin().listDatabases();
-    
-        console.log("Databases:");
-        databasesList.databases.forEach(db => console.log(` - ${db.name}`));
-    };
-    async function createListing(client, newListing){
-        const result = await client.db("airbnb").collection("listingsAndReviews").insertOne(newListing);
-        console.log(`New listing created with the following id: ${result.insertedId}`);
-    };
-    
-
-    
     //--- Load the prototype
     base.run = async function (req, res, next) {
         var self = this;
         return new Promise( async function (resolve, reject) {
             try {
+                //demo->>> $.MongoSession.addAccountConfig(tmpAccountInfo);
+
+                var tmpAccountInfo = await $.MongoSession.getAccountConfig('localadmin');
+                var accountDefault = new Mongo.MongoAccount(tmpAccountInfo);
 
                 try {
                     var tmpDBList = await accountDefault.getDatabaseList();
-                    tmpDBList.databases.forEach(db => console.log(`Name: ${db.name}`));
+                    //tmpDBList.databases.forEach(db => console.log(`Name: ${db.name}`));
                 } catch (e) {
                     console.error(e);
                 }
 
 
-                var tmpRet = {
-                    dbs: tmpDBList
-                }
+                var tmpRet = {};
+                tmpRet = $.merge(false, tmpRet, tmpDBList);
 
                 resolve(tmpRet);
 

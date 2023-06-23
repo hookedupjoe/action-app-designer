@@ -6,6 +6,48 @@
 let $ = require("./globalUtilities").$;
 const { MongoClient } = require('mongodb');
 
+//$.MongoConfig = {};
+//console.log("start of mongo",$.scope.locals.path.ws);
+
+ $.scope.locals.path.ws.mongoConfig = $.scope.locals.path.ws.root + '/mongoconfig/';
+ $.fs.ensureDir($.scope.locals.path.ws.mongoConfig);
+ $.MongoSession = new MongoSession();
+// appdata: tmpWSDirectory + "appdata/",
+// appdataAccounts: tmpWSDirectory + "appdata/accounts/",
+
+
+//==== MongoSession === === === === === === === === === === 
+function MongoSession(theAccountConfig) {
+    this.accounts = {};
+}
+module.exports.MongoSession = MongoSession;
+MongoSession.prototype.addAccountConfig = async function (theAccount) {
+    let self = this;
+    return new Promise(async function (resolve, reject) {
+        try {
+            var tmpBaseDir = $.scope.locals.path.ws.mongoConfig;
+            var tmpID = theAccount.id || 'default'; //should always be there
+            await $.bld.saveJsonFile(tmpBaseDir + 'mongo-acct-' + tmpID + '.json', theAccount);
+            resolve(true);
+        } catch (error) {
+            reject(error);
+        } 
+    });
+}
+
+
+MongoSession.prototype.getAccountConfig = async function (theID) {
+    let self = this;
+    return new Promise(async function (resolve, reject) {
+        try {
+            var tmpBaseDir = $.scope.locals.path.ws.mongoConfig
+            var tmpConfig = await $.bld.getJsonFile(tmpBaseDir + 'mongo-acct-' + theID + '.json');
+            resolve(tmpConfig);
+        } catch (error) {
+            reject(error);
+        } 
+    });
+}
 
 //==== MongoAccount === === === === === === === === === === 
 function MongoAccount(theAccountConfig) {
@@ -19,6 +61,9 @@ MongoAccount.prototype.loadConfig = function (theAccountConfig) {
         throw "Config not provided"
     }
     var tmpConfig = $.cloneObject(theAccountConfig);
+    if (!tmpConfig.id) {
+        throw "id not provided"
+    }
     if (!tmpConfig.address) {
         throw "address not provided"
     }
