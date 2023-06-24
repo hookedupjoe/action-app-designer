@@ -66,6 +66,12 @@ var thisPageSpecs = {
 
     var actions = ThisPage.pageActions;
 
+    actions.openAccount = openAccount;
+    function openAccount(theParams, theTarget){
+        var tmpParams = ThisApp.getActionParams(theParams, theTarget, ['accountid']);
+        console.log('openAccount',tmpParams);   
+    }
+
     ThisPage._onPreInit = function (theApp) {
         //~_onPreInit//~
 

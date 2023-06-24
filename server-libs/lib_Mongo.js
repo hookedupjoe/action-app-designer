@@ -54,6 +54,25 @@ MongoSession.prototype.getAccountConfig = async function (theID) {
     });
 }
 
+MongoSession.prototype.getAccountConfigs = async function () {
+    var tmpBaseDir = $.scope.locals.path.ws.mongoConfigAccounts;
+    var tmpFiles = await($.bld.getDirFiles(tmpBaseDir));
+    var tmpRet = {accounts:[]}
+    for (var index in tmpFiles) {
+        var tmpFileName = tmpFiles[index];
+        console.log('tmpFileName',tmpFileName.indexOf('.json'))
+        if( tmpFileName.indexOf('.json') > -1){
+            var tmpDetails = await($.bld.getJsonFile(tmpBaseDir + tmpFileName))
+            tmpRet.accounts.push(tmpDetails);
+        }
+        if( tmpRet.accounts.length == 0){
+            tmpRet.isNew = true;
+        }
+        
+    }
+    return tmpRet;
+}
+
 MongoSession.prototype.getAccount = async function (theID) {
     let self = this;
     return new Promise(async function (resolve, reject) {

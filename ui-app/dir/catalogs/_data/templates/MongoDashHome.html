@@ -1,0 +1,48 @@
+<div class="ui segment">
+  <div class="ui header blue medium">
+    Mongo Accounts
+  </div>
+  
+  {{#if isLoading}}
+    <div class="ui message blue">
+      <b>Loading:</b> Please wait ...
+    </div>
+  {{/if}}
+
+  {{#if isNew}}
+    <div class="ui message blue">
+      <b>No Accounts Setup:</b> Use the Add Account button to add your <b>Mongo Database</b> account information.
+    </div>
+  {{/if}}
+
+  <div class="ui segment pad3">
+    <button myaction="newDoc" type="button" name="btn-page-tb-new" class="ui button compact blue icon  ">
+      <i class="plus icon"></i> Add Account
+    </button>
+    <button myaction="refreshDash" type="button" name="btn-page-tb-new" class="ui button compact blue icon  ">
+      <i class="recycle icon"></i> Refresh
+    </button>
+  </div>
+
+  <div class="ui relaxed divided list">
+    {{#each accounts}}
+    <a href="javascript:void(0)" class="item" accountid="{{this.id}}" pageaction="openAccount">
+      <i class="large server middle aligned icon"></i>
+
+      <div class="content">
+        <div class="right floated content">
+          <div class="ui button">
+            Open Dashboard
+          </div>
+        </div>
+        <div class="header">
+          ID: {{this.id}}
+        </div>
+        <div class="description">
+          {{this.address}}:{{this.port}}
+        </div>
+      </div>
+    </a>
+    {{/each}}
+  </div>
+</div>
