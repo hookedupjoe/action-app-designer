@@ -25,7 +25,7 @@ module.exports.setup = function setup(scope) {
 
 
                 try {
-                    var tmpAccounts = await $.MongoSession.getAccountConfigs();
+                    var tmpAccounts = await $.MongoManager.getAccountConfigs();
                     //tmpDBList.databases.forEach(db => console.log(`Name: ${db.name}`));
                 } catch (e) {
                     console.error(e);

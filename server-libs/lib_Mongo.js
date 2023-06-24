@@ -16,17 +16,17 @@ const { MongoClient } = require('mongodb');
  $.fs.ensureDir($.scope.locals.path.ws.mongoConfig);
  $.fs.ensureDir($.scope.locals.path.ws.mongoConfigAccounts);
 
- $.MongoSession = new MongoSession();
+ $.MongoManager = new MongoManager();
 // appdata: tmpWSDirectory + "appdata/",
 // appdataAccounts: tmpWSDirectory + "appdata/accounts/",
 
 
-//==== MongoSession === === === === === === === === === === 
-function MongoSession(theAccountConfig) {
+//==== MongoManager === === === === === === === === === === 
+function MongoManager(theAccountConfig) {
     this.accounts = {};
 }
-module.exports.MongoSession = MongoSession;
-MongoSession.prototype.addAccountConfig = async function (theAccount) {
+module.exports.MongoManager = MongoManager;
+MongoManager.prototype.addAccountConfig = async function (theAccount) {
     let self = this;
     return new Promise(async function (resolve, reject) {
         try {
@@ -41,7 +41,7 @@ MongoSession.prototype.addAccountConfig = async function (theAccount) {
 }
 
 
-MongoSession.prototype.getAccountConfig = async function (theID) {
+MongoManager.prototype.getAccountConfig = async function (theID) {
     let self = this;
     return new Promise(async function (resolve, reject) {
         try {
@@ -54,13 +54,12 @@ MongoSession.prototype.getAccountConfig = async function (theID) {
     });
 }
 
-MongoSession.prototype.getAccountConfigs = async function () {
+MongoManager.prototype.getAccountConfigs = async function () {
     var tmpBaseDir = $.scope.locals.path.ws.mongoConfigAccounts;
     var tmpFiles = await($.bld.getDirFiles(tmpBaseDir));
     var tmpRet = {accounts:[]}
     for (var index in tmpFiles) {
         var tmpFileName = tmpFiles[index];
-        console.log('tmpFileName',tmpFileName.indexOf('.json'))
         if( tmpFileName.indexOf('.json') > -1){
             var tmpDetails = await($.bld.getJsonFile(tmpBaseDir + tmpFileName))
             tmpRet.accounts.push(tmpDetails);
@@ -68,17 +67,15 @@ MongoSession.prototype.getAccountConfigs = async function () {
         if( tmpRet.accounts.length == 0){
             tmpRet.isNew = true;
         }
-        
     }
     return tmpRet;
 }
 
-MongoSession.prototype.getAccount = async function (theID) {
+MongoManager.prototype.getAccount = async function (theID) {
     let self = this;
     return new Promise(async function (resolve, reject) {
         try {
             if( self.accounts[theID] ){
-                console.log('existing account', theID);
                 resolve(self.accounts[theID]);
             } else {
                 var tmpConfig = await self.getAccountConfig(theID);
@@ -86,7 +83,6 @@ MongoSession.prototype.getAccount = async function (theID) {
                     console.log("ERROR: NO CONFIG.  Save one for: " + theID);
                     reject(false);
                 } else {
-                    console.log('new account', theID);
                     self.accounts[theID] = new MongoAccount(tmpConfig);
                     resolve(self.accounts[theID]);
                 }

@@ -36,9 +36,9 @@ module.exports.setup = function setup(scope) {
                     "username": tmpBody.username || '',
                     "password": tmpBody.password || ''
                 }
-                var tmpCallRet = await $.MongoSession.addAccountConfig(tmpNewConfig);
+                var tmpCallRet = await $.MongoManager.addAccountConfig(tmpNewConfig);
                 // var tmpAccountID = 'aws';
-                // var tmpAccount = await $.MongoSession.getAccount(tmpAccountID);
+                // var tmpAccount = await $.MongoManager.getAccount(tmpAccountID);
 
                 // try {
                 //     var tmpDBList = await tmpAccount.getDatabaseList();

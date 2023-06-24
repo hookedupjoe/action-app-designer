@@ -25,7 +25,7 @@ module.exports.setup = function setup(scope) {
 
                 //var tmpAccountID = 'localadmin';
                 var tmpAccountID = req.query.account || 'local';
-                var tmpAccount = await $.MongoSession.getAccount(tmpAccountID);
+                var tmpAccount = await $.MongoManager.getAccount(tmpAccountID);
 
                 try {
                     var tmpDBList = await tmpAccount.getDatabaseList();
