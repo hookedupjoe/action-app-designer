@@ -105,6 +105,18 @@ License: MIT
 							},
 							{
 								"ctl": "button",
+								"color": "green",
+								toRight: true,
+								hidden: true,
+								"name": "btn-set-data",
+								"label": "Set Template JSON",
+								"onClick": {
+									"run": "action",
+									"action": "setPreviewObject"
+								}
+							},
+							{
+								"ctl": "button",
 								"color": "purple",
 								toLeft: true,
 								"name": "btn-refresh-page",
@@ -237,6 +249,8 @@ License: MIT
 			resname: tmpResName,
 			restype: tmpResType
 		}
+
+		this.setItemDisplay('btn-set-data', (tmpResType == 'Template' || tmpResType == 'Templates'));
 
 		this.aceSessionType = "ace/mode/javascript"
 		if (tmpResType == 'HTML' || tmpResType == 'Template' || tmpResType == 'html' || tmpResType == 'Templates') {
@@ -678,6 +692,24 @@ License: MIT
 	};
 
 
+	ControlCode.setPreviewObject = setPreviewObject;
+	function setPreviewObject() {
+		var tmpThis = this;
+		ThisApp.input("Enter JSON", "Valid JSON Required").then(
+			function(theReply){
+				try {					
+					var tmpDoc = theReply;
+					if( typeof(tmpDoc) == 'string'){
+						tmpDoc = JSON.parse(theReply)
+					}
+					tmpThis.previewObject = tmpDoc;	
+				} catch (theError) {
+					alert("Error processing JSON");
+				}
+				
+			}
+		);		
+	}
 
 	ControlCode.refreshControlDisplay = refreshControlDisplay;
 	function refreshControlDisplay() {
@@ -687,8 +719,13 @@ License: MIT
 
 
 		if (tmpResType == 'HTML' || tmpResType == 'Template' || tmpResType == 'html' || tmpResType == 'Templates') {
+			// var tmpContent = this.aceEditor.getValue();
+			// this.loadSpot('preview-area', tmpContent);
 			var tmpContent = this.aceEditor.getValue();
-			this.loadSpot('preview-area', tmpContent);
+			var tmpTplName = 'resource-console--preview--only--' + this.details.resname;
+			ThisApp.addTemplate(tmpTplName,tmpContent);
+			this.loadSpot('preview-area', this.previewObject || {},tmpTplName);
+
 		} else if (tmpResType == 'Panel') {
 			var tmpObject = this.aceEditor.getValue();
 			tmpObject = ThisApp.json(tmpObject);
