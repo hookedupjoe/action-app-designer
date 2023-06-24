@@ -73,6 +73,7 @@ var thisPageSpecs = {
     }
 
     ThisPage.refreshDataViewSource = function(){
+        return;
         if( !(ActionAppCore.ActAppData.rootPath)){
             return;
         }
@@ -141,117 +142,9 @@ var thisPageSpecs = {
         ThisPage.ctlNav = ThisPage.parts.nav;
         ThisPage.ctlStatusbar = ThisPage.parts.statusbar;
 
-        //setup
         ThisPage.ctlHeader.setHeader('Data Manager');
-        //ThisPage.ctlHeader.addSideContent('<div class="ui label green basic right pointing">Need Help?</div>');
-        //ThisPage.ctlHeader.addSideContent('<div type="button" pageaction="showDocs" class="ui button  blue icon">Docs</div>');
-
-        // ThisPage.ctlBody.addTab({item:'home',text: '', icon: 'icon home blue', content:''});
-        // ThisPage.ctlBody.loadTabSpot('home','Initial Page, Welcome');
-        // ThisPage.ctlBody.gotoTab('home');
-
-        ThisPage.ctlNav.addTab({item:'posts',text: 'Posts', icon: 'icon database blue', content:''});
-        ThisPage.ctlNav.addTab({item:'dataviews',text: 'Data Views', icon: 'icon table green', content:''});
-        ThisPage.ctlNav.gotoTab('posts');
-
-        var tmpHTML = [];
-        tmpHTML.push('<div class="ui segment ">');
-        tmpHTML.push('<div pageaction="showDataViewDefs" class="ui fluid button blue">Show Definitions</div>');
-        tmpHTML.push('</div>');
-        tmpHTML = tmpHTML.join('\n');
-        ThisApp.addTemplate('DevConsole:DataViewConsole', tmpHTML);
-
-        tmpHTML = [];
-        tmpHTML.push('<div class="ui segment raised">');
-        tmpHTML.push('<div class="ui top attached header">Action App Docs</div>');
-        tmpHTML.push('<div class="ui attached segment">');
-        tmpHTML.push('<div class="basic slim buttons vertical fluid">');
-        tmpHTML.push('  {{#each data}}{{#if showlink}}');        
-        tmpHTML.push('  <div itemname="{{name}}" itemtitle="{{title}}" pageaction="selectListItem" class="ui button fluid basic blue">{{title}}</div>');
-        tmpHTML.push('  {{/if}}{{/each}}');
-        tmpHTML.push('</div>');
-        tmpHTML.push('</div>');
-        tmpHTML.push('</div>');
-        tmpHTML = tmpHTML.join('\n');
-        ThisApp.addTemplate('DevConsole:SelectionList', tmpHTML);
-
-        var tmpPostItems = {data:[
-            {
-                name:'actappdoc',
-                title: 'Application Docs',
-                showlink: true
-            },
-            {
-                name:'actappdesigndoc',
-                title: 'Designer Docs',
-                showlink: true
-            },
-            {
-                name:'actappelem',
-                title: 'Design Element Docs',
-                showlink: true
-            },
-            {
-                name:'thetrash',
-                isTrash: true,
-                title: 'The Trash Bin',
-                showlink: true
-            },
-            {
-                name:'importexport',
-                catalog: '_designer',
-                controlname: 'ImportExport',
-                title: 'Import / Export',
-                showlink: true
-            },
-            {
-                name:'dvposts',
-                isDataView: true,
-                viewname: 'posts',
-                title: 'Posts'
-            },
-            {
-                name:'dvpages',
-                isDataView: true,
-                viewname: 'pages',
-                title: 'Pages'
-            }            
-        ]}
-        //--- Examples of app docs ..
-        // },
-            // {
-            //     name:'dvpeople',
-            //     isDataView: true,
-            //     viewname: 'people',
-            //     title: 'People'
-            // },
-            // {
-            //     name:'dvapps',
-            //     isDataView: true,
-            //     viewname: 'apps',
-            //     title: 'Tiny Apps'
-            // },
-            // {
-            //     name:'dvtests',
-            //     isDataView: true,
-            //     viewname: 'tests',
-            //     title: 'Tests'
-            // }
-
-
-
-        //--- Load to index
-        for( var iPos in tmpPostItems.data ){
-            var tmpDetails = tmpPostItems.data[iPos];
-            selectionListIndex[tmpDetails.name] = tmpDetails;
-        }
-        
-        ThisPage.ctlNav.loadTabSpot('posts',tmpPostItems,'DevConsole:SelectionList');
-        var tmpDataViewItems = {};
-        ThisPage.ctlNav.loadTabSpot('dataviews',tmpDataViewItems,'DevConsole:DataViewConsole');
-        
-
-        ThisPage.ctlStatusbar.setContent('Welcome to the developer data manager');
+        ThisPage.ctlNav.addTab({item:'welcome',text: 'Welcome', icon: 'icon road blue', content:'getting started stuff here'});
+        ThisPage.ctlNav.gotoTab('welcome');
 
             //~_onFirstLoad~//~
                 ThisPage._onActivate();
