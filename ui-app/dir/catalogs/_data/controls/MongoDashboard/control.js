@@ -59,6 +59,8 @@
 
   var ControlCode = {};
 
+  var loadedTabs = {};
+
   ControlCode.setup = setup;
   function setup() {
     console.log("Ran setup")
@@ -99,6 +101,68 @@
   }
   
   
+  ControlCode.openAccount = openAccount;
+  function openAccount(theParams, theTarget){
+      var tmpParams = ThisApp.getActionParams(theParams, theTarget, ['accountid']);
+      console.log('MongoDash openAccount',tmpParams);   
+      this.addMongoAccountTab(tmpParams.accountid);
+  }
+
+  //closeTab
+
+  ControlCode.closeMyTab = function(theParams, theTarget){
+    var tmpParams = ThisApp.getActionParams(theParams, theTarget, ['tab']);
+    console.log('closeTab',tmpParams);
+    var tmpTabName = tmpParams.tab;
+    if( !(tmpTabName) ){
+        alert('Could not close tab, no tab name provided');
+    }
+    if( loadedTabs[tmpTabName] ){
+        var tmpToRemove = loadedTabs[tmpTabName];
+        if( tmpToRemove && tmpToRemove._subid ){
+            tmpToRemove.unsubscribe('',tmpToRemove._subid);
+        }
+        if( tmpToRemove && tmpToRemove.destroy ){
+            tmpToRemove.destroy();
+        }
+        delete loadedTabs[tmpTabName];
+    }
+    this.tabs.closeTab(tmpTabName);
+}
+
+  ControlCode.addMongoAccountTab = function(theAccountID){
+    var tmpThis = this;
+    var tmpTabKey = 'tab-mongo-account-' + theAccountID;
+    var tmpTabTitle = '' + theAccountID;
+    if( loadedTabs[tmpTabKey] ){
+        this.tabs.gotoTab(tmpTabKey);
+    } else {
+        var tmpCloseMe = '<i style="margin-right:-5px;margin-left:10px;" tab="' + tmpTabKey + '" myaction="closeMyTab" class="icon close grey inverted"></i>';
+        ThisApp.getResourceFromSource('control','AccountDashboard','_data','AccountDashboard').then(function(theLoadedControl){
+            var tmpNewTabControl = theLoadedControl.create(tmpTabKey);
+
+            tmpThis.tabs.addTab({item:tmpTabKey,text: tmpTabTitle + tmpCloseMe, icon: 'server', content:''})
+            var tmpNewSpot = tmpThis.tabs.getTabSpot(tmpTabKey);
+            tmpNewTabControl.loadToElement(tmpNewSpot).then(function () {
+                loadedTabs[tmpTabKey] = tmpNewTabControl;
+                //--- Go to the newly added card (to show it and hide others)
+                var tmpParams = {};
+                tmpParams.accountid = theAccountID;
+                if( tmpNewTabControl.setup ){
+                    tmpNewTabControl.setup(tmpParams);
+                }
+                ThisApp.delay(1).then(function(){
+                  tmpThis.tabs.gotoTab(tmpTabKey);
+                })
+                
+            });
+        });
+        
+
+    }
+}
+
+  
   ControlCode.refreshDash = function(theContent, theOptTpl){
     var tmpThis = this;
     ThisApp.getResourceFromSource("template","MongoDashHome", "_data", "MongoDashHome").then(function(theTemplateHTML){
@@ -133,7 +197,7 @@
     this.tabs.addTab({
       item: 'main',
       text: "",
-      icon: 'server',
+      icon: 'home',
       content: '<div myspot="dashhome"></div>'
     });
     	

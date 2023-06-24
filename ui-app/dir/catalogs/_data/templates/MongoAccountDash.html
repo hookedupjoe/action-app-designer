@@ -1,6 +1,6 @@
 <div class="ui segment">
   <div class="ui header blue medium">
-    Mongo Accounts
+    Mongo Databases
   </div>
   
   {{#if isLoading}}
@@ -11,13 +11,13 @@
 
   {{#if isNew}}
     <div class="ui message blue">
-      <b>No Accounts Setup:</b> Use the Add Account button to add your <b>Mongo Database</b> account information.
+      <b>No Databases Setup:</b> Use the Add Database button to add your <b>Mongo Account</b> account information.
     </div>
   {{/if}}
 
   <div class="ui segment pad3">
     <button myaction="newDoc" type="button" name="btn-page-tb-new" class="ui button compact blue icon  ">
-      <i class="plus icon"></i> Add Account
+      <i class="plus icon"></i> Add Database
     </button>
     <button myaction="refreshDash" type="button" name="btn-page-tb-new" class="ui button compact blue icon  ">
       <i class="recycle icon"></i> Refresh
@@ -25,21 +25,21 @@
   </div>
 
   <div class="ui relaxed divided list">
-    {{#each accounts}}
-    <a href="javascript:void(0)" class="item" accountid="{{this.id}}" myaction="openAccount">
-      <i class="large server middle aligned icon"></i>
+    {{#each databases}}
+    <a href="javascript:void(0)" class="item" accountid="{{this.name}}" pageaction="openDatabase">
+      <i class="large database middle aligned icon"></i>
 
       <div class="content">
         <div class="right floated content">
           <div class="ui button">
-            Open Dashboard
+            DB Dashboard
           </div>
         </div>
         <div class="header">
-          ID: {{this.id}}
+          DB Name: {{this.name}}
         </div>
         <div class="description">
-          {{this.address}}:{{this.port}}
+          {{this.sizeOnDisk}}
         </div>
       </div>
     </a>

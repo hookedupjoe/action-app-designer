@@ -1,101 +1,156 @@
 (function (ActionAppCore, $) {
 
-	var ControlSpecs = { 
-		options: {
-			padding: true
-		},
-		content: [
-	{
-        "ctl": "layout",
-        "name": "lo",
-        "north": [{
-          ctl: 'div',
-          name: 'toolbar',
-          content: [{
-            "ctl": "ui",
-            "name": "search-toolbar",
-            "classes": "labeled icon compact pad5",
-            hidden: false,
-            "content": [ {
-              "ctl": "button",
-              "toLeft": true,
-              "color": "blue",
-              "icon": "plus",
-              compact: true,
-              "name": "btn-page-tb-new",
-              "label": "Add",
-              "onClick": {
-                "run": "action",
-                "action": "newDoc"
-
-              }
-            },
-              {
-                "ctl": "button",
-                "toLeft": true,
-                "color": "blue",
-                "icon": "pencil",
-                compact: true,
-                "name": "btn-page-tb-edit",
-                "label": "Edit",
-                "onClick": {
-                  "run": "action",
-                  "action": "editDoc"
-                }
-              },
-              {
-                "ctl": "button",
-                "toLeft": true,
-                "color": "blue",
-                "icon": "trash",
-                compact: true,
-                "name": "btn-page-tb-recycle",
-                "label": "Recycle",
-                "onClick": {
-                  "run": "action",
-                  "action": "recycleSelected"
-                }
-              }]
-          },
-            {
-              ctl: 'divider',
-              fitted: true,
-              clearing: true
-            }]
-        }],
-        "center": [{
-          ctl: "control",
-          name: "tabs",
-          catalog: "_designer",
-          controlname: "TabsContainer"
+  var ControlSpecs = {
+    options: {
+      padding: false
+    },
+    content: [{
+      ctl: 'div',
+      classes: 'hidden',
+      content: [
+        {
+        "ctl": "control",
+        "catalog": "_data",
+        "controlname": "MongoAccount",
+        "name": "mainform"
+      }]
+    }, {
+      "ctl": "layout",
+      "name": "lo",
+      "north": [{
+        ctl: 'div',
+        name: 'toolbar',
+        hidden: false,
+        content: [{
+          "ctl": "div",
+          "classes": "ui message invered pad5",
+          hidden: false,
+          "content": [ {
+            "ctl": "title",
+            "color": "blue",
+            "text": 'Account: <span myspot="account-name"></span>'
+          }]
         }]
+      }],
+      "center": [{
+        ctl: "control",
+        name: "tabs",
+        catalog: "_designer",
+        controlname: "TabsContainer"
+      }]
 
-      }                                             
-		]
-	}
+    }]
+  }
 
-	var ControlCode = {};
+  var ControlCode = {};
 
-    ControlCode.setup = setup;
-    function setup(){
-        console.log("Ran setup")
+  ControlCode.setup = setup;
+  function setup(theOptions) {
+    if( theOptions && theOptions.accountid ){
+      this.accountid = theOptions.accountid;
+    }
+    console.log("Account id:",this.accountid);
+    
+    this.refreshDash();
+
+  
+
+  }
+
+  ControlCode.closeTab = function(theParams, theTarget){
+    console.log('closeTab on acct dash')
+  }
+
+  ControlCode.refreshUI = function(){
+    this.loadSpot('account-name',this.accountid);
+  }
+
+  ControlCode.newDoc = newDoc;
+  function newDoc() {
+    var tmpThis = this;
+    // this.parts.mainform.subscribe('submitted', function(theReply){
+    //   console.log('submitted',theReply);
+    // })
+    //console.log('this.parts.mainform new');
+    this.parts.mainform.prompt().then(function(theWasSubmitted, theData) {
+      if (!(theWasSubmitted)) return;
+
+      console.log('submitted', theWasSubmitted, theData);
+      var tmpData = theData;
+      //var tmpDocTitle = tmpData.id;
+      tmpData.id = tmpData.id.toLowerCase();
+      var tmpBaseURL = ActionAppCore.ActAppData.rootPath;
+      var tmpBaseURL = 'http://localhost:33460/appdata/api/';
+
+      //var tmpDocType = 'app';
+
+      var tmpPostOptions = {
+        formSubmit: false,
+        data: tmpData,
+        url: tmpBaseURL + 'mongo-create-account?open'
+      };
+      //console.log('tmpPostOptions',tmpPostOptions);
+      return ThisApp.apiCall(tmpPostOptions).then(function(theReply) {
+        //console.log(theReply);
+        tmpThis.refreshDash()
+      });
+
+    });
+    
+  }
+  
+  
+  ControlCode.refreshDash = function(theContent, theOptTpl){
+    var self = this;
+    ThisApp.getResourceFromSource("template","MongoAccountDash", "_data", "MongoAccountDash").then(function(theTemplateHTML){
+      ThisApp.addTemplate("MongoDashHome",theTemplateHTML);
+
+      var tmpBaseURL = 'http://localhost:33460/appdata/api/';
+      var tmpURL = tmpBaseURL + 'get-db-list/?account=' + self.accountid;      
+
+      ThisApp.apiCall(tmpURL).then(function(theReply){
+        self.accountData = theReply;
+        self.loadDash(self.accountData,"MongoAccountDash");
+        self.refreshUI();
+      })
+      
+    })
+  }
+  ControlCode.loadDash = function(theContent, theOptTpl){
+    this.loadSpot('dashhome', theContent, theOptTpl);
+  }
+
+
+  
+  ControlCode._onInit = _onInit;
+  function _onInit() {
+    var tmpThis = this;
+    this.refreshUI();
+    console.log('init');
+	
+    //--- temp
+    this.accountData = {
+      isLoading:true,
+      dbs: [
+      ]
     }
 
-    ControlCode.newDoc = newDoc;
-    function newDoc(){
-        console.log("Ran newDoc")
-        ThisApp.loadSpot('mainout', 'new');
-    }
+    this.tabs = this.parts.tabs;
+    this.tabs.addTab({
+      item: 'main',
+      text: "",
+      icon: 'server',
+      content: '<div myspot="dashhome"></div>'
+    });
+    	
+		
 
 
-    ControlCode._onInit = _onInit;
-    function _onInit(){
-        this.tabs = this.parts.tabs;
-        this.tabs.addTab({ item: 'main', text: "", icon: 'home', content:'<div class="ui message" spot="mainout"></div>'});
-        console.log("Ran _onInit",this.parts);
-        
-    }
+  }
 
-	var ThisControl = {specs: ControlSpecs, options: { proto: ControlCode, parent: ThisApp }};
-	return ThisControl;
+  var ThisControl = {
+    specs: ControlSpecs, options: {
+      proto: ControlCode, parent: ThisApp
+    }};
+  return ThisControl;
 })(ActionAppCore, $);
