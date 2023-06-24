@@ -20,10 +20,14 @@ var ActionAppCore = {
         rootPath: './'
     },
     //--- Directory of where stuff is located
+
+    //--- ToDo: Move the _designer and _data to designer app
+    //-    ** How to deploy / if we should deploy catalog resources ?
     dir: {
         catalogs: {
             common: './dir/catalogs/_designer/',
             _designer: './dir/catalogs/_designer/',
+            _data: './dir/catalogs/_data/',
             getResourceCatalogURL: function(theCatName, theResType, theResName){
                 var tmpBaseURL = '/';
                 var tmpResType = ThisApp.controls.getUnifiedPluralName(theResType);

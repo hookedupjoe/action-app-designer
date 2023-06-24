@@ -10,7 +10,12 @@ const { MongoClient } = require('mongodb');
 //console.log("start of mongo",$.scope.locals.path.ws);
 
  $.scope.locals.path.ws.mongoConfig = $.scope.locals.path.ws.root + '/mongoconfig/';
+ $.scope.locals.path.ws.mongoConfigAccounts = $.scope.locals.path.ws.mongoConfig + '/accounts/';
+
+ //--- ToDo: This this only once or if not found?  
  $.fs.ensureDir($.scope.locals.path.ws.mongoConfig);
+ $.fs.ensureDir($.scope.locals.path.ws.mongoConfigAccounts);
+
  $.MongoSession = new MongoSession();
 // appdata: tmpWSDirectory + "appdata/",
 // appdataAccounts: tmpWSDirectory + "appdata/accounts/",
@@ -25,9 +30,9 @@ MongoSession.prototype.addAccountConfig = async function (theAccount) {
     let self = this;
     return new Promise(async function (resolve, reject) {
         try {
-            var tmpBaseDir = $.scope.locals.path.ws.mongoConfig;
+            var tmpBaseDir = $.scope.locals.path.ws.mongoConfigAccounts;
             var tmpID = theAccount.id || 'default'; //should always be there
-            await $.bld.saveJsonFile(tmpBaseDir + 'mongo-acct-' + tmpID + '.json', theAccount);
+            await $.bld.saveJsonFile(tmpBaseDir + tmpID + '.json', theAccount);
             resolve(true);
         } catch (error) {
             reject(error);
@@ -40,8 +45,8 @@ MongoSession.prototype.getAccountConfig = async function (theID) {
     let self = this;
     return new Promise(async function (resolve, reject) {
         try {
-            var tmpBaseDir = $.scope.locals.path.ws.mongoConfig
-            var tmpConfig = await $.bld.getJsonFile(tmpBaseDir + 'mongo-acct-' + theID + '.json');
+            var tmpBaseDir = $.scope.locals.path.ws.mongoConfigAccounts;
+            var tmpConfig = await $.bld.getJsonFile(tmpBaseDir + theID + '.json');
             resolve(tmpConfig);
         } catch (error) {
             reject(error);

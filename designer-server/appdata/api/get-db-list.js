@@ -23,25 +23,8 @@ module.exports.setup = function setup(scope) {
         return new Promise( async function (resolve, reject) {
             try {
 
-                /* 
-                //--- Programmatic add
-
-                var tmpNewConfig = {
-                    "id": "aws",
-                    "address": "YOURIP",
-                    "port": "27017",
-                    "username": "USERNAME",
-                    "password": "PASSWORD"
-                }
-                await $.MongoSession.addAccountConfig(tmpNewConfig);
-                */
-
-                // var tmpAccountInfo = await $.MongoSession.getAccountConfig('localadmin');
-              
-                // var accountDefault = new Mongo.MongoAccount(tmpAccountInfo);
-                
                 //var tmpAccountID = 'localadmin';
-                var tmpAccountID = 'aws';
+                var tmpAccountID = req.query.account || 'local';
                 var tmpAccount = await $.MongoSession.getAccount(tmpAccountID);
 
                 try {
@@ -50,7 +33,6 @@ module.exports.setup = function setup(scope) {
                 } catch (e) {
                     console.error(e);
                 }
-
 
                 var tmpRet = {};
                 tmpRet = $.merge(false, tmpRet, tmpDBList);

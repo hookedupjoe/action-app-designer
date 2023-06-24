@@ -32,8 +32,8 @@ var thisPageSpecs = {
           name :'nav'
         },
         center: {
-          source: '_designer',
-          control: "TabsContainer",
+          source: '_data',
+          control: "MongoDashboard",
           name :'body'
         },
         south: {
@@ -146,9 +146,9 @@ var thisPageSpecs = {
         //ThisPage.ctlHeader.addSideContent('<div class="ui label green basic right pointing">Need Help?</div>');
         //ThisPage.ctlHeader.addSideContent('<div type="button" pageaction="showDocs" class="ui button  blue icon">Docs</div>');
 
-        ThisPage.ctlBody.addTab({item:'home',text: '', icon: 'icon home blue', content:''});
-        ThisPage.ctlBody.loadTabSpot('home','Initial Page, Welcome');
-        ThisPage.ctlBody.gotoTab('home');
+        // ThisPage.ctlBody.addTab({item:'home',text: '', icon: 'icon home blue', content:''});
+        // ThisPage.ctlBody.loadTabSpot('home','Initial Page, Welcome');
+        // ThisPage.ctlBody.gotoTab('home');
 
         ThisPage.ctlNav.addTab({item:'posts',text: 'Posts', icon: 'icon database blue', content:''});
         ThisPage.ctlNav.addTab({item:'dataviews',text: 'Data Views', icon: 'icon table green', content:''});
