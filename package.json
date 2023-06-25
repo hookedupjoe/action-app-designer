@@ -5,7 +5,9 @@
   "scripts": {
     "start": "node app.js"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "chokidar": "^3.5.3"
+  },
   "dependencies": {
     "body-parser": "^1.15.2",
     "child_process": "^1.0.2",

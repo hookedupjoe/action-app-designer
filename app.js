@@ -65,6 +65,31 @@ app.all('*', function(req, res, next) {
  });
  
 
+
+ try {
+    const chokidar = require('chokidar');
+  // Do "hot-reloading" of express stuff on the server
+  // Throw away cached modules and re-require next time
+  // Ensure there's no important state in there!
+  var tmpWatchDir = scope.locals.path.root + "/designer-server"
+  console.log('tmpWatchDir',tmpWatchDir);
+ chokidar.watch(tmpWatchDir, {ignored: /index\.js$/})
+    .on('change', (path) => {
+        try {
+            if (require.cache[path]) delete require.cache[path];
+            console.log('New file loaded for ' + path);
+        } catch (theChangeError) {
+            console.log("Could not hot update: " + path);
+            console.log("The reason: " + theChangeError);
+        }
+    });
+
+    } catch (ex){
+    console.error(ex);
+    //--- No chokidr installed, no hot reading of modules     
+    console.log('No hot reading, chokidar not installed on dev side')  
+}
+
 function setup() {
 
     return new Promise( async function (resolve, reject) {
