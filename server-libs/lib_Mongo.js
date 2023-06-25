@@ -81,7 +81,7 @@ MongoManager.prototype.getAccount = async function (theID) {
                 var tmpConfig = await self.getAccountConfig(theID);
                 if( !(tmpConfig)){
                     console.log("ERROR: NO CONFIG.  Save one for: " + theID);
-                    reject(false);
+                    resolve(false);
                 } else {
                     self.accounts[theID] = new MongoAccount(tmpConfig);
                     resolve(self.accounts[theID]);

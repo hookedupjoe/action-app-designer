@@ -81,7 +81,7 @@
       var tmpData = theData;
       tmpData.id = tmpData.id.toLowerCase();
       var tmpBaseURL = ActionAppCore.ActAppData.rootPath;
-      var tmpBaseURL = './appdata/api/';
+      var tmpBaseURL = ActionAppCore.ActAppData.appDataEndpoint;
 
       var tmpPostOptions = {
         formSubmit: false,
@@ -121,7 +121,7 @@
   
   ControlCode.refreshDash = function(theContent, theOptTpl){
     var tmpThis = this;
-    var tmpBaseURL = './appdata/api/';
+    var tmpBaseURL = ActionAppCore.ActAppData.appDataEndpoint;
     var tmpURL = tmpBaseURL + 'get-account-list';      
     ThisApp.apiCall(tmpURL).then(function(theReply){
       tmpThis.accountData = theReply;

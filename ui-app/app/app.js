@@ -2,6 +2,9 @@
 
   ThisApp = null;
 
+  ActionAppCore = ActionAppCore || window.ActionAppCore;  
+  ActionAppCore.ActAppData.appDataEndpoint = './appdata/api/';
+
   var tmpPageNames = [   
     'WorkspacePage',
     'AppDataPage',
@@ -17,8 +20,6 @@
 
   setup(tmpPageNames, tmpPluginNames);
 
-  //---- ACTUAL CODE ==    
-  ActionAppCore = ActionAppCore || window.ActionAppCore;
 
   function setup(thePages, thePlugins) {
     try {

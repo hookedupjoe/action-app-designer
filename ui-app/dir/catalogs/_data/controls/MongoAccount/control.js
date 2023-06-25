@@ -85,7 +85,7 @@
 		var tmpDocTitle = tmpData.id;
 		
 		var tmpBaseURL = ActionAppCore.ActAppData.rootPath;
-		var tmpBaseURL = './appdata/api/';
+		var tmpBaseURL = ActionAppCore.ActAppData.appDataEndpoint;
 		
 		var tmpDocType = 'app';
 		

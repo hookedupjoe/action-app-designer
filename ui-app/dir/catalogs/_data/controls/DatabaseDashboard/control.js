@@ -89,7 +89,7 @@
       var tmpData = theData;
       tmpData.id = tmpData.id.toLowerCase();
       var tmpBaseURL = ActionAppCore.ActAppData.rootPath;
-      var tmpBaseURL = './appdata/api/';
+      var tmpBaseURL = ActionAppCore.ActAppData.appDataEndpoint;
 
 
       var tmpPostOptions = {
@@ -107,7 +107,7 @@
   
   ControlCode.refreshDash = function(theContent, theOptTpl){
     var self = this;
-    var tmpBaseURL = './appdata/api/';
+    var tmpBaseURL = ActionAppCore.ActAppData.appDataEndpoint;
     var tmpURL = tmpBaseURL + 'get-collection-list/?account=' + self.accountid + '&database=' + self.dbname;      
     ThisApp.apiCall(tmpURL).then(function(theReply){
       self.collections = theReply.collections;
