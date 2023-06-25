@@ -22,20 +22,22 @@ module.exports.setup = function setup(scope) {
         var self = this;
         return new Promise( async function (resolve, reject) {
             try {
-
+                var tmpRet = {databases:[]};
                 //var tmpAccountID = 'localadmin';
                 var tmpAccountID = req.query.account || 'local';
                 var tmpAccount = await $.MongoManager.getAccount(tmpAccountID);
 
                 try {
                     var tmpDBList = await tmpAccount.getDatabaseList();
+                    
+                    tmpDBList.databases.forEach(db => {if(db.name != 'local' && db.name != 'admin' && db.name != 'config'){tmpRet.databases.push(db)}});
+
                     //tmpDBList.databases.forEach(db => console.log(`Name: ${db.name}`));
                 } catch (e) {
                     console.error(e);
                 }
 
-                var tmpRet = {};
-                tmpRet = $.merge(false, tmpRet, tmpDBList);
+                
 
                 resolve(tmpRet);
 
