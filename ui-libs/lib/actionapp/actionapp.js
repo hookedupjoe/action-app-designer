@@ -31,7 +31,12 @@ var ActionAppCore = {
             getResourceCatalogURL: function(theCatName, theResType, theResName){
                 var tmpBaseURL = '/';
                 var tmpResType = ThisApp.controls.getUnifiedPluralName(theResType);
+                //--- Directory is tpl not templates
+                if( tmpResType == 'templates' ){
+                    tmpResType = 'tpl';
+                }
                 var tmpURL = tmpBaseURL + "catalogs/" + theCatName + '/' + tmpResType + '/' + theResName;
+                console.log('getResourceCatalogURL',tmpURL)
                 return tmpURL
             }
         }
@@ -1300,14 +1305,22 @@ window.ActionAppCore = window.ActionAppCore || ActionAppCore;
                 }
                 if (isObj(tmpSpec.map)) {
                     for (var aURI in tmpSpec.map) {
-
+                        if( theType == 'templates'){
+                            console.log('tmpSpec.map',tmpSpec.map);
+                        }
+        
                         var tmpEntryName = tmpSpec.map[aURI];
                         var tmpBaseMapURL = tmpBaseURL;
 
                         if (isObj(tmpEntryName)) {
+
+                            
                             var tmpSource = tmpEntryName.source || tmpEntryName.catalog;
                             var tmpEntrySpecs = tmpEntryName;
                             tmpEntryName = tmpEntryName.name;
+                            if( theType == 'templates'){
+                                console.log('tmpSource',tmpSource);
+                            }
                             if( tmpSource ){
                                 if( ActionAppCore.dir.catalogs[tmpSource]){
                                     tmpBaseMapURL = ActionAppCore.dir.catalogs[tmpSource] + theType + '/';
@@ -1318,7 +1331,9 @@ window.ActionAppCore = window.ActionAppCore || ActionAppCore;
                                     if( ActionAppCore.dir.catalogs.getResourceURL ){
                                         tmpControlURL = ActionAppCore.dir.catalogs.getResourceURL(tmpSource,tmpControlType,tmpControlName)
                                     } else if(ActionAppCore.dir.catalogs.getResourceCatalogURL) {
+                                        console.log('getResourceCatalogURL')
                                         tmpControlURL = ActionAppCore.dir.catalogs.getResourceCatalogURL(tmpSource,tmpControlType,tmpControlName)
+                                        console.log('tmpControlURL',tmpControlURL)
                                     }
                                     if (tmpControlURL){
                                         aURI = tmpControlURL;
