@@ -24,7 +24,7 @@
         content: [{
           "ctl": "div",
           "classes": "ui message invered pad5",
-          hidden: false,
+          hidden: true,
           "content": [ {
             "ctl": "title",
             "color": "blue",
@@ -50,7 +50,13 @@
       this.accountid = theOptions.accountid;
     }
     console.log("Account id:",this.accountid);
-    
+    this.tabs.addTab({
+      item: 'main',
+      text: this.accountid,
+      icon: 'server',
+      content: '<div myspot="dashhome"></div>'
+    });
+    	
     this.refreshDash();
 
   
@@ -113,7 +119,7 @@
 
     this.tabs.openTab({
       tabname: tmpTabKey,
-      tabtitle: tmpTabTitle,
+      tabtitle: '<i class="icon database blue"></i> ' + tmpTabTitle,
       controlname: 'DatabaseDashboard',
       catalog: '_data',
       closable: true,
@@ -160,13 +166,7 @@
     }
 
     this.tabs = this.parts.tabs;
-    this.tabs.addTab({
-      item: 'main',
-      text: "",
-      icon: 'server',
-      content: '<div myspot="dashhome"></div>'
-    });
-    	
+
 		
 
 

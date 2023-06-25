@@ -104,7 +104,7 @@
     tmpParams.accountid = theAccountID;
     this.tabs.openTab({
       tabname: tmpTabKey,
-      tabtitle: tmpTabTitle,
+      tabtitle: '<i class="icon server blue"></i> ' + tmpTabTitle,
       controlname: 'AccountDashboard',
       catalog: '_data',
       closable: true,
@@ -145,7 +145,7 @@
     this.tabs = this.parts.tabs;
     this.tabs.addTab({
       item: 'main',
-      text: "",
+      text: "Home",
       icon: 'home',
       content: '<div myspot="dashhome"></div>'
     });

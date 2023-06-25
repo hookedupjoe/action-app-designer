@@ -24,7 +24,7 @@
         content: [{
           "ctl": "div",
           "classes": "ui message invered pad5",
-          hidden: false,
+          hidden: true,
           "content": [ {
             "ctl": "title",
             "color": "blue",
@@ -55,7 +55,13 @@
     }
     
     //console.log("Database:",this.dbname,'accountid',this.accountid,'db',this.dbname);
-    
+    this.tabs.addTab({
+      item: 'main',
+      text: this.dbname,
+      icon: 'database',
+      content: '<div myspot="dashhome"></div>'
+    });
+
     this.refreshDash();
 
   
@@ -138,12 +144,7 @@
     }
 
     this.tabs = this.parts.tabs;
-    this.tabs.addTab({
-      item: 'main',
-      text: "",
-      icon: 'server',
-      content: '<div myspot="dashhome"></div>'
-    });
+    
     	
 		
 
