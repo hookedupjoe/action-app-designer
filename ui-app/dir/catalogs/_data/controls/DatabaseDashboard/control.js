@@ -20,32 +20,17 @@
       "north": [{
         ctl: 'div',
         name: 'toolbar',
-        hidden: true,
+        hidden: false,
         content: [{
-          "ctl": "ui",
-          "name": "search-toolbar",
-          "classes": "labeled icon compact pad5",
+          "ctl": "div",
+          "classes": "ui message invered pad5",
           hidden: false,
           "content": [ {
-            "ctl": "button",
-            "toLeft": true,
+            "ctl": "title",
             "color": "blue",
-            "icon": "plus",
-            compact: true,
-            "name": "btn-page-tb-new",
-            "label": "Add Account",
-            "onClick": {
-              "run": "action",
-              "action": "newDoc"
-
-            }
+            "text": 'Database: <span myspot="db-name-header"></span>'
           }]
-        },
-          {
-            ctl: 'divider',
-            fitted: true,
-            clearing: true
-          }]
+        }]
       }],
       "center": [{
         ctl: "control",
@@ -60,26 +45,52 @@
   var ControlCode = {};
 
   ControlCode.setup = setup;
-  function setup() {
-    //
+  function setup(theOptions) {
+    if( theOptions && theOptions.accountid ){
+      this.accountid = theOptions.accountid;
+    }
+    if( theOptions && theOptions.dbname ){
+      this.dbname = theOptions.dbname;
+    }
+    
+    console.log("Database:",this.accountid + " - " + this.dbname);
+    
+    this.refreshDash();
+
+  
+
+  }
+
+  ControlCode.closeTab = function(theParams, theTarget){
+    console.log('closeTab on acct dash')
+  }
+
+  ControlCode.refreshUI = function(){
+    this.loadSpot('db-name-header',this.dbname);
   }
 
   ControlCode.newDoc = newDoc;
   function newDoc() {
     var tmpThis = this;
+    // this.parts.mainform.subscribe('submitted', function(theReply){
+    //   console.log('submitted',theReply);
+    // })
+    //console.log('this.parts.mainform new');
     this.parts.mainform.prompt().then(function(theWasSubmitted, theData) {
       if (!(theWasSubmitted)) return;
 
       console.log('submitted', theWasSubmitted, theData);
       var tmpData = theData;
+      //var tmpDocTitle = tmpData.id;
       tmpData.id = tmpData.id.toLowerCase();
       var tmpBaseURL = ActionAppCore.ActAppData.rootPath;
       var tmpBaseURL = 'http://localhost:33460/appdata/api/';
 
+
       var tmpPostOptions = {
         formSubmit: false,
         data: tmpData,
-        url: tmpBaseURL + 'mongo-create-account?open'
+        url: tmpBaseURL + 'mongo-create-database?open'
       };
       return ThisApp.apiCall(tmpPostOptions).then(function(theReply) {
         tmpThis.refreshDash()
@@ -90,39 +101,18 @@
   }
   
   
-  ControlCode.openAccount = openAccount;
-  function openAccount(theParams, theTarget){
-      var tmpParams = ThisApp.getActionParams(theParams, theTarget, ['accountid']);
-      this.addMongoAccountTab(tmpParams.accountid);
-  }
-
-
-  ControlCode.addMongoAccountTab = function(theAccountID){
-    var tmpTabKey = 'tab-mongo-account-' + theAccountID;
-    var tmpTabTitle = '' + theAccountID;
-    var tmpParams = {};
-    tmpParams.accountid = theAccountID;
-    this.tabs.openTab({
-      tabname: tmpTabKey,
-      tabtitle: tmpTabTitle,
-      controlname: 'AccountDashboard',
-      catalog: '_data',
-      closable: true,
-      setup: {accountid: theAccountID}
-    });
-  }
-
-  
   ControlCode.refreshDash = function(theContent, theOptTpl){
-    var tmpThis = this;
-    ThisApp.getResourceFromSource("template","MongoDashHome", "_data", "MongoDashHome").then(function(theTemplateHTML){
-      ThisApp.addTemplate("MongoDashHome",theTemplateHTML);
+    var self = this;
+    ThisApp.getResourceFromSource("template","MongoDatabaseDash", "_data", "MongoDatabaseDash").then(function(theTemplateHTML){
+      ThisApp.addTemplate("MongoDatabaseDash",theTemplateHTML);
 
       var tmpBaseURL = 'http://localhost:33460/appdata/api/';
-      var tmpURL = tmpBaseURL + 'get-account-list';      
+      var tmpURL = tmpBaseURL + 'get-collection-list/?account=' + self.accountid + '&database=' + self.dbname;      
+
       ThisApp.apiCall(tmpURL).then(function(theReply){
-        tmpThis.accountData = theReply;
-        tmpThis.loadDash(tmpThis.accountData,"MongoDashHome");
+        self.accountData = theReply;
+        self.loadDash(self.accountData,"MongoDatabaseDash");
+        self.refreshUI();
       })
       
     })
@@ -131,14 +121,17 @@
     this.loadSpot('dashhome', theContent, theOptTpl);
   }
 
+  
   ControlCode._onInit = _onInit;
   function _onInit() {
     var tmpThis = this;
+    this.refreshUI();
+    console.log('init');
 	
     //--- temp
     this.accountData = {
       isLoading:true,
-      accounts: [
+      dbs: [
       ]
     }
 
@@ -146,11 +139,11 @@
     this.tabs.addTab({
       item: 'main',
       text: "",
-      icon: 'home',
+      icon: 'server',
       content: '<div myspot="dashhome"></div>'
     });
     	
-		this.refreshDash();
+		
 
 
   }

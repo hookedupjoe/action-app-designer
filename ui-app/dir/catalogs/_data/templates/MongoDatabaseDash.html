@@ -1,6 +1,6 @@
 <div class="ui segment">
   <div class="ui header blue medium">
-    Mongo Databases
+    Mongo Collections
   </div>
   
   {{#if isLoading}}
@@ -11,13 +11,13 @@
 
   {{#if isNew}}
     <div class="ui message blue">
-      <b>No Databases Setup:</b> Use the Add Database button to add your <b>Mongo Account</b> account information.
+      <b>No Collections Setup:</b> Use the Add Collection button to add your <b>Mongo Account</b> account information.
     </div>
   {{/if}}
 
   <div class="ui segment pad3">
     <button myaction="newDoc" type="button" name="btn-page-tb-new" class="ui button compact blue icon  ">
-      <i class="plus icon"></i> Add Database
+      <i class="plus icon"></i> Add Collection
     </button>
     <button myaction="refreshDash" type="button" name="btn-page-tb-new" class="ui button compact blue icon  ">
       <i class="recycle icon"></i> Refresh
@@ -25,21 +25,21 @@
   </div>
 
   <div class="ui relaxed divided list">
-    {{#each databases}}
-    <a href="javascript:void(0)" class="item" dbname="{{this.name}}" myaction="openDatabaseDash">
+    {{#each collections}}
+    <a href="javascript:void(0)" class="item" collection="{{this.name}}" pageaction="openDatabase">
       <i class="large database middle aligned icon"></i>
 
       <div class="content">
         <div class="right floated content">
           <div class="ui button">
-            DB Dashboard
+            Collection Dashboard
           </div>
         </div>
         <div class="header">
-          DB Name: {{this.name}}
+          Collection: {{this.name}}
         </div>
         <div class="description">
-          {{this.sizeOnDisk}}
+          
         </div>
       </div>
     </a>

@@ -57,10 +57,6 @@
 
   }
 
-  ControlCode.closeTab = function(theParams, theTarget){
-    console.log('closeTab on acct dash')
-  }
-
   ControlCode.refreshUI = function(){
     this.loadSpot('account-name',this.accountid);
   }
@@ -100,6 +96,31 @@
   }
   
   
+  
+  ControlCode.openDatabaseDash = openDatabaseDash;
+  function openDatabaseDash(theParams, theTarget){
+      var tmpParams = ThisApp.getActionParams(theParams, theTarget, ['dbname']);
+      this.openDatabaseDashTab(tmpParams.dbname);
+  }
+
+  ControlCode.openDatabaseDashTab = function(theDBName){
+    var tmpTabKey = 'tab-mongo-db-' + theDBName;
+    var tmpTabTitle = '' + theDBName;
+
+    var tmpParams = {};
+    tmpParams.accountid = this.accountid;
+    tmpParams.dbname = theDBName;
+
+    this.tabs.openTab({
+      tabname: tmpTabKey,
+      tabtitle: tmpTabTitle,
+      controlname: 'DatabaseDashboard',
+      catalog: '_data',
+      closable: true,
+      setup: tmpParams
+    });
+  }
+
   ControlCode.refreshDash = function(theContent, theOptTpl){
     var self = this;
     ThisApp.getResourceFromSource("template","MongoAccountDash", "_data", "MongoAccountDash").then(function(theTemplateHTML){
@@ -119,7 +140,10 @@
   ControlCode.loadDash = function(theContent, theOptTpl){
     this.loadSpot('dashhome', theContent, theOptTpl);
   }
-
+  ControlCode.openDatabase = function(theContent, theOptTpl){
+    console.log('openDatabase acct');
+  }
+  
 
   
   ControlCode._onInit = _onInit;
