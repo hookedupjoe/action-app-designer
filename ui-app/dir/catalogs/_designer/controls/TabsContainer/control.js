@@ -34,7 +34,6 @@
 
   ControlCode._onInit = _onInit;
   function _onInit() {
-    //this.parts = {};
     this.opentabs = {};
     this.uniqueName = 'tab-group' + ThisApp.controls.getNextCounter();
     this.config = {
@@ -55,10 +54,6 @@
     ThisApp.gotoTab({
       item: theTabName, group: this.config.group
     });
-    //--ToDo: Scroll nav into view;
-    // var tmpNavEl = this.getByAttr$({
-    //   appuse: "tablinks", item: theTabName, group: this.config.group
-    // });
   }
 
   ControlCode.loadTabSpot = loadTabSpot;
@@ -79,6 +74,7 @@
 
   //--- Control Action: closeTabRequest
   ControlCode.closeTabRequest = function(theParams, theTarget){
+//--- ToDo: Check parent for checkForTabClose(tabid) to see if close should be allowed
       var tmpParams = ThisApp.getActionParams(theParams, theTarget, ['tab']);
       var tmpTabName = tmpParams.tab;
       if( !(tmpTabName) ){
@@ -172,7 +168,7 @@
     } else {
 
       //--- ToDo: Expose external / centralize ???
-      var tmpCloseMe = '<i style="margin-right:-5px;margin-left:10px;" tab="' + tmpTabKey + '" myaction="closeTabRequest" class="icon window close outline black inverted"></i>';
+      var tmpCloseMe = '&nbsp;&nbsp;<i style="margin-right:-5px;margin-left:10px;" tab="' + tmpTabKey + '" myaction="closeTabRequest" class="icon window close outline black inverted"></i>';
       if( tmpOptions.closable == false){
         tmpCloseMe = '';
       }
@@ -184,6 +180,7 @@
       var tmpSetupDetails = tmpOptions;
       var tmpControlName = tmpSetupDetails.controlname || '';
       var tmpControlSource = tmpSetupDetails.catalog || '_designer';
+      var tmpControlSetup = tmpSetupDetails.setup || {};
       var tmpThis = this;
       if( tmpFrameContent && !(tmpControlName) ){
         this.opentabs[tmpTabKey] = true;
@@ -199,7 +196,7 @@
             tmpThis.parts[tmpTabKey] = tmpNewTabControl;
             //--- Go to the newly added card (to show it and hide others)
             if (tmpNewTabControl.setup) {
-              tmpNewTabControl.setup(tmpSetupDetails);
+              tmpNewTabControl.setup(tmpControlSetup);
             }
             if (tmpControlName) {
               var tmpSubID = tmpNewTabControl.subscribe('tabAction', onTabAction.bind(tmpThis))

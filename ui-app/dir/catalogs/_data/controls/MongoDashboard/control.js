@@ -59,40 +59,29 @@
 
   var ControlCode = {};
 
-  var loadedTabs = {};
-
   ControlCode.setup = setup;
   function setup() {
-    console.log("Ran setup")
+    //
   }
 
   ControlCode.newDoc = newDoc;
   function newDoc() {
     var tmpThis = this;
-    // this.parts.mainform.subscribe('submitted', function(theReply){
-    //   console.log('submitted',theReply);
-    // })
-    //console.log('this.parts.mainform new');
     this.parts.mainform.prompt().then(function(theWasSubmitted, theData) {
       if (!(theWasSubmitted)) return;
 
       console.log('submitted', theWasSubmitted, theData);
       var tmpData = theData;
-      //var tmpDocTitle = tmpData.id;
       tmpData.id = tmpData.id.toLowerCase();
       var tmpBaseURL = ActionAppCore.ActAppData.rootPath;
       var tmpBaseURL = 'http://localhost:33460/appdata/api/';
-
-      //var tmpDocType = 'app';
 
       var tmpPostOptions = {
         formSubmit: false,
         data: tmpData,
         url: tmpBaseURL + 'mongo-create-account?open'
       };
-      //console.log('tmpPostOptions',tmpPostOptions);
       return ThisApp.apiCall(tmpPostOptions).then(function(theReply) {
-        //console.log(theReply);
         tmpThis.refreshDash()
       });
 
@@ -108,59 +97,21 @@
       this.addMongoAccountTab(tmpParams.accountid);
   }
 
-  //closeTab
-
-  ControlCode.closeMyTab = function(theParams, theTarget){
-    var tmpParams = ThisApp.getActionParams(theParams, theTarget, ['tab']);
-    console.log('closeTab',tmpParams);
-    var tmpTabName = tmpParams.tab;
-    if( !(tmpTabName) ){
-        alert('Could not close tab, no tab name provided');
-    }
-    if( loadedTabs[tmpTabName] ){
-        var tmpToRemove = loadedTabs[tmpTabName];
-        if( tmpToRemove && tmpToRemove._subid ){
-            tmpToRemove.unsubscribe('',tmpToRemove._subid);
-        }
-        if( tmpToRemove && tmpToRemove.destroy ){
-            tmpToRemove.destroy();
-        }
-        delete loadedTabs[tmpTabName];
-    }
-    this.tabs.closeTab(tmpTabName);
-}
 
   ControlCode.addMongoAccountTab = function(theAccountID){
-    var tmpThis = this;
     var tmpTabKey = 'tab-mongo-account-' + theAccountID;
     var tmpTabTitle = '' + theAccountID;
-    if( loadedTabs[tmpTabKey] ){
-        this.tabs.gotoTab(tmpTabKey);
-    } else {
-        var tmpCloseMe = '<i style="margin-right:-5px;margin-left:10px;" tab="' + tmpTabKey + '" myaction="closeMyTab" class="icon close grey inverted"></i>';
-        ThisApp.getResourceFromSource('control','AccountDashboard','_data','AccountDashboard').then(function(theLoadedControl){
-            var tmpNewTabControl = theLoadedControl.create(tmpTabKey);
-
-            tmpThis.tabs.addTab({item:tmpTabKey,text: tmpTabTitle + tmpCloseMe, icon: 'server', content:''})
-            var tmpNewSpot = tmpThis.tabs.getTabSpot(tmpTabKey);
-            tmpNewTabControl.loadToElement(tmpNewSpot).then(function () {
-                loadedTabs[tmpTabKey] = tmpNewTabControl;
-                //--- Go to the newly added card (to show it and hide others)
-                var tmpParams = {};
-                tmpParams.accountid = theAccountID;
-                if( tmpNewTabControl.setup ){
-                    tmpNewTabControl.setup(tmpParams);
-                }
-                ThisApp.delay(1).then(function(){
-                  tmpThis.tabs.gotoTab(tmpTabKey);
-                })
-                
-            });
-        });
-        
-
-    }
-}
+    var tmpParams = {};
+    tmpParams.accountid = theAccountID;
+    this.tabs.openTab({
+      tabname: tmpTabKey,
+      tabtitle: tmpTabTitle,
+      controlname: 'AccountDashboard',
+      catalog: '_data',
+      closable: true,
+      setup: {accountid: theAccountID}
+    });
+  }
 
   
   ControlCode.refreshDash = function(theContent, theOptTpl){
@@ -171,7 +122,6 @@
       var tmpBaseURL = 'http://localhost:33460/appdata/api/';
       var tmpURL = tmpBaseURL + 'get-account-list';      
       ThisApp.apiCall(tmpURL).then(function(theReply){
-        //delete this.accountData.isLoading;
         tmpThis.accountData = theReply;
         tmpThis.loadDash(tmpThis.accountData,"MongoDashHome");
       })
