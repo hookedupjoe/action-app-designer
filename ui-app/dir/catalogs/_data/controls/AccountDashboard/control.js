@@ -57,7 +57,6 @@
     if( theOptions && theOptions.accountid ){
       this.accountid = theOptions.accountid;
     }
-    console.log("Account id:",this.accountid);
     this.tabs.addTab({
       item: 'main',
       text: this.accountid,
@@ -78,30 +77,21 @@
   ControlCode.newDoc = newDoc;
   function newDoc() {
     var tmpThis = this;
-    // this.parts.mainform.subscribe('submitted', function(theReply){
-    //   console.log('submitted',theReply);
-    // })
-    //console.log('this.parts.mainform new');
+
     this.parts.mainform.prompt().then(function(theWasSubmitted, theData) {
       if (!(theWasSubmitted)) return;
 
-      console.log('submitted', theWasSubmitted, theData);
       var tmpData = theData;
-      //var tmpDocTitle = tmpData.id;
       tmpData.id = tmpData.id.toLowerCase();
       var tmpBaseURL = ActionAppCore.ActAppData.rootPath;
       var tmpBaseURL = './appdata/api/';
-
-      //var tmpDocType = 'app';
 
       var tmpPostOptions = {
         formSubmit: false,
         data: tmpData,
         url: tmpBaseURL + 'mongo-create-account?open'
       };
-      //console.log('tmpPostOptions',tmpPostOptions);
       return ThisApp.apiCall(tmpPostOptions).then(function(theReply) {
-        //console.log(theReply);
         tmpThis.refreshDash()
       });
 
@@ -159,9 +149,7 @@
   function _onInit() {
     var tmpThis = this;
     this.refreshUI();
-    console.log('init');
 	
-    //--- temp
     this.accountData = {
       isLoading:true,
       dbs: [

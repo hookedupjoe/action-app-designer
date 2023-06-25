@@ -62,7 +62,6 @@
       }
     }
     
-    //console.log("Database:",this.dbname,'accountid',this.accountid,'db',this.dbname);
     this.tabs.addTab({
       item: 'main',
       text: this.dbname,
@@ -76,9 +75,6 @@
 
   }
 
-  ControlCode.closeTab = function(theParams, theTarget){
-    console.log('closeTab on acct dash')
-  }
 
   ControlCode.refreshUI = function(){
     this.loadSpot('db-name-header',this.dbname);
@@ -87,16 +83,10 @@
   ControlCode.newDoc = newDoc;
   function newDoc() {
     var tmpThis = this;
-    // this.parts.mainform.subscribe('submitted', function(theReply){
-    //   console.log('submitted',theReply);
-    // })
-    //console.log('this.parts.mainform new');
     this.parts.mainform.prompt().then(function(theWasSubmitted, theData) {
       if (!(theWasSubmitted)) return;
 
-      //console.log('submitted', theWasSubmitted, theData);
       var tmpData = theData;
-      //var tmpDocTitle = tmpData.id;
       tmpData.id = tmpData.id.toLowerCase();
       var tmpBaseURL = ActionAppCore.ActAppData.rootPath;
       var tmpBaseURL = './appdata/api/';
@@ -119,10 +109,8 @@
     var self = this;
     var tmpBaseURL = './appdata/api/';
     var tmpURL = tmpBaseURL + 'get-collection-list/?account=' + self.accountid + '&database=' + self.dbname;      
-    console.log('tmpURL',tmpURL)
     ThisApp.apiCall(tmpURL).then(function(theReply){
       self.collections = theReply.collections;
-      console.log(theReply);
       self.loadDash(self,"MongoDatabaseDash");
       self.refreshUI();
     })
@@ -137,7 +125,6 @@
   function _onInit() {
     var tmpThis = this;
     this.refreshUI();
-    console.log('init');
 	
     //--- temp
     this.accountData = {

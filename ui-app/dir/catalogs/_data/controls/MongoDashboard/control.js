@@ -78,7 +78,6 @@
     this.parts.mainform.prompt().then(function(theWasSubmitted, theData) {
       if (!(theWasSubmitted)) return;
 
-      console.log('submitted', theWasSubmitted, theData);
       var tmpData = theData;
       tmpData.id = tmpData.id.toLowerCase();
       var tmpBaseURL = ActionAppCore.ActAppData.rootPath;
