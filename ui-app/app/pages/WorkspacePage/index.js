@@ -8,7 +8,7 @@ License: MIT
 
     var thisPageSpecs = {
         pageName: "WorkspacePage",
-        pageTitle: "Design",
+        pageTitle: "UI Design",
         navOptions: {
             topLink: true,
             sideLink: true

@@ -46,14 +46,15 @@
 
   ControlCode.setup = setup;
   function setup(theOptions) {
+    this.collections = {};
     if( theOptions && theOptions.accountid ){
       this.accountid = theOptions.accountid;
-    }
-    if( theOptions && theOptions.dbname ){
-      this.dbname = theOptions.dbname;
+      if( theOptions && theOptions.dbname ){
+        this.dbname = theOptions.dbname;
+      }
     }
     
-    console.log("Database:",this.accountid + " - " + this.dbname);
+    //console.log("Database:",this.dbname,'accountid',this.accountid,'db',this.dbname);
     
     this.refreshDash();
 
@@ -79,7 +80,7 @@
     this.parts.mainform.prompt().then(function(theWasSubmitted, theData) {
       if (!(theWasSubmitted)) return;
 
-      console.log('submitted', theWasSubmitted, theData);
+      //console.log('submitted', theWasSubmitted, theData);
       var tmpData = theData;
       //var tmpDocTitle = tmpData.id;
       tmpData.id = tmpData.id.toLowerCase();
@@ -90,7 +91,7 @@
       var tmpPostOptions = {
         formSubmit: false,
         data: tmpData,
-        url: tmpBaseURL + 'mongo-create-database?open'
+        url: tmpBaseURL + 'mongo-create-collecion?open'
       };
       return ThisApp.apiCall(tmpPostOptions).then(function(theReply) {
         tmpThis.refreshDash()
@@ -108,10 +109,11 @@
 
       var tmpBaseURL = 'http://localhost:33460/appdata/api/';
       var tmpURL = tmpBaseURL + 'get-collection-list/?account=' + self.accountid + '&database=' + self.dbname;      
-
+      console.log('tmpURL',tmpURL)
       ThisApp.apiCall(tmpURL).then(function(theReply){
-        self.accountData = theReply;
-        self.loadDash(self.accountData,"MongoDatabaseDash");
+        self.collections = theReply.collections;
+        console.log(theReply);
+        self.loadDash(self,"MongoDatabaseDash");
         self.refreshUI();
       })
       

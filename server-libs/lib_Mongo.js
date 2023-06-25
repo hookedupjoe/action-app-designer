@@ -102,6 +102,7 @@ MongoManager.prototype.getAccount = async function (theID) {
 //==== MongoAccount === === === === === === === === === === 
 function MongoAccount(theAccountConfig) {
     this.accountConfig = false;
+    this.databases = {};
     this.loadConfig(theAccountConfig);
     
 }
@@ -149,6 +150,24 @@ MongoAccount.prototype.connect = async function () {
     return this.client.connect();
 }
 
+MongoAccount.prototype.getDatabase = async function (theName) {
+    let self = this;
+    return new Promise(async function (resolve, reject) {
+        try {
+            if( self.databases[theName] ){
+                resolve(self.databases[theName]);
+            } else {
+                var tmpMongoDB = self.client.db(theName);
+                var tmpNewDB = new MongoDatabase(theName, tmpMongoDB, self);
+                self.databases[theName] = tmpNewDB;
+                resolve(tmpNewDB);
+            }
+        } catch (error) {
+            reject(error);
+        } 
+    });
+}
+
 
 MongoAccount.prototype.getConfig = function () {
     return this.accountConfig;
@@ -172,18 +191,41 @@ MongoAccount.prototype.getDatabaseList = async function () {
 
 
 //==== MongoDatabase === === === === === === === === === === 
-function MongoDatabase(theDBName) {
-    this.setup(theDBName);
+function MongoDatabase(theDBName, theDB, theAccount) {
+    this.setup(theDBName, theDB, theAccount);
 }
 module.exports.MongoDatabase = MongoDatabase;
 
-MongoDatabase.prototype.setup = function (theDBName) {
+MongoDatabase.prototype.setup = function (theDBName, theDB, theAccount) {
+    this.collections = {};
+    this.account = theAccount;
+    this.db = theDB;
     this.setDBName(theDBName);
 };
+
+
+
 
 MongoDatabase.prototype.setDBName = function (theDBName) {
     this.dbname = theDBName || '';
 };
+
+MongoDatabase.prototype.getCollectionList = async function () {
+    let self = this;
+
+    return new Promise(async function (resolve, reject) {
+
+        try {
+            //var client = self.client;
+
+            
+            var tmpList = await self.db.listCollections().toArray();
+            resolve(tmpList);
+        } catch (error) {
+            reject(error);
+        } 
+    });
+}
 
 MongoDatabase.prototype.getDesignElements = function () {
     //ToDO: var tmpURI = '/_all_docs?inclusive_end=false&start_key=\"_design\"&end_key=\"_design0\"';

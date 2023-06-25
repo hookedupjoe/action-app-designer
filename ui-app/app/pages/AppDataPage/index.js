@@ -9,7 +9,7 @@ var thisPageSpecs = {
 	"pageTitle": "Data",
 	"navOptions": {
 		"topLink": true,
-		"sideLink": false
+		"sideLink": true
 	}
 }
 
