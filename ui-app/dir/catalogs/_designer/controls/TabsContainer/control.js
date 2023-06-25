@@ -91,7 +91,6 @@
   //--- ToDo: Add control mgmt with destroy and reopen tab
   ControlCode.closeTab = closeTab;
   function closeTab(theTabName) {
-    console.log('closeTab',theTabName);
 
     if( this.parts[theTabName] ){
       var tmpToRemove = this.parts[theTabName];
