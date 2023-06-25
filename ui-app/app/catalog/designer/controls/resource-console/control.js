@@ -96,6 +96,17 @@ License: MIT
 								"ctl": "button",
 								"color": "black",
 								basic: true,
+								hidden: true,
+								"name": "btn-nocache",
+								"label": "Toggle Cache",
+								"onClick": {
+									"run": "action",
+									"action": "setNoCache"
+								}
+							},{
+								"ctl": "button",
+								"color": "black",
+								basic: true,
 								"name": "btn-format",
 								"label": "Format",
 								"onClick": {
@@ -714,7 +725,8 @@ License: MIT
 	ControlCode.refreshControlDisplay = refreshControlDisplay;
 	function refreshControlDisplay() {
 
-
+		var tmpBeforeLoadDisabled = ThisApp.resCacheFlags.disabled || false;
+		ThisApp.resCacheFlags.disabled = true;
 		var tmpResType = this.details.restype;
 
 
@@ -741,8 +753,25 @@ License: MIT
 		} else {
 			console.error("Unknown resource type " + tmpResType)
 		}
+
+		//--- Enough time for the loader to also not cache
+		ThisApp.delay(1000).then(function(){
+			ThisApp.resCacheFlags.disabled = tmpBeforeLoadDisabled;
+		})
+
 	};
 
+	
+	ControlCode.setNoCache = setNoCache;
+	function setNoCache() {
+		ThisApp.resCacheFlags.disabled = !(ThisApp.resCacheFlags.disabled);
+		if( ThisApp.resCacheFlags.disabled ){
+			ThisApp.appMessage('Disabled global cache.','i',{show:true})
+		} else {
+			ThisApp.appMessage('Enabled global cache. <b>Note:</b> Initial preview is NOT cached.','i',{show:true})
+		}
+		
+	}
 	ControlCode.formatCode = formatCode;
 	function formatCode() {
 		this.beautify.beautify(this.aceEditor.session);

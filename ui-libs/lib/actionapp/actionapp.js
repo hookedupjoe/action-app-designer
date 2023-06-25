@@ -1085,6 +1085,12 @@ window.ActionAppCore = window.ActionAppCore || ActionAppCore;
             if (tmpURI.uri.startsWith('design/')) {
                 tmpExists = false;
             }
+            //--- Allow global / temporary disabling of the cache system for dev
+            if( ThisApp.resCacheFlags.disabled === true){
+                tmpExists = false;
+            }
+            
+            
             //--- ToDo: Revisit cachine / using cache versions
 
             if (!(tmpExists)) {
@@ -2957,7 +2963,7 @@ window.ActionAppCore = window.ActionAppCore || ActionAppCore;
     //--- ToDo - Implement better message center with toastr as UI option or toastless
     function initMessageCenter() {
         toastr.options.closeButton = true;
-        toastr.options.timeOut = 1000;
+        toastr.options.timeOut = 4000;
         /*
         //--- Some other available options
         toastr.options.timeOut = 2000;

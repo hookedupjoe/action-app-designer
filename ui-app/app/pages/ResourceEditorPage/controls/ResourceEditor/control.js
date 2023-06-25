@@ -648,6 +648,8 @@ License: MIT
 	ControlCode.refreshControlDisplay = refreshControlDisplay;
 	function refreshControlDisplay() {
 
+		var tmpBeforeLoadDisabled = ThisApp.resCacheFlags.disabled || false;
+		ThisApp.resCacheFlags.disabled = true;
 
 		var tmpResType = this.details.restype;
 
@@ -670,6 +672,10 @@ License: MIT
 		} else {
 			console.error("Unknown resource type " + tmpResType)
 		}
+		//--- Enough time for the loader to also not cache
+		ThisApp.delay(1000).then(function(){
+			ThisApp.resCacheFlags.disabled = tmpBeforeLoadDisabled;
+		})
 	};
 
 	ControlCode.formatCode = formatCode;
