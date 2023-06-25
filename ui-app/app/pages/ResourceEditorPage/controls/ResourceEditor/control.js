@@ -239,7 +239,7 @@ License: MIT
 
 		//this.refreshTabNav();
 		//this.endpointURL = 'design/ws/resource-content?run&source=' + tmpSource + '&resname=' + tmpResName + '&restype=' + tmpResType;
-		this.endpointURL = 'http://localhost:33460/catalog/controls/common/StatusBar/control.js?open';
+		this.endpointURL = 'http://localhost:3/catalog/controls/common/StatusBar/control.js?open';
 		if (tmpPageName) {
 			this.endpointURL += '&pagename=' + tmpPageName;
 		}

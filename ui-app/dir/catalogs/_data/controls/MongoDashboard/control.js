@@ -74,7 +74,7 @@
       var tmpData = theData;
       tmpData.id = tmpData.id.toLowerCase();
       var tmpBaseURL = ActionAppCore.ActAppData.rootPath;
-      var tmpBaseURL = 'http://localhost:33460/appdata/api/';
+      var tmpBaseURL = './appdata/api/';
 
       var tmpPostOptions = {
         formSubmit: false,
@@ -118,7 +118,7 @@
     ThisApp.getResourceFromSource("template","MongoDashHome", "_data", "MongoDashHome").then(function(theTemplateHTML){
       ThisApp.addTemplate("MongoDashHome",theTemplateHTML);
 
-      var tmpBaseURL = 'http://localhost:33460/appdata/api/';
+      var tmpBaseURL = './appdata/api/';
       var tmpURL = tmpBaseURL + 'get-account-list';      
       ThisApp.apiCall(tmpURL).then(function(theReply){
         tmpThis.accountData = theReply;

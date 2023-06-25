@@ -91,7 +91,7 @@
       //var tmpDocTitle = tmpData.id;
       tmpData.id = tmpData.id.toLowerCase();
       var tmpBaseURL = ActionAppCore.ActAppData.rootPath;
-      var tmpBaseURL = 'http://localhost:33460/appdata/api/';
+      var tmpBaseURL = './appdata/api/';
 
 
       var tmpPostOptions = {
@@ -113,7 +113,7 @@
     ThisApp.getResourceFromSource("template","MongoDatabaseDash", "_data", "MongoDatabaseDash").then(function(theTemplateHTML){
       ThisApp.addTemplate("MongoDatabaseDash",theTemplateHTML);
 
-      var tmpBaseURL = 'http://localhost:33460/appdata/api/';
+      var tmpBaseURL = './appdata/api/';
       var tmpURL = tmpBaseURL + 'get-collection-list/?account=' + self.accountid + '&database=' + self.dbname;      
       console.log('tmpURL',tmpURL)
       ThisApp.apiCall(tmpURL).then(function(theReply){
