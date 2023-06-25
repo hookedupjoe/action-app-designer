@@ -2,7 +2,15 @@
 
   var ControlSpecs = {
     options: {
-      padding: false
+      padding: false,
+      required: {
+        templates: {
+            map:
+            {
+                "MongoDatabaseDash": {source: "_data", name: "MongoDatabaseDash"}
+            }
+        }
+      }
     },
     content: [{
       ctl: 'div',
@@ -107,24 +115,19 @@
     
   }
   
-  
   ControlCode.refreshDash = function(theContent, theOptTpl){
     var self = this;
-    ThisApp.getResourceFromSource("template","MongoDatabaseDash", "_data", "MongoDatabaseDash").then(function(theTemplateHTML){
-      ThisApp.addTemplate("MongoDatabaseDash",theTemplateHTML);
-
-      var tmpBaseURL = './appdata/api/';
-      var tmpURL = tmpBaseURL + 'get-collection-list/?account=' + self.accountid + '&database=' + self.dbname;      
-      console.log('tmpURL',tmpURL)
-      ThisApp.apiCall(tmpURL).then(function(theReply){
-        self.collections = theReply.collections;
-        console.log(theReply);
-        self.loadDash(self,"MongoDatabaseDash");
-        self.refreshUI();
-      })
-      
+    var tmpBaseURL = './appdata/api/';
+    var tmpURL = tmpBaseURL + 'get-collection-list/?account=' + self.accountid + '&database=' + self.dbname;      
+    console.log('tmpURL',tmpURL)
+    ThisApp.apiCall(tmpURL).then(function(theReply){
+      self.collections = theReply.collections;
+      console.log(theReply);
+      self.loadDash(self,"MongoDatabaseDash");
+      self.refreshUI();
     })
   }
+
   ControlCode.loadDash = function(theContent, theOptTpl){
     this.loadSpot('dashhome', theContent, theOptTpl);
   }
@@ -144,10 +147,6 @@
     }
 
     this.tabs = this.parts.tabs;
-    
-    	
-		
-
 
   }
 

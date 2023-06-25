@@ -1,8 +1,16 @@
 (function (ActionAppCore, $) {
 
   var ControlSpecs = {
-    options: {
-      padding: false
+   options: {
+      padding: false,
+      required: {
+        templates: {
+            map:
+            {
+                "MongoAccountDash": {source: "_data", name: "MongoAccountDash"}
+            }
+        }
+      }
     },
     content: [{
       ctl: 'div',
@@ -129,10 +137,7 @@
 
   ControlCode.refreshDash = function(theContent, theOptTpl){
     var self = this;
-    ThisApp.getResourceFromSource("template","MongoAccountDash", "_data", "MongoAccountDash").then(function(theTemplateHTML){
-      ThisApp.addTemplate("MongoDashHome",theTemplateHTML);
-
-      var tmpBaseURL = './appdata/api/';
+    var tmpBaseURL = './appdata/api/';
       var tmpURL = tmpBaseURL + 'get-db-list/?account=' + self.accountid;      
 
       ThisApp.apiCall(tmpURL).then(function(theReply){
@@ -140,8 +145,6 @@
         self.loadDash(self.accountData,"MongoAccountDash");
         self.refreshUI();
       })
-      
-    })
   }
   ControlCode.loadDash = function(theContent, theOptTpl){
     this.loadSpot('dashhome', theContent, theOptTpl);
