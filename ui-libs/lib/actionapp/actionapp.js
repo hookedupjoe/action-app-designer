@@ -1076,6 +1076,7 @@ window.ActionAppCore = window.ActionAppCore || ActionAppCore;
                 tmpExisting = ThisApp.resCache[tmpURI.type][tmpURI.uri];
                 //--- If existing in cache, also load reference as resource name
                 //     ** so a page can alias the control and use a cached version
+                tmpThis.res[tmpURI.type] = tmpThis.res[tmpURI.type] || {};
                 tmpThis.res[tmpURI.type][(tmpURI.name || tmpURI.uri)] = tmpExisting;
             }
             
@@ -6437,9 +6438,15 @@ License: MIT
         var tmpPromRequired = true;
         var tmpPromLayoutReq = true;
         var tmpLayoutReq = this.getContentRequired();
-        
         var tmpInitReq = ThisApp.loadResources.bind(this);
+        
+        if( this.controlConfig && this.controlConfig.options && this.controlConfig.options.required){
+            var tmpSpecs = this.controlConfig.options.required;
+            tmpPromRequired = tmpInitReq(tmpSpecs)
+        }
+
         //--- Do not cache controls that have ? as they are dynamic calls
+        //--- ToDo: Move this to the ignore process?
         if( tmpLayoutReq && tmpLayoutReq.panel && tmpLayoutReq.panel.list ){
             for( var iPos in tmpLayoutReq.panel.list ){
                 var tmpControlName = tmpLayoutReq.panel.list[iPos];
