@@ -36,7 +36,6 @@ var ActionAppCore = {
                     tmpResType = 'tpl';
                 }
                 var tmpURL = tmpBaseURL + "catalogs/" + theCatName + '/' + tmpResType + '/' + theResName;
-                console.log('getResourceCatalogURL',tmpURL)
                 return tmpURL
             }
         }
@@ -1305,10 +1304,6 @@ window.ActionAppCore = window.ActionAppCore || ActionAppCore;
                 }
                 if (isObj(tmpSpec.map)) {
                     for (var aURI in tmpSpec.map) {
-                        if( theType == 'templates'){
-                            console.log('tmpSpec.map',tmpSpec.map);
-                        }
-        
                         var tmpEntryName = tmpSpec.map[aURI];
                         var tmpBaseMapURL = tmpBaseURL;
 
@@ -1318,9 +1313,6 @@ window.ActionAppCore = window.ActionAppCore || ActionAppCore;
                             var tmpSource = tmpEntryName.source || tmpEntryName.catalog;
                             var tmpEntrySpecs = tmpEntryName;
                             tmpEntryName = tmpEntryName.name;
-                            if( theType == 'templates'){
-                                console.log('tmpSource',tmpSource);
-                            }
                             if( tmpSource ){
                                 if( ActionAppCore.dir.catalogs[tmpSource]){
                                     tmpBaseMapURL = ActionAppCore.dir.catalogs[tmpSource] + theType + '/';
@@ -1331,9 +1323,7 @@ window.ActionAppCore = window.ActionAppCore || ActionAppCore;
                                     if( ActionAppCore.dir.catalogs.getResourceURL ){
                                         tmpControlURL = ActionAppCore.dir.catalogs.getResourceURL(tmpSource,tmpControlType,tmpControlName)
                                     } else if(ActionAppCore.dir.catalogs.getResourceCatalogURL) {
-                                        console.log('getResourceCatalogURL')
                                         tmpControlURL = ActionAppCore.dir.catalogs.getResourceCatalogURL(tmpSource,tmpControlType,tmpControlName)
-                                        console.log('tmpControlURL',tmpControlURL)
                                     }
                                     if (tmpControlURL){
                                         aURI = tmpControlURL;
@@ -7720,8 +7710,6 @@ License: MIT
         
         var tmpFN = theFN;
         var tmpSpecs = this.getFieldSpecs(tmpFN);
-        //var tmpFV = this.getFieldValue(tmpFN);
-        //console.log("erf",this,tmpSpecs)
         if (tmpSpecs) {
             var tmpOnChange = tmpSpecs.onChange || false;
             if (tmpOnChange) {
@@ -10920,15 +10908,6 @@ License: MIT
     //---- Start Designer Helpers
     //--- =========== =========== =========== =========== =========== ===========
 
-
-    // function elSpecs(theList){
-    //     console.log( 'elSpecs', theList);
-    //     var tmpRet = [];
-    //     for( var iPos in theList ){
-    //         tmpRet.push(elSpec.apply(this,theList[iPos]))
-    //     }
-    //     return tmpRet;
-    // }
     //--- Create element spec object (domspec)
     function elSpec(theTag, theOptions, theContent){
         var tmpRet = {type:theTag};
