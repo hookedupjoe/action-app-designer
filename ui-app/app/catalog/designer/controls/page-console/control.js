@@ -475,7 +475,7 @@ License: MIT
 	};
 
 	function refreshResources() {
-		this.parts.resources.refreshFromURI();
+		return this.parts.resources.refreshFromURI();
 	}
 
 
@@ -497,7 +497,15 @@ License: MIT
 					url: '/design/ws/save-resource?run',
 					data: tmpRequest
 				}).then(function (theReply) {
-					tmpThis.refreshResources();
+					tmpThis.refreshResources().then(function(){
+						var tmpFinder = {
+							appname: tmpThis.details.appname || '',
+							pagename: tmpThis.details.pagename,
+							restype: "HTML",
+							resname: theValue + '.html'
+						}
+						ThisApp.getByAttr$(tmpFinder).click();
+					})
 				})
 
 			})
@@ -524,7 +532,15 @@ License: MIT
 					url: '/design/ws/save-resource?run',
 					data: tmpRequest
 				}).then(function (theReply) {
-					tmpThis.refreshResources();
+					tmpThis.refreshResources().then(function(){
+						var tmpFinder = {
+							appname: tmpThis.details.appname || '',
+							pagename: tmpThis.details.pagename,
+							restype: "Template",
+							resname: theValue + '.html'
+						}
+						ThisApp.getByAttr$(tmpFinder).click();
+					})
 				})
 
 			})
@@ -549,7 +565,15 @@ License: MIT
 					url: '/design/ws/save-resource?run',
 					data: tmpRequest
 				}).then(function (theReply) {
-					tmpThis.refreshResources();
+					tmpThis.refreshResources().then(function(){
+						var tmpFinder = {
+							appname: tmpThis.details.appname || '',
+							pagename: tmpThis.details.pagename,
+							restype: "Controls",
+							resname: theValue
+						}
+						ThisApp.getByAttr$(tmpFinder).click();
+					})
 				})
 
 			})
@@ -575,7 +599,15 @@ License: MIT
 					url: '/design/ws/save-resource?run',
 					data: tmpRequest
 				}).then(function (theReply) {
-					tmpThis.refreshResources();
+					tmpThis.refreshResources().then(function(){
+						var tmpFinder = {
+							appname: tmpThis.details.appname || '',
+							pagename: tmpThis.details.pagename,
+							restype: "Panels",
+							resname: theValue + '.json'
+						}
+						ThisApp.getByAttr$(tmpFinder).click();
+					})
 				})
 
 			})

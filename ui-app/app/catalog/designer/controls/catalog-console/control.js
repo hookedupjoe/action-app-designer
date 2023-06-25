@@ -517,7 +517,7 @@ License: MIT
 	}
 	
 	function refreshResources() {
-		this.parts.resources.refreshFromURI();
+		return this.parts.resources.refreshFromURI();
 	}
 
 
@@ -539,7 +539,14 @@ License: MIT
 					url: '/design/ws/save-resource?run',
 					data: tmpRequest
 				}).then(function (theReply) {
-					tmpThis.refreshResources();
+					tmpThis.refreshResources().then(function(){
+						var tmpFinder = {
+							catname: tmpThis.details.catname,
+							restype: "HTML",
+							resname: theValue + '.html'
+						}
+						ThisApp.getByAttr$(tmpFinder).click();
+					})
 				})
 
 			})
@@ -566,7 +573,14 @@ License: MIT
 					url: '/design/ws/save-resource?run',
 					data: tmpRequest
 				}).then(function (theReply) {
-					tmpThis.refreshResources();
+					tmpThis.refreshResources().then(function(){
+						var tmpFinder = {
+							catname: tmpThis.details.catname,
+							restype: "Template",
+							resname: theValue + '.html'
+						}
+						ThisApp.getByAttr$(tmpFinder).click();
+					})
 				})
 
 			})
@@ -591,7 +605,14 @@ License: MIT
 					url: '/design/ws/save-resource?run',
 					data: tmpRequest
 				}).then(function (theReply) {
-					tmpThis.refreshResources();
+					tmpThis.refreshResources().then(function(){
+						var tmpFinder = {
+							catname: tmpThis.details.catname,
+							restype: "Controls",
+							resname: theValue
+						}
+						ThisApp.getByAttr$(tmpFinder).click();
+					})
 				})
 
 			})
@@ -617,7 +638,14 @@ License: MIT
 					url: '/design/ws/save-resource?run',
 					data: tmpRequest
 				}).then(function (theReply) {
-					tmpThis.refreshResources();
+					tmpThis.refreshResources().then(function(){
+						var tmpFinder = {
+							catname: tmpThis.details.catname,
+							restype: "Panels",
+							resname: theValue + '.json'
+						}
+						ThisApp.getByAttr$(tmpFinder).click();
+					})
 				})
 
 			})
