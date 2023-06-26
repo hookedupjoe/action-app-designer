@@ -9687,7 +9687,7 @@ License: MIT
         getFieldValue: function (theControlEl, theFieldSpecs) {
             //ToDo: Check DataType
             tmpRet = me._getControlData(theControlEl, theFieldSpecs.name);
-            if( typeof(tmpRet == 'string')){
+            if( typeof(tmpRet) == 'string'){
                 if( tmpRet.substr(0,1) == '{'){
                     try {
                         tmpRet = JSON.parse(tmpRet);
