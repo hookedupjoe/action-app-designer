@@ -5,9 +5,6 @@ const THIS_MODULE_TITLE = 'Data: Get Collections Available';
 module.exports.setup = function setup(scope) {
     var config = scope;
     var $ = config.locals.$;
-    var Mongo = $.Mongo;
-
-    
     
     function Route() {
         this.name = THIS_MODULE_NAME;
@@ -22,8 +19,6 @@ module.exports.setup = function setup(scope) {
         var self = this;
         return new Promise( async function (resolve, reject) {
             try {
-
-                //var tmpAccountID = 'localadmin';
                 var tmpAccountID = req.query.account || 'local';
                 var tmpDBName = req.query.database || 'local';
                 var tmpRet = {};
@@ -31,8 +26,6 @@ module.exports.setup = function setup(scope) {
                     var tmpAccount = await $.MongoManager.getAccount(tmpAccountID);
                     var tmpDB = await tmpAccount.getDatabase(tmpDBName);
                     tmpRet.collections = await tmpDB.getCollectionList();
-                    //console.log('tmpRet',tmpRet);
-                    //tmpDBList.databases.forEach(db => console.log(`Name: ${db.name}`));
                 } catch (e) {
                     console.error(e);
                 }

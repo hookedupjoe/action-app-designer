@@ -1,6 +1,6 @@
 'use strict';
-const THIS_MODULE_NAME = 'mongo-create-account';
-const THIS_MODULE_TITLE = 'Data: Create Locally Stored Account Details';
+const THIS_MODULE_NAME = 'mongo-create-collection';
+const THIS_MODULE_TITLE = 'Data: Create MongoDB Collection';
 
 module.exports.setup = function setup(scope) {
     var config = scope;
@@ -29,15 +29,10 @@ module.exports.setup = function setup(scope) {
                     }
                 }
                 
-                var tmpNewConfig = {
-                    "id": tmpBody.id,
-                    "address": tmpBody.address,
-                    "port": tmpBody.port,
-                    "username": tmpBody.username || '',
-                    "password": tmpBody.password || ''
-                }
-                var tmpCallRet = await $.MongoManager.addAccountConfig(tmpNewConfig);
-
+                var tmpAccount = await $.MongoManager.getAccount(tmpBody.accountid);
+                var tmpDB = await tmpAccount.getDatabase(tmpBody.dbname);
+                var tmpCallRet = await tmpDB.createCollection(tmpBody.id);
+               
                 var tmpRet = {success:true};
                 tmpRet = $.merge(false, tmpRet, tmpCallRet);
 

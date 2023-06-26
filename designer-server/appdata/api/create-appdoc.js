@@ -1,7 +1,8 @@
 'use strict';
-const THIS_MODULE_NAME = 'mongo-create-account';
-const THIS_MODULE_TITLE = 'Data: Create Locally Stored Account Details';
-
+const THIS_MODULE_NAME = 'create-appdoc';
+const THIS_MODULE_TITLE = 'Data: Create Standard App Doc in MongoDB';
+//ToDo: Save and Create as one .. just save?  
+//      Add a flag for create?
 module.exports.setup = function setup(scope) {
     var config = scope;
     var $ = config.locals.$;
@@ -28,18 +29,19 @@ module.exports.setup = function setup(scope) {
                         throw("Bad JSON Passed")
                     }
                 }
+                console.log('tmpBody',tmpBody);
                 
-                var tmpNewConfig = {
-                    "id": tmpBody.id,
-                    "address": tmpBody.address,
-                    "port": tmpBody.port,
-                    "username": tmpBody.username || '',
-                    "password": tmpBody.password || ''
-                }
-                var tmpCallRet = await $.MongoManager.addAccountConfig(tmpNewConfig);
-
+                var tmpAccount = await $.MongoManager.getAccount(tmpBody.accountid);
+                var tmpDB = await tmpAccount.getDatabase(tmpBody.dbname);
+                var tmpCollName = tmpBody.collection;
+                //--- Assure there?
+                //var tmpCallRet = await tmpDB.createCollection(tmpCollName);
+                //--- Check ret?
+                //console.log('tmpCallRet',tmpCallRet);
+                var tmpAddRet = await tmpDB.createDoc(tmpCollName, tmpBody.data);
+               
                 var tmpRet = {success:true};
-                tmpRet = $.merge(false, tmpRet, tmpCallRet);
+                tmpRet = $.merge(false, tmpRet, tmpAddRet);
 
                 resolve(tmpRet);
 

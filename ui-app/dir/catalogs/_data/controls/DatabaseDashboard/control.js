@@ -19,7 +19,7 @@
         {
         "ctl": "control",
         "catalog": "_data",
-        "controlname": "MongoAccount",
+        "controlname": "MongoCollection",
         "name": "mainform"
       }]
     }, {
@@ -82,23 +82,24 @@
 
   ControlCode.newDoc = newDoc;
   function newDoc() {
-    var tmpThis = this;
+    var self = this;
     this.parts.mainform.prompt().then(function(theWasSubmitted, theData) {
       if (!(theWasSubmitted)) return;
 
       var tmpData = theData;
       tmpData.id = tmpData.id.toLowerCase();
-      var tmpBaseURL = ActionAppCore.ActAppData.rootPath;
+      tmpData.accountid = self.accountid;
+      tmpData.dbname = self.dbname;
+      
       var tmpBaseURL = ActionAppCore.ActAppData.appDataEndpoint;
-
 
       var tmpPostOptions = {
         formSubmit: false,
         data: tmpData,
-        url: tmpBaseURL + 'mongo-create-collecion?open'
+        url: tmpBaseURL + 'mongo-create-collection?open'
       };
       return ThisApp.apiCall(tmpPostOptions).then(function(theReply) {
-        tmpThis.refreshDash()
+        self.refreshDash()
       });
 
     });
@@ -107,7 +108,7 @@
   
   ControlCode.refreshDash = function(theContent, theOptTpl){
     var self = this;
-    var tmpBaseURL = ActionAppCore.ActAppData.appDataEndpoint;
+    var tmpBaseURL = './appdata/api/';
     var tmpURL = tmpBaseURL + 'get-collection-list/?account=' + self.accountid + '&database=' + self.dbname;      
     ThisApp.apiCall(tmpURL).then(function(theReply){
       self.collections = theReply.collections;

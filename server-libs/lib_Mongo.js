@@ -227,6 +227,35 @@ MongoDatabase.prototype.getCollectionList = async function () {
     });
 }
 
+
+MongoDatabase.prototype.createDoc = async function (theCollectionName, theDoc) {
+    let self = this;
+
+    return new Promise(async function (resolve, reject) {
+
+        try {
+            var tmpRunRet = await self.db.collection(theCollectionName).insertOne(theDoc);
+            resolve(tmpRunRet);
+        } catch (error) {
+            reject(error);
+        } 
+    });
+}
+
+MongoDatabase.prototype.createCollection = async function (theName) {
+    let self = this;
+
+    return new Promise(async function (resolve, reject) {
+
+        try {
+            var tmpRunRet = await self.db.createCollection(theName)
+            resolve(tmpRunRet);
+        } catch (error) {
+            reject(error);
+        } 
+    });
+}
+
 MongoDatabase.prototype.getDesignElements = function () {
     //ToDO: var tmpURI = '/_all_docs?inclusive_end=false&start_key=\"_design\"&end_key=\"_design0\"';
     //return this.getRows(tmpURI,{valueAsDoc:true})    
