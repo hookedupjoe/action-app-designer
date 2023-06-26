@@ -9,12 +9,9 @@
 
 var path = require('path'),
     http = require('http'),
-//    chalk = require('chalk'),
     fs = require('fs-extra'),
     previewScope = {},
     scope = {};
-
-
 
 scope.locals = {
     name: 'action-app-designer',
@@ -25,14 +22,10 @@ scope.locals = {
 };
 scope.locals.path.start = scope.locals.path.root + "/designer-server";
 scope.locals.path.libraries = scope.locals.path.root + "/server-libs";
-// scope.locals.path.localSecurity = scope.locals.path.root + "/local_security";
 
 var $ = require(scope.locals.path.libraries + '/globalUtilities.js').$;
 $.scope = scope;
 var bld = require(scope.locals.path.libraries + '/lib_BuildUtils.js');
-
-
-
 
 previewScope.locals = {
     name: 'action-app-preview-server',
@@ -43,9 +36,6 @@ previewScope.locals = {
 }
 previewScope.locals.path.start = scope.locals.path.root + "/preview-server";
 previewScope.locals.path.libraries = scope.locals.path.root + "/server-libs";
-
-
-
 
 var express = require('express'),
 app = express(),
@@ -63,32 +53,25 @@ app.all('*', function(req, res, next) {
     res.header("Access-Control-Allow-Headers", "X-Requested-With");
     next();
  });
- 
-
 
  try {
+    //--- ToDo: Make this optional.
     const chokidar = require('chokidar');
-  // Do "hot-reloading" of express stuff on the server
-  // Throw away cached modules and re-require next time
-  // Ensure there's no important state in there!
-  var tmpWatchDir = scope.locals.path.root + "/designer-server"
-  console.log('tmpWatchDir',tmpWatchDir);
- chokidar.watch(tmpWatchDir, {ignored: /index\.js$/})
-    .on('change', (path) => {
-        try {
-            if (require.cache[path]) delete require.cache[path];
-            console.log('New file loaded for ' + path);
-        } catch (theChangeError) {
-            console.log("Could not hot update: " + path);
-            console.log("The reason: " + theChangeError);
-        }
-    });
+    var tmpWatchDir = scope.locals.path.root + "/designer-server"
+    chokidar.watch(tmpWatchDir, {ignored: /index\.js$/})
+        .on('change', (path) => {
+            try {
+                if (require.cache[path]) delete require.cache[path];
+                console.log('New file loaded for ' + path);
+            } catch (theChangeError) {
+                console.log("Could not hot update: " + path);
+                console.log("The reason: " + theChangeError);
+            }
+        });
 
     } catch (ex){
-    console.error(ex);
-    //--- No chokidr installed, no hot reading of modules     
-    console.log('No hot reading, chokidar not installed on dev side')  
-}
+        console.log('Not hot reading, chokidar not installed on dev side')  
+    }
 
 function setup() {
 
@@ -182,12 +165,6 @@ function setup() {
 
                 };
             }
-
-
-
-
-            ///===  Preview
-
 
 
             //==========   PREVIEW  ====
