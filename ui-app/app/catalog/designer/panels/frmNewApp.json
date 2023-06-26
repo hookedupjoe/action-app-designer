@@ -28,7 +28,7 @@
         "ctl": "dropdown",
         "name": "template",
         "label": "Starting Point",
-        "default": "local",
+        "default": "default",
         "hidden": true,
         "req": false
       },

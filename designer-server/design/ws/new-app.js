@@ -40,8 +40,6 @@ module.exports.setup = function setup(scope) {
                 var tmpAppTitle = tmpBody.title || tmpAppName;
                 var tmpAppDesc = tmpBody.description || '';
                 var tmpTemplate = tmpBody.template || 'default';
-                console.log( 'tmpAppTitle', tmpAppTitle);
-                console.log( 'tmpTemplate', tmpTemplate);
 
                 var tmpWSDir = scope.locals.path.ws.uiApps;
                 var tmpAppBase = tmpWSDir + tmpAppName + '/';
