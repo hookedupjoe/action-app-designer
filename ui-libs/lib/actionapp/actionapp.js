@@ -17,7 +17,7 @@ License: MIT
 //--- Global Entry Point / Always available functionality
 var ActionAppCore = {
     ActAppData: {
-        rootPath: './'
+        rootPath: '/'
     },
     //--- Directory of where stuff is located
 
@@ -25,9 +25,9 @@ var ActionAppCore = {
     //-    ** How to deploy / if we should deploy catalog resources ?
     dir: {
         catalogs: {
-            common: './dir/catalogs/_designer/',
-            _designer: './dir/catalogs/_designer/',
-            _data: './dir/catalogs/_data/',
+            common: '/dir/catalogs/_designer/',
+            _designer: '/dir/catalogs/_designer/',
+            _data: '/dir/catalogs/_data/',
             getResourceCatalogURL: function(theCatName, theResType, theResName){
                 var tmpBaseURL = '/';
                 var tmpResType = ThisApp.controls.getUnifiedPluralName(theResType);

@@ -17,5 +17,11 @@ module.exports.setup = function (app, scope) {
     svrRouter.all('/*', svrRoute);
     app.use('/svr/',svrRouter);
 
+    var dataRouter = express.Router(),
+    dataRoute = require('./appdata/index').setup(scope);
+    dataRouter.all('/:type/:name*', dataRoute);
+    dataRouter.all('/*', dataRoute);
+    app.use('/appdata/',dataRouter);
+
 
 };
