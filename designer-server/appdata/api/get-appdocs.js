@@ -28,18 +28,11 @@ module.exports.setup = function setup(scope) {
                         throw("Bad JSON Passed")
                     }
                 }
-                console.log('tmpBody',tmpBody);
-                var tmpTest = {
-                    accountid: 'local',
-                    dbname: 'actapp-demoapp1',
-                    doctype: 'person'
-                };
-                
+
                 var tmpAccount = await $.MongoManager.getAccount(tmpBody.accountid);
                 var tmpDB = await tmpAccount.getDatabase(tmpBody.dbname);
                 var tmpDocType = tmpBody.doctype;
                 var tmpMongoDB = tmpDB.getMongoDB();
-                console.log('tmpMongoDB',tmpMongoDB);
                 var tmpDocs = await tmpMongoDB.collection('actapp-' + tmpDocType).find().toArray();
                 var tmpRet = {success:true};
                 
