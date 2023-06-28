@@ -6,7 +6,6 @@ const THIS_MODULE_TITLE = 'Data: Create Standard App Doc in MongoDB';
 module.exports.setup = function setup(scope) {
     var config = scope;
     var $ = config.locals.$;
-    var Mongo = $.Mongo;
     
     function Route() {
         this.name = THIS_MODULE_NAME;
@@ -34,9 +33,9 @@ module.exports.setup = function setup(scope) {
                 var tmpAccount = await $.MongoManager.getAccount(tmpBody.accountid);
                 var tmpDB = await tmpAccount.getDatabase(tmpBody.dbname);
                 var tmpCollName = tmpBody.collection;
-                //--- Assure there?
+                //--- Do we need to assure there?
                 //var tmpCallRet = await tmpDB.createCollection(tmpCollName);
-                //--- Check ret?
+                //--- Check return value?
                 //console.log('tmpCallRet',tmpCallRet);
                 var tmpAddRet = await tmpDB.createDoc(tmpCollName, tmpBody.data);
                
