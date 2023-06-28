@@ -28,7 +28,6 @@ module.exports.setup = function setup(scope) {
                         throw("Bad JSON Passed")
                     }
                 }
-                console.log('tmpBody',tmpBody);
                 
                 var tmpAccount = await $.MongoManager.getAccount(tmpBody.accountid);
                 var tmpDB = await tmpAccount.getDatabase(tmpBody.dbname);
@@ -36,7 +35,6 @@ module.exports.setup = function setup(scope) {
                 //--- Do we need to assure there?
                 //var tmpCallRet = await tmpDB.createCollection(tmpCollName);
                 //--- Check return value?
-                //console.log('tmpCallRet',tmpCallRet);
                 var tmpAddRet = await tmpDB.createDoc(tmpCollName, tmpBody.data);
                
                 var tmpRet = {success:true};
