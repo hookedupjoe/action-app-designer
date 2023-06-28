@@ -165,7 +165,12 @@ function setup() {
 
 
             //==========   PREVIEW  ====
-
+            //--- Allow the designer server to access app files during design process
+            preview.use(function(req, res, next) {
+                res.header("Access-Control-Allow-Origin", "http://localhost:33460");
+                res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+                next();
+            });
 
             //--- Use standard body and cookie parsers
             preview.use(bodyParser.json());
@@ -179,7 +184,10 @@ function setup() {
 
                         //--- Plug in application routes
             require('./preview-server/start').setup(preview, previewScope);
-                        
+                 
+            
+
+             
             // error handlers
             preview.use(function (req, res, next) {
                 var err = new Error('Not Found');
@@ -191,6 +199,7 @@ function setup() {
                 next();
             });
 
+ 
 
             //--- Standard Server Startup
             var serverPreview = http.createServer(preview);

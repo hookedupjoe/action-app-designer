@@ -4,7 +4,8 @@
 
   ActionAppCore = ActionAppCore || window.ActionAppCore;  
   ActionAppCore.ActAppData.appDataEndpoint = './appdata/api/';
-
+  ActionAppCore.inDesigner = true;
+  
   var tmpPageNames = [   
     'WorkspacePage',
     'AppDataPage',

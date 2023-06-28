@@ -35,7 +35,17 @@ var ActionAppCore = {
                 if( tmpResType == 'templates' ){
                     tmpResType = 'tpl';
                 }
-                var tmpURL = tmpBaseURL + "catalogs/" + theCatName + '/' + tmpResType + '/' + theResName;
+                var tmpCatDir = tmpBaseURL + "catalogs/" + theCatName + '/';
+                if( theCatName == '__app'){
+                    if( ActionAppCore.inDesigner ){
+                        var tmpAppName = ThisApp.common.designerResApp
+                        //--- Serve the page from the application itself, in diff area
+                        tmpCatDir = 'http://localhost:33461/' + tmpAppName + '/catalog/'
+                    } else {
+                        tmpCatDir = './catalog/'
+                    }
+                }
+                var tmpURL = tmpCatDir + tmpResType + '/' + theResName;
                 return tmpURL
             }
         }
@@ -73,44 +83,7 @@ var ActionAppCore = {
         }
         return ActionAppCore.getListAsArrays(tmpSource);
     },
-    //--- Returns HTML element based on the specs passed
-    /*
-    var tmpSpecChG1 = {
-        type: 'div',
-        className: 'content',
-        attr: {name: 'G1'},
-        text: 'I am content'
-    }
-    var tmpSpecCh1 = {
-        type: 'div',
-        className: ['ui','card'],
-        style: {border: "dashed 2px red", 'font-size': "14px"},
-        attr: {appuse: 'testing', name: 'Debbie'},
-        text: 'Debbie'
-    }
-    var tmpSpecCh2 = {
-        type: 'div',
-        className: 'ui card',
-        style: 'border: dashed 2px blue;font-size:14px',
-        attr: {appuse: 'testing', name: 'John'},
-        children: [tmpSpecChG1],
-    }
-    var tmpSpecs = {
-        type: 'div',
-        className:'ui cards',
-        attr: {appuse:'testing',name:'mom'},
-        children: [tmpSpecCh1,tmpSpecCh2]
-    }
-    var tmpTE1 = ActionAppCore.el(tmpSpecs)
-    tmpTE1 // show content on console
-    //--- in console
-    <div class="ui cards" appuse="testing" name="mom">
-        <div class="ui card" appuse="testing" name="Debbie" style="border: 2px dashed red; font-size: 14px;">Debbie</div>
-        <div class="ui card" appuse="testing" name="John" style="border: 2px dashed blue; font-size: 14px;">
-            <div class="content" name="G1">I am content</div>
-        </div>
-    </div>
-    */
+    
     el: function(theSpecs){
         var tmpSpecs = theSpecs || {};
         var tmpType = tmpSpecs.type || 'div';

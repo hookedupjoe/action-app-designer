@@ -189,6 +189,14 @@ License: MIT
 
 	}
 
+	//--- Set flag to find this
+	ControlCode.isDesignerEditor = true;
+	ControlCode.getSetupDetails = function () {
+		if( this.context && this.context.this && this.context.this.controller){
+			return this.context.this.controller.details || false;
+		}
+	}
+
 	ControlCode.isActive = function () {
 		var tmpIsVis = this.getItemEl('btn-save').is(":visible");
 		return tmpIsVis;
@@ -728,6 +736,10 @@ License: MIT
 		var tmpBeforeLoadDisabled = ThisApp.resCacheFlags.disabled || false;
 		ThisApp.resCacheFlags.disabled = true;
 		var tmpResType = this.details.restype;
+
+		//--- For using app controls in the designer
+		ThisApp.common.designerResEditor = this;
+		ThisApp.common.designerResApp = this.details.appname;
 
 
 		if (tmpResType == 'HTML' || tmpResType == 'Template' || tmpResType == 'html' || tmpResType == 'Templates') {
