@@ -58,6 +58,7 @@ app.all('*', function(req, res, next) {
     //--- ToDo: Make this optional.
     const chokidar = require('chokidar');
     var tmpWatchDir = scope.locals.path.root + "/designer-server"
+    //--> Watch All -->  var tmpWatchDir = scope.locals.path.root;
     chokidar.watch(tmpWatchDir, {ignored: /index\.js$/})
         .on('change', (path) => {
             try {
@@ -78,7 +79,6 @@ function setup() {
     return new Promise( async function (resolve, reject) {
         try {
             var tmpSettingsDir = bld.settingsHome();
-            var tmpStaticDir = '/ui-app';
             var tmpWSDirectory = '';
             //--- See if setup, if not, do the setup screen
             if (tmpSettingsDir) {
@@ -126,7 +126,7 @@ function setup() {
             app.use(express.static(scope.locals.path.root + '/ui-libs'));
             app.use(express.static(scope.locals.path.root + '/common'));
             app.use(express.static(tmpWSDirectory));
-            app.use(express.static(scope.locals.path.root + tmpStaticDir));
+            app.use(express.static(scope.locals.path.root + '/ui-app'));
 
             //--- Plug in application routes
             require('./designer-server/start').setup(app, scope);
