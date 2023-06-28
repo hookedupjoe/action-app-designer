@@ -242,6 +242,28 @@ MongoDatabase.prototype.createDoc = async function (theCollectionName, theDoc) {
     });
 }
 
+
+MongoDatabase.prototype.getMongoDB = function () {
+   return this.db;
+}
+
+
+
+MongoDatabase.prototype.getCollection = async function (theName) {
+    let self = this;
+
+    return new Promise(async function (resolve, reject) {
+
+        try {
+            var tmpRunRet = await self.db.collection(theName)
+            resolve(tmpRunRet);
+        } catch (error) {
+            reject(error);
+        } 
+    });
+}
+
+
 MongoDatabase.prototype.createCollection = async function (theName) {
     let self = this;
 
