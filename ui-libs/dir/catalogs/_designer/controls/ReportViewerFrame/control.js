@@ -624,6 +624,9 @@
       for (var iPos in tmpSelected) {
         var tmpSel = tmpSelected[iPos];
         var tmpSelDoc = tmpSel.getData();
+        if( !(tmpSelDoc.id) && (tmpSelDoc._id)){
+          tmpSelDoc.id = tmpSelDoc._id;
+        }
         if (tmpSelDoc && tmpSelDoc.id) {
           tmpRet.push(tmpSelDoc.id);
         } else {
