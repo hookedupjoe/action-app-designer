@@ -1276,15 +1276,16 @@ window.ActionAppCore = window.ActionAppCore || ActionAppCore;
                     }
 
                 }
+                
                 if (isObj(tmpSpec.map)) {
                     for (var aURI in tmpSpec.map) {
                         var tmpEntryName = tmpSpec.map[aURI];
                         var tmpBaseMapURL = tmpBaseURL;
 
                         if (isObj(tmpEntryName)) {
-
                             
                             var tmpSource = tmpEntryName.source || tmpEntryName.catalog;
+                            
                             var tmpEntrySpecs = tmpEntryName;
                             tmpEntryName = tmpEntryName.name;
                             if( tmpSource ){
@@ -4295,7 +4296,7 @@ License: MIT
         var tmpPromLayoutReq = true;
 
         var tmpLayoutReq = this.getLayoutRequired();
-
+        
         var tmpInitReq = ThisApp.loadResources.bind(this);
 
         if (this.options.required) {
@@ -4455,11 +4456,13 @@ License: MIT
                     tmpLTName = tmpLT.control || tmpLT.value || tmpLT.panel || tmpLT.html;
                 }
 
-                if (tmpLT.source) {
+                var tmpCatalog = tmpLT.source || tmpLT.catalog;
+                if (tmpCatalog) {
                     tmpPanelsNode.map[tmpLTName] = {
-                        source: tmpLT.source,
+                        source: tmpCatalog,
                         name: tmpLTName
                     };
+                    delete tmpPanelsNode.baseURL;
                 } else {
                     tmpPanelsNode.map[tmpLTName] = tmpLTName;
                 }
@@ -4493,11 +4496,13 @@ License: MIT
                     tmpLTName = tmpLT.control || tmpLT.value || tmpLT.panel || tmpLT.html;
                 }
 
-                if (tmpLT.source) {
+                var tmpCatalog = tmpLT.source || tmpLT.catalog;
+                if (tmpCatalog) {
                     tmpControlsNode.map[tmpLTName] = {
-                        source: tmpLT.source,
+                        source: tmpCatalog,
                         name: tmpLTName
                     };
+                    delete tmpControlsNode.baseURL;
                 } else {
                     tmpControlsNode.map[tmpLTName] = tmpLTName;
                 }
