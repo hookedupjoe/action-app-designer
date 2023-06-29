@@ -19,7 +19,6 @@ module.exports.setup = function setup(scope) {
     //--- Load the prototype
     base.run = async function (req, res, next) {
         var self = this;
-        console.log('recycle-docs')
         return new Promise( async function (resolve, reject) {
             try {
                 var tmpBody = req.body || {};
