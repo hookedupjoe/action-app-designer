@@ -35,24 +35,18 @@ module.exports.setup = function setup(scope) {
                 var tmpDB = await tmpAccount.getDatabase(tmpBody.dbname);
                 var tmpDocType = tmpBody.doctype || '';
                 var tmpCollName = 'actapp-'  + tmpDocType;
-                console.log('body',tmpCollName, tmpBody);
-                var tmpProc = [];
+                var tmpProcIds = [];
 
-                //ToDo: Why is not updateMany working?
                 var tmpColl = await tmpDB.getCollection(tmpCollName)
-                var tmpUD =  { $set: { '__doctype' : '_deleted' } }
                 for( var iPos in tmpBody.ids ){
                     var tmpID = tmpBody.ids[iPos];
-                    var tmpQuery = { _id: ObjectId(tmpID) };
-                    var tmpRunRet = await tmpColl.updateOne(tmpQuery, tmpUD);
-                    tmpProc.push(tmpRunRet);
-                    //tmpProcIDs.push( $.MongoManager.ObjectId(tmpID) );
+                    tmpProcIds.push(ObjectId(tmpID));
                 }
-                //console.log('tmpProcIDs',tmpProcIDs);
-                // var tmpQuery = { _id: { $in: tmpProcIDs } };
-                // var tmpRunRet = await tmpColl.updateMany(tmpQuery, tmpUD);
+                var tmpUD =  { $set: { '__doctype' : '_deleted' } }
+                var tmpQuery = { _id: { $in: tmpProcIds } };
+                var tmpRunRet = await tmpColl.updateMany(tmpQuery, tmpUD);
                 var tmpRet = {success:true};
-                tmpRet = $.merge(false, tmpRet, tmpProc);
+                tmpRet = $.merge(false, tmpRet, tmpRunRet);
 
                 resolve(tmpRet);
 
