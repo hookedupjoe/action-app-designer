@@ -1,8 +1,6 @@
 'use strict';
 const THIS_MODULE_NAME = 'save-doc';
 const THIS_MODULE_TITLE = 'Data: Save Action App Doc in MongoDB';
-//ToDo: Save and Create as one .. just save?  
-//      Add a flag for create?
 module.exports.setup = function setup(scope) {
     var config = scope;
     var $ = config.locals.$;
@@ -33,28 +31,26 @@ module.exports.setup = function setup(scope) {
                 var tmpAccount = await $.MongoManager.getAccount(tmpBody.accountid);
                 var tmpDB = await tmpAccount.getDatabase(tmpBody.dbname);
                 var tmpCollName = tmpBody.collection;
-                //--- Do we need to assure there?
-                //var tmpCallRet = await tmpDB.createCollection(tmpCollName);
-                //--- Check return value?
+
                 var tmpAddRet = false;
+                //--- Get ID from document
                 var tmpID = tmpBody.data._id || false;
+                //--- Remove ID from document for add/update use (even if blank)
                 if( tmpBody.data.hasOwnProperty('_id')){
                     delete tmpBody.data._id;
                 }
+                //--- If we have an ID, update it, else add it
                 if( tmpID ){
                     var tmpCollection = await tmpDB.getCollection(tmpCollName);
-                    var tmpMDB = tmpDB.getMongoDB();
-                    var tmpColl = tmpMDB.collection(tmpCollName);
                     var tmpUD =  { $set: tmpBody.data };
-                    tmpAddRet = await tmpColl.updateOne({_id:ObjectId(tmpID)}, tmpUD)
-
+                    tmpAddRet = await tmpCollection.updateOne({_id:ObjectId(tmpID)}, tmpUD)
                 } else {
                     tmpAddRet = await tmpDB.createDoc(tmpCollName, tmpBody.data);
                 }
                
+                //--- Return success flag along with actual results
                 var tmpRet = {success:true};
                 tmpRet = $.merge(false, tmpRet, tmpAddRet);
-
                 resolve(tmpRet);
 
             }
