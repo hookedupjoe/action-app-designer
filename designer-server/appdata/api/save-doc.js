@@ -32,7 +32,9 @@ module.exports.setup = function setup(scope) {
                 
                 var tmpAccount = await $.MongoManager.getAccount(tmpBody.accountid);
                 var tmpDB = await tmpAccount.getDatabase(tmpBody.dbname);
-                var tmpCollName = tmpBody.collection;
+                var tmpDocType = tmpBody.doctype || '';
+                var tmpCollName = 'actapp-'  + tmpDocType;
+
                 var tmpAddRet = false;
                 var tmpID = tmpBody.data._id || false;
                 //--- Remove ID (even if blank) for add / edit operations
