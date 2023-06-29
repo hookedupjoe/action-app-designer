@@ -33,9 +33,9 @@ module.exports.setup = function setup(scope) {
                 var tmpDB = await tmpAccount.getDatabase(tmpBody.dbname);
                 var tmpDocType = tmpBody.doctype;
                 var tmpMongoDB = tmpDB.getMongoDB();
-                var tmpDocs = await tmpMongoDB.collection('actapp-' + tmpDocType).find().toArray();
+                var tmpDocs = await tmpMongoDB.collection('actapp-' + tmpDocType).find().filter({__doctype:tmpDocType}).toArray();
                 var tmpRet = {success:true};
-                
+                console.log('tmpDocs',tmpDocs.length);
                 tmpRet = $.merge(false, tmpRet, {data:tmpDocs});
 
                 resolve(tmpRet);

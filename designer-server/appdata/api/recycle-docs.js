@@ -1,12 +1,12 @@
 'use strict';
-const THIS_MODULE_NAME = 'save-doc';
-const THIS_MODULE_TITLE = 'Data: Save Action App Doc in MongoDB';
+const THIS_MODULE_NAME = 'recycle-docs';
+const THIS_MODULE_TITLE = 'Data: Recycle Action App Docs in MongoDB';
 //ToDo: Save and Create as one .. just save?  
 //      Add a flag for create?
 module.exports.setup = function setup(scope) {
     var config = scope;
     var $ = config.locals.$;
-    
+        
     function Route() {
         this.name = THIS_MODULE_NAME;
         this.title = THIS_MODULE_TITLE;
@@ -19,6 +19,7 @@ module.exports.setup = function setup(scope) {
     //--- Load the prototype
     base.run = async function (req, res, next) {
         var self = this;
+        console.log('recycle-docs')
         return new Promise( async function (resolve, reject) {
             try {
                 var tmpBody = req.body || {};
@@ -32,28 +33,26 @@ module.exports.setup = function setup(scope) {
                 
                 var tmpAccount = await $.MongoManager.getAccount(tmpBody.accountid);
                 var tmpDB = await tmpAccount.getDatabase(tmpBody.dbname);
-                var tmpCollName = tmpBody.collection;
-                //--- Do we need to assure there?
-                //var tmpCallRet = await tmpDB.createCollection(tmpCollName);
-                //--- Check return value?
-                var tmpAddRet = false;
-                var tmpID = tmpBody.data._id || false;
-                if( tmpBody.data.hasOwnProperty('_id')){
-                    delete tmpBody.data._id;
-                }
-                if( tmpID ){
-                    var tmpCollection = await tmpDB.getCollection(tmpCollName);
-                    var tmpMDB = tmpDB.getMongoDB();
-                    var tmpColl = tmpMDB.collection(tmpCollName);
-                    var tmpUD =  { $set: tmpBody.data };
-                    tmpAddRet = await tmpColl.updateOne({_id:ObjectId(tmpID)}, tmpUD)
+                var tmpDocType = tmpBody.doctype || '';
+                var tmpCollName = 'actapp-'  + tmpDocType;
+                console.log('body',tmpCollName, tmpBody);
+                var tmpProc = [];
 
-                } else {
-                    tmpAddRet = await tmpDB.createDoc(tmpCollName, tmpBody.data);
+                //ToDo: Why is not updateMany working?
+                var tmpColl = await tmpDB.getCollection(tmpCollName)
+                var tmpUD =  { $set: { '__doctype' : '_deleted' } }
+                for( var iPos in tmpBody.ids ){
+                    var tmpID = tmpBody.ids[iPos];
+                    var tmpQuery = { _id: ObjectId(tmpID) };
+                    var tmpRunRet = await tmpColl.updateOne(tmpQuery, tmpUD);
+                    tmpProc.push(tmpRunRet);
+                    //tmpProcIDs.push( $.MongoManager.ObjectId(tmpID) );
                 }
-               
+                //console.log('tmpProcIDs',tmpProcIDs);
+                // var tmpQuery = { _id: { $in: tmpProcIDs } };
+                // var tmpRunRet = await tmpColl.updateMany(tmpQuery, tmpUD);
                 var tmpRet = {success:true};
-                tmpRet = $.merge(false, tmpRet, tmpAddRet);
+                tmpRet = $.merge(false, tmpRet, tmpProc);
 
                 resolve(tmpRet);
 
