@@ -6,8 +6,6 @@
 let $ = require("./globalUtilities").$;
 const { MongoClient } = require('mongodb');
 var ObjectId = require('mongodb').ObjectID;
-//$.MongoConfig = {};
-//console.log("start of mongo",$.scope.locals.path.ws);
 
  $.scope.locals.path.ws.mongoConfig = $.scope.locals.path.ws.root + '/mongoconfig/';
  $.scope.locals.path.ws.mongoConfigAccounts = $.scope.locals.path.ws.mongoConfig + '/accounts/';
@@ -17,9 +15,6 @@ var ObjectId = require('mongodb').ObjectID;
  $.fs.ensureDir($.scope.locals.path.ws.mongoConfigAccounts);
 
  $.MongoManager = new MongoManager();
-// appdata: tmpWSDirectory + "appdata/",
-// appdataAccounts: tmpWSDirectory + "appdata/accounts/",
-
 
 //==== MongoManager === === === === === === === === === === 
 function MongoManager(theAccountConfig) {
@@ -40,7 +35,6 @@ MongoManager.prototype.addAccountConfig = async function (theAccount) {
         } 
     });
 }
-
 
 MongoManager.prototype.getAccountConfig = async function (theID) {
     let self = this;
