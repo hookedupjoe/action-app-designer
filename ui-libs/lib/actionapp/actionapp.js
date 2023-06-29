@@ -16,9 +16,6 @@ License: MIT
 
 //--- Global Entry Point / Always available functionality
 var ActionAppCore = {
-    ActAppData: {
-        rootPath: '/'
-    },
     //--- Directory of where stuff is located
 
     //--- ToDo: Move the _designer and _data to designer app
@@ -350,6 +347,43 @@ var ActionAppCore = {
 
     }
 };
+
+ActionAppCore.ActAppData = {
+    rootPath: '/',
+    formatters: {
+        "multivaluenewline": function(cell){
+            var value = cell.getValue();
+            value = value.join('<br />');
+            return value;
+        },
+        "textarea": function(cell){
+            var value = cell.getValue();
+            value = value.replace(/\n/g,'<br />');
+            return value;
+        },
+        "datetime": {
+            formatterParams: {
+                inputFormat: "YYYY-MM-DD hh:mm:ss",
+                outputFormat: "MMM D, Y hh:mm a",
+                invalidPlaceholder: "(invalid)"
+            }
+        },
+        "date": {
+            formatterParams: {
+                inputFormat: "YYYY-MM-DD",
+                outputFormat: "MMM D, Y",
+                invalidPlaceholder: "(invalid)"
+            }
+        },
+        "time": {
+            formatterParams: {
+                inputFormat: "hh:mm:ss",
+                outputFormat: "hh:mm a",
+                invalidPlaceholder: "(invalid)"
+            }
+        }
+    }
+}
 
 //--- Global Spot
 window.ActionAppCore = window.ActionAppCore || ActionAppCore;
