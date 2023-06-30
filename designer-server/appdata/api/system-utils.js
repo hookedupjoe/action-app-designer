@@ -14,6 +14,17 @@ module.exports.setup = function setup(scope) {
     
     var $ = config.locals.$;
 
+    
+async function getPMList() {
+    // Exec output contains both stderr and stdout outputs
+    const running = await exec('pm2 jlist')
+
+  
+    return { 
+        running: JSON.parse(running.stdout.trim())
+    }
+  };
+
     //--- Load the prototype
     base.run = async function (req, res, next) {
         var self = this;
@@ -30,7 +41,7 @@ module.exports.setup = function setup(scope) {
                 
                 
                 //var tmpGitInfo = await $.getGitUser();
-                var tmpPMList = ( await $.getPMList() );
+                var tmpPMList = ( await getPMList() );
                 var tmpPMListObj = {};
                 try {
                     tmpPMListObj = JSON.parse(tmpPMList.trim());
