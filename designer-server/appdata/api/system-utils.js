@@ -30,7 +30,7 @@ module.exports.setup = function setup(scope) {
                 
                 
                 //var tmpGitInfo = await $.getGitUser();
-                var tmpPMList = JSON.parse( await $.getPMList() );
+                var tmpPMList = ( await $.getPMList() );
                 //gitInfo: tmpGitInfo,
 
                 var tmpRet = {success:true, pmList:tmpPMList };
