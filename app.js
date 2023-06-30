@@ -13,6 +13,8 @@ var path = require('path'),
     previewScope = {},
     scope = {};
 
+var https = require('https');
+
 scope.locals = {
     name: 'action-app-designer',
     title: 'Action App Designer',
@@ -144,9 +146,39 @@ function setup() {
 
 
             //--- Standard Server Startup
-            var server = http.createServer(app);
+            //var server = http.createServer(app);
             var port = 33460;
-            server.listen(port, '0.0.0.0');
+
+            //--- TEMPORARY
+            //--- Seeing if it works at all with hard coded key names in certain spot
+            var tmpUseSSL = false; 
+
+            if (fs.existsSync(tmpWSDirectory + '/ssl/server.key')) {
+                tmpUseSSL = true;
+            }
+
+            var server;
+
+            if( tmpUseSSL ){
+
+                // file location of private key
+                var privateKey = fs.readFileSync( tmpWSDirectory + '/ssl/server.key' );
+                // file location of SSL cert
+                var certificate = fs.readFileSync( tmpWSDirectory + '/ssl/server.crt' );
+
+                // set up a config object
+                var server_config = {
+                    key : privateKey,
+                    cert: certificate
+                };
+
+                // create the HTTPS server on port 443
+                var server = https.createServer(server_config, app);
+
+            } else {
+                var server = http.createServer(app);
+            }
+        server.listen(port, '0.0.0.0');
 
             //--- Show port in console
             server.on('listening', onListening(server));
@@ -156,8 +188,11 @@ function setup() {
                     var bind = (typeof address === 'string') ? 'pipe ' + address : address.address + ':' + address.port;
                     console.log(('Open designer on port:' + address.port + "."));
                     console.log(('Launch it here'));
-
-                    console.log("http://localhost:" + address.port);
+                    if( tmpUseSSL ){
+                        console.log("https://localhost:" + address.port);
+                    } else {
+                        console.log("http://localhost:" + address.port);
+                    }
                     console.log("");
 
                 };
@@ -202,7 +237,12 @@ function setup() {
  
 
             //--- Standard Server Startup
-            var serverPreview = http.createServer(preview);
+            if( tmpUseSSL ){
+                var serverPreview = https.createServer(server_config, preview);
+            } else {
+                var serverPreview = http.createServer(preview);
+            }
+
             var portPreview = process.env.PREVIEWPORT || 33461;
             serverPreview.listen(portPreview, '0.0.0.0');
 
