@@ -4,6 +4,9 @@
 'use strict';
 
 var merge = require('merge');
+const subProcess = require('child_process')
+const { promisify } = require('util');
+const exec = promisify(require('child_process').exec)
 
 let $ = {}; // local gulpMoney
 module.exports.$ = $;
@@ -12,7 +15,10 @@ function mergeWith(theGulpMoney) {
 }
 module.exports.mergeWith = mergeWith;
 
+$.exec = exec;
 $.merge = merge;
+$.subProcess = subProcess;
+$.promisify = promisify;
 $.replace = require('gulp-replace');
 $.path = require('path');
 $.request = require('request');
@@ -23,6 +29,28 @@ $.os = require('os');
 $.cloneObject = cloneObject;
 $.getEpoch = getEpoch;
 $.getNowTimestamp = getNowTimestamp;
+$.getGitUser = getGitUser;
+$.getPMList = getPMList;
+
+async function getPMList() {
+    // Exec output contains both stderr and stdout outputs
+    const running = await exec('pm2 jlist')
+  
+    return { 
+        running: running.stdout.trim()
+    }
+  };
+
+async function getGitUser() {
+    // Exec output contains both stderr and stdout outputs
+    const nameOutput = await exec('git config --global user.name')
+    const emailOutput = await exec('git config --global user.email')
+  
+    return { 
+      name: nameOutput.stdout.trim(), 
+      email: emailOutput.stdout.trim()
+    }
+  };
 
 
 function cloneObject(object) {
