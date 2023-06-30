@@ -17,7 +17,7 @@ module.exports.setup = function setup(scope) {
     
 async function getPMList() {
     // Exec output contains both stderr and stdout outputs
-    const running = await exec('pm2 jlist')
+    const running = await $.exec('pm2 jlist')
 
   
     return { 
