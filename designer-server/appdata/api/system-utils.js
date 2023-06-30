@@ -31,10 +31,17 @@ module.exports.setup = function setup(scope) {
                 
                 //var tmpGitInfo = await $.getGitUser();
                 var tmpPMList = ( await $.getPMList() );
-                tmpPMList = JSON.parse(tmpPMList);
+                var tmpPMListObj = {};
+                try {
+                    tmpPMListObj = JSON.parse(tmpPMList.trim());
+                } catch (error) {
+                    
+                }
+                //console.log('tmpPMListObj',tmpPMListObj);
+               
                 //gitInfo: tmpGitInfo,
 
-                var tmpRet = {success:true, pmList:tmpPMList };
+                var tmpRet = {success:true, pmList:tmpPMList, pmObj:tmpPMListObj };
                 //tmpRet = $.merge(false, tmpRet, tmpAddRet);
 
                 resolve(tmpRet);
