@@ -29,6 +29,7 @@ License: MIT
         panels: {
             map: {
                 "app/catalog/designer/panels/frmNewCatalog": "frmNewCatalog",
+                "app/catalog/designer/panels/frmDesignerOptions": "frmDesignerOptions",
                 "app/catalog/designer/panels/frmNewApp": "frmNewApp",
                 "app/catalog/designer/panels/frmNewPage": "frmNewPage"
             }
@@ -802,6 +803,36 @@ License: MIT
                 showAppConsole(theData);
             })
         })
+    };
+
+    actions.editDesignerSettings = editDesignerSettings;
+    function editDesignerSettings(theParams, theTarget) {
+        //--- apiCall to get designer options or do we have them?
+        ThisApp.common.apiCall({
+            url: '/design/ws/get-designer-settings'
+        }).then(function (theCurrSettings) {
+            //--- Do a check?
+            tmpCurrentDetails = theCurrSettings;
+
+            ThisPage.getPanel('frmDesignerOptions').prompt(
+                {
+                    isNew: false,
+                    doc: tmpCurrentDetails
+                }
+            ).then(function (theSubmitted, theData) {
+                if (!theSubmitted) {
+                    return;
+                }
+    
+                ThisApp.common.apiCall({
+                    url: '/design/ws/save-designer-settings',
+                    data: theData
+                }).then(function (theReply) {
+                    refreshWorkspace();
+                })
+            })
+        })
+        
     };
 
 

@@ -76,6 +76,17 @@ License: MIT
 													"text": "New Catalog"
 												},
 												{
+													"ctl": "button",
+													"color": "grey",
+													"size": "large",
+													"pageaction": "editDesignerSettings",
+													"labeled": false,
+													"right": true,
+													"icon": "cog",
+													"name": "btn-designer-settings",
+													"text": ""
+												},
+												{
 													"ctl": "panel",
 													"controlname": {"[computed]": "context.app.data.designer.endpoints.get_ws_outline || ''"},
 													"name": "listpanel"

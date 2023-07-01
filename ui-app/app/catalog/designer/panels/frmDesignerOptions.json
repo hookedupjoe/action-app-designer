@@ -1,0 +1,78 @@
+{
+	"options": {
+		"prompt": {
+			"submitLabel": "Save Designer Settings",
+			"title": "Designer Settings",
+			"submitLabelNew": "Save Settings",
+			"titleNew": "Designer Settings"
+		}
+	},
+	"content": [
+		{
+			"ctl": "title",
+			"size": "Large",
+			"color": "blue",
+			"name": "title",
+			"text": "Designer Settings"
+		},
+		{
+			"ctl": "message",
+			"color": "blue",
+			"size": "large",
+			"name": "welcome-info",
+			"text": "Designer Settings, restart after saving settings."
+		},
+		{
+			"ctl": "fieldrow",
+			"req": true,
+			"items": [
+				{
+					"label": "Site Title",
+					"ctl": "field",
+					"name": "sitetitle",
+					"default": "Action App Designer",
+					"req": true
+				},
+				{
+					"row": false,
+					"ctl": "radiolist",
+					"name": "sitetype",
+					"onChange": {
+						"run": "showfor",
+						"values": {
+							"": "",
+							"Local": [
+								""
+							],
+							"Server": [
+								"server-info-row"
+							]
+						}
+					},
+					"label": "Designer Type",
+					"list": "Local,Server",
+					"req": true
+				}
+			],
+			"name": "designer-info-row"
+		},
+		{
+			"ctl": "fieldrow",
+			"items": [
+				{
+					"label": "Designer Base URL",
+					"ctl": "field",
+					"name": "urldesigner",
+					"req": true
+				},
+				{
+					"label": "Preview Base URL",
+					"ctl": "field",
+					"name": "urlpreview",
+					"req": true
+				}
+			],
+			"name": "server-info-row"
+		}
+	]
+}
