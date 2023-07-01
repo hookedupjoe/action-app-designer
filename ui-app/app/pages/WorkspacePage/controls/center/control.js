@@ -38,21 +38,27 @@ License: MIT
 								{
 									ctl: "segment",
 									basic: true,
-									slim: true,
+									classes: "pad5 mar5",
 									content: [
 									
-										{
-											ctl: "title",
-											icon: "hdd",
-											color: "black",
-											size: "large",
-											text: "Designer Workspace"
-										},
 										{
 											ctl: "segment",
 											basic: true,
 											slim: true,
-											content: [
+											classes: "pad0 mar0",
+												content: [
+													{
+														ctl: "title",
+														icon: "hdd",
+														classes:"mar0 pad0",
+														color: "black",
+														size: "large",
+														text: "Designer Workspace"
+													},
+													{
+														"ctl":"divider",
+														"classes":"mar3 fitted"
+													},
 												{
 													"ctl": "button",
 													"color": "blue",
@@ -82,9 +88,14 @@ License: MIT
 													"pageaction": "editDesignerSettings",
 													"labeled": false,
 													"right": true,
+													"toRight": true,
 													"icon": "cog",
 													"name": "btn-designer-settings",
 													"text": ""
+												},
+												{
+													"ctl":"divider",
+													"classes":"mar3 fitted"
 												},
 												{
 													"ctl": "panel",
