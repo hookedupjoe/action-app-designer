@@ -84,7 +84,10 @@ module.exports.setup = function setup(scope) {
 
                 //--- Rebuild using defaults
                 // await($.bld.buildApp(tmpAppName,scope));
-                await($.bld.buildApp(tmpAppName,scope,{cdn:'cloud', deploy:true}));
+                //was cdn:'cloud', , useCDN: true
+                await($.bld.buildApp(tmpAppName,scope,{deploy:true}));
+
+                await($.fs.copy(scope.locals.path.uilibs + '/',tmpDeployBase + '/ui-app/'));
 
                 var tmpRet = {
                     status: true,
@@ -119,6 +122,7 @@ module.exports.setup = function setup(scope) {
             res.json({ status: false, error: ex.toString() })
         }
     }
+    
 };
 
 

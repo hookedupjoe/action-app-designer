@@ -27,28 +27,13 @@
 	"libraryLocations": [
 		{
 			"name": "local",
-			"label": "Local Preview",
+			"label": "Local",
 			"prefix": ""
 		},
 		{
-			"name": "localcdn",
-			"label": "Local 7071",
-			"prefix": "{{LIBRARY-LOCATION}}"
-		},
-		{
 			"name": "cloud",
-			"label": "Production Cloud CDN",
+			"label": "Cloud CDN",
 			"prefix": "//actionapp.hookedup.com"
-		},
-		{
-			"name": "app",
-			"label": "In Application",
-			"prefix": "."
-		},
-		{
-			"name": "mobile",
-			"label": "Mobile Application",
-			"prefix": "."
 		}
 	],
 	"libraries": [		

@@ -255,6 +255,8 @@ function buildApp(theAppName, scope, theOptions) {
             }
             if (tmpOptions.deploy === true) {
                 tmpAppBase = tmpDeployDir;
+            } else {
+                tmpAppDetails.cdn = 'local';
             }
 
             var tmpPartsLoc = scope.locals.path.designer + '/build/tpl-parts/';
