@@ -365,21 +365,21 @@ ActionAppCore.ActAppData = {
             formatterParams: {
                 inputFormat: "YYYY-MM-DD hh:mm:ss",
                 outputFormat: "MMM D, Y hh:mm a",
-                invalidPlaceholder: ""
+                invalidPlaceholder: "(invalid)"
             }
         },
         "date": {
             formatterParams: {
                 inputFormat: "YYYY-MM-DD",
                 outputFormat: "MMM D, Y",
-                invalidPlaceholder: ""
+                invalidPlaceholder: "(invalid)"
             }
         },
         "time": {
             formatterParams: {
                 inputFormat: "hh:mm:ss",
                 outputFormat: "hh:mm a",
-                invalidPlaceholder: ""
+                invalidPlaceholder: "(invalid)"
             }
         }
     }
