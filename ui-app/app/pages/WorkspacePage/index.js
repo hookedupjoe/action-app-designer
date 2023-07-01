@@ -105,6 +105,7 @@ License: MIT
     ThisPage._onFirstActivate = function (theApp) {
         // wsOutlineName = ThisPage.ns(wsOutlineName);
         //--- This tells the page to layout the page, load templates and controls, et
+
         ThisPage.loadWorkspaceState();
         window.onbeforeunload = function () {
             return 'Are you sure you want to leave?';
@@ -130,48 +131,64 @@ License: MIT
                 //--- For debugging
                 window.wsPage = ThisPage;
 
-                ThisPage.subscribe('selectMe', ThisPage.pageTabSelected)
+                ThisApp.common.apiCall({
+                    url: '/design/ws/get-designer-settings'
+                }).then(function (theCurrSettings) {
+                    //--- Do a check?
+                    tmpCurrentDetails = theCurrSettings;
 
-                //--- Now your done - READY to do stuff the first time on your page
+                    ThisApp.common.designerConfig = tmpCurrentDetails;
+                    if (ThisApp.common.designerConfig.sitetitle) {
+                        $('.site-header').html(ThisApp.common.designerConfig.sitetitle)
+                    }
 
-                //--- Subscirbe to when item selected in workspace
-                //ThisPage.parts.west.subscribe('selected', wsItemSelected);
-                ThisPage.parts.center.subscribe('selected', wsItemSelected);
 
-                //ThisPage.layout.toggle("west");
-                ThisPage.refreshWSNav();
-                
-                //--- Do special stuff on page load here
-                //--- Then optionally call the stuff that will happen every time 
-                //      the page is activated if not already called by above code
-                ThisPage._onActivate();
+                    ThisPage.subscribe('selectMe', ThisPage.pageTabSelected)
 
-                if( ThisPage.loadApps !== true){
-                    return;
-                }
+                    //--- Now your done - READY to do stuff the first time on your page
 
-                //Todo: Change to when west publishes loaded
-                ThisApp.delay(1000).then(function(){
-                    //ThisPage.closeSiteMap();
+                    //--- Subscirbe to when item selected in workspace
+                    //ThisPage.parts.west.subscribe('selected', wsItemSelected);
+                    ThisPage.parts.center.subscribe('selected', wsItemSelected);
 
-                var tmpOutlineEl = ThisApp.getByAttr$({action: "outlineDisplay",type: "workspace"});
-                if( tmpOutlineEl && tmpOutlineEl.length > 0){
-                  ThisApp.outlineDisplay(false,tmpOutlineEl.get(0));  
-                  if( tmpOutlineEl.length > 1){
-                    ThisApp.outlineDisplay(false,tmpOutlineEl.get(1));  
-                  }
-                  ThisApp.delay(100).then(function(){
-                    var tmpOutlineEl = ThisApp.getByAttr$({action: "toggleMe",type: "apps"});
-                    if( tmpOutlineEl && tmpOutlineEl.length > 0){
-                        ThisApp.toggleMe(false,tmpOutlineEl.get(0));  
-                        if( tmpOutlineEl.length > 1){
-                          ThisApp.toggleMe(false,tmpOutlineEl.get(1));  
-                        }                        
-                      }
-                  })
-                }
+                    //ThisPage.layout.toggle("west");
+                    ThisPage.refreshWSNav();
+
+                    //--- Do special stuff on page load here
+                    //--- Then optionally call the stuff that will happen every time 
+                    //      the page is activated if not already called by above code
+                    ThisPage._onActivate();
+
+                    if (ThisPage.loadApps !== true) {
+                        return;
+                    }
+
+                    //Todo: Change to when west publishes loaded
+                    ThisApp.delay(1000).then(function () {
+                        //ThisPage.closeSiteMap();
+
+                        var tmpOutlineEl = ThisApp.getByAttr$({ action: "outlineDisplay", type: "workspace" });
+                        if (tmpOutlineEl && tmpOutlineEl.length > 0) {
+                            ThisApp.outlineDisplay(false, tmpOutlineEl.get(0));
+                            if (tmpOutlineEl.length > 1) {
+                                ThisApp.outlineDisplay(false, tmpOutlineEl.get(1));
+                            }
+                            ThisApp.delay(100).then(function () {
+                                var tmpOutlineEl = ThisApp.getByAttr$({ action: "toggleMe", type: "apps" });
+                                if (tmpOutlineEl && tmpOutlineEl.length > 0) {
+                                    ThisApp.toggleMe(false, tmpOutlineEl.get(0));
+                                    if (tmpOutlineEl.length > 1) {
+                                        ThisApp.toggleMe(false, tmpOutlineEl.get(1));
+                                    }
+                                }
+                            })
+                        }
+
+                    })
+
 
                 })
+
             }
         );
     }
@@ -213,6 +230,7 @@ License: MIT
 
         ThisApp.om.getObject(dsNameWorkspaceState, 'ws-state').then(function (theReply) {
             //ToDo: Use State
+            console.log('theReply',theReply);
             dfd.resolve(true)
         });
 
@@ -805,6 +823,7 @@ License: MIT
         })
     };
 
+    
     actions.editDesignerSettings = editDesignerSettings;
     function editDesignerSettings(theParams, theTarget) {
         //--- apiCall to get designer options or do we have them?
