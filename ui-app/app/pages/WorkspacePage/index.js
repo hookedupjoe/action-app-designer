@@ -841,7 +841,9 @@ License: MIT
                 if (!theSubmitted) {
                     return;
                 }
-    
+                
+                ThisApp.common.designerConfig = theData;
+
                 ThisApp.common.apiCall({
                     url: '/design/ws/save-designer-settings',
                     data: theData
