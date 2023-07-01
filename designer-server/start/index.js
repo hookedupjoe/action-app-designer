@@ -14,7 +14,8 @@ module.exports.setup = function (app, scope) {
     scope.locals.path.designer = scope.locals.path.root + "/.designer"
     scope.locals.path.preview = scope.locals.path.root + "/local_preview"
     scope.locals.path.uilibs = scope.locals.path.root + "/ui-libs"
-    
+    scope.locals.path.appdataendpoints = scope.locals.path.root + "/designer-server/appdata"
+
     var express = require('express');
     
     var designRouter = express.Router(),

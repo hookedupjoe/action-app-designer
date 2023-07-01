@@ -83,11 +83,13 @@ module.exports.setup = function setup(scope) {
                 await($.fs.writeFile(tmpDeployBase + 'manifest.yml',tmpManifestText))
 
                 //--- Rebuild using defaults
-                // await($.bld.buildApp(tmpAppName,scope));
-                //was cdn:'cloud', , useCDN: true
                 await($.bld.buildApp(tmpAppName,scope,{deploy:true}));
 
                 await($.fs.copy(scope.locals.path.uilibs + '/',tmpDeployBase + '/ui-app/'));
+                var tmpEPFrom = scope.locals.path.appdataendpoints + '/api/';
+                var tmpEPTo = tmpDeployBase + 'server-app/appdata/api/';
+
+                await($.fs.copy(tmpEPFrom,tmpEPTo));
 
                 var tmpRet = {
                     status: true,
