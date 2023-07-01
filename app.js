@@ -60,7 +60,8 @@ app.all('*', function(req, res, next) {
     //--- ToDo: Make this optional.
     const chokidar = require('chokidar');
     var tmpWatchDir = scope.locals.path.root + "/designer-server"
-    //--> Watch All -->  var tmpWatchDir = scope.locals.path.root;
+    //--> Watch All (CLOSE BEFORE COMMIT!)-->      var tmpWatchDir = scope.locals.path.root;
+
     chokidar.watch(tmpWatchDir, {ignored: /index\.js$/})
         .on('change', (path) => {
             try {
