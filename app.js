@@ -203,7 +203,8 @@ function setup() {
             //==========   PREVIEW  ====
             //--- Allow the designer server to access app files during design process
             preview.use(function(req, res, next) {
-                res.header("Access-Control-Allow-Origin", "http://localhost:33460");
+                //res.header("Access-Control-Allow-Origin", "http://localhost:33460");
+                res.header("Access-Control-Allow-Origin", "*");
                 res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
                 next();
             });

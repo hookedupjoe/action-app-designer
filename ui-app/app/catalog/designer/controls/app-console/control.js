@@ -665,7 +665,10 @@ License: MIT
 		if (tmpBasePath.endsWith(':80')) {
 			tmpBasePath = tmpBasePath.replace(':80', '');
 		}
-		//console.log( 'tmpBasePath', tmpBasePath);
+		if( ActionAppCore.previewServerBase ){
+			tmpBasePath = ActionAppCore.previewServerBase;
+		}
+		console.log( 'tmpBasePath', tmpBasePath);
 
 		//--- Set Preview Link
 		this.controlConfig.index.items["preview-link"].attr = {
