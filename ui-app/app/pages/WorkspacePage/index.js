@@ -230,7 +230,6 @@ License: MIT
 
         ThisApp.om.getObject(dsNameWorkspaceState, 'ws-state').then(function (theReply) {
             //ToDo: Use State
-            console.log('theReply',theReply);
             dfd.resolve(true)
         });
 
