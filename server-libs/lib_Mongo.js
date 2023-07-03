@@ -77,7 +77,7 @@ MongoManager.prototype.getAccount = async function (theID) {
                 if( !(tmpConfig)){
                     console.log("ERROR: NO CONFIG.  Save one for: " + theID);
                     resolve(false);
-                } else {
+                } else {                    
                     self.accounts[theID] = new MongoAccount(tmpConfig);
                     resolve(self.accounts[theID]);
                 }
@@ -104,24 +104,28 @@ function MongoAccount(theAccountConfig) {
 module.exports.MongoAccount = MongoAccount;
 
 MongoAccount.prototype.loadConfig = async function (theAccountConfig) {
-    if (!theAccountConfig) {
-        throw "Config not provided"
-    }
-    var tmpConfig = $.cloneObject(theAccountConfig);
-    if (!tmpConfig.id) {
-        throw "id not provided"
-    }
-    if (!tmpConfig.address) {
-        throw "address not provided"
-    }
-    if (!tmpConfig.port) {
-        tmpConfig.username = '27017'; 
-    }
-    if (!tmpConfig.username) {
-        tmpConfig.username = '';
-    }
-    if (!tmpConfig.password) {
-        tmpConfig.password = '';
+    try {
+        if (!theAccountConfig) {
+            throw "Config not provided"
+        }
+        var tmpConfig = $.cloneObject(theAccountConfig);
+        if (!tmpConfig.id) {
+            throw "id not provided"
+        }
+        if (!tmpConfig.address) {
+            throw "address not provided"
+        }
+        if (!tmpConfig.port) {
+            tmpConfig.username = '27017'; 
+        }
+        if (!tmpConfig.username) {
+            tmpConfig.username = '';
+        }
+        if (!tmpConfig.password) {
+            tmpConfig.password = '';
+        }
+    } catch (error) {
+        console.log("Error in mongo account creation", error);
     }
     this.accountConfig = tmpConfig;
     //--- ToDO: See if running and not allow or reset needed?
