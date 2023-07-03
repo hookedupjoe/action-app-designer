@@ -65,104 +65,136 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 
+//===================
+
+
+
+
+
+
+
+
+
+
+
+
+//--- Passport Auth ------------------
+var passport = require('passport');
+$.passport = passport;
+
+passport.serializeUser(function (user, cb) {
+    cb(null, user);
+  });
+  
+  passport.deserializeUser(function (obj, cb) {
+    cb(null, obj);
+  });
+  
 
 app.use(session({
     resave: false,
     saveUninitialized: true,
-    secret: process.env.SESSION_SECRET
+    secret: process.env.SESSION_SECRET || 'sdflksjflksdjflksdjfieieieiei'
   }));
 
-  var tmpIsPassport = (process.env.AUTH_TYPE == 'passport');
+  //-- when home page loaded, see if auth
+  app.all('/', function(req, res, next) {
+   
+    try {
+        var tmpUser = {};
+        var tmpIsPassport = (process.env.AUTH_TYPE == 'passport');
+        if( tmpIsPassport ){
 
-    if (tmpIsPassport) {
-
-        //--- Passport Auth ------------------
-        var passport = require('passport');
-        $.passport = passport;
-
-        passport.serializeUser(function (user, cb) {
-            cb(null, user);
-        });
-
-        passport.deserializeUser(function (obj, cb) {
-            cb(null, obj);
-        });
-
-        passport.use(new GoogleStrategy({
-            clientID: GOOGLE_CLIENT_ID,
-            clientSecret: GOOGLE_CLIENT_SECRET,
-            callbackURL: "http://localhost:33460/auth/google/callback"
-        },
-            function (accessToken, refreshToken, profile, done) {
-                return done(null, profile);
-            }
-        ));
-
-        passport.use(new GitHubStrategy({
-            clientID: GITHUB_CLIENT_ID,
-            clientSecret: GITHUB_CLIENT_SECRET,
-            callbackURL: "http://localhost:33460/auth/github/callback"
-        },
-            function (accessToken, refreshToken, profile, done) {
-                return done(null, profile);
-            }
-        ));
-
-
-        app.use(passport.initialize());
-        app.use(passport.session());
-
-        app.get('/auth/google/callback',
+            app.use(passport.initialize());
+            app.use(passport.session());
+            
+            app.get('/auth/google/callback',
             passport.authenticate('google', { failureRedirect: '/error' }),
             function (req, res) {
                 // Successful authentication, redirect success.
                 res.redirect('/');
             });
 
-
-        app.get('/auth/github/callback',
-            passport.authenticate('github', { failureRedirect: '/error' }),
-            function (req, res) {
+                
+                app.get('/auth/github/callback',
+                passport.authenticate('github', { failureRedirect: '/error' }),
+                function (req, res) {
                 // Successful authentication, redirect success.
                 res.redirect('/');
-            });
+                });
 
-        app.get('/auth/google',
-            passport.authenticate('google', { scope: ['profile', 'email'] }));
+                app.get('/auth/google',
+                passport.authenticate('google', { scope: ['profile', 'email'] }));
 
-        app.get('/auth/github',
-            passport.authenticate('github', { scope: ['profile', 'email'] }));
+                app.get('/auth/github',
+                passport.authenticate('github', { scope: ['profile', 'email'] }));
 
-        //-- when home page loaded, see if auth
-        app.all('/', function (req, res, next) {
-
-            try {
-                var tmpUser = {};
-
-
-                if (req.session && req.session.passport && req.session.passport.user) {
-                    var tmpUserInfo = req.session.passport.user;
-                    var tmpSource = tmpUserInfo.provider || 'local';
-                    tmpUser.userid = tmpSource + '-' + tmpUserInfo.id;
-                    tmpUser.displayName = tmpUserInfo.displayName || '';
-                    console.log('login tmpUser', tmpUser);
-                } else {
-                    console.log('anonymous, needs login');
-                    res.redirect('/login.html');
-                }
-
-            } catch (error) {
-                console.log("Error in oath check", error);
+    
+        passport.use(new GoogleStrategy({
+            clientID: GOOGLE_CLIENT_ID,
+            clientSecret: GOOGLE_CLIENT_SECRET,
+            callbackURL: "http://localhost:33460/auth/google/callback"
+        },
+            function (accessToken, refreshToken, profile, done) {
+            return done(null, profile);
             }
+        ));
+        
+        passport.use(new GitHubStrategy({
+            clientID: GITHUB_CLIENT_ID,
+            clientSecret: GITHUB_CLIENT_SECRET,
+            callbackURL: "http://localhost:33460/auth/github/callback"
+        },
+            function (accessToken, refreshToken, profile, done) {
+            return done(null, profile);
+            }
+        ));
 
-            next();
-        });
 
-
-
-    } else {
-        console.log('no auth setup needed per env setup');
+            if( req.session && req.session.passport && req.session.passport.user ){
+                var tmpUserInfo = req.session.passport.user;
+                var tmpSource = tmpUserInfo.provider || 'local';
+                tmpUser.userid = tmpSource + '-' + tmpUserInfo.id;
+                tmpUser.displayName = tmpUserInfo.displayName || '';
+                console.log('login tmpUser',tmpUser);
+            } else {
+                res.redirect('/login.html');
+            }
+        }
+    } catch (error) {
+        console.log("Error in oath check", error);
     }
+   
+    next();
+ });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//=============
+
+
 
 app.all('*', function(req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
