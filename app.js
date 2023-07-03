@@ -97,6 +97,10 @@ app.use(session({
     secret: process.env.SESSION_SECRET || 'sdflksjflksdjflksdjfieieieiei'
   }));
 
+  var tmpBaseCallback = 'http://localhost:33460/';
+  if( process.env.PASSPORT_BASE_CALLBACK ){
+    tmpBaseCallback = process.env.PASSPORT_BASE_CALLBACK;
+  }
   //-- when home page loaded, see if auth
   app.all('/', function(req, res, next) {
    
@@ -133,7 +137,7 @@ app.use(session({
         passport.use(new GoogleStrategy({
             clientID: GOOGLE_CLIENT_ID,
             clientSecret: GOOGLE_CLIENT_SECRET,
-            callbackURL: "http://localhost:33460/auth/google/callback"
+            callbackURL: tmpBaseCallback + "auth/google/callback"
         },
             function (accessToken, refreshToken, profile, done) {
             return done(null, profile);
@@ -143,7 +147,7 @@ app.use(session({
         passport.use(new GitHubStrategy({
             clientID: GITHUB_CLIENT_ID,
             clientSecret: GITHUB_CLIENT_SECRET,
-            callbackURL: "http://localhost:33460/auth/github/callback"
+            callbackURL: tmpBaseCallback + "auth/github/callback"
         },
             function (accessToken, refreshToken, profile, done) {
             return done(null, profile);
