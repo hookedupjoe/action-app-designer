@@ -66,7 +66,6 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 
 app.all('*', function(req, res, next) {
-    console.log('req method',req.method);
     res.header("Access-Control-Allow-Origin", "*");
     res.header("Access-Control-Allow-Headers", "X-Requested-With, Content-Type, Accept");
     //--- If OPTIONS check, just send back headers
@@ -75,10 +74,8 @@ app.all('*', function(req, res, next) {
     } else {
         next();
     }
-    
  });
 
- 
 //===================
 
 
