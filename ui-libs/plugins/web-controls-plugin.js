@@ -1,6 +1,6 @@
 /*
 Author: Joseph Francis
-License: MIT
+License: LGPL
 
 Web controls Plugin:
  - Web Control: (n) an interactive controllable object

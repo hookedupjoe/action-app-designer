@@ -1,7 +1,7 @@
 /*
 Action App Library
 Author: Joseph Francis
-License: MIT
+License: LGPL
 
 Application Module Creation
 

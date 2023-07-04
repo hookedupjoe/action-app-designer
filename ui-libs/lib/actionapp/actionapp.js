@@ -1,7 +1,7 @@
 /*
 ActionAppCore Core Library
 Author: Joseph Francis, 2017 - 2023
-License: MIT
+License: LGPL
 */
 
 /**  
@@ -4103,7 +4103,7 @@ window.ActionAppCore = window.ActionAppCore || ActionAppCore;
 
 /*
 Author: Joseph Francis
-License: MIT
+License: LGPL
 */
 //---  SitePage - Base for all application pages --- --- --- --- --- --- --- --- --- --- --- --- 
 (function (ActionAppCore, $) {
@@ -5035,7 +5035,7 @@ License: MIT
 
 /*
 Author: Joseph Francis
-License: MIT
+License: LGPL
 */
 
 (function (ActionAppCore, $) {
@@ -5516,7 +5516,7 @@ License: MIT
 //=========     Controls Plugin
 /*
 Author: Joseph Francis
-License: MIT
+License: LGPL
 */
 
 (function (ActionAppCore, $) {

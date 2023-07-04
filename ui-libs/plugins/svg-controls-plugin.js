@@ -1,6 +1,6 @@
 /*
 Author: Joseph Francis
-License: MIT
+License: LGPL
 
 SVG controls Plugin:
  - SVG Control: (n) an interactive controllable object

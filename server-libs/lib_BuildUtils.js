@@ -2,7 +2,7 @@
   Action Application Build Assistance
 
   Author: Joseph Francis
-  License: MIT  
+  License: LGPL  
 */
 'use strict';
 

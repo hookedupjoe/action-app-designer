@@ -2,7 +2,7 @@
  * Action App Designer
  * 
  *   Author: Joseph Francis, 2017-2023
- *   License: MIT
+ *   License: LGPL
  * 
  *  */
 

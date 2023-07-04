@@ -2,7 +2,7 @@
 * Libraries Works in both Cordova and Node.js / standard web (at the same time)
 * Designed to help create web / mobile applications with ease
 * Author: Joseph Francis
-* License: MIT
+* License: LGPL
 * 2018
 
 ## About Action App  

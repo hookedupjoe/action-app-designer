@@ -1,6 +1,6 @@
 /*
 Author: Joseph Francis
-License: MIT
+License: LGPL
 */
 
 (function (ActionAppCore, $) {

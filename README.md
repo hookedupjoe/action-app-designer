@@ -1,20 +1,22 @@
 # Action App Designer
-Designed to build applications using the Action App environment
+Application Designer for Websites, Mobile Apps and Rubust Web Applications
 
-* Author - Joseph Francis
+* Author - W Joseph Francis
 * (c) hookedup, inc. 2020-2023
-* License - MIT
+* License - LGPL
+
+# Requirements
+* Windows, Mac and Linux (ubuntu recommended for headless server)
+* Node 14 or higher, (18 recommended)
+
+# MongoDB Integration Support
+* Setup MongoDB
+* Load official MongoDB Node Driver (not mongoose)
+* Install and verify it works (authentication setup recommended)
 
 # To Run
 * npm install
 * npm start
 
-# No longer using fibers
-* Now supports Node 16 and higher
-* Windows, Mac and Linux compatible
-* No additional installations needed for development tools
-
 # For More Information
-* See WordPress version at [Action App WordPress](https://wp.actionapp.hookedup.com/).
-* See (older) details about the action app library at [Action App](https://actionapp.hookedup.com/).
-* TBD: Designer Documentation
+* More documentation coming
