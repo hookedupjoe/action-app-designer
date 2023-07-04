@@ -210,8 +210,8 @@ License: MIT
 								"ctl": "a",
 								"classes": "ui button green",
 								"attr": {
-									href: "http://localhost:33461/app001",
-									target: "app-app001"
+									href: "tbd",
+									target: "app-tbd"
 								},
 								text: "Preview Now",
 								"name": "preview-link"
@@ -650,8 +650,9 @@ License: MIT
 		//--- Set Title
 		//this.controlConfig.index.items.title.text = 'Loading ...';
 
+		//--- Move preview to same port
+		//var tmpPort = '33461';
 
-		var tmpPort = '33461';
 		//ToDo: Update method for configuring preview port
 		// try {
 		// 	tmpPort = ThisApp.getPage("WorkspacePage").parts.west.parts.workspace.controlConfig.options.extra.previewPort
@@ -660,18 +661,24 @@ License: MIT
 		// }
 		//console.log( 'tmpPort', tmpPort);
 
-		var tmpBasePath = window.location.origin;
-		tmpBasePath = tmpBasePath.replace('33460', ('' + tmpPort));
-		if (tmpBasePath.endsWith(':80')) {
-			tmpBasePath = tmpBasePath.replace(':80', '');
-		}
-		if( ThisApp.common.designerConfig && ThisApp.common.designerConfig.urlpreview ){
-			tmpBasePath = ThisApp.common.designerConfig.urlpreview;
-		}
+
+
+		//--- Move preview to same port
+
+		// var tmpBasePath = window.location.origin;
+		// tmpBasePath = tmpBasePath.replace('33460', ('' + tmpPort));
+		// if (tmpBasePath.endsWith(':80')) {
+		// 	tmpBasePath = tmpBasePath.replace(':80', '');
+		// }
+		// if( ThisApp.common.designerConfig && ThisApp.common.designerConfig.urlpreview ){
+		// 	tmpBasePath = ThisApp.common.designerConfig.urlpreview;
+		// }
+
 
 		//--- Set Preview Link
+		//*** was href: tmpBasePath + "/" + tmpAppName,
 		this.controlConfig.index.items["preview-link"].attr = {
-			href: tmpBasePath + "/" + tmpAppName,
+			href: "/" + tmpAppName,
 			target: "app" + tmpAppName
 		}
 

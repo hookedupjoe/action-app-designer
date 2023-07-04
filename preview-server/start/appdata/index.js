@@ -7,9 +7,7 @@ module.exports.setup = function setup(scope) {
 
     let $ = scope.locals.$;
     scope.locals.path.appdata = scope.locals.path.start + "/appdata"
-    console.log('scope.locals.path.appdata',scope.locals.path.appdata);
     scope.locals.path.appdata = scope.locals.path.appdata.replace('preview-server','designer-server');
-    console.log('scope.locals.path.appdata',scope.locals.path.appdata);
     
     return  async function processReq(req, res, next) {
         

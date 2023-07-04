@@ -10,6 +10,10 @@ module.exports.setup = function setup(scope) {
     
     return  async function processReq(req, res, next) {
         
+        if(req.session && req.session.passport && req.session.passport.user){
+            console.log('user',req.session.passport.user.displayName);
+        }
+
         var tmpType = req.params.type || ''
         var tmpName = req.params.name || ''
         var tmpRet = {}

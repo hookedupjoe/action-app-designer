@@ -76,6 +76,18 @@ app.all('*', function(req, res, next) {
     }
  });
 
+ 
+//  app.all('*', function(req, res, next) {
+//     var tmpUserInfo = req.session.passport.user;
+//     if( tmpUserInfo ){
+//         var tmpSource = tmpUserInfo.provider || 'local';
+//         tmpUser.userid = tmpSource + '-' + tmpUserInfo.id;
+//         tmpUser.displayName = tmpUserInfo.displayName || '';
+//         console.log('login tmpUser',tmpUser);
+//     }
+//     next();
+//  });
+
 //===================
 
 
@@ -273,10 +285,11 @@ function setup() {
                 
                     await $.fs.ensureDir(tmpSetupDetails.rootDir);
                     await $.fs.ensureDir(tmpSetupDetails.rootDir + 'ui-apps/');
-                    await $.fs.ensureDir(tmpSetupDetails.rootDir + 'server-apps/');
+                    await $.fs.ensureDir(tmpSetupDetails.rootDir + 'deploy/');
                 }
             }
 
+            
             scope.locals.path.ws = {
                 root: tmpWSDirectory,
                 deploy: tmpWSDirectory + "deploy/",
@@ -291,6 +304,11 @@ function setup() {
             app.use(express.static(scope.locals.path.root + '/common'));
             app.use(express.static(tmpWSDirectory));
             app.use(express.static(scope.locals.path.root + '/ui-app'));
+
+            //--- Server Apps from same port ?
+            app.use(express.static(tmpWSDirectory + '/ui-apps'));
+            //--- Deployed Apps from same port using /ui-app ?
+            app.use(express.static(scope.locals.path.ws.deploy));
 
             //--- Plug in application routes
             require('./designer-server/start').setup(app, scope);
@@ -377,8 +395,10 @@ function setup() {
 
             preview.use(express.static(scope.locals.path.root + '/ui-libs'));
             preview.use(express.static(scope.locals.path.root + '/common'));
-            preview.use(express.static(tmpWSDirectory + '/ui-apps'));
-            preview.use(express.static(tmpWSDirectory));
+            //preview.use(express.static(tmpWSDirectory + '/ui-apps'));
+            //console.log('scope.locals.path.ws.deploy',scope.locals.path.ws.deploy);
+            preview.use(express.static(scope.locals.path.ws.deploy));
+            //preview.use(express.static(tmpWSDirectory));
 
                         //--- Plug in application routes
             require('./preview-server/start').setup(preview, previewScope);

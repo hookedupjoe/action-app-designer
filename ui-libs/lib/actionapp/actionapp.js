@@ -37,7 +37,10 @@ var ActionAppCore = {
                     if( ActionAppCore.inDesigner ){
                         var tmpAppName = ThisApp.common.designerResApp
                         //--- Serve the page from the application itself, in diff area
-                        tmpCatDir = 'http://localhost:33461/' + tmpAppName + '/catalog/'
+                        //tmpCatDir = 'http://localhost:33461/' + tmpAppName + '/catalog/'
+
+                        //--- Move preview to same port
+                        tmpCatDir = '/' + tmpAppName + '/catalog/'
                     } else {
                         tmpCatDir = './catalog/'
                     }
