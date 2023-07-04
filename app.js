@@ -115,7 +115,9 @@ passport.serializeUser(function (user, cb) {
     cb(null, obj);
   });
   
-
+//---ToDo: Use MONGO_STARTUP_URL to spin up default connection db for application data
+//         Keep accounts for access to more than one.
+//---ToDo: move to mongo for accounts?
 app.use(session({
     resave: false,
     saveUninitialized: true,
