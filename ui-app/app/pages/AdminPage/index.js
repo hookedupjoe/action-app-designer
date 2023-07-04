@@ -32,7 +32,7 @@ thisPageSpecs.layoutOptions = {
         },
         center: {
           source: '_data',
-          control: "MongoDashboard",
+          control: "ActAppUsers",
           name :'body'
         },
         south: {
