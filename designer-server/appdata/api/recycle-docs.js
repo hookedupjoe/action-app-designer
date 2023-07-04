@@ -12,8 +12,8 @@ module.exports.setup = function setup(scope) {
         this.title = THIS_MODULE_TITLE;
     }
     var base = Route.prototype;
-    var ObjectId = require('mongodb').ObjectID;
-    
+    const { ObjectId } = require('mongodb');
+
     var $ = config.locals.$;
 
     //--- Load the prototype
@@ -39,7 +39,7 @@ module.exports.setup = function setup(scope) {
                 var tmpColl = await tmpDB.getCollection(tmpCollName)
                 for( var iPos in tmpBody.ids ){
                     var tmpID = tmpBody.ids[iPos];
-                    tmpProcIds.push(ObjectId(tmpID));
+                    tmpProcIds.push(new ObjectId(tmpID));
                 }
                 var tmpUD =  { $set: { '__doctype' : '_deleted' } }
                 var tmpQuery = { _id: { $in: tmpProcIds } };

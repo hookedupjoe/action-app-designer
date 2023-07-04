@@ -5,7 +5,7 @@
 
 let $ = require("./globalUtilities").$;
 const { MongoClient } = require('mongodb');
-var ObjectId = require('mongodb').ObjectID;
+const { ObjectId } = require('mongodb');
 
  $.scope.locals.path.ws.mongoConfig = $.scope.locals.path.ws.root + '/mongoconfig/';
  $.scope.locals.path.ws.mongoConfigAccounts = $.scope.locals.path.ws.mongoConfig + '/accounts/';
@@ -20,7 +20,10 @@ var ObjectId = require('mongodb').ObjectID;
 function MongoManager(theAccountConfig) {
     this.accounts = {};
 }
-MongoManager.prototype.ObjectId = ObjectId;
+MongoManager.prototype.ObjectId = function( theObjID ){
+    return new ObjectId(theObjID);
+};
+
 module.exports.MongoManager = MongoManager;
 MongoManager.prototype.addAccountConfig = async function (theAccount) {
     let self = this;

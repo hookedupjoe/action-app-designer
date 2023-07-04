@@ -13,7 +13,6 @@ module.exports.setup = function setup(scope) {
         this.title = THIS_MODULE_TITLE;
     }
     var base = Route.prototype;
-    var ObjectId = require('mongodb').ObjectID;
     
     var $ = config.locals.$;
 

@@ -12,7 +12,7 @@ module.exports.setup = function setup(scope) {
         this.title = THIS_MODULE_TITLE;
     }
     var base = Route.prototype;
-    var ObjectId = require('mongodb').ObjectID;
+    const { ObjectId } = require('mongodb');
     
     var $ = config.locals.$;
 
@@ -44,7 +44,8 @@ module.exports.setup = function setup(scope) {
                 if( tmpID ){
                     var tmpCollection = await tmpDB.getCollection(tmpCollName);
                     var tmpUD =  { $set: tmpBody.data };
-                    tmpAddRet = await tmpCollection.updateOne({_id:ObjectId(tmpID)}, tmpUD)
+                    console.log('update');
+                    tmpAddRet = await tmpCollection.updateOne({_id: new ObjectId(tmpID)}, tmpUD)
 
                 } else {
                     tmpAddRet = await tmpDB.createDoc(tmpCollName, tmpBody.data);
