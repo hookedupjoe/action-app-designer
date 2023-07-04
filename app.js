@@ -99,9 +99,11 @@ app.all('*', function(req, res, next) {
 
 
 
-
+const MongoStore = require('connect-mongo');
 
 //--- Passport Auth ------------------
+var tmpIsPassport = (process.env.AUTH_TYPE == 'passport');
+
 var passport = require('passport');
 $.passport = passport;
 
@@ -117,8 +119,20 @@ passport.serializeUser(function (user, cb) {
 app.use(session({
     resave: false,
     saveUninitialized: true,
+    maxAge: new Date(Date.now() + 3600000),
+    store: MongoStore.create({
+        mongoUrl: process.env.MONGO_STARTUP_URL,
+        mongoOptions: {useNewUrlParser: true, useUnifiedTopology: true},
+        dbName: 'actappauth-sessions',
+        ttl: 14 * 24 * 60 * 60 // = 14 days. Default
+      }),
     secret: process.env.SESSION_SECRET || 'sdflksjflksdjflksdjfieieieiei'
   }));
+
+  if( tmpIsPassport ){
+    app.use(passport.initialize());
+    app.use(passport.session());
+  }
 
   var tmpBaseCallback = 'http://localhost:33460/';
   if( process.env.PASSPORT_BASE_CALLBACK ){
@@ -129,7 +143,6 @@ app.use(session({
    
     try {
         var tmpUser = {};
-        var tmpIsPassport = (process.env.AUTH_TYPE == 'passport');
         if( tmpIsPassport ){
 
             app.use(passport.initialize());
