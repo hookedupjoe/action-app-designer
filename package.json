@@ -22,7 +22,7 @@
     "json-query": "^2.2.2",
     "lodash": "^4.17.21",
     "merge": ">=2.1.1",
-    "mongodb": "^3.6.6",
+    "mongodb": "^5.1.0",
     "os": "^0.1.1",
     "passport": "^0.6.0",
     "passport-github2": "^0.1.12",
