@@ -8,6 +8,7 @@
   
   var tmpPageNames = [   
     'WorkspacePage',
+    'AdminPage',
     'AppDataPage',
     //'ControlBuilderPage',
     'ControlsPage',
