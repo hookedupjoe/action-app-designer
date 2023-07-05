@@ -14,6 +14,10 @@ var path = require('path'),
     scope = {};
 
 var https = require('https');
+const jwt = require('jsonwebtoken');
+const passportJWT = require("passport-jwt");
+const ExtractJWT = passportJWT.ExtractJwt;
+const JWTStrategy   = passportJWT.Strategy;
 
 require('dotenv').config();
 
@@ -104,15 +108,37 @@ app.all('*', function(req, res, next) {
     }
 });
 
+function processJWT(req, res, next) {
+    const authHeader = req.headers['authorization']
+    const token = authHeader && authHeader.split(' ')[1]
+  
+    if (token == null){
+        req.jwtUser = false;
+        next()
+    } else {
+        jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
+            if (err){
+                req.jwtUser = false;
+            } else {
+                req.jwtUser = user;
+            }
+            next()
+            })
+    }
+  
+    
+  }
+  app.use(processJWT)
 
 //--- Passport Auth ------------------
-var tmpIsPassport = (process.env.AUTH_TYPE == 'passport');
+var isUsingPassport = (process.env.AUTH_TYPE == 'passport');
+$.isUsingPassport = isUsingPassport;
 
 const MongoStore = require('connect-mongo');
 var passport = require('passport');
 $.passport = passport;
 
-if( tmpIsPassport ){
+if( isUsingPassport ){
   passport.serializeUser(function (user, cb) {
     cb(null, user);
   });
@@ -175,11 +201,37 @@ app.use(session({
     failureRedirect: "/login.html",
     }))
 
+/* JWT login. */
+app.post('/login/jwt', function (req, res, next) {
+
+    passport.authenticate('local', {scope: ['profile', 'email'] , session: false}, (err, user, info) => {
+        if (err || !user) {
+            return res.status(400).json({
+                message: info ? info.message : 'Login failed',
+                user   : user
+            });
+        }
+
+        req.login(user, {session: false}, (err) => {
+            if (err) {
+                res.send(err);
+            }
+
+            const token = jwt.sign(user, process.env.JWT_SECRET);
+
+            return res.json({user, token});
+        });
+    })
+    (req, res);
+
+});
+
     app.use(passport.initialize());
     app.use(passport.session());
 
     passport.use(new LocalStrategy (authUser))
 
+  
 }
 
   var tmpBaseCallback = 'http://localhost:33460/';
@@ -193,7 +245,7 @@ app.use(session({
    
     try {
         var tmpUser = {};
-        if( tmpIsPassport ){
+        if( isUsingPassport ){
             if( req.session && req.session.passport && req.session.passport.user ){
                 var tmpUserInfo = req.session.passport.user;
                 var tmpSource = tmpUserInfo.provider || 'local';
@@ -318,7 +370,27 @@ function setup(thePassportFlag) {
                 next();
             });
 
-            if( thePassportFlag ){
+
+             if( thePassportFlag ){
+                                
+
+                //--- ToDo: Should we be doing this instead of doing this via middleware?
+            //     passport.use(new JWTStrategy({
+            //         jwtFromRequest: ExtractJWT.fromAuthHeaderAsBearerToken(),
+            //         secretOrKey   : process.env.JWT_SECRET
+            //     },
+            //     function (jwtPayload, cb) {
+            //         //find the user in db if needed
+            //         return UserModel.findOneById(jwtPayload.id)
+            //             .then(user => {
+            //                 return cb(null, user);
+            //             })
+            //             .catch(err => {
+            //                 return cb(err);
+            //             });
+            //     }
+            //     ));
+
                 passport.use(new GoogleStrategy({
                     clientID: GOOGLE_CLIENT_ID,
                     clientSecret: GOOGLE_CLIENT_SECRET,
@@ -473,4 +545,4 @@ function setup(thePassportFlag) {
 
 
 //--- Run setup with async wrapper to allow async stuff
-setup(tmpIsPassport);
+setup(isUsingPassport);

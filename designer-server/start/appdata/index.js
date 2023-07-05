@@ -9,9 +9,17 @@ module.exports.setup = function setup(scope) {
     scope.locals.path.appdata = scope.locals.path.start + "/appdata"
     
     return  async function processReq(req, res, next) {
-        
         if(req.session && req.session.passport && req.session.passport.user){
-            console.log('user',req.session.passport.user.displayName);
+            console.log('session user',req.session.passport.user.displayName);
+        } else {
+            if( req.jwtUser ){
+              console.log('jwt user',req.jwtUser);
+            } else {
+              console.log('anonymous');
+                if( $.isUsingPassport ){
+                    return res.sendStatus(401)
+                }
+            }
         }
 
         var tmpType = req.params.type || ''
