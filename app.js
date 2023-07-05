@@ -132,7 +132,7 @@ app.use(session({
     saveUninitialized: true,
     maxAge: new Date(Date.now() + 3600000),
     store: MongoStore.create({
-        mongoUrl: process.env.MONGO_STARTUP_URL,
+        mongoUrl: startupDataString,
         mongoOptions: {useNewUrlParser: true, useUnifiedTopology: true},
         dbName: 'actappauth-sessions',
         ttl: 14 * 24 * 60 * 60 // = 14 days. Default
