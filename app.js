@@ -154,6 +154,9 @@ passport.serializeUser(function (user, cb) {
   
 
 
+  
+  
+
 
 //---ToDo: Use MONGO_STARTUP_URL to spin up default connection db for application data
 //         Keep accounts for access to more than one.
@@ -250,6 +253,7 @@ done (null, {name: "Kyle", id: 123} )
 
 
 
+
 app.post ("/login", passport.authenticate('local', {
 successRedirect: "/",
 failureRedirect: "/login.html",
@@ -259,48 +263,8 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 
-app.get('/auth/google/callback',
-passport.authenticate('google', { failureRedirect: '/error' }),
-function (req, res) {
-    // Successful authentication, redirect success.
-    res.redirect('/');
-});
-
-
-app.get('/auth/github/callback',
-passport.authenticate('github', { failureRedirect: '/error' }),
-function (req, res) {
-// Successful authentication, redirect success.
-res.redirect('/');
-});
-
-
-
-
-//localonly---   
-passport.use(new GoogleStrategy({
-clientID: GOOGLE_CLIENT_ID,
-clientSecret: GOOGLE_CLIENT_SECRET,
-callbackURL: tmpBaseCallback + "auth/google/callback"
-},
-function (accessToken, refreshToken, profile, done) {
-return done(null, profile);
-}
-));
-
-passport.use(new GitHubStrategy({
-clientID: GITHUB_CLIENT_ID,
-clientSecret: GITHUB_CLIENT_SECRET,
-callbackURL: tmpBaseCallback + "auth/github/callback"
-},
-function (accessToken, refreshToken, profile, done) {
-return done(null, profile);
-}
-));
-
-
-
 passport.use(new LocalStrategy (authUser))
+
 
 
 
@@ -313,6 +277,7 @@ passport.use(new LocalStrategy (authUser))
 
   
 
+  
   //-- when home page loaded, see if auth
   app.all('/', function(req, res, next) {
    
@@ -473,6 +438,45 @@ function setup() {
                 next();
             });
 
+
+//localonly---   
+passport.use(new GoogleStrategy({
+    clientID: GOOGLE_CLIENT_ID,
+    clientSecret: GOOGLE_CLIENT_SECRET,
+    callbackURL: tmpBaseCallback + "auth/google/callback"
+    },
+    function (accessToken, refreshToken, profile, done) {
+    return done(null, profile);
+    }
+    ));
+    
+    passport.use(new GitHubStrategy({
+    clientID: GITHUB_CLIENT_ID,
+    clientSecret: GITHUB_CLIENT_SECRET,
+    callbackURL: tmpBaseCallback + "auth/github/callback"
+    },
+    function (accessToken, refreshToken, profile, done) {
+    return done(null, profile);
+    }
+    ));
+    
+    
+            
+  app.get('/auth/google/callback',
+  passport.authenticate('google', { failureRedirect: '/error' }),
+  function (req, res) {
+      // Successful authentication, redirect success.
+      res.redirect('/');
+  });
+  
+  
+  app.get('/auth/github/callback',
+  passport.authenticate('github', { failureRedirect: '/error' }),
+  function (req, res) {
+  // Successful authentication, redirect success.
+  res.redirect('/');
+  });
+  
 
             //--- Standard Server Startup
             //var server = http.createServer(app);
