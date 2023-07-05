@@ -15,9 +15,10 @@ var path = require('path'),
 
 var https = require('https');
 const jwt = require('jsonwebtoken');
-const passportJWT = require("passport-jwt");
-const ExtractJWT = passportJWT.ExtractJwt;
-const JWTStrategy   = passportJWT.Strategy;
+//const passportJWT = require("passport-jwt");
+// const ExtractJWT = passportJWT.ExtractJwt;
+// const JWTStrategy   = passportJWT.Strategy;
+const ejs = require('ejs');
 
 require('dotenv').config();
 
@@ -175,7 +176,7 @@ app.use(session({
     passport.authenticate('github', { scope: ['profile', 'email'] }));
     
     app.post ("/login", passport.authenticate('local', {
-    successRedirect: "/",
+    successRedirect: "/authcomplete",
     failureRedirect: "/login.html",
     }))
 
@@ -256,9 +257,49 @@ function processAuth(req, res, next) {
   }
 
   
-  //-- when home page loaded, see if auth
-  app.all('/', function(req, res, next) {
+//   //-- when home page loaded, see if auth
+//   app.all('/', function(req, res, next) {
     
+//     try {
+//         var tmpUser = {};
+//         if( isUsingPassport ){
+//             if( req.session && req.session.passport && req.session.passport.user ){
+//                 var tmpUserInfo = req.session.passport.user;
+//                 var tmpSource = tmpUserInfo.provider || 'local';
+//                 tmpUser.userid = tmpSource + '-' + tmpUserInfo.id;
+//                 tmpUser.displayName = tmpUserInfo.displayName || '';
+//                 console.log('login tmpUser',tmpUser);
+//             } else {
+//                 res.redirect('/login.html');
+//             }
+//         }
+//     } catch (error) {
+//         console.log("Error in oath check", error);
+//     }
+   
+//     next();
+//  });
+
+  //-- stop pages from loading with index.html -vs- main entry point
+  app.all(/index.html/, function(req, res, next) {
+    
+    try {
+        var tmpCheckPos = req.url.toLowerCase().indexOf('index.html');
+        if( tmpCheckPos > -1){
+            var tmpURL = req.url.substring(0,tmpCheckPos);
+            res.redirect(tmpURL);
+        }
+    } catch (error) {
+        //--- OK?
+        console.log('Error attempting to check for index',error);
+    }
+   
+    next();
+ });
+
+
+ //-- When any directory is loaded (home page or app)
+ app.all(/\/$/, function(req, res, next) {
     try {
         var tmpUser = {};
         if( isUsingPassport ){
@@ -267,9 +308,10 @@ function processAuth(req, res, next) {
                 var tmpSource = tmpUserInfo.provider || 'local';
                 tmpUser.userid = tmpSource + '-' + tmpUserInfo.id;
                 tmpUser.displayName = tmpUserInfo.displayName || '';
-                console.log('login tmpUser',tmpUser);
             } else {
-                res.redirect('/login.html');
+                var tmpLoginURL = '/pagelogin?type=page';
+                tmpLoginURL += '&page=' + req.url;
+                res.redirect(tmpLoginURL);
             }
         }
     } catch (error) {
@@ -279,13 +321,37 @@ function processAuth(req, res, next) {
     next();
  });
 
-
-
-app.all('*', function(req, res, next) {
-    res.header("Access-Control-Allow-Origin", "*");
-    res.header("Access-Control-Allow-Headers", "X-Requested-With");
-    next();
+ app.get('/pagelogin', function (req, res, next) {
+    
+    // Render page using renderFile method
+    ejs.renderFile('views/pagelogin.ejs', {},
+    {}, function (err, template) {
+        if (err) {
+            throw err;
+        } else {
+            res.end(template);
+        }
+    });
 });
+
+app.get('/authcomplete', function (req, res, next) {
+    
+    // Render page using renderFile method
+    ejs.renderFile('views/authcomplete.ejs', {},
+    {}, function (err, template) {
+        if (err) {
+            throw err;
+        } else {
+            res.end(template);
+        }
+    });
+});
+
+// app.all('*', function(req, res, next) {
+//     res.header("Access-Control-Allow-Origin", "*");
+//     res.header("Access-Control-Allow-Headers", "X-Requested-With");
+//     next();
+// });
 
 try {
     //--- ToDo: Make this optional.
@@ -431,7 +497,7 @@ function setup(thePassportFlag) {
                     passport.authenticate('google', { failureRedirect: '/error' }),
                     function (req, res) {
                         // Successful authentication, redirect success.
-                        res.redirect('/');
+                        res.redirect('/authcomplete');
                     }
                 );
                 
@@ -439,7 +505,7 @@ function setup(thePassportFlag) {
                     passport.authenticate('github', { failureRedirect: '/error' }),
                     function (req, res) {
                     // Successful authentication, redirect success.
-                    res.redirect('/');
+                    res.redirect('/authcomplete');
                     }
                 );
 
