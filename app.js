@@ -108,28 +108,6 @@ app.all('*', function(req, res, next) {
     }
 });
 
-function processJWT(req, res, next) {
-    const authHeader = req.headers['authorization']
-    const token = authHeader && authHeader.split(' ')[1]
-  
-    if (token == null){
-        req.jwtUser = false;
-        next()
-    } else {
-        jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
-            if (err){
-                req.jwtUser = false;
-            } else {
-                req.jwtUser = user;
-            }
-            next()
-            })
-    }
-  
-    
-  }
-  app.use(processJWT)
-
 //--- Passport Auth ------------------
 var isUsingPassport = (process.env.AUTH_TYPE == 'passport');
 $.isUsingPassport = isUsingPassport;
@@ -231,6 +209,40 @@ app.post('/login/jwt', function (req, res, next) {
 
     passport.use(new LocalStrategy (authUser))
 
+    
+function processAuth(req, res, next) {
+    if( req.session && req.session.passport && req.session.passport.user ){
+        var tmpUser = req.session.passport.user;
+        var tmpUserKey = tmpUser.provider + "-" + tmpUser.id;
+        req.authUser = {
+            id: tmpUserKey,
+            name: tmpUser.displayName
+        }
+        next()
+    } else {
+        const authHeader = req.headers['authorization']
+        const token = authHeader && authHeader.split(' ')[1]
+      
+        if (token == null){
+            req.authUser = false;
+            next()
+        } else {
+            jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
+                if (err){
+                    req.authUser = false;
+                } else {
+                    req.authUser = user;
+                }
+                next()
+                })
+        }
+    }
+    
+  
+    
+  }
+  app.use(processAuth)
+
   
 }
 
@@ -242,7 +254,7 @@ app.post('/login/jwt', function (req, res, next) {
   
   //-- when home page loaded, see if auth
   app.all('/', function(req, res, next) {
-   
+    
     try {
         var tmpUser = {};
         if( isUsingPassport ){
@@ -494,10 +506,8 @@ function setup(thePassportFlag) {
             preview.use(express.static(scope.locals.path.ws.deploy));
             //preview.use(express.static(tmpWSDirectory));
 
-                        //--- Plug in application routes
+            //--- Plug in application routes
             require('./preview-server/start').setup(preview, previewScope);
-                 
-            
 
              
             // error handlers
