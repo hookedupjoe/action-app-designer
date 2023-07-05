@@ -19,6 +19,7 @@ const { ObjectId } = require('mongodb');
 //==== MongoManager === === === === === === === === === === 
 function MongoManager(theAccountConfig) {
     this.accounts = {};
+    this.accountConfigs = {};
 }
 MongoManager.prototype.ObjectId = function( theObjID ){
     return new ObjectId(theObjID);
@@ -42,9 +43,13 @@ MongoManager.prototype.getAccountConfig = async function (theID) {
     let self = this;
     return new Promise(async function (resolve, reject) {
         try {
-            var tmpBaseDir = $.scope.locals.path.ws.mongoConfigAccounts;
-            var tmpConfig = await $.bld.getJsonFile(tmpBaseDir + theID + '.json');
-            resolve(tmpConfig);
+            if( self.accountConfigs[theID]){
+                resolve(self.accountConfigs[theID]);
+            } else {
+                var tmpBaseDir = $.scope.locals.path.ws.mongoConfigAccounts;
+                var tmpConfig = await $.bld.getJsonFile(tmpBaseDir + theID + '.json');
+                resolve(tmpConfig);
+            }
         } catch (error) {
             reject(error);
         } 
@@ -68,6 +73,14 @@ MongoManager.prototype.getAccountConfigs = async function () {
     return tmpRet;
 }
 
+MongoManager.prototype.getSystemAccount = async function () {
+    return this.getAccount('_system');
+}    
+
+
+MongoManager.prototype.setAccountConfig = async function (theID, theConfig) {
+    this.accountConfigs[theID] = theConfig;
+}    
 MongoManager.prototype.getAccount = async function (theID) {
     let self = this;
     return new Promise(async function (resolve, reject) {
@@ -321,3 +334,4 @@ MongoDatabase.prototype.addDocument = function (theDoc) {
     //     }
     // });
 };
+

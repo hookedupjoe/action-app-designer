@@ -58,6 +58,38 @@ previewScope.locals = {
 previewScope.locals.path.start = scope.locals.path.root + "/preview-server";
 previewScope.locals.path.libraries = scope.locals.path.root + "/server-libs";
 
+
+var isUsingData = false;
+    var startupDataString = '';
+    var mongoSystemAccount = false;
+    var homeAccountConfig = {};
+   
+    const ACTAPP_DB_HOME_ACCOUNT_ADDRESS = process.env.ACTAPP_DB_HOME_ACCOUNT_ADDRESS;
+    if( ACTAPP_DB_HOME_ACCOUNT_ADDRESS ){
+       const ACTAPP_DB_HOME_ACCOUNT_PORT=process.env.ACTAPP_DB_HOME_ACCOUNT_PORT;
+       const ACTAPP_DB_HOME_ACCOUNT_USERNAME=process.env.ACTAPP_DB_HOME_ACCOUNT_USERNAME;
+       const ACTAPP_DB_HOME_ACCOUNT_PASSWORD=process.env.ACTAPP_DB_HOME_ACCOUNT_PASSWORD;
+       var tmpAcct = '';
+       homeAccountConfig.id = "_system";
+       homeAccountConfig.address = ACTAPP_DB_HOME_ACCOUNT_ADDRESS;
+       homeAccountConfig.port = ACTAPP_DB_HOME_ACCOUNT_PORT
+       
+       if( ACTAPP_DB_HOME_ACCOUNT_USERNAME ){
+           tmpAcct = ACTAPP_DB_HOME_ACCOUNT_USERNAME;
+           homeAccountConfig.username = ACTAPP_DB_HOME_ACCOUNT_USERNAME;
+           if( ACTAPP_DB_HOME_ACCOUNT_PASSWORD ){
+               tmpAcct += ':' + ACTAPP_DB_HOME_ACCOUNT_PASSWORD;
+               homeAccountConfig.password = ACTAPP_DB_HOME_ACCOUNT_PASSWORD
+           }
+       }
+       startupDataString = 'mongodb://' + tmpAcct + '@' + ACTAPP_DB_HOME_ACCOUNT_ADDRESS + ':' + ACTAPP_DB_HOME_ACCOUNT_PORT + '/?retryWrites=true&w=majority';
+       isUsingData = true;
+       
+       
+       
+    }
+
+const bcrypt = require("bcrypt")
 var express = require('express'),
 app = express(),
 preview = express(),
@@ -140,19 +172,30 @@ app.use(session({
   }));
 
     
-    authUser = (user, password, done) => {
-        console.log(`Value of "User" in authUser function ----> ${user}`)         //passport will populate, user = req.body.username
-        console.log(`Value of "Password" in authUser function ----> ${password}`) //passport will popuplate, password = req.body.password
+    async function authUser(theUsername, thePassword, done){
+        var tmpAccount = await $.MongoManager.getAccount('_system');
+        var tmpDB = await tmpAccount.getDatabase('actappauth');
+        var tmpDocType = 'user';
+        var tmpMongoDB = tmpDB.getMongoDB();        
+        var tmpDocs = await tmpMongoDB.collection('actapp-' + tmpDocType)
+            .find({username:theUsername})
+            .filter({username:theUsername, __doctype:tmpDocType})
+            .toArray();
 
-    // Use the "user" and "password" to search the DB and match user/password to authenticate the user
-    // 1. If the user not found, done (null, false)
-    // 2. If the password does not match, done (null, false)
-    // 3. If user found and password match, done (null, user)
-        
-        let authenticated_user = { id: 123, name: "Kyle"} 
-    //Let's assume that DB search that user found and password matched for Kyle
-        
-        return done (null, authenticated_user ) 
+        if( tmpDocs && tmpDocs.length == 1){
+            var tmpUserDoc = tmpDocs[0];
+            if( tmpUserDoc.username != theUsername ){
+                return done (null, false );
+            }
+            var tmpIsGood = await bcrypt.compare(thePassword, tmpUserDoc.password);
+            if( !(tmpIsGood) ){
+                return done (null, false );
+            }
+            var tmpRetDoc = {id: tmpUserDoc.username, displayName: tmpUserDoc.firstname + ' ' + tmpUserDoc.lastname};
+            return done (null, tmpRetDoc ) 
+        } else {
+            return done (null, false ) 
+        }
     }
 
     
@@ -160,9 +203,6 @@ app.use(session({
 
   if( tmpIsPassport ){
     
-    app.use(passport.initialize());
-    app.use(passport.session());
-
     app.get('/auth/google',
     passport.authenticate('google', { scope: ['profile', 'email'] }));
 
@@ -170,26 +210,14 @@ app.use(session({
     passport.authenticate('github', { scope: ['profile', 'email'] }));
 
     
-    app.get('/auth/login', function (req, res) {
-        var tmpForm = '<h1> Login </h1><form action="/login" method="POST">   USER <input type="text" name="username">   PASSWORD <input type="password" name="password">   <button type="submit"> Submit </button></form>'
-        res.send(tmpForm);
-    });
+    // app.get('/auth/login', function (req, res) {
+    //     var tmpForm = '<h1> Login </h1><form action="/login" method="POST">   USER <input type="text" name="username">   PASSWORD <input type="password" name="password">   <button type="submit"> Submit </button></form>'
+    //     res.send(tmpForm);
+    // });
     
-    // app.post("/login", function (req, res) {
-    //     var tmpForm = 'LOGIN'
-    //     res.send(tmpForm);
-    // });
-
-
-   
-    // app.post('/auth/local', function (req, res) {
-    //     var tmpForm = 'GOT IT'
-    //     res.send(tmpForm);
-    // });
-
     app.post ("/auth/local", passport.authenticate('local', {
         successRedirect: "/",
-        failureRedirect: "/auth/login",
+        failureRedirect: "/login.html",
     }))
 
            
@@ -224,11 +252,53 @@ done (null, {name: "Kyle", id: 123} )
 
 app.post ("/login", passport.authenticate('local', {
 successRedirect: "/",
-failureRedirect: "/auth/login",
+failureRedirect: "/login.html",
 }))
 
 app.use(passport.initialize());
 app.use(passport.session());
+
+
+app.get('/auth/google/callback',
+passport.authenticate('google', { failureRedirect: '/error' }),
+function (req, res) {
+    // Successful authentication, redirect success.
+    res.redirect('/');
+});
+
+
+app.get('/auth/github/callback',
+passport.authenticate('github', { failureRedirect: '/error' }),
+function (req, res) {
+// Successful authentication, redirect success.
+res.redirect('/');
+});
+
+
+
+
+//localonly---   
+passport.use(new GoogleStrategy({
+clientID: GOOGLE_CLIENT_ID,
+clientSecret: GOOGLE_CLIENT_SECRET,
+callbackURL: tmpBaseCallback + "auth/google/callback"
+},
+function (accessToken, refreshToken, profile, done) {
+return done(null, profile);
+}
+));
+
+passport.use(new GitHubStrategy({
+clientID: GITHUB_CLIENT_ID,
+clientSecret: GITHUB_CLIENT_SECRET,
+callbackURL: tmpBaseCallback + "auth/github/callback"
+},
+function (accessToken, refreshToken, profile, done) {
+return done(null, profile);
+}
+));
+
+
 
 passport.use(new LocalStrategy (authUser))
 
@@ -250,46 +320,6 @@ passport.use(new LocalStrategy (authUser))
         var tmpUser = {};
         if( tmpIsPassport ){
 
-            app.get('/auth/google/callback',
-            passport.authenticate('google', { failureRedirect: '/error' }),
-            function (req, res) {
-                // Successful authentication, redirect success.
-                res.redirect('/');
-            });
-
-            
-            app.get('/auth/github/callback',
-            passport.authenticate('github', { failureRedirect: '/error' }),
-            function (req, res) {
-            // Successful authentication, redirect success.
-            res.redirect('/');
-            });
-
-            
-
-
-    //localonly---   
-        passport.use(new GoogleStrategy({
-            clientID: GOOGLE_CLIENT_ID,
-            clientSecret: GOOGLE_CLIENT_SECRET,
-            callbackURL: tmpBaseCallback + "auth/google/callback"
-        },
-            function (accessToken, refreshToken, profile, done) {
-            return done(null, profile);
-            }
-        ));
-        
-        passport.use(new GitHubStrategy({
-            clientID: GITHUB_CLIENT_ID,
-            clientSecret: GITHUB_CLIENT_SECRET,
-            callbackURL: tmpBaseCallback + "auth/github/callback"
-        },
-            function (accessToken, refreshToken, profile, done) {
-            return done(null, profile);
-            }
-        ));
-       
-        
         
      
             if( req.session && req.session.passport && req.session.passport.user ){
@@ -412,6 +442,11 @@ function setup() {
                 catalog: tmpWSDirectory + "catalog/",
                 pages: tmpWSDirectory + "catalog/pages/",
                 serverApps: tmpWSDirectory + "designer-servers/"
+            }
+
+            if( homeAccountConfig ){
+                require(scope.locals.path.libraries + '/lib_Mongo.js');
+                $.MongoManager.setAccountConfig('_system', homeAccountConfig);
             }
 
             app.use(express.static(scope.locals.path.root + '/ui-libs'));
