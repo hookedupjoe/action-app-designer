@@ -16,22 +16,18 @@ var path = require('path'),
 var https = require('https');
 
 require('dotenv').config();
-//localonly---   
+
 const GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 const GitHubStrategy = require('passport-github2').Strategy;
-
-  
 const LocalStrategy = require('passport-local').Strategy
 
 const session = require('express-session');
-
 
 const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
 const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_SECRET;
 
 const GITHUB_CLIENT_ID = process.env.GITHUB_CLIENT_ID;
 const GITHUB_CLIENT_SECRET = process.env.GITHUB_SECRET;
-  
 
 scope.locals = {
     name: 'action-app-designer',
@@ -47,7 +43,6 @@ var $ = require(scope.locals.path.libraries + '/globalUtilities.js').$;
 $.scope = scope;
 var bld = require(scope.locals.path.libraries + '/lib_BuildUtils.js');
 
-
 previewScope.locals = {
     name: 'action-app-preview-server',
     title: 'Action App Preview Server',
@@ -60,34 +55,31 @@ previewScope.locals.path.libraries = scope.locals.path.root + "/server-libs";
 
 
 var isUsingData = false;
-    var startupDataString = '';
-    var mongoSystemAccount = false;
-    var homeAccountConfig = {};
-   
-    const ACTAPP_DB_HOME_ACCOUNT_ADDRESS = process.env.ACTAPP_DB_HOME_ACCOUNT_ADDRESS;
-    if( ACTAPP_DB_HOME_ACCOUNT_ADDRESS ){
-       const ACTAPP_DB_HOME_ACCOUNT_PORT=process.env.ACTAPP_DB_HOME_ACCOUNT_PORT;
-       const ACTAPP_DB_HOME_ACCOUNT_USERNAME=process.env.ACTAPP_DB_HOME_ACCOUNT_USERNAME;
-       const ACTAPP_DB_HOME_ACCOUNT_PASSWORD=process.env.ACTAPP_DB_HOME_ACCOUNT_PASSWORD;
-       var tmpAcct = '';
-       homeAccountConfig.id = "_system";
-       homeAccountConfig.address = ACTAPP_DB_HOME_ACCOUNT_ADDRESS;
-       homeAccountConfig.port = ACTAPP_DB_HOME_ACCOUNT_PORT
-       
-       if( ACTAPP_DB_HOME_ACCOUNT_USERNAME ){
-           tmpAcct = ACTAPP_DB_HOME_ACCOUNT_USERNAME;
-           homeAccountConfig.username = ACTAPP_DB_HOME_ACCOUNT_USERNAME;
-           if( ACTAPP_DB_HOME_ACCOUNT_PASSWORD ){
-               tmpAcct += ':' + ACTAPP_DB_HOME_ACCOUNT_PASSWORD;
-               homeAccountConfig.password = ACTAPP_DB_HOME_ACCOUNT_PASSWORD
-           }
-       }
-       startupDataString = 'mongodb://' + tmpAcct + '@' + ACTAPP_DB_HOME_ACCOUNT_ADDRESS + ':' + ACTAPP_DB_HOME_ACCOUNT_PORT + '/?retryWrites=true&w=majority';
-       isUsingData = true;
-       
-       
-       
+var startupDataString = '';
+var mongoSystemAccount = false;
+var homeAccountConfig = {};
+
+const ACTAPP_DB_HOME_ACCOUNT_ADDRESS = process.env.ACTAPP_DB_HOME_ACCOUNT_ADDRESS;
+if( ACTAPP_DB_HOME_ACCOUNT_ADDRESS ){
+    const ACTAPP_DB_HOME_ACCOUNT_PORT=process.env.ACTAPP_DB_HOME_ACCOUNT_PORT;
+    const ACTAPP_DB_HOME_ACCOUNT_USERNAME=process.env.ACTAPP_DB_HOME_ACCOUNT_USERNAME;
+    const ACTAPP_DB_HOME_ACCOUNT_PASSWORD=process.env.ACTAPP_DB_HOME_ACCOUNT_PASSWORD;
+    var tmpAcct = '';
+    homeAccountConfig.id = "_system";
+    homeAccountConfig.address = ACTAPP_DB_HOME_ACCOUNT_ADDRESS;
+    homeAccountConfig.port = ACTAPP_DB_HOME_ACCOUNT_PORT
+    
+    if( ACTAPP_DB_HOME_ACCOUNT_USERNAME ){
+        tmpAcct = ACTAPP_DB_HOME_ACCOUNT_USERNAME;
+        homeAccountConfig.username = ACTAPP_DB_HOME_ACCOUNT_USERNAME;
+        if( ACTAPP_DB_HOME_ACCOUNT_PASSWORD ){
+            tmpAcct += ':' + ACTAPP_DB_HOME_ACCOUNT_PASSWORD;
+            homeAccountConfig.password = ACTAPP_DB_HOME_ACCOUNT_PASSWORD
+        }
     }
+    startupDataString = 'mongodb://' + tmpAcct + '@' + ACTAPP_DB_HOME_ACCOUNT_ADDRESS + ':' + ACTAPP_DB_HOME_ACCOUNT_PORT + '/?retryWrites=true&w=majority';
+    isUsingData = true;
+}
 
 const bcrypt = require("bcrypt")
 var express = require('express'),
@@ -112,47 +104,21 @@ app.all('*', function(req, res, next) {
     }
  });
 
- 
-//  app.all('*', function(req, res, next) {
-//     var tmpUserInfo = req.session.passport.user;
-//     if( tmpUserInfo ){
-//         var tmpSource = tmpUserInfo.provider || 'local';
-//         tmpUser.userid = tmpSource + '-' + tmpUserInfo.id;
-//         tmpUser.displayName = tmpUserInfo.displayName || '';
-//         console.log('login tmpUser',tmpUser);
-//     }
-//     next();
-//  });
-
-//===================
-
-
-
-
-
-
-
-
-
-
-const MongoStore = require('connect-mongo');
 
 //--- Passport Auth ------------------
 var tmpIsPassport = (process.env.AUTH_TYPE == 'passport');
 
+const MongoStore = require('connect-mongo');
 var passport = require('passport');
 $.passport = passport;
 
-//localonly---   
-passport.serializeUser(function (user, cb) {
+if( tmpIsPassport ){
+  passport.serializeUser(function (user, cb) {
     cb(null, user);
   });
-  
   passport.deserializeUser(function (obj, cb) {
     cb(null, obj);
   });
-  
-
 
   
   
@@ -202,80 +168,28 @@ app.use(session({
     }
 
     
-
-
-  if( tmpIsPassport ){
-    
     app.get('/auth/google',
     passport.authenticate('google', { scope: ['profile', 'email'] }));
 
     app.get('/auth/github',
     passport.authenticate('github', { scope: ['profile', 'email'] }));
-
     
-    // app.get('/auth/login', function (req, res) {
-    //     var tmpForm = '<h1> Login </h1><form action="/login" method="POST">   USER <input type="text" name="username">   PASSWORD <input type="password" name="password">   <button type="submit"> Submit </button></form>'
-    //     res.send(tmpForm);
-    // });
-    
-    app.post ("/auth/local", passport.authenticate('local', {
-        successRedirect: "/",
-        failureRedirect: "/login.html",
+    app.post ("/login", passport.authenticate('local', {
+    successRedirect: "/",
+    failureRedirect: "/login.html",
     }))
 
-           
-    passport.serializeUser( (user, done) => { 
-        console.log(`--------> Serialize User`)
-        console.log(user)     
-    
-        done(null, user.id)
-      
-    // Passport will pass the authenticated_user to serializeUser as "user" 
-    // This is the USER object from the done() in auth function
-    // Now attach using done (null, user.id) tie this user to the req.session.passport.user = {id: user.id}, 
-    // so that it is tied to the session object
-    
-    } )
+    app.use(passport.initialize());
+    app.use(passport.session());
 
-    
-passport.deserializeUser((id, done) => {
-console.log("---------> Deserialize Id")
-console.log(id)
+    passport.use(new LocalStrategy (authUser))
 
-done (null, {name: "Kyle", id: 123} )      
-
-// This is the id that is saved in req.session.passport.{ user: "id"} during the serialization
-// use the id to find the user in the DB and get the user object with user details
-// pass the USER object in the done() of the de-serializer
-// this USER object is attached to the "req.user", and can be used anywhere in the App.
-
-}) 
-
-
-
-
-app.post ("/login", passport.authenticate('local', {
-successRedirect: "/",
-failureRedirect: "/login.html",
-}))
-
-app.use(passport.initialize());
-app.use(passport.session());
-
-
-passport.use(new LocalStrategy (authUser))
-
-
-
-
-  }
+}
 
   var tmpBaseCallback = 'http://localhost:33460/';
   if( process.env.PASSPORT_BASE_CALLBACK ){
     tmpBaseCallback = process.env.PASSPORT_BASE_CALLBACK;
   }
-
-  
 
   
   //-- when home page loaded, see if auth
@@ -284,9 +198,6 @@ passport.use(new LocalStrategy (authUser))
     try {
         var tmpUser = {};
         if( tmpIsPassport ){
-
-        
-     
             if( req.session && req.session.passport && req.session.passport.user ){
                 var tmpUserInfo = req.session.passport.user;
                 var tmpSource = tmpUserInfo.provider || 'local';
@@ -306,39 +217,13 @@ passport.use(new LocalStrategy (authUser))
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//=============
-
-
-
 app.all('*', function(req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
     res.header("Access-Control-Allow-Headers", "X-Requested-With");
     next();
- });
+});
 
- try {
+try {
     //--- ToDo: Make this optional.
     const chokidar = require('chokidar');
     var tmpWatchDir = scope.locals.path.root + "/designer-server"
@@ -354,12 +239,11 @@ app.all('*', function(req, res, next) {
                 console.log("The reason: " + theChangeError);
             }
         });
+} catch (ex){
+    console.log('Not hot reading, chokidar not installed on dev side')  
+}
 
-    } catch (ex){
-        console.log('Not hot reading, chokidar not installed on dev side')  
-    }
-
-function setup() {
+function setup(thePassportFlag) {
 
     return new Promise( async function (resolve, reject) {
         try {
@@ -438,52 +322,50 @@ function setup() {
                 next();
             });
 
+            if( thePassportFlag ){
+                passport.use(new GoogleStrategy({
+                    clientID: GOOGLE_CLIENT_ID,
+                    clientSecret: GOOGLE_CLIENT_SECRET,
+                    callbackURL: tmpBaseCallback + "auth/google/callback"
+                    },
+                    function (accessToken, refreshToken, profile, done) {
+                    return done(null, profile);
+                    }
+                ));
+                    
+                passport.use(new GitHubStrategy({
+                    clientID: GITHUB_CLIENT_ID,
+                    clientSecret: GITHUB_CLIENT_SECRET,
+                    callbackURL: tmpBaseCallback + "auth/github/callback"
+                    },
+                    function (accessToken, refreshToken, profile, done) {
+                    return done(null, profile);
+                    }
+                ));
+                            
+                app.get('/auth/google/callback',
+                    passport.authenticate('google', { failureRedirect: '/error' }),
+                    function (req, res) {
+                        // Successful authentication, redirect success.
+                        res.redirect('/');
+                    }
+                );
+                
+                app.get('/auth/github/callback',
+                    passport.authenticate('github', { failureRedirect: '/error' }),
+                    function (req, res) {
+                    // Successful authentication, redirect success.
+                    res.redirect('/');
+                    }
+                );
 
-//localonly---   
-passport.use(new GoogleStrategy({
-    clientID: GOOGLE_CLIENT_ID,
-    clientSecret: GOOGLE_CLIENT_SECRET,
-    callbackURL: tmpBaseCallback + "auth/google/callback"
-    },
-    function (accessToken, refreshToken, profile, done) {
-    return done(null, profile);
-    }
-    ));
-    
-    passport.use(new GitHubStrategy({
-    clientID: GITHUB_CLIENT_ID,
-    clientSecret: GITHUB_CLIENT_SECRET,
-    callbackURL: tmpBaseCallback + "auth/github/callback"
-    },
-    function (accessToken, refreshToken, profile, done) {
-    return done(null, profile);
-    }
-    ));
-    
-    
-            
-  app.get('/auth/google/callback',
-  passport.authenticate('google', { failureRedirect: '/error' }),
-  function (req, res) {
-      // Successful authentication, redirect success.
-      res.redirect('/');
-  });
-  
-  
-  app.get('/auth/github/callback',
-  passport.authenticate('github', { failureRedirect: '/error' }),
-  function (req, res) {
-  // Successful authentication, redirect success.
-  res.redirect('/');
-  });
-  
+            }
 
+  
             //--- Standard Server Startup
-            //var server = http.createServer(app);
             var port = 33460;
 
-            //--- TEMPORARY
-            //--- Seeing if it works at all with hard coded key names in certain spot
+            //--- ToDo: Allow dynamic location of SSL keys
             var tmpUseSSL = false; 
 
             if (fs.existsSync(tmpWSDirectory + '/ssl/server.key')) {
@@ -491,27 +373,18 @@ passport.use(new GoogleStrategy({
             }
 
             var server;
-
             if( tmpUseSSL ){
-
-                // file location of private key
                 var privateKey = fs.readFileSync( tmpWSDirectory + '/ssl/server.key' );
-                // file location of SSL cert
                 var certificate = fs.readFileSync( tmpWSDirectory + '/ssl/server.crt' );
-
-                // set up a config object
                 var server_config = {
                     key : privateKey,
                     cert: certificate
                 };
-
-                // create the HTTPS server on port 443
                 var server = https.createServer(server_config, app);
-
             } else {
                 var server = http.createServer(app);
             }
-        server.listen(port, '0.0.0.0');
+            server.listen(port, '0.0.0.0');
 
             //--- Show port in console
             server.on('listening', onListening(server));
@@ -532,10 +405,10 @@ passport.use(new GoogleStrategy({
             }
 
 
-            //==========   PREVIEW  ====
-            //--- Allow the designer server to access app files during design process
+            //==========   PREVIEW DEPLOYMENT ====
+            //--- Allow the designer server to access deployed app files directly from designer
             preview.use(function(req, res, next) {
-                //res.header("Access-Control-Allow-Origin", "http://localhost:33460");
+                //--- ToDo: Do we need remote access TO preview server?
                 res.header("Access-Control-Allow-Origin", "*");
                 res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
                 next();
@@ -604,4 +477,4 @@ passport.use(new GoogleStrategy({
 
 
 //--- Run setup with async wrapper to allow async stuff
-setup();
+setup(tmpIsPassport);
