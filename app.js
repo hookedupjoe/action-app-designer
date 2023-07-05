@@ -528,7 +528,9 @@ function setup(thePassportFlag) {
             function onListeningPreview(serverPreview) {
                 return function () {
                     var address = serverPreview.address();
-                    console.log(('Preview sites on port:' + address.port + "."));
+                    //ToDo: Review need for this port?
+                    //      Now used to preview deployment using /ui-app/ in the URL
+                    //console.log(('Preview sites on port:' + address.port + "."));
                 };
             }
 
