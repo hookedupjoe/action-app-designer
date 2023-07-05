@@ -102,7 +102,7 @@ app.all('*', function(req, res, next) {
     } else {
         next();
     }
- });
+});
 
 
 //--- Passport Auth ------------------
@@ -120,11 +120,7 @@ if( tmpIsPassport ){
     cb(null, obj);
   });
 
-  
-  
-
-
-//---ToDo: Use MONGO_STARTUP_URL to spin up default connection db for application data
+//---ToDo: Use ACTAPP_DB_HOME_ACCOUNT to spin up default connection db for application data
 //         Keep accounts for access to more than one.
 //---ToDo: move to mongo for accounts?
 app.use(session({
