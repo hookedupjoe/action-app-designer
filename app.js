@@ -216,7 +216,7 @@ function processAuth(req, res, next) {
         var tmpUserKey = tmpUser.provider + "-" + tmpUser.id;
         req.authUser = {
             id: tmpUserKey,
-            name: tmpUser.displayName
+            displayName: tmpUser.displayName
         }
         next()
     } else {
@@ -231,7 +231,11 @@ function processAuth(req, res, next) {
                 if (err){
                     req.authUser = false;
                 } else {
-                    req.authUser = user;
+                    var tmpCurr = {
+                        id: user.id,
+                        displayName: user.displayName
+                    }
+                    req.authUser = tmpCurr;
                 }
                 next()
                 })
