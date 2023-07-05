@@ -36,9 +36,26 @@
 <div class="ui clearing horizontal divider fitted"></div>
 
 <a href="/auth/google" class="ui button blue"><i class="icon google"></i> Log-In via Google</a>
-<br /><br />
+&nbsp;
 <a href="/auth/github" class="ui button blue"><i class="icon github"></i> Log-In via GitHub</a>
- </div>
+<br /><br /> 
+
+<center>
+  <div style="max-width:480px">
+    
+    <form class="ui form segment left aligned" action="/login" method="POST">
+      Username: <input class="ui field" type="text" name="username">
+      <br /><br />
+      Password: <input class="ui field" type="password" name="password">   
+      <br /><br />
+      <center>
+      <button class="ui button blue" type="submit"> Log In </button>
+    </center>
+    </form>
+  </div>
+</center>
+
+</div>
 
 </body>
 

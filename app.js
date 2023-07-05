@@ -16,9 +16,13 @@ var path = require('path'),
 var https = require('https');
 
 require('dotenv').config();
+//localonly---   
+const GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
+const GitHubStrategy = require('passport-github2').Strategy;
 
-var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
-var GitHubStrategy = require('passport-github2').Strategy;
+  
+const LocalStrategy = require('passport-local').Strategy
+
 const session = require('express-session');
 
 
@@ -107,6 +111,7 @@ var tmpIsPassport = (process.env.AUTH_TYPE == 'passport');
 var passport = require('passport');
 $.passport = passport;
 
+//localonly---   
 passport.serializeUser(function (user, cb) {
     cb(null, user);
   });
@@ -115,6 +120,9 @@ passport.serializeUser(function (user, cb) {
     cb(null, obj);
   });
   
+
+
+
 //---ToDo: Use MONGO_STARTUP_URL to spin up default connection db for application data
 //         Keep accounts for access to more than one.
 //---ToDo: move to mongo for accounts?
@@ -131,15 +139,110 @@ app.use(session({
     secret: process.env.SESSION_SECRET || 'sdflksjflksdjflksdjfieieieiei'
   }));
 
+    
+    authUser = (user, password, done) => {
+        console.log(`Value of "User" in authUser function ----> ${user}`)         //passport will populate, user = req.body.username
+        console.log(`Value of "Password" in authUser function ----> ${password}`) //passport will popuplate, password = req.body.password
+
+    // Use the "user" and "password" to search the DB and match user/password to authenticate the user
+    // 1. If the user not found, done (null, false)
+    // 2. If the password does not match, done (null, false)
+    // 3. If user found and password match, done (null, user)
+        
+        let authenticated_user = { id: 123, name: "Kyle"} 
+    //Let's assume that DB search that user found and password matched for Kyle
+        
+        return done (null, authenticated_user ) 
+    }
+
+    
+
+
   if( tmpIsPassport ){
+    
     app.use(passport.initialize());
     app.use(passport.session());
+
+    app.get('/auth/google',
+    passport.authenticate('google', { scope: ['profile', 'email'] }));
+
+    app.get('/auth/github',
+    passport.authenticate('github', { scope: ['profile', 'email'] }));
+
+    
+    app.get('/auth/login', function (req, res) {
+        var tmpForm = '<h1> Login </h1><form action="/login" method="POST">   USER <input type="text" name="username">   PASSWORD <input type="password" name="password">   <button type="submit"> Submit </button></form>'
+        res.send(tmpForm);
+    });
+    
+    // app.post("/login", function (req, res) {
+    //     var tmpForm = 'LOGIN'
+    //     res.send(tmpForm);
+    // });
+
+
+   
+    // app.post('/auth/local', function (req, res) {
+    //     var tmpForm = 'GOT IT'
+    //     res.send(tmpForm);
+    // });
+
+    app.post ("/auth/local", passport.authenticate('local', {
+        successRedirect: "/",
+        failureRedirect: "/auth/login",
+    }))
+
+           
+    passport.serializeUser( (user, done) => { 
+        console.log(`--------> Serialize User`)
+        console.log(user)     
+    
+        done(null, user.id)
+      
+    // Passport will pass the authenticated_user to serializeUser as "user" 
+    // This is the USER object from the done() in auth function
+    // Now attach using done (null, user.id) tie this user to the req.session.passport.user = {id: user.id}, 
+    // so that it is tied to the session object
+    
+    } )
+
+    
+passport.deserializeUser((id, done) => {
+console.log("---------> Deserialize Id")
+console.log(id)
+
+done (null, {name: "Kyle", id: 123} )      
+
+// This is the id that is saved in req.session.passport.{ user: "id"} during the serialization
+// use the id to find the user in the DB and get the user object with user details
+// pass the USER object in the done() of the de-serializer
+// this USER object is attached to the "req.user", and can be used anywhere in the App.
+
+}) 
+
+
+
+app.post ("/login", passport.authenticate('local', {
+successRedirect: "/",
+failureRedirect: "/auth/login",
+}))
+
+app.use(passport.initialize());
+app.use(passport.session());
+
+passport.use(new LocalStrategy (authUser))
+
+
+
   }
 
   var tmpBaseCallback = 'http://localhost:33460/';
   if( process.env.PASSPORT_BASE_CALLBACK ){
     tmpBaseCallback = process.env.PASSPORT_BASE_CALLBACK;
   }
+
+  
+
   //-- when home page loaded, see if auth
   app.all('/', function(req, res, next) {
    
@@ -147,9 +250,6 @@ app.use(session({
         var tmpUser = {};
         if( tmpIsPassport ){
 
-            app.use(passport.initialize());
-            app.use(passport.session());
-            
             app.get('/auth/google/callback',
             passport.authenticate('google', { failureRedirect: '/error' }),
             function (req, res) {
@@ -157,21 +257,18 @@ app.use(session({
                 res.redirect('/');
             });
 
-                
-                app.get('/auth/github/callback',
-                passport.authenticate('github', { failureRedirect: '/error' }),
-                function (req, res) {
-                // Successful authentication, redirect success.
-                res.redirect('/');
-                });
+            
+            app.get('/auth/github/callback',
+            passport.authenticate('github', { failureRedirect: '/error' }),
+            function (req, res) {
+            // Successful authentication, redirect success.
+            res.redirect('/');
+            });
 
-                app.get('/auth/google',
-                passport.authenticate('google', { scope: ['profile', 'email'] }));
+            
 
-                app.get('/auth/github',
-                passport.authenticate('github', { scope: ['profile', 'email'] }));
 
-    
+    //localonly---   
         passport.use(new GoogleStrategy({
             clientID: GOOGLE_CLIENT_ID,
             clientSecret: GOOGLE_CLIENT_SECRET,
@@ -191,8 +288,10 @@ app.use(session({
             return done(null, profile);
             }
         ));
-
-
+       
+        
+        
+     
             if( req.session && req.session.passport && req.session.passport.user ){
                 var tmpUserInfo = req.session.passport.user;
                 var tmpSource = tmpUserInfo.provider || 'local';
