@@ -24,9 +24,10 @@ module.exports.setup = function setup(scope) {
         if( req.body && req.body.appid ){
             tmpAppID = req.body.appid
             tmpAppInfo = $.appIndex[req.body.appid];
-            if( tmpAppInfo && tmpAppInfo['data-app-id']){
+            
+            if( tmpAppInfo ){
                 tmpAccountID = tmpAppInfo['data-account-id'] || '_home';
-                tmpDBName = tmpAppInfo['data-db-name'];
+                tmpDBName = tmpAppInfo['data-db-name'] || tmpAppInfo.name;
                 tmpDBName = 'aadb-' + tmpDBName;
             }
             //--- Load account and dbname from app details

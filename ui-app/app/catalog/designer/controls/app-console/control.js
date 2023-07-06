@@ -363,7 +363,7 @@ License: LGPL
 						]
 					},
 					{
-						"label": "Data",
+						"label": "ACL",
 						"name": "apptabs-data",
 						"ctl": "tab",
 						"content": [

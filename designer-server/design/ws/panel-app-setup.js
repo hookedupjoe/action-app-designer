@@ -83,7 +83,14 @@ module.exports.setup = function setup(scope) {
           var tmpEntry = tmpBuildCfg.plugins[aIndex];
           tmpPlugins.push(tmpEntry.name)
         }
-
+        
+        // if( !(tmpAppDetails['data-app-id']) ){
+        //   tmpAppDetails['data-app-id'] = tmpAppDetails.name
+        // }
+        // if( !(tmpAppDetails['data-db-name']) ){
+        //   tmpAppDetails['data-db-name'] = tmpAppDetails.name
+        // }
+        
         var tmpRet = {
           "options": {
             "readonly": true,
@@ -244,7 +251,9 @@ module.exports.setup = function setup(scope) {
                   {
                     "ctl": "field",
                     "name": "data-app-id",
+                    hidden: true,
                     "label": "Data Application ID",
+                    "readonly": true,
                     "req": true
                   },
                   {
@@ -252,12 +261,15 @@ module.exports.setup = function setup(scope) {
                     "name": "data-account-id",
                     "label": "Account ID",
                     "default": "local",
+                    "note": "Leave blank to use default account for this server",
                     "req": false
                   },
                   {
                     "ctl": "field",
                     "name": "data-db-name",
                     "label": "Database Name",
+                    hidden: true,
+                    "readonly": true,
                     "placeholder": "Usually the Application ID",                    
                     "req": true
                   }
