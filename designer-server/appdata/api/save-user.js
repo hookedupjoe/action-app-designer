@@ -32,7 +32,7 @@ module.exports.setup = function setup(scope) {
                 }
                 
                 
-                var tmpAccount = await $.MongoManager.getAccount('local');
+                var tmpAccount = await $.MongoManager.getAccount('_home');
                 var tmpDB = await tmpAccount.getDatabase('actappauth');
                 var tmpDocType = 'user';
                 var tmpCollName = 'actapp-'  + tmpDocType;

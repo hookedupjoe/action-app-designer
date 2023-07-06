@@ -110,7 +110,7 @@
       window.activeControl = this;
       window.activeReport = this.parts.report;
       
-      this.currentAccount = '_home';
+      this.currentAccount = 'local';
       
       //--- Temp Working On Editor
       window.actAppEditControl = this;
