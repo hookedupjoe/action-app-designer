@@ -424,12 +424,10 @@ License: LGPL
 	}
 
 
+	
 	function _onInit() {
 		this.parts.pages.subscribe('selectMe', onPageSelect.bind(this))
 		this.parts.resources.subscribe('selectMe', onResourceSelect.bind(this))
-
-		//console.log(this.context,this.parts);
-		//this.context.page.controller.actions.wsItemSelected('', theTarget);
 
 		var tmpSetupInfo = this.getSetupInfo();
 		var tmpAppPath = this.parts.setupinfo.controlSpec.controlConfig.options.links.path;
@@ -456,6 +454,14 @@ License: LGPL
 		var tmpMobileLink = this.getItemEl('cordova-in-code-link');
 		tmpMobileLink.attr('href', "vscode://file/" + this.details.cordova);
 		tmpMobileLink.attr('target', "app-cordova-code-" + this.details.appname);
+
+		if( !(ActionAppCore.designerDetails && ActionAppCore.designerDetails.config && ActionAppCore.designerDetails.config.isUsingData) ){
+			var tmpDataTab = this.getByAttr$({
+				appuse:"tablinks",
+				item:"apptabs-data"
+			});
+			tmpDataTab.hide();
+		}
 
 	}
 
