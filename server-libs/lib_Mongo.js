@@ -114,10 +114,9 @@ MongoManager.prototype.getAccount = async function (theID) {
 function MongoAccount(theAccountConfig) {
     this.accountConfig = false;
     this.databases = {};
-    console.log('theAccountConfig',theAccountConfig);
     this.loadConfig(theAccountConfig);
-    
 }
+
 module.exports.MongoAccount = MongoAccount;
 
 MongoAccount.prototype.loadConfig = async function (theAccountConfig) {
