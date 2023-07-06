@@ -3180,6 +3180,21 @@ window.ActionAppCore = window.ActionAppCore || ActionAppCore;
             }
         }
 
+        var tmpInfoLoader = function(){
+            var dfd = jQuery.Deferred();
+            ActionAppCore.apiCall('./app-info.json').then(function(theReply){
+                ActionAppCore.appInfo = theReply;
+                dfd.resolve(true);
+            })
+            return dfd.promise();
+        }
+        
+        if( !(ActionAppCore.inDesigner)){
+            var tmpPromiseLoader = tmpInfoLoader();
+            tmpDefs.push(tmpPromiseLoader);
+        }
+        
+        
         $.whenAll(tmpDefs).then(function (theReply) {
             me.setup(theAppConfig).then(function (theReply) {
                 if (!(theReply)) {
