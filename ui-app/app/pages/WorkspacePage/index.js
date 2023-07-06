@@ -106,6 +106,9 @@ License: LGPL
         // wsOutlineName = ThisPage.ns(wsOutlineName);
         //--- This tells the page to layout the page, load templates and controls, et
 
+        ThisApp.actions.logOut = actions.logOut;
+        ThisApp.actions.promptToLogOut = actions.promptToLogOut;
+        
         ThisPage.loadWorkspaceState();
         window.onbeforeunload = function () {
             if( !ActionAppCore.leaveSilent ){

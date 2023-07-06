@@ -94,6 +94,18 @@ License: LGPL
 													"text": ""
 												},
 												{
+													"ctl": "button",
+													"color": "black",
+													"size": "large",
+													"action": "promptToLogOut",
+													"labeled": false,
+													"right": true,
+													"toRight": true,
+													"icon": "paper plane",
+													"name": "btn-logout",
+													"text": ""
+												},
+												{
 													"ctl":"divider",
 													"classes":"mar3 fitted"
 												},

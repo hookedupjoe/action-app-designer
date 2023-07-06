@@ -8,13 +8,7 @@
 		}
 	},
 	"content": [
-		{
-			"ctl": "title",
-			"size": "Large",
-			"color": "blue",
-			"name": "title",
-			"text": "Designer Settings"
-		},
+		
 		{
 			"ctl": "message",
 			"color": "blue",
