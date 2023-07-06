@@ -108,7 +108,9 @@ License: LGPL
 
         ThisPage.loadWorkspaceState();
         window.onbeforeunload = function () {
-            return 'Are you sure you want to leave?';
+            if( !ActionAppCore.leaveSilent ){
+                return 'Are you sure you want to leave?';
+            }
         };
 
         $(document).bind('keydown', function (e) {
@@ -130,64 +132,53 @@ License: LGPL
             function () {
                 //--- For debugging
                 window.wsPage = ThisPage;
+                if (ActionAppCore.designerDetails.sitetitle) {
+                    $('.site-header').html(ActionAppCore.designerDetails.sitetitle)
+                }
 
-                ThisApp.common.apiCall({
-                    url: '/design/ws/get-designer-settings'
-                }).then(function (theCurrSettings) {
-                    //--- Do a check?
-                    tmpCurrentDetails = theCurrSettings;
 
-                    ThisApp.common.designerConfig = tmpCurrentDetails;
-                    if (ThisApp.common.designerConfig.sitetitle) {
-                        $('.site-header').html(ThisApp.common.designerConfig.sitetitle)
+                ThisPage.subscribe('selectMe', ThisPage.pageTabSelected)
+
+                //--- Now your done - READY to do stuff the first time on your page
+
+                //--- Subscirbe to when item selected in workspace
+                //ThisPage.parts.west.subscribe('selected', wsItemSelected);
+                ThisPage.parts.center.subscribe('selected', wsItemSelected);
+
+                //ThisPage.layout.toggle("west");
+                ThisPage.refreshWSNav();
+
+                //--- Do special stuff on page load here
+                //--- Then optionally call the stuff that will happen every time 
+                //      the page is activated if not already called by above code
+                ThisPage._onActivate();
+
+                if (ThisPage.loadApps !== true) {
+                    return;
+                }
+
+                //Todo: Change to when west publishes loaded
+                ThisApp.delay(1000).then(function () {
+                //ThisPage.closeSiteMap();
+
+                var tmpOutlineEl = ThisApp.getByAttr$({ action: "outlineDisplay", type: "workspace" });
+                if (tmpOutlineEl && tmpOutlineEl.length > 0) {
+                    ThisApp.outlineDisplay(false, tmpOutlineEl.get(0));
+                    if (tmpOutlineEl.length > 1) {
+                        ThisApp.outlineDisplay(false, tmpOutlineEl.get(1));
                     }
-
-
-                    ThisPage.subscribe('selectMe', ThisPage.pageTabSelected)
-
-                    //--- Now your done - READY to do stuff the first time on your page
-
-                    //--- Subscirbe to when item selected in workspace
-                    //ThisPage.parts.west.subscribe('selected', wsItemSelected);
-                    ThisPage.parts.center.subscribe('selected', wsItemSelected);
-
-                    //ThisPage.layout.toggle("west");
-                    ThisPage.refreshWSNav();
-
-                    //--- Do special stuff on page load here
-                    //--- Then optionally call the stuff that will happen every time 
-                    //      the page is activated if not already called by above code
-                    ThisPage._onActivate();
-
-                    if (ThisPage.loadApps !== true) {
-                        return;
-                    }
-
-                    //Todo: Change to when west publishes loaded
-                    ThisApp.delay(1000).then(function () {
-                        //ThisPage.closeSiteMap();
-
-                        var tmpOutlineEl = ThisApp.getByAttr$({ action: "outlineDisplay", type: "workspace" });
+                    ThisApp.delay(100).then(function () {
+                        var tmpOutlineEl = ThisApp.getByAttr$({ action: "toggleMe", type: "apps" });
                         if (tmpOutlineEl && tmpOutlineEl.length > 0) {
-                            ThisApp.outlineDisplay(false, tmpOutlineEl.get(0));
+                            ThisApp.toggleMe(false, tmpOutlineEl.get(0));
                             if (tmpOutlineEl.length > 1) {
-                                ThisApp.outlineDisplay(false, tmpOutlineEl.get(1));
+                                ThisApp.toggleMe(false, tmpOutlineEl.get(1));
                             }
-                            ThisApp.delay(100).then(function () {
-                                var tmpOutlineEl = ThisApp.getByAttr$({ action: "toggleMe", type: "apps" });
-                                if (tmpOutlineEl && tmpOutlineEl.length > 0) {
-                                    ThisApp.toggleMe(false, tmpOutlineEl.get(0));
-                                    if (tmpOutlineEl.length > 1) {
-                                        ThisApp.toggleMe(false, tmpOutlineEl.get(1));
-                                    }
-                                }
-                            })
                         }
-
                     })
+                }
 
-
-                })
+            })
 
             }
         );
@@ -255,6 +246,23 @@ License: LGPL
 
     }
 
+    actions.promptToLogOut = promptToLogOut;
+    function promptToLogOut() {
+        ThisApp.confirm("Are you sure you want to log out?", "Log Out?")
+				.then(function (theIsYes) {
+					if (theIsYes) {
+						actions.logOut();
+					}
+
+				})
+    };
+
+    actions.logOut = logOut;
+    function logOut() {
+        ThisApp.apiCall({url:'/logout',data:{}})
+        ActionAppCore.leaveSilent
+        window.location = window.location;
+    };
 
     actions.refreshWorkspace = refreshWorkspace;
     function refreshWorkspace() {
@@ -842,7 +850,9 @@ License: LGPL
                     return;
                 }
                 
-                ThisApp.common.designerConfig = theData;
+                //ThisApp.common.designerConfig = theData;
+                
+                $.extend(ActionAppCore.designerDetails, theData);
 
                 ThisApp.common.apiCall({
                     url: '/design/ws/save-designer-settings',
