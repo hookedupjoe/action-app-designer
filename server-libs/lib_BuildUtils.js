@@ -201,7 +201,7 @@ function updateAppSetup(theAppName, theSetupDetails, scope) {
             // console.log( 'Saving to ', tmpAppBase, theSetupDetails);
             await(utils.saveJsonFile(tmpAppBase + 'app-info.json', theSetupDetails))
             await(buildApp(tmpAppName, scope));
-            $.appIndexRefresh();
+            
             
             var tmpRet = {
                 status: true,
@@ -457,6 +457,7 @@ function buildApp(theAppName, scope, theOptions) {
                 refresh: true
             }
 
+            $.appIndexRefresh();
             resolve(tmpRet);
 
         }
