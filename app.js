@@ -428,6 +428,8 @@ function setup(thePassportFlag) {
                 $.MongoManager.setAccountConfig('_system', homeAccountConfig);
             }
 
+            await $.appIndexRefresh();
+
             app.use(express.static(scope.locals.path.root + '/ui-libs'));
             app.use(express.static(scope.locals.path.root + '/common'));
             app.use(express.static(tmpWSDirectory));

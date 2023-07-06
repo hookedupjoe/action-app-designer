@@ -235,6 +235,35 @@ module.exports.setup = function setup(scope) {
                     "req": false
                   }
                 ]
+              },
+              {
+                "label": "Data Setup",
+                "name": "my-tab-4-tab-1",
+                "ctl": "tab",
+                "content": [
+                  {
+                    "ctl": "field",
+                    "name": "data-app-id",
+                    "label": "Data Application ID",
+                    "placeholder": "mydemoapp",
+                    "req": true
+                  },
+                  {
+                    "ctl": "field",
+                    "name": "data-account-id",
+                    "label": "Account ID",
+                    "default": "local",
+                    "placeholder": "local",
+                    "req": true
+                  },
+                  {
+                    "ctl": "field",
+                    "name": "data-db-name",
+                    "label": "Database Name",
+                    "placeholder": "mydatabasename_goes_here",
+                    "req": true
+                  }
+                ]
               }
             ]
           }]

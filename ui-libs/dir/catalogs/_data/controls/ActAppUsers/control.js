@@ -118,7 +118,7 @@
       var tmpBaseURL = ActionAppCore.ActAppData.rootPath;
   
       var tmpViewer = this.getViewControl();
-      tmpViewer.setReportURL(tmpBaseURL + 'appdata/api/get-users.json?open', {
+      tmpViewer.setReportURL(tmpBaseURL + 'appdata/auth/get-users.json?open', {
         
       });
       tmpViewer.subscribe('selectionChange', refreshSelection.bind(this));

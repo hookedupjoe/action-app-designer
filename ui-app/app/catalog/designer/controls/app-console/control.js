@@ -359,6 +359,31 @@ License: LGPL
 								"name": "setupinfo"
 							}
 						]
+					},
+					{
+						"label": "Data",
+						"name": "apptabs-data",
+						"ctl": "tab",
+						"content": [
+							{
+								"ctl": "button",
+								"size": "small",
+								compact: true,
+								"onClick": {
+									"run": "action",
+									"action": "refreshACL"
+								},
+								"basic": true,
+								"icon": "recycle",
+								"name": "btn-refresh-app-acl",
+								"text": "Refresh"
+							},
+							{
+								"ctl": "spot",
+								"text": "ACL INTERFACE HERE",
+								"name": "aclentries"
+							}
+						]
 					}
 				]
 			}
