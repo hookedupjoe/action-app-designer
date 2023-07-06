@@ -19,7 +19,7 @@ module.exports.setup = function setup(scope) {
         var self = this;
         return new Promise( async function (resolve, reject) {
             try {
-                var tmpAccountID = req.query.account || 'local';
+                var tmpAccountID = req.query.account || '_home';
                 var tmpDBName = req.query.database || 'local';
                 var tmpRet = {};
                 try {

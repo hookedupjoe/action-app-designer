@@ -82,19 +82,20 @@ MongoManager.prototype.setAccountConfig = async function (theID, theConfig) {
     this.accountConfigs[theID] = theConfig;
 }    
 MongoManager.prototype.getAccount = async function (theID) {
+    var tmpID = theID || '_home';
     let self = this;
     return new Promise(async function (resolve, reject) {
         try {
-            if( self.accounts[theID] ){
-                resolve(self.accounts[theID]);
+            if( self.accounts[tmpID] ){
+                resolve(self.accounts[tmpID]);
             } else {
-                var tmpConfig = await self.getAccountConfig(theID);
+                var tmpConfig = await self.getAccountConfig(tmpID);
                 if( !(tmpConfig)){
-                    console.log("ERROR: NO CONFIG.  Save one for: " + theID);
+                    console.log("ERROR: NO CONFIG.  Save one for: " + tmpID);
                     resolve(false);
                 } else {                    
-                    self.accounts[theID] = new MongoAccount(tmpConfig);
-                    resolve(self.accounts[theID]);
+                    self.accounts[tmpID] = new MongoAccount(tmpConfig);
+                    resolve(self.accounts[tmpID]);
                 }
             }
         } catch (error) {
@@ -113,6 +114,7 @@ MongoManager.prototype.getAccount = async function (theID) {
 function MongoAccount(theAccountConfig) {
     this.accountConfig = false;
     this.databases = {};
+    console.log('theAccountConfig',theAccountConfig);
     this.loadConfig(theAccountConfig);
     
 }
