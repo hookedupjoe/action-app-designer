@@ -124,7 +124,7 @@ module.exports.setup = function setup(scope) {
                     "ctl": "field",
                     "name": "prefix",
                     "label": "Deployment URL Prefix",
-                    "req": true
+                    "req": false
                   },
                   {
                     "ctl": "checkboxlist",
@@ -245,7 +245,6 @@ module.exports.setup = function setup(scope) {
                     "ctl": "field",
                     "name": "data-app-id",
                     "label": "Data Application ID",
-                    "placeholder": "mydemoapp",
                     "req": true
                   },
                   {
@@ -253,14 +252,13 @@ module.exports.setup = function setup(scope) {
                     "name": "data-account-id",
                     "label": "Account ID",
                     "default": "local",
-                    "placeholder": "local",
-                    "req": true
+                    "req": false
                   },
                   {
                     "ctl": "field",
                     "name": "data-db-name",
                     "label": "Database Name",
-                    "placeholder": "mydatabasename_goes_here",
+                    "placeholder": "Usually the Application ID",                    
                     "req": true
                   }
                 ]
