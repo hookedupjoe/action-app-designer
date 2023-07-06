@@ -321,6 +321,48 @@ function processAuth(req, res, next) {
     next();
  });
 
+ app.post('/logout', function(req, res, next){
+    req.logout(function(err) {
+      if (err) { return next(err); }
+      res.redirect('/');
+    });
+  });
+ 
+ $.designerConfig = {};
+   
+ $.designerConfig.isUsingPassport = isUsingPassport;
+ $.designerConfig.isUsingData = isUsingData;
+ 
+ if( isUsingPassport ){
+    $.designerConfig.passport = {};
+    if( GOOGLE_CLIENT_ID ){
+        $.designerConfig.passport.google = true;
+    }
+    if( GITHUB_CLIENT_ID ){
+        $.designerConfig.passport.github = true;
+    }
+}
+
+ app.get('/deisgner/details.js', async function (req, res, next) {
+    var tmpRet = {
+        sitetitle: "Action App Designer",
+        sitetype: "Local"
+    };
+    var tmpConfigPath = $.scope.locals.path.ws.root + '/config/';
+    await $.fs.ensureDir(tmpConfigPath);
+    var tmpSettings = await $.bld.getJsonFile(tmpConfigPath + '/designer-settings.json');
+
+    if( tmpSettings && tmpSettings.sitetitle ){
+        tmpRet = tmpSettings;
+    }
+
+    tmpRet.config = $.designerConfig;
+   
+    
+    var tmpRet = 'ActionAppCore.designerDetails = ' + JSON.stringify(tmpRet);
+    return res.send(tmpRet);
+});
+
  app.get('/pagelogin', function (req, res, next) {
     
     // Render page using renderFile method

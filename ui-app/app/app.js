@@ -5,16 +5,23 @@
   ActionAppCore = ActionAppCore || window.ActionAppCore;  
   ActionAppCore.ActAppData.appDataEndpoint = './appdata/api/';
   ActionAppCore.inDesigner = true;
-  
+
+  var tmpHelpers = ['ControlsPage',
+  'JsonHelperPage',
+  'LogsPage'];
+
+  var tmpDataPages = [
+    'AdminPage',
+  'AppDataPage',
+  ]
+
   var tmpPageNames = [   
     'WorkspacePage',
-    'AdminPage',
-    'AppDataPage',
-    //'ControlBuilderPage',
-    'ControlsPage',
-    'JsonHelperPage',
-    'LogsPage'
   ];
+  if( ActionAppCore.designerDetails && ActionAppCore.designerDetails.config && ActionAppCore.designerDetails.config.isUsingData ){
+    tmpPageNames = tmpPageNames.concat(tmpDataPages);
+  }
+  tmpPageNames = tmpPageNames.concat(tmpHelpers);
 
   var tmpPluginNames = [
     
