@@ -31,7 +31,7 @@ module.exports.setup = function setup(scope) {
             tmpAppID = req.body.appid
             tmpAppInfo = $.appIndex[req.body.appid];
             if( tmpAppInfo && tmpAppInfo['data-app-id']){
-                tmpAccountID = tmpAppInfo['data-account-id']
+                tmpAccountID = tmpAppInfo['data-account-id'] || '_home';
                 tmpDBName = tmpAppInfo['data-db-name'];
                 console.log('tmpDBName',tmpDBName);
             }
