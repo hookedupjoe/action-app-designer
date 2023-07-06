@@ -224,7 +224,7 @@ License: LGPL
 		// var tmpPageName = theDetails.pagename || '';
 		 var tmpAppName = theDetails.appname || '';
 		 if( tmpAppName ){
-			var tmpAppCSS = '<link rel="stylesheet" href="//localhost:33461/' + tmpAppName + '/app/css/app.css">'
+			var tmpAppCSS = '<link rel="stylesheet" href="/' + tmpAppName + '/app/css/app.css">'
 			$('head').append(tmpAppCSS)
 		}
 

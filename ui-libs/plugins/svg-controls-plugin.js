@@ -83,6 +83,7 @@ SVG controls Plugin:
     var tmpCurr = new URL(location);
     
     me.controlsBaseURL = "./svg-catalog/controls/";
+    //ToDo: Revisit this ... change to appname on same?
     if( (tmpCurr) && tmpCurr.port && tmpCurr.port == 33461){
         me.controlsBaseURL = "/svg-catalog/controls/";
     };    
