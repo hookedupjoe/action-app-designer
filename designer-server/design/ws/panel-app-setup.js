@@ -260,7 +260,7 @@ module.exports.setup = function setup(scope) {
                     "ctl": "field",
                     "name": "data-account-id",
                     "label": "Account ID",
-                    "default": "local",
+                    "default": "",
                     "note": "Leave blank to use default account for this server",
                     "req": false
                   },
