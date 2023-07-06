@@ -463,6 +463,12 @@ License: LGPL
 				item:"apptabs-data"
 			});
 			tmpDataTab.hide();
+			tmpDataTab = this.getByAttr$({
+				appuse:"tablinks",
+				item:"tab-data-setup"
+			});
+			tmpDataTab.hide();
+
 		}
 		if( ActionAppCore.designerDetails.sitetype && ActionAppCore.designerDetails.sitetype == 'Server' ){
 			this.setItemDisplay('deploy-in-code-link',false);

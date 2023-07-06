@@ -245,7 +245,7 @@ module.exports.setup = function setup(scope) {
               },
               {
                 "label": "Data Setup",
-                "name": "my-tab-4-tab-1",
+                "name": "tab-data-setup",
                 "ctl": "tab",
                 "content": [
                   {
