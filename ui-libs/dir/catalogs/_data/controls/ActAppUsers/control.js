@@ -105,6 +105,7 @@
           usage: 'To manage users.'
         }  
     }
+    
     ControlCode._onInit = function() {
       //--- TEMP DEBUG
       window.activeControl = this;
