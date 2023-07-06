@@ -45,6 +45,8 @@ scope.locals.path.start = scope.locals.path.root + "/designer-server";
 scope.locals.path.libraries = scope.locals.path.root + "/server-libs";
 
 var $ = require(scope.locals.path.libraries + '/globalUtilities.js').$;
+$.setup(scope);
+
 $.scope = scope;
 var bld = require(scope.locals.path.libraries + '/lib_BuildUtils.js');
 
@@ -70,7 +72,7 @@ if( ACTAPP_DB_HOME_ACCOUNT_ADDRESS ){
     const ACTAPP_DB_HOME_ACCOUNT_USERNAME=process.env.ACTAPP_DB_HOME_ACCOUNT_USERNAME;
     const ACTAPP_DB_HOME_ACCOUNT_PASSWORD=process.env.ACTAPP_DB_HOME_ACCOUNT_PASSWORD;
     var tmpAcct = '';
-    homeAccountConfig.id = "_system";
+    homeAccountConfig.id = "_home";
     homeAccountConfig.address = ACTAPP_DB_HOME_ACCOUNT_ADDRESS;
     homeAccountConfig.port = ACTAPP_DB_HOME_ACCOUNT_PORT
     
@@ -143,7 +145,7 @@ app.use(session({
 
     
     async function authUser(theUsername, thePassword, done){
-        var tmpAccount = await $.MongoManager.getAccount('_system');
+        var tmpAccount = await $.MongoManager.getAccount('_home');
         var tmpDB = await tmpAccount.getDatabase('actappauth');
         var tmpDocType = 'user';
         var tmpMongoDB = tmpDB.getMongoDB();        
@@ -467,7 +469,7 @@ function setup(thePassportFlag) {
 
             if( homeAccountConfig ){
                 require(scope.locals.path.libraries + '/lib_Mongo.js');
-                $.MongoManager.setAccountConfig('_system', homeAccountConfig);
+                $.MongoManager.setAccountConfig('_home', homeAccountConfig);
             }
 
             await $.appIndexRefresh();

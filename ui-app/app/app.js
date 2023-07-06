@@ -11,8 +11,8 @@
   'LogsPage'];
 
   var tmpDataPages = [
-    'AdminPage',
-  'AppDataPage',
+    'AppDataPage',
+    'AdminPage'
   ]
 
   var tmpPageNames = [   

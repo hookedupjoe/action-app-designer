@@ -3,6 +3,29 @@
     Mongo Accounts
   </div>
   
+  {{#if hasHome}}
+  
+  <div class="ui relaxed divided list">
+    <a href="javascript:void(0)" class="item" myaction="openHomeAccount">
+      
+    
+      <div class="content">
+        <div class="right floated content">
+          <div class="ui button">
+            Open Dashboard
+          </div>
+        </div>
+        <div class="header">
+          <i class="icon blue home"></i> Home Account
+        </div>
+      </div>
+    
+    </a>
+  </div>
+
+  {{/if}}
+
+
   {{#if isLoading}}
     <div class="ui message blue">
       <b>Loading:</b> Please wait ...

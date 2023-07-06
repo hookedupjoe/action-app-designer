@@ -74,7 +74,7 @@ MongoManager.prototype.getAccountConfigs = async function () {
 }
 
 MongoManager.prototype.getSystemAccount = async function () {
-    return this.getAccount('_system');
+    return this.getAccount('_home');
 }    
 
 

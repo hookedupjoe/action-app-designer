@@ -97,6 +97,11 @@
   }
   
   
+  
+  ControlCode.openHomeAccount = openHomeAccount;
+  function openHomeAccount(theParams, theTarget){
+      this.addMongoAccountTab('_home');
+  }
   ControlCode.openAccount = openAccount;
   function openAccount(theParams, theTarget){
       var tmpParams = ThisApp.getActionParams(theParams, theTarget, ['accountid']);
@@ -125,6 +130,11 @@
     var tmpURL = tmpBaseURL + 'get-account-list';      
     ThisApp.apiCall(tmpURL).then(function(theReply){
       tmpThis.accountData = theReply;
+      
+      if(ActionAppCore.designerDetails.config && ActionAppCore.designerDetails.config.isUsingData){
+        tmpThis.accountData.hasHome = 'yes';
+      }
+      
       tmpThis.loadDash(tmpThis.accountData,"MongoDashHome");
     })
   }

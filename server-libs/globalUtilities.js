@@ -11,7 +11,14 @@ const exec = promisify(require('child_process').exec)
 let $ = {}; 
 $.appIndex = {};
 
+function setup(scope) {
+    $.scope = scope;
+    $.bld = require(scope.locals.path.libraries + '/lib_BuildUtils.js');
+
+}
 module.exports.$ = $;
+$.setup = setup;
+
 function mergeWith(theGulpMoney) {
     return merge(false, theGulpMoney, $);
 }
@@ -41,31 +48,22 @@ function getDataApp(theAppID){
 }
 
 async function appIndexRefresh() {
-    $.appIndex['DemoDataApp1'] = {
-        "pages": [
-            "DashboardPage",
-            "Home"
-        ],
-        "title": "Demo Data App One",
-        "prefix": "",
-        "hideheader": [],
-        "name": "DemoDataApp1",
-        "cdn": "local",
-        "libraries": [],
-        "plugins": [],
-        "app-id": "",
-        "app-version": "",
-        "app-title": "",
-        "app-desc": "",
-        "app-author": "",
-        "app-author-email": "",
-        "app-url": "",
-        "headtags": "",
-        "data-app-id": "DemoDataApp1",
-        "data-account-id": "local",
-        "data-db-name": "DemoDataApp1"
-    };
-  
+
+    var tmpWSDir = $.scope.locals.path.ws.uiApps;
+                
+    var tmpFiles = await($.bld.getDirFiles(tmpWSDir))
+
+    for (var index in tmpFiles) {
+        var tmpAppName = tmpFiles[index];
+        var tmpAppBase = tmpWSDir + tmpAppName + '/';
+        var tmpAppDetails = await($.bld.getJsonFile(tmpAppBase + 'app-info.json'))
+        var tmpAppName = tmpAppDetails.name;
+        if( tmpAppName ){
+            $.appIndex[tmpAppName] = tmpAppDetails;
+        }
+
+    }
+
     return { 
         status: true
     }
@@ -128,4 +126,5 @@ function __getISODate(date) {
         return '';
     }
 }
+
 
