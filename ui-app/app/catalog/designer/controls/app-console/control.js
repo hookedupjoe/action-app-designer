@@ -304,6 +304,7 @@ License: LGPL
 								"size": "large",
 								"basic": true,
 								"icon": "close",
+								toRight: true,
 								hidden: true,
 								"onClick": {
 									"run": "action",
