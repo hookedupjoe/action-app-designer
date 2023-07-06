@@ -37,18 +37,6 @@
 					"row": false,
 					"ctl": "radiolist",
 					"name": "sitetype",
-					"onChange": {
-						"run": "showfor",
-						"values": {
-							"": "",
-							"Local": [
-								""
-							],
-							"Server": [
-								"server-info-row"
-							]
-						}
-					},
 					"label": "Designer Type",
 					"list": "Local,Server",
 					"req": true
@@ -58,21 +46,17 @@
 		},
 		{
 			"ctl": "fieldrow",
+			"req": true,
 			"items": [
 				{
-					"label": "Designer Base URL",
-					"ctl": "field",
-					"name": "urldesigner",
-					"req": true
-				},
-				{
-					"label": "Preview Base URL",
-					"ctl": "field",
-					"name": "urlpreview",
+					"label": "Use Cordova",
+					"ctl": "radiolist",
+					"name": "usecordova",
+					"list": "Yes,No",
 					"req": true
 				}
 			],
-			"name": "server-info-row"
+			"name": "cordova-options-row"
 		}
 	]
 }

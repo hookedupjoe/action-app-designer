@@ -254,7 +254,8 @@ License: LGPL
 							{
 								ctl: "divider",
 								fitted: true,
-								clearing: true
+								clearing: true,
+								"name":"cordova-sep"
 							},
 							{
 								"ctl": "button",
@@ -462,6 +463,16 @@ License: LGPL
 			});
 			tmpDataTab.hide();
 		}
+		if( ActionAppCore.designerDetails.sitetype && ActionAppCore.designerDetails.sitetype == 'Server' ){
+			this.setItemDisplay('deploy-in-code-link',false);
+			this.setItemDisplay('cordova-in-code-link',false);
+		}
+		if( ActionAppCore.designerDetails.sitetype && ActionAppCore.designerDetails.usecordova !== 'Yes' ){
+			this.setItemDisplay('cordova-sep',false);
+			this.setItemDisplay('build-deploy-cordova',false);
+			this.setItemDisplay('cordova-in-code-link',false);
+		}
+		
 
 	}
 
@@ -678,56 +689,17 @@ License: LGPL
 
 		this.controlConfig.index.controls.setupinfo.controlname += tmpAppName
 
-		//--- Set Title
-		//this.controlConfig.index.items.title.text = 'Loading ...';
-
-		//--- Move preview to same port
-		//var tmpPort = '33461';
-
-		//ToDo: Update method for configuring preview port
-		// try {
-		// 	tmpPort = ThisApp.getPage("WorkspacePage").parts.west.parts.workspace.controlConfig.options.extra.previewPort
-		// } catch (theError) {
-		// 	console.info("Couldn't get preview port",theError)
-		// }
-		//console.log( 'tmpPort', tmpPort);
-
-
-
-		//--- Move preview to same port
-
-		// var tmpBasePath = window.location.origin;
-		// tmpBasePath = tmpBasePath.replace('33460', ('' + tmpPort));
-		// if (tmpBasePath.endsWith(':80')) {
-		// 	tmpBasePath = tmpBasePath.replace(':80', '');
-		// }
-		// if( ThisApp.common.designerConfig && ThisApp.common.designerConfig.urlpreview ){
-		// 	tmpBasePath = ThisApp.common.designerConfig.urlpreview;
-		// }
-
-
 		//--- Set Preview Link
-		//*** was href: tmpBasePath + "/" + tmpAppName,
 		this.controlConfig.index.items["preview-link"].attr = {
 			href: "/" + tmpAppName,
 			target: "app" + tmpAppName
 		}
-
-
 
 	}
 	//---- Initial Setup of the control
 	function setup(theDetails) {
 
 		this.refreshTabNav();
-
-		// var tmpOutlineEl = ThisApp.getByAttr$({action: "outlineDisplay",type: "pages"});
-		// if( tmpOutlineEl && tmpOutlineEl.length > 0){
-		// 	ThisApp.outlineDisplay(false,tmpOutlineEl.get(0));  
-		// 	if( tmpOutlineEl.length > 1){
-		// 	ThisApp.outlineDisplay(false,tmpOutlineEl.get(1));  
-		// 	}
-		// }
 
 	}
 
