@@ -25,6 +25,7 @@ var ActionAppCore = {
             common: '/dir/catalogs/_designer/',
             _designer: '/dir/catalogs/_designer/',
             _data: '/dir/catalogs/_data/',
+            _samples: '/dir/catalogs/_samples/',
             getResourceCatalogURL: function(theCatName, theResType, theResName){
                 var tmpBaseURL = '/';
                 var tmpResType = ThisApp.controls.getUnifiedPluralName(theResType);
@@ -273,7 +274,7 @@ var ActionAppCore = {
                 tmpOptions.contentType = 'application/x-www-form-urlencoded';
             } else {
                 if (typeof (tmpOptions.data) == 'object') {
-                    tmpOptions.data = JSON.stringify(tmpOptions.data);
+                    tmpOptions.data = JSON.stringify(tmpOptions.data);    
                 }
                 tmpOptions.contentType = 'application/json';
             }
@@ -2744,11 +2745,13 @@ window.ActionAppCore = window.ActionAppCore || ActionAppCore;
         var tmpAppID = '';
         //--- If there is a dataContext, add related details to header
         if( tmpOptions.dataContext ){
+            console.log('tmpOptions.dataContext ',tmpOptions.dataContext );
             if( tmpOptions.dataContext && tmpOptions.dataContext.getAppName){
                 tmpAppID = tmpOptions.dataContext.getAppName();
+                console.log('tmpAppID',tmpAppID);
                 if(tmpAppID){
                     var tmpHeaders = tmpOptions.headers || {};
-                    $.extend(tmpHeaders, {'Act-App-Id':tmpAppID});
+                    $.extend(tmpHeaders, {'act-app-id':tmpAppID});
                     tmpOptions.headers = tmpHeaders;
                 }
             }
