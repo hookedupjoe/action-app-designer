@@ -23,9 +23,7 @@ module.exports.setup = function setup(scope) {
         var tmpAppID = req.headers['act-app-id'] || '';
         if( tmpAppID ){
             //--- Always use header value, even if appid passed
-            console.log('req.body.appid was',req.body.appid);
             req.body.appid = tmpAppID;
-            console.log('req.body.appid is',req.body.appid);
         //--- Optional ... do not allow if not in header?
         //     Maybe only designer level access can specify app?
         // } else {
