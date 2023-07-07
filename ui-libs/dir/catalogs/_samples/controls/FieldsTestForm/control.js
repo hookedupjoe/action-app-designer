@@ -43,13 +43,6 @@
           }]
       },
       {
-        "ctl": "datetime",
-        canbe_readonly: true,
-        "label": "Date and Time",
-        "name": "datetimefield",
-        "req": false
-      },
-      {
         "ctl": "fieldrow",
         "name": "date-and-time",
         "items": [{
