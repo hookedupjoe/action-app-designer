@@ -437,6 +437,7 @@
       loading: this.getEl(),
       cache: true,
       url: tmpURL,
+      dataContext: this,
       data: tmpData
     }).then(function(theReply) {
       tmpThis.reloadedNeeded = false;
