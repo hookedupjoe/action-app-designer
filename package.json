@@ -9,7 +9,7 @@
     "chokidar": "^3.5.3"
   },
   "dependencies": {
-    "bcrypt": "^5.1.0",
+    "bcrypt": "^5.0.1",
     "body-parser": "^1.20.2",
     "child_process": "^1.0.2",
     "connect-mongo": "^5.0.0",
