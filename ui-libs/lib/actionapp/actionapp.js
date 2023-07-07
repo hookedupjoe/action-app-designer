@@ -511,6 +511,19 @@ window.ActionAppCore = window.ActionAppCore || ActionAppCore;
             });
         };
     }
+
+    //--- Fix mobile scrolling issue
+    EventTarget.prototype['addEventListenerBase'] = EventTarget.prototype.addEventListener;
+    EventTarget.prototype.addEventListener = function(type, listener){
+        try {
+            if(this !== document.querySelector('body') || type !== 'touchmove'){
+                this.addEventListenerBase(type, listener);
+            }
+        } catch (error) {
+            //--ok            
+        }
+    };
+
     
     
 
