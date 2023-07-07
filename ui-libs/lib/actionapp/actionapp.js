@@ -152,6 +152,7 @@ var ActionAppCore = {
         return tmpRet;
     },    
     util: {
+        
         getStylesAsObject(theString){
             var regex = /([\w-]*)\s*:\s*([^;]*)/g;
             var match, properties={};
@@ -2740,6 +2741,20 @@ window.ActionAppCore = window.ActionAppCore || ActionAppCore;
             tmpOptions = { url: tmpOptions };
         }
         
+        var tmpAppID = '';
+        //--- If there is a dataContext, add related details to header
+        if( tmpOptions.dataContext ){
+            if( tmpOptions.dataContext && tmpOptions.dataContext.getAppName){
+                tmpAppID = tmpOptions.dataContext.getAppName();
+                if(tmpAppID){
+                    var tmpHeaders = tmpOptions.headers || {};
+                    $.extend(tmpHeaders, {'Act-App-Id':tmpAppID});
+                    tmpOptions.headers = tmpHeaders;
+                }
+            }
+        }
+        
+
         //--- Start with no pre-action needed
         var tmpDoPreActionPromise = true;
         if( ActionAppCore.apiCallOptions && typeof(ActionAppCore.apiCallOptions.onBeforeRun) == 'function'){
@@ -4218,6 +4233,14 @@ License: LGPL
     }
 
     var me = SitePage.prototype;
+
+    me.getAppName = function(){
+        //--- If running the app, use app info
+        if( ActionAppCore.appInfo && ActionAppCore.appInfo.name ){
+            return ActionAppCore.appInfo.name;
+        }
+        return '';
+    }
 
     me.addPageWebControl = function (theControlName, theControl) {
         ThisApp.controls.addWebControl(this.ns(theControlName), theControl);
@@ -6427,6 +6450,47 @@ License: LGPL
     meInstance.extend = function (theNewFunctionality) {
         $.extend(this, theNewFunctionality)
     }
+    meInstance.getAppName = function(){
+        //--- If running the app, use app info
+        if( ActionAppCore.appInfo && ActionAppCore.appInfo.name ){
+            return ActionAppCore.appInfo.name;
+        }
+        //--- See if we are in the designer, if so - what app?
+        var tmpDesigner = this.getDesignerEditor();
+        if( tmpDesigner ){
+            window.tmpDesigner = tmpDesigner;
+            if( tmpDesigner.details){
+                var tmpAppName = tmpDesigner.details.appname || tmpDesigner.details.catname;
+                if( tmpAppName ){
+                    return tmpDesigner.details.appname;
+                }
+            }
+        }
+        return '';
+    }
+
+    meInstance.getDesignerEditor = function () {
+        try {
+            var tmpCtl = this.getParentControl();
+            var tmpFoundControl = false;
+            for (var i = 0; i < 20; i++) {
+                if (tmpCtl.isDesignerEditor) {
+                    tmpFoundControl = tmpCtl;
+                    break
+                }
+                if (tmpCtl.getParentControl) {
+                    tmpCtl = tmpCtl.getParentControl();
+                } else {
+                    break;
+                }
+            }
+            return tmpFoundControl;
+        } catch (error) {
+            console.error('getDesignerEditor error:', error)
+            return false;
+
+        }
+    },
 
 
     meInstance.refreshIndex = function () {
@@ -6441,6 +6505,13 @@ License: LGPL
             return tmpReq;
         }
         return tmpRet;
+    }
+
+    meInstance.getParentControl = function () {
+        if( this.context.control ){
+            return this.context.control.context.this.controller;
+        }
+        return false;
     }
 
     //ToDo: 
