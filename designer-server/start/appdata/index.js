@@ -12,9 +12,11 @@ module.exports.setup = function setup(scope) {
         if( req.authUser ){
             //--- validate access?
         } else {
+            
             if( $.isUsingPassport ){
                 return res.sendStatus(401)
             }
+            console.log('Anonymous Access')
         }
 
         
@@ -43,14 +45,19 @@ module.exports.setup = function setup(scope) {
                 tmpDBName = 'aadb-' + tmpDBName;
             }
             //--- Load account and dbname from app details
+
+            //--- ToDo: Remove this from here - add to header????
             if( tmpAccountID && tmpDBName ){
                 req.body.accountid = tmpAccountID;
                 req.body.dbname = tmpDBName;
             }
+            
         }
         if( !(tmpAppID)){
             //--- If no app ID is passed, they don't know what they are doing - show denied?
-            return res.sendStatus(401);
+            //console.log('no app id');
+            //----ToDo: Assure system admin/dev for this update
+            //return res.sendStatus(401);
         }
 
         var tmpIsAllowed = true;
@@ -64,7 +71,7 @@ module.exports.setup = function setup(scope) {
 
         
         if( !(tmpIsAllowed) ){
-            return res.sendStatus(401);
+            //return res.sendStatus(401);
         }
         
         var tmpType = req.params.type || ''

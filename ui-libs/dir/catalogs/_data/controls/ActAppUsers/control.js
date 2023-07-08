@@ -205,10 +205,10 @@
       var tmpDocTitle = tmpData.title;
   
       var tmpBaseURL = ActionAppCore.ActAppData.rootPath;
-  
       var tmpPostOptions = {
         formSubmit: false,
         data: tmpData,
+        dataContext: this,
         url: tmpBaseURL + 'appdata/auth/save-user.json'
       };
   
@@ -227,11 +227,9 @@
         if (!theSubmit) {
           return;
         }
-        console.log('theData back', theData)
         self.submitForm(theData).then(function() {
           tmpViewer.showReport();
         });
-        //console.log('theData',theData);
         // self.parts.mainform.submitForm().then(function() {
         //   tmpViewer.showReport();
         // });
@@ -259,7 +257,6 @@
         if (!theSubmit) {
           return;
         }
-        console.log('theData', theData);
         self.submitForm(theData).then(function() {
           tmpViewer.showReport();
         });
@@ -292,19 +289,19 @@
         ids: tmpSelected
       };
   
-      tmpData.accountid = this.currentAccount; //ToDo: dyno
-      tmpData.dbname = 'actapp-demoapp1';
-      tmpData.doctype = 'fieldstest';
+      // tmpData.accountid = this.currentAccount; //ToDo: dyno
+      // tmpData.dbname = 'actapp-demoapp1';
+      //tmpData.doctype = 'fieldstest';
   
       var tmpBaseURL = ActionAppCore.ActAppData.rootPath;
       var tmpPostOptions = {
         formSubmit: false,
+        dataContext: this,
         data: tmpData,
         url: tmpBaseURL + 'appdata/api/recycle-docs.json?open'
       };
   
       ThisApp.apiCall(tmpPostOptions).then(function() {
-        console.log('recycle complete', arguments);
         tmpViewer.showReport();
       });
   
