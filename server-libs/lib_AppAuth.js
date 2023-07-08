@@ -26,7 +26,7 @@ function AuthManager(theOptions) {
 var meAuthManager = AuthManager.prototype;
 module.exports.AuthManager = AuthManager;
 
-meAuthManager.saveUser = function(theUser, theOptions){
+meAuthManager.saveUser = async function(theUser, theOptions){
     return new Promise( async function (resolve, reject) {
         try {
             var tmpUser = theUser;
@@ -70,7 +70,7 @@ meAuthManager.saveUser = function(theUser, theOptions){
 
 }
 
-meAuthManager.getUsers = function(){
+meAuthManager.getUsers = async function(){
     return new Promise( async function (resolve, reject) {
         try {
             var tmpAccount = await $.MongoManager.getAccount('_home');
@@ -85,6 +85,42 @@ meAuthManager.getUsers = function(){
         catch (error) {
             console.log('Err : ' + error);
             reject(error);
+        }
+    });
+}
+
+meAuthManager.isAllowed = async function(theUserId, theResource, thePermission){
+    return new Promise( async function (resolve, reject) {
+        try {
+            var tmpResID = '';
+            var tmpDBName = theResource.database || theResource.db || '';
+            var tmpResType = '';
+            if( tmpDBName ){
+                tmpResType = 'db';
+                tmpResID = tmpDBName;
+            }
+
+            if( !(tmpResID) ){
+                console.log('no resource id passed, be save and deny');
+                resolve(false);
+            }
+            
+            var tmpAccount = await $.MongoManager.getAccount('_home');
+            var tmpDB = await tmpAccount.getDatabase(tmpDBName);
+            var tmpMongoDB = tmpDB.getMongoDB();
+            var tmpDocs = await tmpMongoDB.collection('actappauth').find({"_doctype": "aclentry"}).filter({"entryname": theUserId, "type": "person"}).toArray();
+            if( !(tmpDocs) || tmpDocs.length == 0){
+                resolve(false);
+            } else {
+                //--- ToDo: Check access level
+                resolve(true);
+            }
+            resolve(true);
+        }
+        catch (error) {
+            console.log('Error in isAllow: ' + error);
+            console.log('theUserId, theResourceID, thePermission',theUserId, theResourceID, thePermission);
+            resolve(false);
         }
     });
 }

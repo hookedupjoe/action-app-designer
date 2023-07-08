@@ -50,9 +50,23 @@ module.exports.setup = function setup(scope) {
         }
         if( !(tmpAppID)){
             //--- If no app ID is passed, they don't know what they are doing - show denied?
-            // return res.sendStatus(401);
+            return res.sendStatus(401);
         }
 
+        var tmpIsAllowed = true;
+        var tmpAccessType = 0; //--- ToDo: Determine access type based on action
+        //--- May have passed anonymous?
+        if( req.authUser ){
+            //console.log('req.authUser',req.authUser);
+            tmpIsAllowed = await $.AuthMgr.isAllowed(req.authUser.id,{db:req.body.dbname}, tmpAccessType)
+            //console.log('tmpIsAllowed from check',tmpIsAllowed);
+        }
+
+        
+        if( !(tmpIsAllowed) ){
+            return res.sendStatus(401);
+        }
+        
         var tmpType = req.params.type || ''
         var tmpName = req.params.name || ''
         var tmpRet = {}
