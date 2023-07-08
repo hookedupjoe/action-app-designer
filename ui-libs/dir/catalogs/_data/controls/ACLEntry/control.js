@@ -35,6 +35,13 @@
 			],
 			"name": "app-info-row"
 		},
+		{
+			"ctl": "dropdown",
+			"name":"type",
+			"list":"Person|person,Group|group",
+			"default": "person",
+			req: true
+		},
 	
 			{
 				"name": "__doctype",

@@ -216,7 +216,10 @@ app.post('/login/jwt', function (req, res, next) {
 function processAuth(req, res, next) {
     if( req.session && req.session.passport && req.session.passport.user ){
         var tmpUser = req.session.passport.user;
-        var tmpUserKey = tmpUser.provider + "-" + tmpUser.id;
+        var tmpUserKey = tmpUser.id;
+        if( tmpUser.provider ){
+            tmpUserKey = tmpUser.provider + "-" + tmpUserKey;
+        }
         req.authUser = {
             id: tmpUserKey,
             displayName: tmpUser.displayName
@@ -307,8 +310,11 @@ function processAuth(req, res, next) {
         if( isUsingPassport ){
             if( req.session && req.session.passport && req.session.passport.user ){
                 var tmpUserInfo = req.session.passport.user;
-                var tmpSource = tmpUserInfo.provider || 'local';
-                tmpUser.userid = tmpSource + '-' + tmpUserInfo.id;
+                var tmpSource = tmpUserInfo.provider;
+                tmpUser.userid = tmpUserInfo.id;
+                if( tmpSource ){
+                    tmpUser.userid = tmpSource + '-' + tmpUser.userid;
+                }
                 tmpUser.displayName = tmpUserInfo.displayName || '';
             } else {
                 var tmpLoginURL = '/pagelogin?type=page';

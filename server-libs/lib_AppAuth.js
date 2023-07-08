@@ -152,28 +152,20 @@ meAuthManager.saveAclEntry = async function(theEntry){
 
 }
 
-meAuthManager.recycleAcleEntries = async function(){
+meAuthManager.recycleAcleEntries = async function(theOptions){
     return new Promise( async function (resolve, reject) {
         try {
-            var tmpBody = req.body || {};
-            if (typeof (tmpBody) == 'string') {
-                try {
-                    tmpBody = JSON.parse(tmpBody)
-                } catch (ex) {
-                    throw("Bad JSON Passed")
-                }
-            }
-            
-            var tmpAccount = await $.MongoManager.getAccount(tmpBody.accountid);
-            var tmpDB = await tmpAccount.getDatabase(tmpBody.dbname);
+          
+            var tmpAccount = await $.MongoManager.getAccount(theOptions.accountid);
+            var tmpDB = await tmpAccount.getDatabase(theOptions.dbname);
             var tmpDocType = 'aclentry';
             var tmpCollName = 'actappauth';
 
             var tmpProcIds = [];
 
             var tmpColl = await tmpDB.getCollection(tmpCollName)
-            for( var iPos in tmpBody.ids ){
-                var tmpID = tmpBody.ids[iPos];
+            for( var iPos in theOptions.ids ){
+                var tmpID = theOptions.ids[iPos];
                 tmpProcIds.push(new ObjectId(tmpID));
             }
             var tmpUD =  { $set: { '__doctype' : '_deleted' } }
@@ -213,7 +205,7 @@ meAuthManager.isAllowed = async function(theUserId, theResource, thePermission){
             var tmpAccount = await $.MongoManager.getAccount('_home');
             var tmpDB = await tmpAccount.getDatabase(tmpDBName);
             var tmpMongoDB = tmpDB.getMongoDB();
-            var tmpDocs = await tmpMongoDB.collection('actappauth').find({"_doctype": "aclentry"}).filter({"entryname": theUserId, "type": "person"}).toArray();
+            var tmpDocs = await tmpMongoDB.collection('actappauth').find({}).filter({"_doctype": "aclentry","entryname": theUserId, "type": "person"}).toArray();
             if( !(tmpDocs) || tmpDocs.length == 0){
                 resolve(false);
             } else {
