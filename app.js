@@ -48,7 +48,7 @@ var $ = require(scope.locals.path.libraries + '/globalUtilities.js').$;
 $.setup(scope);
 
 $.scope = scope;
-var bld = require(scope.locals.path.libraries + '/lib_BuildUtils.js');
+var bld = $.bld;
 
 previewScope.locals = {
     name: 'action-app-preview-server',

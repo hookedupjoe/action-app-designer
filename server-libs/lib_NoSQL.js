@@ -1,5 +1,7 @@
 /*
   Standard NoSQL Access Library
+
+  NO LONGER IN USE - SEE lib_Mongo.js
 */
 'use strict';
 
