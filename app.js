@@ -96,7 +96,7 @@ cookieParser = require('cookie-parser'),
 bodyParser = require('body-parser');
 
 //--- Use standard body and cookie parsers
-app.use(bodyParser.json());
+app.use(bodyParser.json({ limit: '1000kb' }));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 
@@ -617,7 +617,7 @@ function setup(thePassportFlag) {
             });
 
             //--- Use standard body and cookie parsers
-            preview.use(bodyParser.json());
+            preview.use(bodyParser.json({ limit: '1000kb' }));
             preview.use(bodyParser.urlencoded({ extended: false }));
             preview.use(cookieParser());
 
