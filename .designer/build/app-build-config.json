@@ -38,6 +38,13 @@
 	],
 	"libraries": [		
 		{
+			"name": "d3",
+			"label": "d3",
+			"js": [
+				"<script src=\"{{LIBRARY-LOCATION}}/lib/d3/d3.min.js\"></script>"
+			]
+		},
+		{
 			"name": "Monaco",
 			"label": "Monaco Editor",
 			"css": [
