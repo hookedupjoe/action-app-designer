@@ -14,7 +14,7 @@ var path = require('path'),
     scope = {};
 
 var https = require('https');
-const jwt = require('jsonwebtoken');
+//const jwt = require('jsonwebtoken');
 //const passportJWT = require("passport-jwt");
 // const ExtractJWT = passportJWT.ExtractJwt;
 // const JWTStrategy   = passportJWT.Strategy;
@@ -22,6 +22,8 @@ const ejs = require('ejs');
 
 require('dotenv').config();
 
+//Auth only in Mongino
+/*
 const GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 const GitHubStrategy = require('passport-github2').Strategy;
 const LocalStrategy = require('passport-local').Strategy
@@ -33,6 +35,7 @@ const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_SECRET;
 
 const GITHUB_CLIENT_ID = process.env.GITHUB_CLIENT_ID;
 const GITHUB_CLIENT_SECRET = process.env.GITHUB_SECRET;
+*/
 
 scope.locals = {
     name: 'action-app-designer',
@@ -108,158 +111,161 @@ app.all('*', function(req, res, next) {
         res.send('')
     } else {
         next();
+
     }
 });
 
 //--- Passport Auth ------------------
-var isUsingPassport = (process.env.AUTH_TYPE == 'passport');
-$.isUsingPassport = isUsingPassport;
+//-- REMOVED - ONLY MONGINO USES AUTH --
+
+//var isUsingPassport = (process.env.AUTH_TYPE == 'passport');
+//$.isUsingPassport = isUsingPassport;
 
 const MongoStore = require('connect-mongo');
-var passport = require('passport');
-$.passport = passport;
+// var passport = require('passport');
+// $.passport = passport;
 
-if( isUsingPassport ){
-  passport.serializeUser(function (user, cb) {
-    cb(null, user);
-  });
-  passport.deserializeUser(function (obj, cb) {
-    cb(null, obj);
-  });
+// if( isUsingPassport ){
+//   passport.serializeUser(function (user, cb) {
+//     cb(null, user);
+//   });
+//   passport.deserializeUser(function (obj, cb) {
+//     cb(null, obj);
+//   });
 
-//---ToDo: Use ACTAPP_DB_HOME_ACCOUNT to spin up default connection db for application data
-//         Keep accounts for access to more than one.
-//---ToDo: move to mongo for accounts?
-app.use(session({
-    resave: false,
-    saveUninitialized: true,
-    maxAge: new Date(Date.now() + 3600000),
-    store: MongoStore.create({
-        mongoUrl: startupDataString,
-        mongoOptions: {useNewUrlParser: true, useUnifiedTopology: true},
-        dbName: 'actappauth-sessions',
-        ttl: 14 * 24 * 60 * 60 // = 14 days. Default
-      }),
-    secret: process.env.SESSION_SECRET || 'sdflksjflksdjflksdjfieieieiei'
-  }));
-
-    
-    async function authUser(theUsername, thePassword, done){
-        var tmpAccount = await $.MongoManager.getAccount('_home');
-        var tmpDB = await tmpAccount.getDatabase('actappauth');
-        var tmpDocType = 'user';
-        var tmpMongoDB = tmpDB.getMongoDB();        
-        var tmpDocs = await tmpMongoDB.collection('actapp-' + tmpDocType)
-            .find({username:theUsername})
-            .filter({username:theUsername, __doctype:tmpDocType})
-            .toArray();
-
-        if( tmpDocs && tmpDocs.length == 1){
-            var tmpUserDoc = tmpDocs[0];
-            if( tmpUserDoc.username != theUsername ){
-                return done (null, false );
-            }
-            var tmpIsGood = await bcrypt.compare(thePassword, tmpUserDoc.password);
-            if( !(tmpIsGood) ){
-                return done (null, false );
-            }
-            var tmpRetDoc = {id: tmpUserDoc.username, displayName: tmpUserDoc.firstname + ' ' + tmpUserDoc.lastname};
-            return done (null, tmpRetDoc ) 
-        } else {
-            return done (null, false ) 
-        }
-    }
+// //---ToDo: Use ACTAPP_DB_HOME_ACCOUNT to spin up default connection db for application data
+// //         Keep accounts for access to more than one.
+// //---ToDo: move to mongo for accounts?
+// app.use(session({
+//     resave: false,
+//     saveUninitialized: true,
+//     maxAge: new Date(Date.now() + 3600000),
+//     store: MongoStore.create({
+//         mongoUrl: startupDataString,
+//         mongoOptions: {useNewUrlParser: true, useUnifiedTopology: true},
+//         dbName: 'actappauth-sessions',
+//         ttl: 14 * 24 * 60 * 60 // = 14 days. Default
+//       }),
+//     secret: process.env.SESSION_SECRET || 'sdflksjflksdjflksdjfieieieiei'
+//   }));
 
     
-    app.get('/auth/google',
-    passport.authenticate('google', { scope: ['profile', 'email'] }));
+//     async function authUser(theUsername, thePassword, done){
+//         var tmpAccount = await $.MongoManager.getAccount('_home');
+//         var tmpDB = await tmpAccount.getDatabase('actappauth');
+//         var tmpDocType = 'user';
+//         var tmpMongoDB = tmpDB.getMongoDB();        
+//         var tmpDocs = await tmpMongoDB.collection('actapp-' + tmpDocType)
+//             .find({username:theUsername})
+//             .filter({username:theUsername, __doctype:tmpDocType})
+//             .toArray();
 
-    app.get('/auth/github',
-    passport.authenticate('github', { scope: ['profile', 'email'] }));
-    
-    app.post ("/login", passport.authenticate('local', {
-    successRedirect: "/authcomplete",
-    failureRedirect: "/login.html",
-    }))
-
-/* JWT login. */
-app.post('/login/jwt', function (req, res, next) {
-
-    passport.authenticate('local', {scope: ['profile', 'email'] , session: false}, (err, user, info) => {
-        if (err || !user) {
-            return res.status(400).json({
-                message: info ? info.message : 'Login failed',
-                user   : user
-            });
-        }
-
-        req.login(user, {session: false}, (err) => {
-            if (err) {
-                res.send(err);
-            }
-
-            const token = jwt.sign(user, process.env.JWT_SECRET);
-
-            return res.json({user, token});
-        });
-    })
-    (req, res);
-
-});
-
-    app.use(passport.initialize());
-    app.use(passport.session());
-
-    passport.use(new LocalStrategy (authUser))
+//         if( tmpDocs && tmpDocs.length == 1){
+//             var tmpUserDoc = tmpDocs[0];
+//             if( tmpUserDoc.username != theUsername ){
+//                 return done (null, false );
+//             }
+//             var tmpIsGood = await bcrypt.compare(thePassword, tmpUserDoc.password);
+//             if( !(tmpIsGood) ){
+//                 return done (null, false );
+//             }
+//             var tmpRetDoc = {id: tmpUserDoc.username, displayName: tmpUserDoc.firstname + ' ' + tmpUserDoc.lastname};
+//             return done (null, tmpRetDoc ) 
+//         } else {
+//             return done (null, false ) 
+//         }
+//     }
 
     
-function processAuth(req, res, next) {
-    if( req.session && req.session.passport && req.session.passport.user ){
-        var tmpUser = req.session.passport.user;
-        var tmpUserKey = tmpUser.id;
-        if( tmpUser.provider ){
-            tmpUserKey = tmpUser.provider + "-" + tmpUserKey;
-        }
-        req.authUser = {
-            id: tmpUserKey,
-            displayName: tmpUser.displayName
-        }
-        next()
-    } else {
-        const authHeader = req.headers['authorization']
-        const token = authHeader && authHeader.split(' ')[1]
+//     app.get('/auth/google',
+//     passport.authenticate('google', { scope: ['profile', 'email'] }));
+
+//     app.get('/auth/github',
+//     passport.authenticate('github', { scope: ['profile', 'email'] }));
+    
+//     app.post ("/login", passport.authenticate('local', {
+//     successRedirect: "/authcomplete",
+//     failureRedirect: "/login.html",
+//     }))
+
+// /* JWT login. */
+// app.post('/login/jwt', function (req, res, next) {
+
+//     passport.authenticate('local', {scope: ['profile', 'email'] , session: false}, (err, user, info) => {
+//         if (err || !user) {
+//             return res.status(400).json({
+//                 message: info ? info.message : 'Login failed',
+//                 user   : user
+//             });
+//         }
+
+//         req.login(user, {session: false}, (err) => {
+//             if (err) {
+//                 res.send(err);
+//             }
+
+//             const token = jwt.sign(user, process.env.JWT_SECRET);
+
+//             return res.json({user, token});
+//         });
+//     })
+//     (req, res);
+
+// });
+
+//     app.use(passport.initialize());
+//     app.use(passport.session());
+
+//     passport.use(new LocalStrategy (authUser))
+
+    
+// function processAuth(req, res, next) {
+//     if( req.session && req.session.passport && req.session.passport.user ){
+//         var tmpUser = req.session.passport.user;
+//         var tmpUserKey = tmpUser.id;
+//         if( tmpUser.provider ){
+//             tmpUserKey = tmpUser.provider + "-" + tmpUserKey;
+//         }
+//         req.authUser = {
+//             id: tmpUserKey,
+//             displayName: tmpUser.displayName
+//         }
+//         next()
+//     } else {
+//         const authHeader = req.headers['authorization']
+//         const token = authHeader && authHeader.split(' ')[1]
       
-        if (token == null){
-            req.authUser = false;
-            next()
-        } else {
-            jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
-                if (err){
-                    req.authUser = false;
-                } else {
-                    var tmpCurr = {
-                        id: user.id,
-                        displayName: user.displayName
-                    }
-                    req.authUser = tmpCurr;
-                }
-                next()
-                })
-        }
-    }
+//         if (token == null){
+//             req.authUser = false;
+//             next()
+//         } else {
+//             jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
+//                 if (err){
+//                     req.authUser = false;
+//                 } else {
+//                     var tmpCurr = {
+//                         id: user.id,
+//                         displayName: user.displayName
+//                     }
+//                     req.authUser = tmpCurr;
+//                 }
+//                 next()
+//                 })
+//         }
+//     }
     
   
     
-  }
-  app.use(processAuth)
+//   }
+//   app.use(processAuth)
 
   
-}
+// }
 
-  var tmpBaseCallback = 'http://localhost:33460/';
-  if( process.env.PASSPORT_BASE_CALLBACK ){
-    tmpBaseCallback = process.env.PASSPORT_BASE_CALLBACK;
-  }
+//   var tmpBaseCallback = 'http://localhost:33460/';
+//   if( process.env.PASSPORT_BASE_CALLBACK ){
+//     tmpBaseCallback = process.env.PASSPORT_BASE_CALLBACK;
+//   }
 
   
 //   //-- when home page loaded, see if auth
@@ -307,21 +313,22 @@ function processAuth(req, res, next) {
  app.all(/\/$/, function(req, res, next) {
     try {
         var tmpUser = {};
-        if( isUsingPassport ){
-            if( req.session && req.session.passport && req.session.passport.user ){
-                var tmpUserInfo = req.session.passport.user;
-                var tmpSource = tmpUserInfo.provider;
-                tmpUser.userid = tmpUserInfo.id;
-                if( tmpSource ){
-                    tmpUser.userid = tmpSource + '-' + tmpUser.userid;
-                }
-                tmpUser.displayName = tmpUserInfo.displayName || '';
-            } else {
-                var tmpLoginURL = '/pagelogin?type=page';
-                tmpLoginURL += '&page=' + req.url;
-                res.redirect(tmpLoginURL);
-            }
-        }
+        //--- No Auth - only in Mongino
+        // if( isUsingPassport ){
+        //     if( req.session && req.session.passport && req.session.passport.user ){
+        //         var tmpUserInfo = req.session.passport.user;
+        //         var tmpSource = tmpUserInfo.provider;
+        //         tmpUser.userid = tmpUserInfo.id;
+        //         if( tmpSource ){
+        //             tmpUser.userid = tmpSource + '-' + tmpUser.userid;
+        //         }
+        //         tmpUser.displayName = tmpUserInfo.displayName || '';
+        //     } else {
+        //         var tmpLoginURL = '/pagelogin?type=page';
+        //         tmpLoginURL += '&page=' + req.url;
+        //         res.redirect(tmpLoginURL);
+        //     }
+        // }
     } catch (error) {
         console.log("Error in oath check", error);
     }
@@ -338,18 +345,18 @@ function processAuth(req, res, next) {
  
  $.designerConfig = {};
    
- $.designerConfig.isUsingPassport = isUsingPassport;
- $.designerConfig.isUsingData = isUsingData;
+//  $.designerConfig.isUsingPassport = isUsingPassport;
+$.designerConfig.isUsingData = isUsingData;
  
- if( isUsingPassport ){
-    $.designerConfig.passport = {};
-    if( GOOGLE_CLIENT_ID ){
-        $.designerConfig.passport.google = true;
-    }
-    if( GITHUB_CLIENT_ID ){
-        $.designerConfig.passport.github = true;
-    }
-}
+//  if( isUsingPassport ){
+//     $.designerConfig.passport = {};
+//     if( GOOGLE_CLIENT_ID ){
+//         $.designerConfig.passport.google = true;
+//     }
+//     if( GITHUB_CLIENT_ID ){
+//         $.designerConfig.passport.github = true;
+//     }
+// }
 
  app.get('/deisgner/details.js', async function (req, res, next) {
     var tmpRet = {
@@ -423,7 +430,7 @@ try {
     console.log('Not hot reading, chokidar not installed on dev side')  
 }
 
-function setup(thePassportFlag) {
+function setup() {
 
     return new Promise( async function (resolve, reject) {
         try {
@@ -506,64 +513,6 @@ function setup(thePassportFlag) {
                 next();
             });
 
-
-             if( thePassportFlag ){
-                                
-
-                //--- ToDo: Should we be doing this instead of doing this via middleware?
-            //     passport.use(new JWTStrategy({
-            //         jwtFromRequest: ExtractJWT.fromAuthHeaderAsBearerToken(),
-            //         secretOrKey   : process.env.JWT_SECRET
-            //     },
-            //     function (jwtPayload, cb) {
-            //         //find the user in db if needed
-            //         return UserModel.findOneById(jwtPayload.id)
-            //             .then(user => {
-            //                 return cb(null, user);
-            //             })
-            //             .catch(err => {
-            //                 return cb(err);
-            //             });
-            //     }
-            //     ));
-
-                passport.use(new GoogleStrategy({
-                    clientID: GOOGLE_CLIENT_ID,
-                    clientSecret: GOOGLE_CLIENT_SECRET,
-                    callbackURL: tmpBaseCallback + "auth/google/callback"
-                    },
-                    function (accessToken, refreshToken, profile, done) {
-                    return done(null, profile);
-                    }
-                ));
-                    
-                passport.use(new GitHubStrategy({
-                    clientID: GITHUB_CLIENT_ID,
-                    clientSecret: GITHUB_CLIENT_SECRET,
-                    callbackURL: tmpBaseCallback + "auth/github/callback"
-                    },
-                    function (accessToken, refreshToken, profile, done) {
-                    return done(null, profile);
-                    }
-                ));
-                            
-                app.get('/auth/google/callback',
-                    passport.authenticate('google', { failureRedirect: '/error' }),
-                    function (req, res) {
-                        // Successful authentication, redirect success.
-                        res.redirect('/authcomplete');
-                    }
-                );
-                
-                app.get('/auth/github/callback',
-                    passport.authenticate('github', { failureRedirect: '/error' }),
-                    function (req, res) {
-                    // Successful authentication, redirect success.
-                    res.redirect('/authcomplete');
-                    }
-                );
-
-            }
 
   
             //--- Standard Server Startup
@@ -679,6 +628,5 @@ function setup(thePassportFlag) {
 }
 
 
-
 //--- Run setup with async wrapper to allow async stuff
-setup(isUsingPassport);
+setup();
