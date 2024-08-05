@@ -91,7 +91,7 @@ if( ACTAPP_DB_HOME_ACCOUNT_ADDRESS ){
     isUsingData = true;
 }
 
-const bcrypt = require("bcrypt")
+//const bcrypt = require("bcrypt")
 var express = require('express'),
 app = express(),
 preview = express(),
