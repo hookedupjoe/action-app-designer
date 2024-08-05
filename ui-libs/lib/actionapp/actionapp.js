@@ -3220,7 +3220,7 @@ window.ActionAppCore = window.ActionAppCore || ActionAppCore;
             return dfd.promise();
         }
         
-        if( !(ActionAppCore.inDesigner)){
+        if( !(ActionAppCore.inDesigner) && (typeof window.cordova == "undefined")){
             var tmpPromiseLoader = tmpInfoLoader();
             tmpDefs.push(tmpPromiseLoader);
         }
