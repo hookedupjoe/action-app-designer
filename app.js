@@ -18,7 +18,7 @@ var https = require('https');
 //const passportJWT = require("passport-jwt");
 // const ExtractJWT = passportJWT.ExtractJwt;
 // const JWTStrategy   = passportJWT.Strategy;
-const ejs = require('ejs');
+//const ejs = require('ejs');
 
 require('dotenv').config();
 
@@ -378,31 +378,31 @@ $.designerConfig.isUsingData = isUsingData;
     return res.send(tmpRet);
 });
 
- app.get('/pagelogin', function (req, res, next) {
+//  app.get('/pagelogin', function (req, res, next) {
     
-    // Render page using renderFile method
-    ejs.renderFile('views/pagelogin.ejs', {},
-    {}, function (err, template) {
-        if (err) {
-            throw err;
-        } else {
-            res.end(template);
-        }
-    });
-});
+//     // Render page using renderFile method
+//     ejs.renderFile('views/pagelogin.ejs', {},
+//     {}, function (err, template) {
+//         if (err) {
+//             throw err;
+//         } else {
+//             res.end(template);
+//         }
+//     });
+// });
 
-app.get('/authcomplete', function (req, res, next) {
+// app.get('/authcomplete', function (req, res, next) {
     
-    // Render page using renderFile method
-    ejs.renderFile('views/authcomplete.ejs', {},
-    {}, function (err, template) {
-        if (err) {
-            throw err;
-        } else {
-            res.end(template);
-        }
-    });
-});
+//     // Render page using renderFile method
+//     ejs.renderFile('views/authcomplete.ejs', {},
+//     {}, function (err, template) {
+//         if (err) {
+//             throw err;
+//         } else {
+//             res.end(template);
+//         }
+//     });
+// });
 
 // app.all('*', function(req, res, next) {
 //     res.header("Access-Control-Allow-Origin", "*");
