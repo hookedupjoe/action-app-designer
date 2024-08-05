@@ -64,32 +64,32 @@ previewScope.locals.path.start = scope.locals.path.root + "/preview-server";
 previewScope.locals.path.libraries = scope.locals.path.root + "/server-libs";
 
 
-var isUsingData = false;
+//var isUsingData = false;
 var startupDataString = '';
 var mongoSystemAccount = false;
 var homeAccountConfig = {};
 
-const ACTAPP_DB_HOME_ACCOUNT_ADDRESS = process.env.ACTAPP_DB_HOME_ACCOUNT_ADDRESS;
-if( ACTAPP_DB_HOME_ACCOUNT_ADDRESS ){
-    const ACTAPP_DB_HOME_ACCOUNT_PORT=process.env.ACTAPP_DB_HOME_ACCOUNT_PORT;
-    const ACTAPP_DB_HOME_ACCOUNT_USERNAME=process.env.ACTAPP_DB_HOME_ACCOUNT_USERNAME;
-    const ACTAPP_DB_HOME_ACCOUNT_PASSWORD=process.env.ACTAPP_DB_HOME_ACCOUNT_PASSWORD;
-    var tmpAcct = '';
-    homeAccountConfig.id = "_home";
-    homeAccountConfig.address = ACTAPP_DB_HOME_ACCOUNT_ADDRESS;
-    homeAccountConfig.port = ACTAPP_DB_HOME_ACCOUNT_PORT
+// const ACTAPP_DB_HOME_ACCOUNT_ADDRESS = process.env.ACTAPP_DB_HOME_ACCOUNT_ADDRESS;
+// if( ACTAPP_DB_HOME_ACCOUNT_ADDRESS ){
+//     const ACTAPP_DB_HOME_ACCOUNT_PORT=process.env.ACTAPP_DB_HOME_ACCOUNT_PORT;
+//     const ACTAPP_DB_HOME_ACCOUNT_USERNAME=process.env.ACTAPP_DB_HOME_ACCOUNT_USERNAME;
+//     const ACTAPP_DB_HOME_ACCOUNT_PASSWORD=process.env.ACTAPP_DB_HOME_ACCOUNT_PASSWORD;
+//     var tmpAcct = '';
+//     homeAccountConfig.id = "_home";
+//     homeAccountConfig.address = ACTAPP_DB_HOME_ACCOUNT_ADDRESS;
+//     homeAccountConfig.port = ACTAPP_DB_HOME_ACCOUNT_PORT
     
-    if( ACTAPP_DB_HOME_ACCOUNT_USERNAME ){
-        tmpAcct = ACTAPP_DB_HOME_ACCOUNT_USERNAME;
-        homeAccountConfig.username = ACTAPP_DB_HOME_ACCOUNT_USERNAME;
-        if( ACTAPP_DB_HOME_ACCOUNT_PASSWORD ){
-            tmpAcct += ':' + ACTAPP_DB_HOME_ACCOUNT_PASSWORD;
-            homeAccountConfig.password = ACTAPP_DB_HOME_ACCOUNT_PASSWORD
-        }
-    }
-    startupDataString = 'mongodb://' + tmpAcct + '@' + ACTAPP_DB_HOME_ACCOUNT_ADDRESS + ':' + ACTAPP_DB_HOME_ACCOUNT_PORT + '/?retryWrites=true&w=majority';
-    isUsingData = true;
-}
+//     if( ACTAPP_DB_HOME_ACCOUNT_USERNAME ){
+//         tmpAcct = ACTAPP_DB_HOME_ACCOUNT_USERNAME;
+//         homeAccountConfig.username = ACTAPP_DB_HOME_ACCOUNT_USERNAME;
+//         if( ACTAPP_DB_HOME_ACCOUNT_PASSWORD ){
+//             tmpAcct += ':' + ACTAPP_DB_HOME_ACCOUNT_PASSWORD;
+//             homeAccountConfig.password = ACTAPP_DB_HOME_ACCOUNT_PASSWORD
+//         }
+//     }
+//     startupDataString = 'mongodb://' + tmpAcct + '@' + ACTAPP_DB_HOME_ACCOUNT_ADDRESS + ':' + ACTAPP_DB_HOME_ACCOUNT_PORT + '/?retryWrites=true&w=majority';
+//     isUsingData = true;
+// }
 
 //const bcrypt = require("bcrypt")
 var express = require('express'),
@@ -346,7 +346,7 @@ const MongoStore = require('connect-mongo');
  $.designerConfig = {};
    
 //  $.designerConfig.isUsingPassport = isUsingPassport;
-$.designerConfig.isUsingData = isUsingData;
+//$.designerConfig.isUsingData = isUsingData;
  
 //  if( isUsingPassport ){
 //     $.designerConfig.passport = {};
@@ -482,10 +482,10 @@ function setup() {
                 serverApps: tmpWSDirectory + "designer-servers/"
             }
 
-            if( homeAccountConfig ){
-                require(scope.locals.path.libraries + '/lib_Mongo.js');
-                $.MongoManager.setAccountConfig('_home', homeAccountConfig);
-            }
+            // if( homeAccountConfig ){
+            //     require(scope.locals.path.libraries + '/lib_Mongo.js');
+            //     $.MongoManager.setAccountConfig('_home', homeAccountConfig);
+            // }
 
             await $.appIndexRefresh();
 

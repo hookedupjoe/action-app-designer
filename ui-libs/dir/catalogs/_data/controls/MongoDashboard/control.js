@@ -131,9 +131,9 @@
     ThisApp.apiCall(tmpURL).then(function(theReply){
       tmpThis.accountData = theReply;
       
-      if(ActionAppCore.designerDetails.config && ActionAppCore.designerDetails.config.isUsingData){
-        tmpThis.accountData.hasHome = 'yes';
-      }
+      // if(ActionAppCore.designerDetails.config && ActionAppCore.designerDetails.config.isUsingData){
+      //   tmpThis.accountData.hasHome = 'yes';
+      // }
       
       tmpThis.loadDash(tmpThis.accountData,"MongoDashHome");
     })

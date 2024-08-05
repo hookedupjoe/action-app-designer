@@ -18,9 +18,9 @@
   var tmpPageNames = [   
     'WorkspacePage',
   ];
-  if( ActionAppCore.designerDetails && ActionAppCore.designerDetails.config && ActionAppCore.designerDetails.config.isUsingData ){
-    tmpPageNames = tmpPageNames.concat(tmpDataPages);
-  }
+  // if( ActionAppCore.designerDetails && ActionAppCore.designerDetails.config && ActionAppCore.designerDetails.config.isUsingData ){
+  //   tmpPageNames = tmpPageNames.concat(tmpDataPages);
+  // }
   tmpPageNames = tmpPageNames.concat(tmpHelpers);
 
   var tmpPluginNames = [

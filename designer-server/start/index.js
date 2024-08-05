@@ -8,7 +8,7 @@ module.exports.setup = function (app, scope) {
     //--- Add Global Uitilies to commonly passed locals
     scope.locals.$ = require(scope.locals.path.libraries + "/globalUtilities").$;
     //--- deprecated:    scope.locals.$.NoSQL = require(scope.locals.path.libraries + "/lib_NoSQL.js");
-    scope.locals.$.Mongo = require(scope.locals.path.libraries + "/lib_Mongo.js");
+    //scope.locals.$.Mongo = require(scope.locals.path.libraries + "/lib_Mongo.js");
 
     scope.locals.$.bld = require(scope.locals.path.libraries + "/lib_BuildUtils.js");
     scope.locals.path.designer = scope.locals.path.root + "/.designer"

@@ -137,9 +137,9 @@ License: LGPL
 	};
 
 	function _onInit(){
-		if( !(ActionAppCore.designerDetails && ActionAppCore.designerDetails.config && ActionAppCore.designerDetails.config.isUsingData) ){
-			this.setItemDisplay('btn-logout', false);			
-		}
+		// if( !(ActionAppCore.designerDetails && ActionAppCore.designerDetails.config && ActionAppCore.designerDetails.config.isUsingData) ){
+		this.setItemDisplay('btn-logout', false);			
+		// }
 		this.parts.listpanel.subscribe('selectMe', onWsSelect.bind(this))
 	}
 

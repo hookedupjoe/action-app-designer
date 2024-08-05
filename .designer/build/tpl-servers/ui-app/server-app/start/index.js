@@ -10,7 +10,7 @@ module.exports.setup = function (app, scope) {
     scope.locals.$.file = require(scope.locals.path.libraries + "/lib_FileUtils");
     scope.locals.$.bld = require(scope.locals.path.libraries + "/lib_FileUtils");
     scope.locals.$.appUtils = require(scope.locals.path.start + "/libs/lib_AppUtils")(scope);
-    scope.locals.$.Mongo = require(scope.locals.path.libraries + "/lib_Mongo.js");
+    //scope.locals.$.Mongo = require(scope.locals.path.libraries + "/lib_Mongo.js");
 
     var express = require('express');
     
