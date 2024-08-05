@@ -121,7 +121,7 @@ app.all('*', function(req, res, next) {
 //var isUsingPassport = (process.env.AUTH_TYPE == 'passport');
 //$.isUsingPassport = isUsingPassport;
 
-const MongoStore = require('connect-mongo');
+//const MongoStore = require('connect-mongo');
 // var passport = require('passport');
 // $.passport = passport;
 
