@@ -6,7 +6,7 @@ const THIS_MODULE_TITLE = 'Data: Save New User in MongoDB';
 module.exports.setup = function setup(scope) {
     var config = scope;
     var $ = config.locals.$;
-    const bcrypt = require("bcrypt")
+    //const bcrypt = require("bcrypt")
 
     function Route() {
         this.name = THIS_MODULE_NAME;
@@ -45,7 +45,7 @@ module.exports.setup = function setup(scope) {
                     delete tmpBody.data._id;
                 }
                 if( tmpBody.data.password ){
-                    tmpBody.data.password = await bcrypt.hash(tmpBody.data.password, 10);
+//TEMP REMOVED                   tmpBody.data.password = await bcrypt.hash(tmpBody.data.password, 10);
                 }
                 
                 if( tmpID ){

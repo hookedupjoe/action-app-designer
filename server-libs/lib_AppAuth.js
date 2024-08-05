@@ -2,7 +2,7 @@
   Standard MongoDB Access Library
 */
 'use strict';
-const bcrypt = require("bcrypt")
+//const bcrypt = require("bcrypt")
 const { ObjectId } = require('mongodb');
 
 let $,
@@ -45,7 +45,7 @@ meAuthManager.saveUser = async function(theUser, theOptions){
                 delete tmpUser.data._id;
             }
             if( tmpUser.data.password ){
-                tmpUser.data.password = await bcrypt.hash(tmpUser.data.password, 10);
+  //TEMP REMOVED - NO AUTH HERE - MOVED TO MONGINO ONLY              tmpUser.data.password = await bcrypt.hash(tmpUser.data.password, 10);
             }
             
             if( tmpID ){
