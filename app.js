@@ -20,7 +20,7 @@ var https = require('https');
 // const JWTStrategy   = passportJWT.Strategy;
 //const ejs = require('ejs');
 
-require('dotenv').config();
+//require('dotenv').config();
 
 //Auth only in Mongino
 /*
