@@ -500,17 +500,17 @@ License: LGPL
 			tmpDataTab.hide();
 
 		// }
-		if( ActionAppCore.designerDetails.sitetype && ActionAppCore.designerDetails.sitetype == 'Server' ){
-			this.setItemDisplay('deploy-in-code-link',false);
-			this.setItemDisplay('cordova-in-code-link',false);
-			this.setItemDisplay('open-in-code-link',false);
+		// if( ActionAppCore.designerDetails.sitetype && ActionAppCore.designerDetails.sitetype == 'Server' ){
+		// 	this.setItemDisplay('deploy-in-code-link',false);
+		// 	this.setItemDisplay('cordova-in-code-link',false);
+		// 	this.setItemDisplay('open-in-code-link',false);
 			
-		}
-		if( ActionAppCore.designerDetails.sitetype && ActionAppCore.designerDetails.usecordova !== 'Yes' ){
-			this.setItemDisplay('cordova-sep',false);
-			this.setItemDisplay('build-deploy-cordova',false);
-			this.setItemDisplay('cordova-in-code-link',false);
-		}
+		// }
+		// if( ActionAppCore.designerDetails.sitetype && ActionAppCore.designerDetails.usecordova !== 'Yes' ){
+		// 	this.setItemDisplay('cordova-sep',false);
+		// 	this.setItemDisplay('build-deploy-cordova',false);
+		// 	this.setItemDisplay('cordova-in-code-link',false);
+		// }
 		
 
 	}
