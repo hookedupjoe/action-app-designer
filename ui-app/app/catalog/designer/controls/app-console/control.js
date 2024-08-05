@@ -261,6 +261,31 @@ License: LGPL
 								"ctl": "button",
 								"onClick": {
 									"run": "action",
+									"action": "createAppProduction"
+								},
+								text: "Build Production",
+								"name": "build-production-app"
+							},
+							{
+								"ctl": "a",
+								"classes": "ui button basic blue",
+								"attr": {
+									href: "",
+									target: ""
+								},
+								text: "Open Production in VS Code",
+								"name": "prod-in-code-link"
+							},
+							{
+								ctl: "divider",
+								fitted: true,
+								clearing: true,
+								"name":"cordova-sep"
+							},
+							{
+								"ctl": "button",
+								"onClick": {
+									"run": "action",
 									"action": "createCordovaDeployment"
 								},
 								text: "Build Mobile App",
@@ -406,6 +431,7 @@ License: LGPL
 		saveAppSetup: saveAppSetup,
 		updateAppSetup: updateAppSetup,
 		createAppDeployment: createAppDeployment,
+		createAppProduction: createAppProduction,
 		createCordovaDeployment: createCordovaDeployment,
 		vscodeDeployment: vscodeDeployment,
 		rebuildApp: rebuildApp,
@@ -452,6 +478,10 @@ License: LGPL
 		var tmpDeployLink = this.getItemEl('deploy-in-code-link');
 		tmpDeployLink.attr('href', "vscode://file/" + this.details.deploy);
 		tmpDeployLink.attr('target', "app-deploy-code-" + this.details.appname);
+
+		var tmpProdLink = this.getItemEl('prod-in-code-link');
+		tmpProdLink.attr('href', "vscode://file/" + this.details.production);
+		tmpProdLink.attr('target', "app-deploy-code-" + this.details.appname);
 
 		var tmpMobileLink = this.getItemEl('cordova-in-code-link');
 		tmpMobileLink.attr('href', "vscode://file/" + this.details.cordova);
@@ -618,6 +648,7 @@ License: LGPL
 		})
 	};
 
+	
 	function createAppDeployment() {
 		var tmpAppName = this.params.appname || ''
 		if (!(tmpAppName)) {
@@ -625,6 +656,18 @@ License: LGPL
 			return;
 		}
 		var tmpURL = 'design/ws/deploy-app?appname=' + tmpAppName
+		ThisApp.apiCall({ url: tmpURL }).then(function (theReply) {
+			ThisApp.appMessage("Done, open in VS code to review and deploy.", "s", { show: true });
+		})
+	};	
+	
+	function createAppProduction() {
+		var tmpAppName = this.params.appname || ''
+		if (!(tmpAppName)) {
+			alert("No app to open, contact the developer", "System Error", "e");
+			return;
+		}
+		var tmpURL = 'design/ws/deploy-production?appname=' + tmpAppName
 		ThisApp.apiCall({ url: tmpURL }).then(function (theReply) {
 			ThisApp.appMessage("Done, open in VS code to review and deploy.", "s", { show: true });
 		})

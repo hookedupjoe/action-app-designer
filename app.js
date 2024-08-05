@@ -459,6 +459,7 @@ function setup(thePassportFlag) {
                     await $.fs.ensureDir(tmpSetupDetails.rootDir);
                     await $.fs.ensureDir(tmpSetupDetails.rootDir + 'ui-apps/');
                     await $.fs.ensureDir(tmpSetupDetails.rootDir + 'deploy/');
+                    await $.fs.ensureDir(tmpSetupDetails.rootDir + 'production/');
                 }
             }
 
@@ -466,6 +467,7 @@ function setup(thePassportFlag) {
             scope.locals.path.ws = {
                 root: tmpWSDirectory,
                 deploy: tmpWSDirectory + "deploy/",
+                production: tmpWSDirectory + "production/",
                 uiApps: tmpWSDirectory + "ui-apps/",
                 catalogs: tmpWSDirectory + "catalogs/",
                 catalog: tmpWSDirectory + "catalog/",
