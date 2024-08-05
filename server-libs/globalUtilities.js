@@ -16,7 +16,7 @@ function setup(scope) {
     scope.$ = this;
     $.bld = require(scope.locals.path.libraries + '/lib_BuildUtils.js');
    // $.auth = require(scope.locals.path.libraries + '/lib_AppAuth.js');
-    $.auth.setup(scope);
+    //$.auth.setup(scope);
 }
 
 module.exports.$ = $;
