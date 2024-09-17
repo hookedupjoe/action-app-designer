@@ -86,6 +86,13 @@
 			]
 		},
 		{
+			"name": "qrCode",
+			"label": "QR Code Generation",
+			"js": [
+				"<script src=\"{{LIBRARY-LOCATION}}/lib/qrcode/qrcode.min.js\"></script>"
+			]
+		},
+		{
 			"name": "Ace",
 			"label": "Ace Editor",
 			"js": [
