@@ -34,6 +34,11 @@
 			"name": "cloud",
 			"label": "Cloud CDN",
 			"prefix": "//actionapp.hookedup.com"
+		},
+		{
+			"name": "github",
+			"label": "GitHub CDN",
+			"prefix": "https://hookedupjoe.github.io/action-app-designer/ui-libs"
 		}
 	],
 	"libraries": [		
